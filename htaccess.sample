@@ -1,0 +1,31 @@
+RewriteEngine on
+
+#DONT FORGET TO CHANGE htaccess.sample
+
+RewriteRule ^html/hydrant/inspection/candidates/?$ 		/ffla-intranet/html/hydrantapp/inspection_candidates.php [L]
+RewriteRule ^html/hydrant/inspection/assist/?$ 			/ffla-intranet/html/hydrantapp/inspection_assist.php [L]
+RewriteRule ^html/hydrant/inspection/file/([^/]+)/render?$ 	/ffla-intranet/html/hydrantapp/inspection_file.php?inspection=$1&render=true [QSA]
+RewriteRule ^html/hydrant/inspection/file/([^/]+)/?$ 	/ffla-intranet/html/hydrantapp/inspection_file.php?inspection=$1 [QSA]
+RewriteRule ^html/hydrant/inspection/edit/([^/]+)/?$ 	/ffla-intranet/html/hydrantapp/inspection_edit.php?inspection=$1 [QSA]
+RewriteRule ^html/hydrant/inspection/edit/?$ 			/ffla-intranet/html/hydrantapp/inspection_edit.php [L]
+RewriteRule ^html/hydrant/inspection/([^/]+)/?$ 		/ffla-intranet/html/hydrantapp/inspection_details.php?inspection=$1 [QSA]
+RewriteRule ^html/hydrant/inspection/?$ 				/ffla-intranet/html/hydrantapp/inspection_overview.php [L]
+
+RewriteRule ^html/hydrant/ajax/hy/([^.]+)/field/([^.]+)$ 	/ffla-intranet/html/ajax/hy_request.php?fid=$1&fieldid=$2 [L]
+
+RewriteRule ^html/hydrant/([^/]+)/map/?$ 	/ffla-intranet/html/hydrantapp/maps.php?hydrant=$1 [L]
+RewriteRule ^html/hydrant/search/?$ 		/ffla-intranet/html/hydrantapp/hydrant_request.php [L]
+RewriteRule ^html/hydrant/street/([^/]+)$ 	/ffla-intranet/html/hydrantapp/hydrant_street_view.php?street=$1 [QSA]
+RewriteRule ^html/hydrant/engine/([^/]+)$ 	/ffla-intranet/html/hydrantapp/hydrant_engine_view.php?engine=$1 [QSA]
+RewriteRule ^html/hydrant/([^/]+)/?$ 		/ffla-intranet/html/hydrantapp/hydrant_view.php?id=$1 [QSA]
+RewriteRule ^html/hydrant/$ 				/ffla-intranet/html/hydrantapp/index.php [L]
+
+RewriteRule ^html/files/forms/admin/?$ 	/ffla-intranet/html/filesapp/forms_admin.php [L]
+RewriteRule ^html/files/forms/new/?$	/ffla-intranet/html/filesapp/forms_create.php [L]
+RewriteRule ^html/files/forms/?$ 		/ffla-intranet/html/filesapp/forms.php [L]
+RewriteRule ^html/files/([^/]+)$ 		/ffla-intranet/html/filesapp/file.php?file=$1 [L]
+RewriteRule ^html/files/$ 				/ffla-intranet/html/filesapp/index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.+)$ $1.php [L]

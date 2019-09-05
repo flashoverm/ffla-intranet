@@ -1,0 +1,9 @@
+Replace and adapt htaccess and config
+
+Create new database and fill with the data
+
+Install nodejs
+Run 
+	npm init
+	npm i --save puppeteer
+	mv js file in folder where the module is saved

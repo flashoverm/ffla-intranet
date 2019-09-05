@@ -1,0 +1,60 @@
+/* Hydrant assist styles */
+
+.tab-pane {
+    padding:8px;
+}
+
+.custom-checkbox-big {
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+.custom-control-label-big {
+	padding-top: 0.2rem;
+	padding-left: 0.5rem;
+}
+
+.custom-control-label-big::before,
+.custom-control-label-big::after {
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+/* Hydrant table styles */
+
+.th-td-small {
+	padding: 0.2rem !important;
+	font-weight: normal;
+	font-size: 0.8rem;
+}
+
+.th-td-padding {
+	padding: 0.5rem !important;
+}
+
+.custom-control-label-table::before {
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-left: 50%;
+}
+
+.custom-control-label-table::after {
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-left: 50%;	
+}
+
+.element-to-rotate {
+	display: inline-block;
+  	white-space: nowrap;
+  
+	transform-origin: left top;
+	-webkit-transform-origin: left top;
+	
+	transform: rotate(-90deg) translate(-100%); /* Fallback */
+	-webkit-transform: rotate(-90deg) translate(-100%); /* Safari/Chrome */
+	-moz-transform: rotate(-90deg) translate(-100%); /* Firefox */
+	-o-transform: rotate(-90deg) translate(-100%); /* Opera */
+	-ms-transform: rotate(-90deg) translate(-100%); /* IE 9 */
+	
+}
