@@ -34,7 +34,7 @@ if (isset ( $_POST ['username'] ) && isset ( $_POST ['password'] )) {
 			unset($_SESSION["ref"]);
 			header ( "Location: " . $ref ); // redirects	
 		} else {
-			header ( "Location: " . $config["urls"]["intranet_home"] ); // redirects
+			header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects
 		}
 	
 	}
