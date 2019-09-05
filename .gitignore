@@ -1,0 +1,7 @@
+
+resources/config.php
+.htaccess
+
+resources/maps/*
+resources/files/*
+resources/inspections/*
