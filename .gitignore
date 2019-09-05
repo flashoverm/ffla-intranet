@@ -5,3 +5,5 @@ resources/config.php
 resources/maps/*
 resources/files/*
 resources/inspections/*
+
+resources/library/puppeteer/node_modules/
