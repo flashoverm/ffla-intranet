@@ -37,7 +37,8 @@ if (isset($_GET['engine'])) {
     }
     
     $variables ['mapURL'] = $mapUrl;
-    $variables ['title'] = "Hydranten: " . get_engine($engine)->name;
+    $variables ['title'] = "Hydranten";
+    $variables ['subtitle'] = get_engine($engine)->name;
 } else {
     $variables ['alertMessage'] = "Zug nicht festgelegt";
 }

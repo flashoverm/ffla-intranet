@@ -36,7 +36,8 @@ if (isset($_GET['street'])) {
     }
     
     $variables ['mapURL'] = $mapUrl;
-    $variables ['title'] = "Hydranten: " . $street;
+    $variables ['title'] = "Hydranten";
+    $variables ['subtitle'] = $street;
 } else {
     $variables ['alertMessage'] = "Straße nicht festgelegt";
 }
