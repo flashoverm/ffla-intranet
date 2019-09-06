@@ -16,7 +16,7 @@ function showInfo($message) {
 function goToLogin(){
     global $config;
     
-    $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+    $actual_link = "{$_SERVER['REQUEST_URI']}";
     $_SESSION["ref"] = $actual_link;
     header("Location: " . $config["urls"]["intranet_home"] . "/login"); // redirects
 }
