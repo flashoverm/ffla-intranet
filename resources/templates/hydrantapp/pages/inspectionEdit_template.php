@@ -42,7 +42,7 @@
 				</td>
     		</tr>
     		<tr>
-    			<td colspan="2">
+    			<td colspan="2" style="padding:0">
                     <table class="table table-sm table-bordered" style="margin-bottom:0">
                     	<thead>
                     		<tr>
