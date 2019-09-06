@@ -13,7 +13,6 @@ function insert_engine($name, $isadministration) {
 	$result = $statement->execute();
 
 	if ($result) {
-		 //echo "New record created successfully<br>";
 		 return true;
 	} else {
 		 //echo "Error: " . $query . "<br>" . $db->error . "<br><br>";

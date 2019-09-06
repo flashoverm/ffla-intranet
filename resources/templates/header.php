@@ -13,7 +13,7 @@
 				</a>
 					 
 			</div>
-			<div class="col d-flex align-items-center justify-content-center">
+			<div class="col my-auto">
 				<h1 class="text-center"><?= $title ?></h1>
 				<?php
 		          if(isset($subtitle)){

@@ -5,7 +5,7 @@ require_once LIBRARY_PATH . "/db_user.php";
 
 
 if (isset ( $_SESSION ['intranet_userid'] )) {
-	header ( "Location: " . $config["urls"]["intranet_home"] ); // redirects
+	header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects
 }
 
 // Pass variables (as an array) to template
@@ -29,7 +29,7 @@ if (isset ( $_POST ['username'] ) && isset ( $_POST ['password'] )) {
 		$_SESSION ['intranet_userid'] = $uuid;
 		$_SESSION ['intranet_username'] = $username;
 		
-		if(isset($_SESSION["ref"])){
+		if(isset($_SESSION["ref"]) && $_SESSION["ref"] != ""){
 			$ref = $_SESSION["ref"];
 			unset($_SESSION["ref"]);
 			header ( "Location: " . $ref ); // redirects	
