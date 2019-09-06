@@ -23,9 +23,10 @@ if (isset($_GET['engine'])) {
     . "&scale=" . $config["mapView"]["retina"]
     . "&maptype=" . $config["mapView"]["maptype"];
     
+    $mapUrl = $mapUrl . "&markers=color:red|label:" . "H";
     foreach ( $hydrants as $hydrant ) {
         //$mapUrl = $mapUrl . "&markers=color:red|label:" . $hydrant->hy . "|" . $hydrant->lat . "," . $hydrant->lng . "";  //hy as label does not work!
-        $mapUrl = $mapUrl . "&markers=color:red|label:" . "H" . "|" . $hydrant->lat . "," . $hydrant->lng . "";
+        $mapUrl = $mapUrl . "|" . $hydrant->lat . "," . $hydrant->lng . "";
     }
    
     if(isset($_GET['location'])) {
