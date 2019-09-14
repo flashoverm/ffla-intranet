@@ -12,6 +12,7 @@ if (! count ( $hydrants )) {
 				<th data-sortable="true" class="text-center">FID</th>
 				<th data-sortable="true" class="text-center">Straße</th>
 				<th data-sortable="true" class="text-center">Stadtteil</th>
+				<th data-sortable="true" class="text-center">Löschzug</th>
 				<th class="text-center">Typ</th>
 				<th class="text-center">Anzeigen</th>
 			</tr>
@@ -26,6 +27,7 @@ if (! count ( $hydrants )) {
 				<td class="text-center"><?= $row->fid; ?></td>
 				<td class="text-center"><?= $row->street; ?></td>
 				<td class="text-center"><?= $row->district; ?></td>
+				<td class="text-center"><?= get_engine($row->engine)->name ?></td>
 				<td class="text-center"><?= $row->type; ?></td>
 
 				<td class="text-center">
