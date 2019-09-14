@@ -15,4 +15,16 @@ function mail_send_inspection_report($report_uuid){
 
     return send_mail_to_mailing(INSPECTIONREPORT, $subject, $body, $file);
 }
+
+function mail_send_inspection_report_update($report_uuid){
+    global $config;
+    global $bodies;
+    
+    $file = $config["paths"]["inspections"] . $report_uuid . ".pdf";
+    
+    $subject = "Hydranten-Prüfbericht aktualisiert";
+    $body = $bodies["report_update"];
+    
+    return send_mail_to_mailing(INSPECTIONREPORT, $subject, $body, $file);
+}
 ?>

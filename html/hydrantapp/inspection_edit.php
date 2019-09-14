@@ -95,7 +95,9 @@ if(isset($_POST['maxidx'])){
                 
                 if(update_inspection($inspection)){
                     createInspectionFile($inspection->uuid);
-                    mail_send_inspection_report($inspection->uuid);
+                    if(mail_send_inspection_report_update($inspection->uuid)){
+                        $variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
+                    }
                     $variables ['successMessage'] = "Prüfbericht aktualisiert";
                     header ( "Location: " . $config["urls"]["hydrantapp_home"] . "/inspection/". $inspection->uuid ); // redirects
                 } else {
@@ -106,7 +108,9 @@ if(isset($_POST['maxidx'])){
                 $inspection_uuid = insert_inspection($inspection);
                 if($inspection_uuid){
                     createInspectionFile($inspection->uuid);
-                    mail_send_inspection_report($inspection-uuid);
+                    if(mail_send_inspection_report($inspection->uuid)){
+                        $variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
+                    }
                     $variables ['successMessage'] = "Prüfbericht gespeichert";
    					header ( "Location: " . $config["urls"]["hydrantapp_home"] . "/inspection/". $inspection->uuid ); // redirects
                     
