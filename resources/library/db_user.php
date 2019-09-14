@@ -284,15 +284,24 @@ function create_table_user() {
 		$user = insert_user("fffiles", "ffla112", get_engine_from_name("Keine Zuordnung")->uuid);
 		addRight($user->uuid, FILEADMIN);
 		
-		insert_user("lz12", "daigfhrfd", get_engine_from_name("Löschzug 1/2")->uuid);
-		insert_user("lz3", "ddfgohwsfh", get_engine_from_name("Löschzug 3")->uuid);
-		insert_user("lz4", "sgfjgsksfn", get_engine_from_name("Löschzug 4")->uuid);
-		insert_user("lz5", "xvhkgdjdaf", get_engine_from_name("Löschzug 5")->uuid);
-		insert_user("lz6", "sfhkjgdusd", get_engine_from_name("Löschzug 6")->uuid);
-		insert_user("lz7", "fgdgfsdgfg", get_engine_from_name("Löschzug 7")->uuid);
-		insert_user("lz8", "gisksfghjo", get_engine_from_name("Löschzug 8")->uuid);
-		insert_user("lz9", "fdgisfghkh", get_engine_from_name("Löschzug 9")->uuid);
-		insert_user("bz", "asshzjfghli", get_engine_from_name("Brandschutzzug")->uuid);
+		$user = insert_user("lz12", "daigfhrfd", get_engine_from_name("Löschzug 1/2")->uuid);
+		addRight($user->uuid, ENGINEHYDRANTMANANGER);
+		$user = insert_user("lz3", "ddfgohwsfh", get_engine_from_name("Löschzug 3")->uuid);
+		addRight($user->uuid, ENGINEHYDRANTMANANGER);
+		$user = insert_user("lz4", "sgfjgsksfn", get_engine_from_name("Löschzug 4")->uuid);
+		addRight($user->uuid, ENGINEHYDRANTMANANGER);
+		$user = insert_user("lz5", "xvhkgdjdaf", get_engine_from_name("Löschzug 5")->uuid);
+		addRight($user->uuid, ENGINEHYDRANTMANANGER);
+		$user = insert_user("lz6", "sfhkjgdusd", get_engine_from_name("Löschzug 6")->uuid);
+		addRight($user->uuid, ENGINEHYDRANTMANANGER);
+		$user = insert_user("lz7", "fgdgfsdgfg", get_engine_from_name("Löschzug 7")->uuid);
+		addRight($user->uuid, ENGINEHYDRANTMANANGER);
+		$user = insert_user("lz8", "gisksfghjo", get_engine_from_name("Löschzug 8")->uuid);
+		addRight($user->uuid, ENGINEHYDRANTMANANGER);
+		$user = insert_user("lz9", "fdgisfghkh", get_engine_from_name("Löschzug 9")->uuid);
+		addRight($user->uuid, ENGINEHYDRANTMANANGER);
+		$user = insert_user("bz", "asshzjfghli", get_engine_from_name("Brandschutzzug")->uuid);
+		addRight($user->uuid, ENGINEHYDRANTMANANGER);
 		$user = insert_user("verwaltung", "ghjoeduldf", get_engine_from_name("Verwaltung")->uuid);
 		addRight($user->uuid, FFADMINISTRATION);
 		

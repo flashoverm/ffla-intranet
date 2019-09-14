@@ -133,7 +133,7 @@ function create_table_mailing() {
     global $db;
     
     $statement = $db->prepare("CREATE TABLE mailing (
-                          email VARCHAR(255) NOT NULL,
+                          email VARCHAR(128) NOT NULL,
 						  memberof VARCHAR(255),
                           PRIMARY KEY  (email)
                           )");
