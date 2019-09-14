@@ -162,7 +162,7 @@ function is_map_existing($hy){
     global $config;
     global $db;
         
-    $statement = $db->prepare("SELECT * FROM hydrant WHERE map IS NOT NULL AND hy = ?");
+    $statement = $db->prepare("SELECT * FROM hydrant WHERE map IS NOT NULL AND NOT map = '' AND hy = ?");
     $statement->bind_param('i', $hy);
     
     if ($statement->execute()) {

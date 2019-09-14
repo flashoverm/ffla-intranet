@@ -3,7 +3,12 @@ const puppeteer = require('puppeteer');
 (async() => {
 
 	try {
-		const browser = await puppeteer.launch();
+		const browser = await puppeteer.launch({
+			headless: true,
+			args: [
+				'--no-sandbox'
+			]
+		});
 		const page = await browser.newPage();
 		process.on("unhandledRejection", (reason, p) => {
 			console.error("Unhandled Rejection at: Promise", p, "reason:", reason);
