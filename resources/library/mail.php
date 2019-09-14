@@ -28,17 +28,17 @@ function init_mail() {
 function send_mail($to, $subject, $body, $attachment = NULL) {
     global $util;
     
-    $mail = init_mail();
-    
-    $mail->addAddress ( $to );
-    $mail->Subject = $subject;
-    $mail->Body = $body . $util["footer"];
-   
-    if($attachment != NULL){
-        $mail->AddAttachment($attachment, $name = basename($attachment),  $encoding = 'base64', $type = 'application/pdf');
-    }
-    
     try{
+        $mail = init_mail();
+        
+        $mail->addAddress ( $to );
+        $mail->Subject = $subject;
+        $mail->Body = $body . $util["footer"];
+       
+        if($attachment != NULL){
+            $mail->AddAttachment($attachment, $name = basename($attachment),  $encoding = 'base64', $type = 'application/pdf');
+        }
+    
         if(!$mail->send ()){
             throw new Exception;
         }
