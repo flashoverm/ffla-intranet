@@ -4,7 +4,10 @@
 <?php include_once 'head.php';?>
 <body>
 	<header>
-	<div id="top" class="jumbotron py-3">
+	<div class="jumbotron py-3">
+		   <div class="alert alert-dark">
+	   		<strong>Testbetrieb</strong></strong><br/>Das Portal befindet sich noch in der Erprobung. Fehler im Ablauf können nicht ausgeschlossen werden!
+	   </div>
 		<div class="row">
 			<div class="col">
 				<a href="<?= $config["urls"]["base_url"]?>">
