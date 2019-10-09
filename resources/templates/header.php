@@ -2,11 +2,13 @@
 
 <html lang="de">
 <?php include_once 'head.php';?>
+
+
 <body>
 	<header>
 	<div class="jumbotron py-3">
 		   <div class="alert alert-dark">
-	   		<strong>Testbetrieb</strong></strong><br/>Das Portal befindet sich noch in der Erprobung. Fehler im Ablauf können nicht ausgeschlossen werden!
+	   		<strong>Testbetrieb</strong><br/>Das Portal befindet sich noch in der Erprobung. Fehler im Ablauf können nicht ausgeschlossen werden!
 	   </div>
 		<div class="row">
 			<div class="col">

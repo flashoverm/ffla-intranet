@@ -25,7 +25,7 @@
     			</div>
 			</div>
 			<div class='custom-control custom-checkbox custom-checkbox-big' id='divc<?= '0' ?>'>
-				<input class="custom-control-input" type='checkbox' id='tc<?= '0' ?>' name='tc<?= '0' ?>' onClick="toogleFaultView()" checked>
+				<input class="custom-control-input" type='checkbox' id='tc<?= '0' ?>' name='tc<?= '0' ?>' checked>
 				<label class="custom-control-label custom-control-label-big" for='tc<?= '0' ?>'><?= $criteria[0][1] ?></label> 
 			</div>
 			<div class='custom-control custom-checkbox custom-checkbox-big' id='divc<?= '1' ?>'>
