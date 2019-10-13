@@ -2,6 +2,8 @@ RewriteEngine on
 
 #DONT FORGET TO CHANGE htaccess.sample
 
+RewriteRule ^html/hydrant/manual/?$ 					/ffla-intranet/html/hydrantapp/manual.php [L]
+
 RewriteRule ^html/hydrant/inspection/candidates/?$ 		/ffla-intranet/html/hydrantapp/inspection_candidates.php [L]
 RewriteRule ^html/hydrant/inspection/assist/?$ 			/ffla-intranet/html/hydrantapp/inspection_assist.php [L]
 RewriteRule ^html/hydrant/inspection/file/([^/]+)/render?$ 	/ffla-intranet/html/hydrantapp/inspection_file.php?inspection=$1&render=true [QSA]
