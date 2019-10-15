@@ -12,6 +12,9 @@ if ($loggedIn) {
 	echo "<div class='collapse navbar-collapse' id='navbarMainContent'>
 		  <ul class='navbar-nav mr-auto'>
             <li class='nav-item'>
+        	   <a class='nav-link text-light' href='" . $config ["urls"] ["intranet_home"] . "'>Home</a>
+            </li>
+            <li class='nav-item'>
         		<a class='nav-link text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/search'>Hydrantenkarten</a>
 			</li>";
 	
@@ -48,7 +51,6 @@ if ($loggedIn) {
         		<div class='dropdown-menu dropdown-menu-right bg-dark'>
 					<a class='dropdown-item disabled text-secondary'>" . get_engine_obj_of_user($_SESSION ['intranet_userid'])->name . "</a>
 					<div class='dropdown-divider'></div>
-		        	<a class='dropdown-item text-light' href='" . $config ["urls"] ["intranet_home"] . "'>Intranet Home</a>
 		        	<a class='dropdown-item text-light' href='" . $config ["urls"] ["intranet_home"] . "/logout'>Abmelden</a>
 				</div>       			
 			</li>
