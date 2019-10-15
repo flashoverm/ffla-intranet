@@ -4,11 +4,11 @@ if (! count ( $files )) {
 } else {
     ?>
 <div class="table-responsive">
-	<table class="table table-striped">
+	<table class="table table-striped" data-toggle="table" data-pagination="true" data-search="true"">
 		<thead>
 			<tr>
-				<th class="text-center">Beschreibung</th>
-				<th class="text-center">Upload-Datum</th>
+				<th data-sortable="true" class="text-center">Beschreibung</th>
+				<th data-sortable="true" class="text-center">Upload-Datum</th>
 				<th class="text-center">Anzeigen</th>
 			</tr>
 		</thead>
