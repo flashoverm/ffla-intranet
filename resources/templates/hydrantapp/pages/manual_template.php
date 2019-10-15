@@ -10,11 +10,10 @@
 		</ul>
 		<h5>Funktionen für Hydrantenbeauftragte</h5>
 		<ul>
-			<li><a href="#checkup">Hydrantenprüfung erstellen</a></li>
-			<li><a href="#checkupassist">Hydrantenprüfung mit Assistent erfassen</a></li>
-			
-			<li><a href="#checkupadmin">Prüfungsübersicht- und verwaltung</a></li>
-			<li><a href="#checkupcandidates">Aktuelle Prüfobjekte</a></li>
+			<li><a href="#inspection">Hydrantenprüfung erstellen</a></li>
+			<li><a href="#inspectionassist">Hydrantenprüfung mit Assistent erfassen</a></li>
+			<li><a href="#inspectionadmin">Prüfungsübersicht- und verwaltung</a></li>
+			<li><a href="#inspectioncandidates">Aktuelle Prüfobjekte</a></li>
 		</ul>
 	</div>
 </div>
@@ -30,7 +29,7 @@
 	<p>Ein direkter Zugriff ist über
 		intranet.feuerwehr-landshut.de/hydrants möglich.</p>
 		
-	<p>Für die Hydrantenverwaltung ist aus Datenschutzgründen eine Anmeldung erforderlich.</p>
+	<p>Für die Hydrantenverwaltung ist aus Datenschutzgründen eine Anmeldung erforderlich. Für manche Funktionen sind spezielle Rechte für Hydrantenbeauftrage nötig.</p>
 </div>
 
 <div class="mt-5">
@@ -53,7 +52,7 @@
 			src="<?= $config["urls"]["intranet_home"] ?>/images/manual/maps.jpg" style="width: 75%;"> -->
 	</div>
 
-	<div class="mt-5" id="checkup">
+	<div class="mt-5" id="inspection">
 		<h4>
 			Hydrantenprüfung erfassen <a href="#">&uarr;</a>
 		</h4>
@@ -87,7 +86,7 @@
 
 	</div>
 
-	<div class="mt-5" id="checkupassist">
+	<div class="mt-5" id="inspectionassist">
 		<h4>
 			Hydrantenprüfung mit Assistent erfassen <a href="#">&uarr;</a>
 		</h4>
@@ -118,7 +117,7 @@
 	
 	</div>
 
-	<div class="mt-5" id="checkupadmin">
+	<div class="mt-5" id="inspectionadmin">
 		<h4>
 			Prüfungsübersicht- und verwaltung <a href="#">&uarr;</a>
 		</h4>
@@ -129,7 +128,7 @@
 			<li>angezeigt</li>
 			<li>bearbeitet</li>
 			<li>gelöscht</li>
-			<li>als PDF heruntergeladen werden</li>
+			<li>als PDF heruntergeladen</li>
 		</ul>
 		
 		<p>werden.</p>
@@ -141,7 +140,7 @@
 
 	</div>
 
-	<div class="mt-5" id="checkupcandidates">
+	<div class="mt-5" id="inspectioncandidates">
 		<h4>
 			Aktuelle Prüfobjekte <a href="#">&uarr;</a>
 		</h4>
