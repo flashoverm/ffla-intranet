@@ -59,11 +59,9 @@ if ($loggedIn) {
             </li>";
 }
 ?>
-<!--
 			<li class='nav-item'>
 				<a class='nav-link text-light' href="<?= $config["urls"]["hydrantapp_home"]?>/manual" data-toggle="tooltip" title="Anleitung">&#9432;</a>
             </li>
--->
 		</ul>
 	</div>
 </nav>

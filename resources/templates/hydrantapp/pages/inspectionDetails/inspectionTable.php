@@ -2,11 +2,13 @@
 	<tbody>
 		<tr>
 			<th class="th-td-padding text-left">Datum</th>
+			<th class="th-td-padding text-left">Löschzug</th>
 			<th class="th-td-padding text-left">Name(n)</th>
 			<th class="th-td-padding text-left">Fahrzeug</th>
 		</tr>
 		<tr>
 			<td class="th-td-padding"><?= date($config ["formats"] ["date"], strtotime($inspection->date)); ?></td>
+			<td class="th-td-padding"><?= get_engine($inspection->engine)->name; ?></td>
 			<td class="th-td-padding"><?= $inspection->name ?></td>
 			<td class="th-td-padding">
 					<?php if($inspection->vehicle == "") {
@@ -18,7 +20,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="3" style="padding:0">
+			<td colspan="4" style="padding:0">
                 <table class="table table-sm table-bordered" style="margin-bottom:0">
                 	<thead>
                 		<tr>
@@ -90,10 +92,10 @@
             </td>
 		</tr>
 		<tr>
-			<th colspan="3" class="th-td-padding text-left">Hinweise</th>
+			<th colspan="4" class="th-td-padding text-left">Hinweise</th>
 		</tr>
 		<tr>
-			<td colspan="3" class="th-td-padding">
+			<td colspan="4" class="th-td-padding">
 			<?php if($inspection->notes == "") {
 			    echo "Keine";
 			} else {

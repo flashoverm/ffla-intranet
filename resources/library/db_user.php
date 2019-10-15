@@ -307,6 +307,7 @@ function create_table_user() {
 		
 		$user = insert_user("admin", "admin", get_engine_from_name("Löschzug 1/2")->uuid);
 		addRight($user->uuid, ENGINEHYDRANTMANANGER);
+		addRight($user->uuid, FILEADMIN);
 		
 		return true;
 	} else {
