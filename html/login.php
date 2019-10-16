@@ -16,7 +16,7 @@ $variables = array (
 );
 
 if(isset($_SESSION["ref"])){
-	$variables ['alertMessage'] = "Bitte zuerst einloggen";
+	$variables ['infoMessage'] = "Bitte zuerst einloggen";
 }
 
 if (isset ( $_POST ['username'] ) && isset ( $_POST ['password'] )) {
