@@ -4,7 +4,7 @@
     	content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
     <link rel="icon" type="image/png" href="<?= $config["urls"]["intranet_home"] ?>/images/layout/Logo.png">
-    
+	
     <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href='<?= $config["urls"]["intranet_home"] ?>/css/custom.css'>
 	<link rel="stylesheet" type="text/css" href='<?= $config["urls"]["intranet_home"] ?>/css/custom2.css'>
