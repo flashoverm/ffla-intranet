@@ -24,12 +24,7 @@ function mail_send_inspection_report_update($report_uuid){
     
     $subject = "Hydranten-Prüfbericht aktualisiert";
     $body = $bodies["report_update"] . get_inspection_link($report_uuid);
-    
-    
-    
-    echo $body;
-    die();
-    
+        
     return send_mail_to_mailing(INSPECTIONREPORT, $subject, $body, $file);
 }
 
