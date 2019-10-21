@@ -23,8 +23,18 @@ function mail_send_inspection_report_update($report_uuid){
     $file = $config["paths"]["inspections"] . $report_uuid . ".pdf";
     
     $subject = "Hydranten-Prüfbericht aktualisiert";
-    $body = $bodies["report_update"];
+    $body = $bodies["report_update"] . get_inspection_link($report_uuid);
+    
+    
+    
+    echo $body;
+    die();
     
     return send_mail_to_mailing(INSPECTIONREPORT, $subject, $body, $file);
+}
+
+function get_inspection_link($inspection_uuid){
+	global $config;
+	return $config ["urls"] ["base_url"] . $config ["urls"] ["hydrantapp_home"] . "/inspection/" . $inspection_uuid;
 }
 ?>

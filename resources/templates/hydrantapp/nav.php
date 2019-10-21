@@ -12,7 +12,7 @@ if ($loggedIn) {
 	echo "<div class='collapse navbar-collapse' id='navbarMainContent'>
 		  <ul class='navbar-nav mr-auto'>
             <li class='nav-item'>
-        	   <a class='nav-link text-light' href='" . $config ["urls"] ["base_url"] . "'>Home</a>
+        	   <a class='nav-link text-light' href='" . $config ["urls"] ["base_url"] . $config ["urls"] ["intranet_home"] . "'>Home</a>
             </li>
             <li class='nav-item'>
         		<a class='nav-link text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/search'>Hydrantenkarten</a>
