@@ -7,7 +7,7 @@
 			<p class="card-text">Verwaltung von Sicherheitswachen, Anzeigen von
 				&oumlffentlichen Wachen, Erstellen von Wachberichten und Verwalten des
 				Wachbuchs.</p>
-			<a href="<?= $config["urls"]["base_url"]?>/guardian/html"
+			<a href="<?= $config["urls"]["base_url"]?>/guardian"
 				class="card-link">Weiter zur Wachverwaltung</a>
 		</div>
 	</div>
