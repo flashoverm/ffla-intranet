@@ -10,7 +10,7 @@ if (! count ( $inspections )) {
 			<tr>
 				<th data-sortable="true" class="text-center">Datum</th>
 				<th data-sortable="true" class="text-center">Löschzug</th>
-				<th class="text-center">Name(n)</th>
+				<th data-sortable="true" class="text-center">Name(n)</th>
 				<th class="text-center">Anzeigen</th>
 				<th class="text-center">PDF</th>
 				<th class="text-center">Bearbeiten</th>
