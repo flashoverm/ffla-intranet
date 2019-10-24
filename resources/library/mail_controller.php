@@ -11,7 +11,7 @@ function mail_send_inspection_report($report_uuid){
     $file = $config["paths"]["inspections"] . $report_uuid . ".pdf";
     
     $subject = "Hydranten-Prüfbericht";
-    $body = $bodies["report_insert"];
+    $body = $bodies["report_insert"] . get_inspection_link($report_uuid);
 
     return send_mail_to_mailing(INSPECTIONREPORT, $subject, $body, $file);
 }
