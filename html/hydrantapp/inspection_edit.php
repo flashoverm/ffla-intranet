@@ -15,6 +15,8 @@ $variables = array(
     'right' => ENGINEHYDRANTMANANGER
 );
 
+$user_engine = get_engine_of_user($_SESSION ['intranet_userid']);
+
 if(isset($_GET['inspection'])){
     
     $inspection = get_inspection($_GET['inspection']);
@@ -42,7 +44,7 @@ if(isset($_POST['maxidx'])){
     }
         
     $inspection = new HydrantInspection($date, $name, $vehicle, $notes);
-    $inspection->engine = get_engine_of_user($_SESSION ['intranet_userid']);
+    $inspection->engine = $user_engine;
     if(isset($_POST['uuid'])){
         $inspection->uuid = $_POST['uuid'];
     }
@@ -75,21 +77,21 @@ if(isset($_POST['maxidx'])){
     } else {
         
         $hydrantsNotFound = "";
-        $hydrantsCheckBySW = "";
+        $hydrantsCheckByOther = "";
         
         foreach($inspection->hydrants as $hydrant){
             $hydrant_db = get_hydrant($hydrant->hy);
             if($hydrant_db){
                 $hydrant->uuid = $hydrant_db->uuid;
-                if(!$hydrant_db->checkbyff){
-                    $hydrantsCheckBySW = $hydrantsCheckBySW . $hydrant->hy . ", ";
+                if( (! $hydrant_db->checkbyff ) || ( $hydrant_db->engine != $user_engine ) ){
+                	$hydrantsCheckByOther = $hydrantsCheckByOther . $hydrant->hy . ", ";
                 }
             } else {
                 $hydrantsNotFound = $hydrantsNotFound . $hydrant->hy . ", ";
             }
         }
                
-        if($hydrantsNotFound == "" && $hydrantsCheckBySW == ""){
+        if($hydrantsNotFound == "" && $hydrantsCheckByOther == ""){
        
             if($inspection->uuid != ""){
                 
@@ -124,11 +126,11 @@ if(isset($_POST['maxidx'])){
             if($hydrantsNotFound != ""){
                 $alertMessage .= "HY-Nummer(n) " . substr_replace($hydrantsNotFound , "", -2) . " existieren nicht";
             }
-            if($hydrantsCheckBySW != ""){
+            if($hydrantsCheckByOther != ""){
                 if($alertMessage != ""){
                     $alertMessage .= "<br>";
                 }
-                $alertMessage .= "HY-Nummer(n) " . substr_replace($hydrantsCheckBySW, "", -2) . " werden von den Stadtwerken Landshut geprüft";
+                $alertMessage .= "HY-Nummer(n) " . substr_replace($hydrantsCheckByOther, "", -2) . " werden von den Stadtwerken Landshut oder anderen Zügen geprüft";
             }
             $variables ['alertMessage'] = $alertMessage;
             $variables['inspection'] = $inspection;

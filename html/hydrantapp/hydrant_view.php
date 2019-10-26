@@ -17,7 +17,6 @@ if (isset($_GET['id'])) {
     if($hydrant){
         $variables ['hydrant'] = $hydrant;
         $variables ['title'] = "Hydrant " . $id;
-        $variables ['subtitle'] = $hydrant->street . " - " . $hydrant->type;
         
         $mapUrl = $config["mapView"]["apiUrl"]
             . "?key=" . $config["mapView"]["apiKey"]

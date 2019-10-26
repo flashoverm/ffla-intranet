@@ -206,6 +206,9 @@ function addHydrant() {
 		if(fields[i].id == "faults"){
 			fields[i].id = "h" + hy_max_idx + "faults";
 		}
+		if(fields[i].id == "fidnotok"){
+			fields[i].id = "h" + hy_max_idx + "fidnotok";
+		}
 	}
 
 	fields = newHydrant.getElementsByTagName("select");
@@ -293,12 +296,23 @@ function getHyToFid() {
 
 function setHy(){
     if(xhr.readyState == 4) {
+
     	if(xhr.status == 200){
-        	var response = eval('(' + xhr.responseText + ')' );
 
+        	var response = eval( '(' + xhr.responseText + ')' );
+        	var errField = getHydrantField(response.fieldid, "h" + response.fieldid + "fidnotok");
 		    var hyfield = getHydrantField(response.fieldid, "h" + response.fieldid + "hy");
-		    hyfield.value = response.hy;
 
+		    if(response.status == 'ok'){
+			    hyfield.value = response.hy;
+
+	        	errField.style.display = "none";
+		    } else if(response.status == 'forbidden'){
+	        	errField.style.display = "block";
+	        	hyfield.value = "";
+		    } else if(response.status == 'notfound'){
+	        	hyfield.value = "";
+		    }
     	}
     }
 }
