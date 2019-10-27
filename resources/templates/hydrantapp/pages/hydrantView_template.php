@@ -15,6 +15,16 @@ if (isset($hydrant)){
 				<th class="th-td-padding text-left">Typ</th>
 				<td class="th-td-padding"><?= $hydrant->type ?></td>
 			</tr>
+			<?php
+			if(!$hydrant->checkbyff){
+			?>
+			<tr>
+				<th class="th-td-padding text-left">Geprüft durch</th>
+				<td class="th-td-padding">Stadtwerke Landshut</td>
+			</tr>
+			<?php
+			}
+			?>
 		</tbody>
 	</table>
 		
