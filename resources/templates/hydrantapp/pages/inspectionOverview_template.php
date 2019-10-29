@@ -11,6 +11,8 @@ if (! count ( $inspections )) {
 				<th data-sortable="true" class="text-center">Datum</th>
 				<th data-sortable="true" class="text-center">Löschzug</th>
 				<th data-sortable="true" class="text-center">Name(n)</th>
+				<th data-sortable="true" class="text-center">Fahrzeug</th>
+				<th data-sortable="true" class="text-center">Hydranten</th>
 				<th class="text-center">Anzeigen</th>
 				<th class="text-center">PDF</th>
 				<th class="text-center">Bearbeiten</th>
@@ -26,6 +28,8 @@ if (! count ( $inspections )) {
 				<td class="text-center"><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
 				<td class="text-center"><?= get_engine($row->engine)->name; ?></td>
 				<td class="text-center"><?= $row->name; ?></td>
+				<td class="text-center"><?= $row->vehicle; ?></td>
+				<td class="text-center"><?= $row->getCount(); ?></td>
 				<td class="text-center">
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->uuid; ?>">Anzeigen</a>
 				</td>

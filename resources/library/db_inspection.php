@@ -104,7 +104,7 @@ function get_inspections(){
         
         if (mysqli_num_rows ( $result )) {
             while ( $date = $result->fetch_object () ) {
-                $data [] = build_inspection_object($date);;
+                $data [] = build_inspection_object($date);
             }
             $result->free ();
         }

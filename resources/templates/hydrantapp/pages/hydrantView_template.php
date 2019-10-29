@@ -19,7 +19,7 @@ if (isset($hydrant)){
 			if(!$hydrant->checkbyff){
 			?>
 			<tr>
-				<th class="th-td-padding text-left">Geprüft durch</th>
+				<th class="th-td-padding text-left">Prüfung durch</th>
 				<td class="th-td-padding">Stadtwerke Landshut</td>
 			</tr>
 			<?php
