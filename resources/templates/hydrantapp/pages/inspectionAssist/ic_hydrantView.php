@@ -11,9 +11,12 @@
         			<div class="form-group">
         				<label>Alternativ FID:</label>
         				<input type="number" class="form-control" name="fid" id="fid" placeholder="alternativ FID-Nummer eingeben" oninput="getHyToFid()">
-        			</div>        		
+        			</div>
         		</div>		
 			</div>
+			<div class="alert alert-danger" role="alert" id="fidnotok"  style="display:none;">
+				Achtung: Prüfung des Hydranten durch Stadtwerke oder anderem Zug!
+			</div> 
 			<div style="margin-bottom : 1rem; ">
     			<div class="custom-control custom-radio custom-control-inline">
     				<input checked type="radio" class="custom-control-input" id="typeu" name="type" value="overfloor" onchange="switchHydrantType()">

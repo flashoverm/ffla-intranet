@@ -22,7 +22,7 @@ if(isset($_POST['delete'])){
     }
 }
 
-if(get_engine($engine)->isadministration){
+if(get_engine($engine)->isadministration || userHasRight(FFADMINISTRATION)){
     $variables ['inspections'] = get_inspections();
 } else {
     $variables ['inspections'] = get_inspections_of_engine($engine);

@@ -44,7 +44,6 @@ if (isset($_POST['hy'])) {
         header ( "Location: " . $config["urls"]["hydrantapp_home"] . "/engine/" . $engine); // redirects
     }
     
-    
 }
 
 renderLayoutWithContentFile($config["apps"]["hydrant"], "hydrantRequest_template.php", $variables);

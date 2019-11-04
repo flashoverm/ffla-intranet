@@ -1,6 +1,7 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/config.php" );
 require_once LIBRARY_PATH . "/db_hydrant.php";
+require_once LIBRARY_PATH . "/db_user.php";
 
 session_start ();
 
@@ -14,10 +15,15 @@ if(!$user){
         $hydrant = get_hydrant_with_fid($_GET['fid']);
         
         if($hydrant){
-            echo "{ fieldid:" . $_GET['fieldid'] . ", hy:" . $hydrant->hy . "}";
-            header('Content-Type: text/plain');   
+        	header('Content-Type: text/plain');
+        	
+        	if( $hydrant->checkbyff && $hydrant->engine == get_engine_of_user($_SESSION ['intranet_userid']) ){
+	            echo "{ fieldid:" . $_GET['fieldid'] . ", hy:" . $hydrant->hy . ", status:'ok'}";
+        	} else {
+        		echo "{ fieldid:" . $_GET['fieldid'] . ", status:'forbidden'}";
+        	}
         } else {
-            http_response_code(404);
+        	echo "{ fieldid:" . $_GET['fieldid'] . ", status:'notfound'}";
         }
     } else {
         http_response_code(400);

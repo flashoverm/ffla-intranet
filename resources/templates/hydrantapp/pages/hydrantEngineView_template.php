@@ -12,7 +12,7 @@ if (! count ( $hydrants )) {
 				<th data-sortable="true" class="text-center">FID</th>
 				<th data-sortable="true" class="text-center">Straße</th>
 				<th data-sortable="true" class="text-center">Stadtteil</th>
-				<th class="text-center">Typ</th>
+				<th data-sortable="true" class="text-center">Typ</th>
 				<th class="text-center">Anzeigen</th>
 			</tr>
 		</thead>

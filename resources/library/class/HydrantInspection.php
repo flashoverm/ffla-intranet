@@ -10,7 +10,7 @@ class HydrantInspection {
     public $vehicle;
     
     public $notes;
-    
+        
     public $hydrants = array();
         
     function __construct($date, $name, $vehicle, $notes){

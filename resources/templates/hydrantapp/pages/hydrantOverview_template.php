@@ -1,8 +1,8 @@
 <?php
 if (! count ( $hydrants )) {
-    showInfo ( "Keine Hydranten für diese Straße gefunden" );
+	showInfo ( "Keine Hydranten gefunden" );
 } else {
-    ?>
+	?>
     
 <div class="table-responsive">
 	<table class="table table-striped" data-toggle="table" data-pagination="true"  data-search="true">
@@ -36,15 +36,10 @@ if (! count ( $hydrants )) {
 			</tr>
 <?php
 	}
-
 ?>
 		</tbody>
 	</table>
 </div>
 <?php 
-
-    if($mapURL != null){
-        echo "<img id='map' class='rounded mx-auto d-block mt-5' width='" . $config["mapView"]["widewidth"] . "' src='" . $mapURL . "'>";
-    }
 }
 ?>
