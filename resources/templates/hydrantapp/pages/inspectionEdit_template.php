@@ -133,7 +133,7 @@
                                         }
                                         ?>
                                        <td class="th-td-small">
-                                       		<button type="button" class="btn btn-primary btn-sm" id="h<?= $hydrant->idx ?>rem" onclick="removeHydrantOverview()">X</button>
+                                       		<button type="button" class="btn btn-primary btn-sm" id="h<?= $hydrant->idx ?>rem" onclick="removeHydrantOverview(<?= $hydrant->idx ?>)">X</button>
                                         </td>
                             		</tr>
                     		        <?php 
@@ -218,7 +218,7 @@
 <script>
 
 <?php  
-if(isset($inspection)) {     
+if(isset($inspection)) {
     echo "var hy_count = " . $inspection->getCount() . ";";
     echo "var hy_max_idx = " . $inspection->getMaxIdx() . ";"; 
 } else {
@@ -322,12 +322,14 @@ function addHydrantOverview(){
 }
 
 function removeHydrantOverview(id){
-	if(hy_count > 1 ) {
+	if(hy_count > 0 ) {
 		var element = document.getElementById('hydrant' + id);
 		if(element != null){
 			element.parentNode.removeChild(element);
 			hy_count --;
 		}	
+	} else {
+		console.log("No hydrants to remove left");
 	}
 	//alert 
 }
