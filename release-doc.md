@@ -4,9 +4,14 @@ Release Documentation
 
 ##### V1.1.0
 
+Config:
+define("HYDRANTADMINISTRATOR", "HYDRANTADMINISTRATOR");
+
+HTACCESS
 RewriteRule ^html/hydrant/([^/]+)/edit/?$ 	/ffla-intranet/html/hydrantapp/hydrant_edit.php?hydrant=$1 [L]
 RewriteRule ^html/hydrant/new/?$ 		/ffla-intranet/html/hydrantapp/hydrant_edit.php [L]
 
+SQL
 ALTER TABLE hydrant ADD operating BOOLEAN NOT NULL AFTER checkbyff;
 UPDATE hydrant SET operating=true 
 
