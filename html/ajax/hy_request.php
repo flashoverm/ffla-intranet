@@ -12,7 +12,7 @@ if(!$user){
 } else {
     if (isset($_GET['fid']) && isset($_GET['fieldid'])) {
         
-        $hydrant = get_hydrant_with_fid($_GET['fid']);
+        $hydrant = get_hydrant_by_fid($_GET['fid']);
         
         if($hydrant){
         	header('Content-Type: text/plain');

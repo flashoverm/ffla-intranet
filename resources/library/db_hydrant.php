@@ -3,6 +3,44 @@ require_once LIBRARY_PATH . "/db_connect.php";
 
 create_table_hydrant();
 
+function insert_hydrant($hy, $fid, $lat, $lng, $street, $district, $type, $engine, $checkbyff, $operating) {
+    global $db;
+    
+    $uuid = getGUID ();
+        
+        $statement = $db->prepare("INSERT INTO hydrant 
+            (uuid, fid, hy, street, type, checkbyff, district, lat, lng, engine, cycle, operating)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 6, ?)");
+        $statement->bind_param('siissisddsi', $uuid, $fid, $hy, $street, $type, $checkbyff, $district, $lat, $lng, $engine, $operating);
+        
+    
+    $result = $statement->execute();
+    
+    if ($result) {
+        return $uuid;
+    } else {
+        return false;
+    }
+}
+
+function update_hydrant($uuid, $hy, $fid, $lat, $lng, $street, $district, $type, $engine, $checkbyff, $operating) {
+    global $db;
+    
+    $statement = $db->prepare("UPDATE hydrant
+		SET hy = ?, fid = ?, lat = ?, lng = ?, street = ?, district = ?, type = ?, engine = ?, checkbyff = ?, operating = ?
+		WHERE uuid = ?");
+    $statement->bind_param('iiddssssiis', $hy, $fid, $lat, $lng, $street, $district, $type, $engine, $checkbyff, $operating, $uuid);
+    
+    $result = $statement->execute();
+    
+    if ($result) {
+        return $uuid;
+    } else {
+        //echo "Error: " . $query . "<br>" . $db->error;
+        return false;
+    }
+}
+
 function get_hydrants(){
 	global $db;
 	
@@ -86,7 +124,7 @@ function get_hydrants_of_street($street){
     return $data;
 }
 
-function get_hydrant_with_fid($fid){
+function get_hydrant_by_fid($fid){
     global $db;
     
     $statement = $db->prepare("SELECT * FROM hydrant WHERE fid = ?");
@@ -207,6 +245,7 @@ function create_table_hydrant() {
                           street VARCHAR(255) NOT NULL,
                           type VARCHAR(255) NOT NULL,
                           checkbyff BOOL NOT NULL,
+                          operating BOOL NOT NULL,
                           district VARCHAR(255) NOT NULL,
                           lat DECIMAL(10, 8) NOT NULL,
                           lng DECIMAL(10, 8) NOT NULL,

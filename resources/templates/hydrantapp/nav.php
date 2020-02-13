@@ -13,11 +13,24 @@ if ($loggedIn) {
 		  <ul class='navbar-nav mr-auto'>
             <li class='nav-item'>
         	   <a class='nav-link text-light' href='" . $config ["urls"] ["base_url"] . $config ["urls"] ["intranet_home"] . "'>Home</a>
-            </li>
-            <li class='nav-item'>
+            </li>";
+	
+	if(userHasRight(HYDRANTADMINISTRATOR)){
+	    echo "
+			<li class='dropdown'>
+				<a class='nav-link dropdown-toggle text-light mx-1' data-toggle='dropdown' href='#'>Hydranten</a>
+        		<div class='dropdown-menu bg-dark'>
+		        	<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/all'>Alle Hydranten</a>
+					<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/new'>Hydrant anlegen</a>
+				</div>
+			</li>";
+	} else {
+	    echo "<li class='nav-item'>
         		<a class='nav-link text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/all'>Hydranten</a>
-			</li>
-            <li class='nav-item'>
+              </li>";
+	}
+			
+	echo "<li class='nav-item'>
         		<a class='nav-link text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/search'>Hydrantenkarten</a>
 			</li>";
 	

@@ -15,6 +15,9 @@ if (! count ( $hydrants )) {
 				<th data-sortable="true" class="text-center">Löschzug</th>
 				<th data-sortable="true" class="text-center">Typ</th>
 				<th class="text-center">Anzeigen</th>
+				<?php if(userHasRight(HYDRANTADMINISTRATOR)){
+				    echo '<th class="text-center">Bearbeiten</th>';
+				}?>
 			</tr>
 		</thead>
 		<tbody>
@@ -33,6 +36,11 @@ if (! count ( $hydrants )) {
 				<td class="text-center">
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/". $row->hy; ?>">Anzeigen</a>
 				</td>
+				<?php if(userHasRight(HYDRANTADMINISTRATOR)){
+				    echo '<td>
+                            <a class="btn btn-primary btn-sm" href="' . $config["urls"]["hydrantapp_home"] . "/". $row->hy . '/edit">Bearbeiten</a>
+                         </td>';
+				}?>
 			</tr>
 <?php
 	}

@@ -16,6 +16,8 @@ RewriteRule ^html/hydrant/inspection/?$ 				/ffla-intranet/html/hydrantapp/inspe
 RewriteRule ^html/hydrant/ajax/hy/([^.]+)/field/([^.]+)$ 	/ffla-intranet/html/ajax/hy_request.php?fid=$1&fieldid=$2 [L]
 
 RewriteRule ^html/hydrant/([^/]+)/map/?$ 	/ffla-intranet/html/hydrantapp/maps.php?hydrant=$1 [L]
+RewriteRule ^html/hydrant/([^/]+)/edit/?$ 	/ffla-intranet/html/hydrantapp/hydrant_edit.php?hydrant=$1 [L]
+RewriteRule ^html/hydrant/new/?$ 		/ffla-intranet/html/hydrantapp/hydrant_edit.php [L]
 RewriteRule ^html/hydrant/search/?$ 		/ffla-intranet/html/hydrantapp/hydrant_request.php [L]
 RewriteRule ^html/hydrant/all/?$ 			/ffla-intranet/html/hydrantapp/hydrant_overview.php [QSA]
 RewriteRule ^html/hydrant/street/([^/]+)$ 	/ffla-intranet/html/hydrantapp/hydrant_street_view.php?street=$1 [QSA]
