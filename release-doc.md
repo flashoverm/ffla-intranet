@@ -14,6 +14,7 @@ RewriteRule ^html/hydrant/new/?$ 		/ffla-intranet/html/hydrantapp/hydrant_edit.p
 SQL
 ALTER TABLE hydrant ADD operating BOOLEAN NOT NULL AFTER checkbyff;
 UPDATE hydrant SET operating=true 
+INSERT INTO user (uuid, username, password, engine, rights) VALUES ('89A402EB-C0FD-39DA-C704-699CD18932A8', 'hydrantenadmin', 'set-password', '57D2CB43-F3CE-3837-4181-2FE60FDB9277', '[\"HYDRANTADMINISTRATOR\"]')
 
 ##### V1.0.0
 

@@ -305,8 +305,12 @@ function create_table_user() {
 		$user = insert_user("verwaltung", "ghjoeduldf", get_engine_from_name("Verwaltung")->uuid);
 		addRight($user->uuid, FFADMINISTRATION);
 		
+		$user = insert_user("hydrantenadmin", "sf0ihsfaoihf", get_engine_from_name("Keine Zuordnung")->uuid);
+		addRight($user->uuid, HYDRANTADMINISTRATOR);
+		
 		$user = insert_user("admin", "admin", get_engine_from_name("Löschzug 1/2")->uuid);
 		addRight($user->uuid, ENGINEHYDRANTMANANGER);
+		addRight($user->uuid, HYDRANTADMINISTRATOR);
 		addRight($user->uuid, FILEADMIN);
 		
 		return true;
