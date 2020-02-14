@@ -15,7 +15,7 @@ if (! count ( $hydrants )) {
 				<th data-sortable="true" class="text-center">Löschzug</th>
 				<th data-sortable="true" class="text-center">Typ</th>
 				<?php if(userHasRight(HYDRANTADMINISTRATOR)){
-				    echo '<th data-sortable="true" class="text-center">Aktiv</th>';
+				    echo '<th data-sortable="true" class="text-center">Betrieb</th>';
 				}?>
 				<th class="text-center">Anzeigen</th>
 				<?php if(userHasRight(HYDRANTADMINISTRATOR)){

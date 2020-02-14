@@ -24,6 +24,14 @@ if (isset($hydrant)){
 			</tr>
 			<?php
 			}
+			if(!$hydrant->operating){
+			?>
+			<tr>
+				<th class="th-td-padding text-left">Achtung</th>
+				<td class="th-td-padding">Hydrant ist nicht in Betrieb</td>
+			</tr>
+			<?php
+			}
 			?>
 		</tbody>
 	</table>
