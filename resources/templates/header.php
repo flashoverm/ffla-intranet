@@ -3,8 +3,11 @@
 <html lang="de">
 <?php include_once 'head.php';?>
 
-
 <body>
+	<div id="overlay" style="display:inline;">
+ 		<div class="loader"></div>
+ 	</div>
+ 	
 	<header>
 	<div class="jumbotron py-3">
 		   <div class="alert alert-dark">
@@ -41,5 +44,4 @@
 	}
 	?>
 
-	
 	</header>

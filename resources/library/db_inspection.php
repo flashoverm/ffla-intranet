@@ -169,7 +169,7 @@ function get_candidates_of_engine($engine_uuid){
         	GROUP BY hydrant_inspection.hydrant
             ) AS lastchecks ON hydrant.uuid = lastchecks.hydrant
         WHERE (lastcheck IS NULL OR (lastcheck + INTERVAL hydrant.cycle YEAR) < NOW())
-        	AND engine = ? AND checkbyff = TRUE
+        	AND engine = ? AND checkbyff = TRUE AND operating = true 
         ORDER BY lastcheck");
     
     echo $db->error;

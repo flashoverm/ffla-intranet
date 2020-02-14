@@ -87,7 +87,7 @@ function get_hydrants_of_engine($engine_uuid){
     
     $data = array ();
     
-    $statement = $db->prepare("SELECT * FROM hydrant WHERE engine = ?");
+    $statement = $db->prepare("SELECT * FROM hydrant WHERE engine = ? AND operating = TRUE");
     $statement->bind_param('s', $engine_uuid);
     
     if ($statement->execute()) {
@@ -108,7 +108,7 @@ function get_hydrants_of_street($street){
     
     $data = array ();
     
-    $statement = $db->prepare("SELECT * FROM hydrant WHERE street = ?");
+    $statement = $db->prepare("SELECT * FROM hydrant WHERE street = ? AND operating = TRUE");
     $statement->bind_param('s', $street);
     
     if ($statement->execute()) {
