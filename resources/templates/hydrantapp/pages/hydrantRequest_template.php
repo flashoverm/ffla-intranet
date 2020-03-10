@@ -31,9 +31,10 @@
 	<input type="submit" value="Hydranten suchen" class="btn btn-primary" id="submitEngine">
 </form>
 
-<div class="form-check mt-4">
-	<input type="checkbox" class="form-check-input" id="showLocation" name="showLocation" onClick="getLocation()">
-	<label for="showLocation" id="labelShowLocation">Eigene Position auf Karte anzeigen</label>
+<div class="custom-control custom-checkbox custom-checkbox-big mt-4">
+	<input type="checkbox" class="custom-control-input" id="showLocation" name="showLocation" onClick="getLocation()">
+	<label class="custom-control-label custom-control-label-big" for="showLocation" 
+			id="labelShowLocation">Eigene Position auf Karte anzeigen</label>
 </div>
 
 <script>

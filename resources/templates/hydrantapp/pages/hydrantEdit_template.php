@@ -98,23 +98,23 @@
 	</div>
 	
 	<div class="form-group">
-		<div class="form-check">
-			<input type="checkbox" class="form-check-input" id="checkbyff" name="checkbyff" 
+		<div class="custom-control custom-checkbox custom-checkbox-big">
+			<input type="checkbox" class="custom-control-input" id="checkbyff" name="checkbyff" 
 			<?php if(!isset($hydrant) || $hydrant->checkbyff){
 			    echo "checked";
 			}?>
 			>
-			<label for='checkbyff'>Prüfung durch Feuerwehr Landshut</label> 
+			<label class="custom-control-label custom-control-label-big" for='checkbyff'>Prüfung durch Feuerwehr Landshut</label> 
 		</div>
 	</div>
 	<div class="form-group">
-		<div class="form-check">
-			<input type="checkbox" class="form-check-input" id="operating" name="operating" 
+		<div class="custom-control custom-checkbox custom-checkbox-big">
+			<input type="checkbox" class="custom-control-input" id="operating" name="operating" 
 			<?php if(!isset($hydrant) || $hydrant->operating){
 			    echo "checked";
 			}?>
 			>
-			<label for='operating'>In Betrieb</label> 
+			<label class="custom-control-label custom-control-label-big" for='operating'>In Betrieb</label> 
 		</div>
 	</div>
 	
