@@ -31,6 +31,43 @@ RewriteRule ^html/files/forms/?$ 		/ffla-intranet/html/filesapp/forms.php [L]
 RewriteRule ^html/files/([^/]+)$ 		/ffla-intranet/html/filesapp/file.php?file=$1 [L]
 RewriteRule ^html/files/$ 				/ffla-intranet/html/filesapp/index.php [L]
 
+
+RewriteRule ^html/guardian/events/new/?$		/ffla-intranet/html/guardianapp/event_edit.php
+RewriteRule ^html/guardian/events/public/?$ 	/ffla-intranet/html/guardianapp/event_public.php
+RewriteRule ^html/guardian/events/admin/?$ 		/ffla-intranet/html/guardianapp/event_admin.php
+RewriteRule ^html/guardian/events/([^/]*)/calender?$ 	/ffla-intranet/html/guardianapp/calender.php?id=$1
+RewriteRule ^html/guardian/events/([^/]*)/edit?$ 	/ffla-intranet/html/guardianapp/event_edit.php?id=$1
+RewriteRule ^html/guardian/events/([^/]*)/assign/?([^/]*)/?$		/ffla-intranet/html/guardianapp/event_assign.php?id=$1&staffid=$2
+RewriteRule ^html/guardian/events/([^/]*)/subscribe/?([^/]*)/?$ 	/ffla-intranet/html/guardianapp/event_subscribe.php?id=$1&staffid=$2
+RewriteRule ^html/guardian/events/([^/]*)/?$ 	/ffla-intranet/html/guardianapp/event_details.php?id=$1
+RewriteRule ^html/guardian/events/?$ 			/ffla-intranet/html/guardianapp/event_overview.php
+
+RewriteRule ^html/guardian/reports/export/?$ 	/ffla-intranet/html/guardianapp/report_export.php
+RewriteRule ^html/guardian/reports/admin/?$ 	/ffla-intranet/html/guardianapp/report_admin.php
+RewriteRule ^html/guardian/reports/new/?$ 		/ffla-intranet/html/guardianapp/report_edit.php
+RewriteRule ^html/guardian/reports/new/([^/]*)?$ /ffla-intranet/html/guardianapp/report_edit.php?event=$1
+RewriteRule ^html/guardian/reports/file/([^/]*)/render?$ 	/ffla-intranet/html/guardianapp/report_file.php?report=$1&render=true
+RewriteRule ^html/guardian/reports/file/([^/]*)/?$ 	/ffla-intranet/html/guardianapp/report_file.php?report=$1
+RewriteRule ^html/guardian/reports/([^/]*)/edit?$ 	/ffla-intranet/html/guardianapp/report_edit.php?id=$1
+RewriteRule ^html/guardian/reports/([^/]*)/?$ 	/ffla-intranet/html/guardianapp/report_details.php?id=$1
+RewriteRule ^html/guardian/reports/?$ 			/ffla-intranet/html/guardianapp/report_overview.php
+
+RewriteRule ^html/guardian/manager/new/?$ 		/ffla-intranet/html/guardianapp/manager_create.php
+RewriteRule ^html/guardian/manager/?$ 			/ffla-intranet/html/guardianapp/manager_overview.php
+
+RewriteRule ^html/guardian/privilege/?$ 		/ffla-intranet/html/privilege.php
+
+RewriteRule ^html/guardian/user/import?$ 		/ffla-intranet/html/guardianapp/user_import.php
+RewriteRule ^html/guardian/user/?$ 				/ffla-intranet/html/guardianapp/user_overview.php
+
+RewriteRule ^html/guardian/templates/?$ 		/ffla-intranet/html/guardianapp/stafftemplate_edit.php
+RewriteRule ^html/guardian/templates/([^/]*)/?$ /ffla-intranet/html/guardianapp/stafftemplate_edit.php?eventtype=$1
+
+RewriteRule ^html/ajax/templates/([^/]*)/?$ 	/ffla-intranet/html/ajax/staff_template.php?uuid=$1
+RewriteRule ^html/ajax/user/([^/]*)/?$			/ffla-intranet/html/ajax/user.php?uuid=$1
+RewriteRule ^html/ajax/privileges/([^/]*)/?$	/ffla-intranet/html/ajax/privileges.php?uuid=$1
+
+
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f
 RewriteRule ^(.+)$ $1.php [L]

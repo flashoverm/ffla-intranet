@@ -24,19 +24,20 @@ if (isset ( $_POST ['username'] ) && isset ( $_POST ['password'] )) {
     $username = strtolower(trim ( $_POST ['username'] ));
 	$password = trim ( $_POST ['password'] );
 
-	$uuid = check_password ( $username, $password );
-	if ($uuid) {
-		$_SESSION ['intranet_userid'] = $uuid;
-		$_SESSION ['intranet_username'] = $username;
-		
-		if(isset($_SESSION["ref"]) && $_SESSION["ref"] != ""){
-			$ref = $_SESSION["ref"];
-			unset($_SESSION["ref"]);
-			header ( "Location: " . $ref ); // redirects	
-		} else {
-			header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects
+	if (login_enabled ( $email )) {
+		$uuid = check_password ( $username, $password );
+		if ($uuid) {
+			$_SESSION ['intranet_userid'] = $uuid;
+			$_SESSION ['intranet_username'] = $username;
+			
+			if(isset($_SESSION["ref"]) && $_SESSION["ref"] != ""){
+				$ref = $_SESSION["ref"];
+				unset($_SESSION["ref"]);
+				header ( "Location: " . $ref ); // redirects	
+			} else {
+				header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects
+			}
 		}
-	
 	}
 	$variables ['alertMessage'] = "Zugangsdaten ungültig";
 }

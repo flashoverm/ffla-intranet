@@ -1,8 +1,13 @@
 <?php
 require_once LIBRARY_PATH . "/db_engines.php";
+require_once LIBRARY_PATH . "/password.php";
+require_once LIBRARY_PATH . "/mail.php";
 require_once LIBRARY_PATH . "/db_connect.php";
-
+require_once LIBRARY_PATH . "/db_user_guardian.php";
 create_table_user ();
+require_once LIBRARY_PATH . "/db_privilege.php";
+
+insert_admin("Admin", "Admin", "admin@guardian.de", "admin", "2BAA144B-F946-1524-E60E-7DD485FE1881");
 
 function insert_user($username, $password, $engine_uuid) {
 	global $db;
@@ -21,6 +26,7 @@ function insert_user($username, $password, $engine_uuid) {
 	}
 	
 	$uuid = getGUID ();
+	$mail = strtolower($email);
 	
 	$statement = $db->prepare("INSERT INTO user (uuid, username, password, engine, rights)
 		VALUES (?, ?, ?, ?, NULL)");
@@ -37,7 +43,7 @@ function insert_user($username, $password, $engine_uuid) {
 		return $data;
 		
 	} else {
-		// echo "Error: " . $db->error;
+		// echo "Error: " . $query . "<br>" . $db->error;
 		return false;
 	}
 }

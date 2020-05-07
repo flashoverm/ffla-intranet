@@ -2,6 +2,15 @@
 Release Documentation
 ******************************
 
+##### V2.0.0
+
+Merge of guardian app into intranet
+
+Config-Update
+htaccess-Update
+
+DB-Update
+
 ##### V1.1.0
 
 Config:

@@ -2,6 +2,15 @@
 
 <html lang="de">
 <?php include_once 'head.php';?>
+<script>
+	function isDateSupported() {
+		var input = document.createElement('input');
+		var value = 'a';
+		input.setAttribute('type', 'date');
+		input.setAttribute('value', value);
+		return (input.value !== value);
+	};
+</script>
 
 <body>
 	<div id="overlay" style="display:inline;">
@@ -38,9 +47,7 @@
 	if(isset($app) && file_exists(TEMPLATES_PATH . "/" . $app . "/nav.php")){
 		require_once (TEMPLATES_PATH . "/" . $app . "/nav.php");
 	} else {
-	?>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
-	<?php 		
+		require_once (TEMPLATES_PATH . "/" . $config["apps"]["guardian"] . "/nav.php");	   //only neccecary while guardian and intranet are different appilcations!
 	}
 	?>
 
