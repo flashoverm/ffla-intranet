@@ -33,4 +33,84 @@ function createDialog($id, $title, $name, $additionalValueName = null, $addition
 }
 
 
+function createHydrantGoogleMap($hydrants, $visable){
+	global $config;
+	?>
+	<div class="dynamic-map rounded mx-auto mt-5" id="dynamic-map" 
+	<?php
+	if($visable){
+		echo "style='display: block;'";
+	} else {
+		echo "style='display: none;'";
+	}
+	?>
+	></div>
+	
+	<style>
+	.dynamic-map {
+		height: <?= $config['mapView']['height'] ?>px;
+		width: <?= $config['mapView']['widewidth'] ?>px;
+	}
+	</style>
+	<script>
+	var checkbox = document.getElementById("toogleMaps");
+	checkbox.addEventListener( 'change', function() {
+		var googleMap = document.getElementById("dynamic-map");
+		var staticMap = document.getElementById("map");
+	    if(this.checked) {
+	    	googleMap.style.display = 'block';
+	    	staticMap.style.display = 'none';
+	    } else {
+	    	googleMap.style.display = 'none';
+	    	staticMap.style.display = 'block';
+	    }
+	});
+
+	var locations = [
+	    <?php
+    	foreach ( $hydrants as $row ) {
+    	 	echo "['" . $row->hy . "'," . $row->lat . "," . $row->lng . "],";
+    	}
+	    ?>
+	  ];
+
+	var map;
+	function initMap() {
+		var center = new google.maps.LatLng(<?= $config['mapView']['defaultcoordinates'] ?>);
+		var mapOptions = {
+				  zoom: <?= $config['mapView']['zoom'] ?>,
+				  center: center
+				};
+		var infowindow = new google.maps.InfoWindow();
+		map = new google.maps.Map(document.getElementById('dynamic-map'), mapOptions);
+		var bounds = new google.maps.LatLngBounds();
+		google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
+			  if (this.getZoom() > <?= $config['mapView']['zoom'] ?>) {
+			    this.setZoom(<?= $config['mapView']['zoom'] ?>);
+			  }
+			});
+	
+		for (i = 0; i < locations.length; i++) {  
+			var marker = new google.maps.Marker({
+				position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+				map: map,
+				title: locations[i][0]
+			});
+			google.maps.event.addListener(marker, 'click', (function(marker, i) {
+				return function() {
+					infowindow.setContent("<a href='<?= $config["urls"]["hydrantapp_home"]?>/" + locations[i][0] + "'>Hy: " + locations[i][0] + "&nbsp;</a>");
+					infowindow.open(map, marker);
+				}
+			})(marker, i));
+			bounds.extend(marker.getPosition());
+			
+			
+		}
+		map.fitBounds(bounds);
+		}
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=<?= $config['mapView']['apiKey']?>&callback=initMap" async defer></script>
+	<?php 	
+}
+
 ?>

@@ -26,9 +26,9 @@ $variables = array (
 );
 
 
-if(isset ( $_SESSION ['guardian_userid'] )){
-	$user = get_user($_SESSION ['guardian_userid']);
-	$usersEngine = get_engine_of_user($_SESSION ['guardian_userid']);
+if(userLoggedIn()){
+	$user = get_user($_SESSION ['intranet_userid']);
+	$usersEngine = get_engine_of_user($_SESSION ['intranet_userid']);
 	$variables ['usersEngine'] = $usersEngine;
 }
 
@@ -49,7 +49,7 @@ if(isset($_GET['id'])){
 	$event = get_event($_GET['event']);
 	if($event != null){
 		
-		if(isset ( $_SESSION ['guardian_userid'] )){
+		if(userLoggedIn()){
 			$creator = $user->firstname . " " . $user->lastname;
 		} else {
 			$creator = "";
@@ -157,7 +157,7 @@ if (isset($_POST) && isset($_POST ['start'])) {
     	if($uuid){
     		$eventReport->uuid = $uuid;
     		if(!createReportFile($uuid)){
-    			if(mail_insert_report ($eventReport)){
+    			if(mail_insert_event_report ($eventReport)){
     				$variables ['successMessage'] = "Bericht versendet";
     				$ok = true;
     			} else {

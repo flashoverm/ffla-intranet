@@ -26,7 +26,7 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 	    
     	$variables ['title'] = "In " . get_eventtype($event->type)->type . " einteilen";
     	$variables ['engines'] = get_engines ();
-    	$variables ['user'] = get_user_of_engine(get_engine_of_user($_SESSION ['guardian_userid']));
+    	$variables ['user'] = get_users_of_engine(get_engine_of_user($_SESSION ['intranet_userid']));
     	$variables ['eventUUID'] = $eventUUID;
     	$variables ['staffUUID'] = $staffUUID;
     	$variables ['subtitle'] = date($config ["formats"] ["date"], strtotime($event->date)) 
@@ -46,14 +46,14 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     		
     		
     		if(!email_in_use($email) ){
-    			$user = insert_user ( $firstname, $lastname, $email, $engineUUID );
+    			$user = inset_participant_only ( $firstname, $lastname, $email, $engineUUID );
     		} else {
     			$user = get_user_by_data($firstname, $lastname, $email, $engineUUID);
     		}
     		//if user exists with these name/engine ok - else message: Please select user!
     		if($user){
     			
-    			if($user->available){
+    			if(user_has_privilege($user->uuid, EVENTPARTICIPENT)){
     				//if uuid is already in event -> error
     				if(!is_user_already_staff($eventUUID, $user->uuid)){
     					

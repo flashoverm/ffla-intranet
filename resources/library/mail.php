@@ -11,14 +11,16 @@ require_once "phpmailer/src/Exception.php";
 function init_mail() {
     global $config;
     
-   $mail = new PHPMailer ( true );
+	$mail = new PHPMailer ( true );
     $mail->isSMTP ();
     $mail->Host = $config ["mail"] ["host"];
     $mail->SMTPAuth = true;
-    $mail->Username = $config ["mail"] ["username"];
-    $mail->Password = $config ["mail"] ["password"];
-    $mail->SMTPSecure = $config ["mail"] ["secure"];
-    $mail->Port = $config ["mail"] ["port"];
+    if(isset($config ["mail"] ["username"])){
+    	$mail->Username = $config ["mail"] ["username"];
+    	$mail->Password = $config ["mail"] ["password"];
+    	$mail->SMTPSecure = $config ["mail"] ["secure"];
+    	$mail->Port = $config ["mail"] ["port"];
+    }
     $mail->setFrom ( $config ["mail"] ["fromaddress"], $config ["mail"] ["fromname"] );
     $mail->CharSet = 'utf-8';
     //$mail->SMTPDebug = 2;

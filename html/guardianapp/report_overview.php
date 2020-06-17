@@ -12,8 +12,8 @@ $variables = array (
 	'privilege' => EVENTMANAGER,
 );
 
-if(isset($_SESSION ['guardian_userid'])){
-    $user = $_SESSION ['guardian_userid'];
+if(userLoggedIn()){
+    $user = $_SESSION ['intranet_userid'];
     $usersEngine = get_engine(get_engine_of_user($user));
     
     if (isset ( $_POST ['emsEntry'] )) {

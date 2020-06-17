@@ -4,7 +4,7 @@ require_once LIBRARY_PATH . "/db_user.php";
 
 session_start ();
 
-$isManager = isset ( $_SESSION ['guardian_userid'] ) && (is_manager ( $_SESSION ['guardian_userid'] ) || is_admin ( $_SESSION ['guardian_userid'] ) );
+$isManager = current_user_has_privilege( EVENTMANAGER );
 
 if(!$isManager){
 	http_response_code(401);

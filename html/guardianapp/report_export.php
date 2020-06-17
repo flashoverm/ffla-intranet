@@ -19,8 +19,8 @@ $type = -1;
 $from = date('Y-m-01');
 $to = date('Y-m-t');
 
-if(isset($_SESSION ['guardian_userid'])){
-    $user = $_SESSION ['guardian_userid'];
+if(userLoggedIn()){
+    $user = $_SESSION ['intranet_userid'];
     $usersEngine = get_engine(get_engine_of_user($user));
         
     if($usersEngine->isadministration == true){
@@ -46,7 +46,7 @@ if(isset($_SESSION ['guardian_userid'])){
    
 }
 
-if((isset($_POST['csv']) || isset($_POST['invoice'])) && isset($_SESSION ['guardian_userid']) && current_user_has_privilege($variables ['privilege'])){
+if((isset($_POST['csv']) || isset($_POST['invoice'])) && current_user_has_privilege($variables ['privilege'])){
 	
 	header('Content-Encoding: UTF-8');
 	header('Content-type: text/csv; charset=UTF-8');

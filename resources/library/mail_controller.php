@@ -3,6 +3,7 @@ require_once (realpath ( dirname ( __FILE__ ) . "/../config.php" ));
 require_once LIBRARY_PATH . "/db_eventtypes.php";
 require_once LIBRARY_PATH . "/db_event.php";
 require_once LIBRARY_PATH . "/db_user.php";
+require_once LIBRARY_PATH . "/db_user_guardian.php";
 require_once LIBRARY_PATH . "/db_engines.php";
 require_once LIBRARY_PATH . "/db_connect.php";
 require_once LIBRARY_PATH . "/mail_body.php";
@@ -46,23 +47,23 @@ function get_inspection_link($inspection_uuid){
  * user
  */
 
-function mail_add_manager($mail_manager, $password) {
+function mail_add_user($email, $password) {
 	global $bodies;
-	$subject = "Zugangsdaten Wachbauftragter";
+	$subject = "Benutzer angelegt";
 	
-	$body = $bodies["manager_add"] . $bodies["login"] . $mail_manager . $bodies["password"] . $password . $bodies["manager_add2"];
+	$body = $bodies["user_add"] . $bodies["login"] . $email . $bodies["password"] . $password . $bodies["user_add2"];
 	
-	return send_mail ( $mail_manager, $subject, $body );
+	return send_mail ( $email, $subject, $body );
 }
 
-function mail_reset_password($manager_uuid, $password) {
+function mail_reset_password($user_uuid, $password) {
 	global $bodies;
 	$subject = "Passwort zurückgesetzt";
 	
-	$body = $bodies["manager_reset_password"] . $bodies["password"] . $password . $bodies["manager_reset_password2"];
+	$body = $bodies["reset_password"] . $bodies["password"] . $password . $bodies["reset_password2"];
 	
-	$manager = get_user($manager_uuid);
-	return send_mail ($manager->email, $subject, $body );
+	$user = get_user($user_uuid);
+	return send_mail ($user->email, $subject, $body );
 }
 
 
@@ -85,7 +86,7 @@ function mail_insert_event($event_uuid, $inform_creator, $publish) {
 	$event = get_event( $event_uuid );
 	
 	$subject = "Neue Wache eingestellt" . event_subject($event_uuid);
-	$body =  $bodies["event_insert"] . get_link($event_uuid);
+	$body =  $bodies["event_insert"] . get_event_link($event_uuid);
 	
 	$sendOK = true;
 	
@@ -113,7 +114,7 @@ function mail_assigned_event($event) {
 	
 	$subject = "Neue Wache zugewiesen" . event_subject($event->uuid);
 	
-	$body = $bodies["event_assign"] . get_link($event->uuid);
+	$body = $bodies["event_assign"] . get_event_link($event->uuid);
 	
 	return mail_to_manager($event, $subject, $body);
 }
@@ -126,7 +127,7 @@ function mail_publish_event($event_obj) {
 	
 	$subject = "Neue Wache veröffentlicht" . event_subject($event_obj->uuid);
 	
-	$body = $bodies["event_publish"] . get_link($event_obj->uuid);
+	$body = $bodies["event_publish"] . get_event_link($event_obj->uuid);
 	
 	$recipients = get_manager_except_engine_and_creator($event_obj->engine, $event_obj->creator);
 	
@@ -138,7 +139,7 @@ function mail_not_full($event_uuid) {
 	
 	$subject = "Erinnerung: Wache nicht voll belegt" . event_subject($event_uuid);
 	
-	$body = $bodies["event_not_full"] . get_link($event_uuid);
+	$body = $bodies["event_not_full"] . get_event_link($event_uuid);
 	
 	$event = get_event( $event_uuid );
 	
@@ -154,7 +155,7 @@ function mail_event_updates($event_uuid){
 	global $bodies;
 	
 	$subject = "Wache aktualisiert" . event_subject($event_uuid);
-	$body =  $bodies["event_update"] . get_link($event_uuid);
+	$body =  $bodies["event_update"] . get_event_link($event_uuid);
 	
 	$event = get_event( $event_uuid );
 	
@@ -165,7 +166,7 @@ function mail_delete_event($event_uuid) {
 	global $bodies;
 	
 	$subject = "Wache abgesagt" . event_subject($event_uuid);
-	$body = $bodies["event_delete"] . get_link($event_uuid);
+	$body = $bodies["event_delete"] . get_event_link($event_uuid);
 	
 	$event = get_event( $event_uuid );
 	
@@ -187,7 +188,7 @@ function mail_subscribe_staff_user($event_uuid, $user_uuid, $informMe) {
 	if($event->staff_confirmation){
 		//send mail to manager of the event
 		$subject = "In Wache eingeschrieben (Bestätigung ausstehend)" . event_subject($event_uuid);
-		$body = $bodies["event_subscribe_engine_confirm"] . get_link($event_uuid);
+		$body = $bodies["event_subscribe_engine_confirm"] . get_event_link($event_uuid);
 		
 		$sendOK = $sendOK && mail_to_manager($event, $subject, $body);
 		
@@ -200,7 +201,7 @@ function mail_subscribe_staff_user($event_uuid, $user_uuid, $informMe) {
 		
 		if($informMe){
 			$subject = "In Wache eingeschrieben" . event_subject($event_uuid);
-			$body = $bodies["event_subscribe"] . get_link($event_uuid) . $bodies["event_report_link"] . get_report_create_link($event_uuid);
+			$body = $bodies["event_subscribe"] . get_event_link($event_uuid) . $bodies["event_report_link"] . get_report_create_link($event_uuid);
 			
 			$sendOK = $sendOK && send_mail($user->email, $subject, $body);
 		}
@@ -208,11 +209,11 @@ function mail_subscribe_staff_user($event_uuid, $user_uuid, $informMe) {
 		//send mail to manager of the event
 		if (is_event_full($event_uuid)) {
 			$subject = "Wache voll belegt" . event_subject($event_uuid);
-			$body = $bodies["event_full"] . get_link($event_uuid);
+			$body = $bodies["event_full"] . get_event_link($event_uuid);
 			
 		} else if ($config ["settings"] ["creatormailonsubscription"]) {
 			$subject = "In Wache eingeschrieben" . event_subject($event_uuid);
-			$body = $bodies["event_subscribe_engine"] . get_link($event_uuid);
+			$body = $bodies["event_subscribe_engine"] . get_event_link($event_uuid);
 		} else {
 			return $sendOK;
 		}
@@ -230,7 +231,7 @@ function mail_confirm_staff_user($staff_uuid, $event_uuid) {
 	
 	//send mail to user
 	$subject = "Wachteilnahme bestätigt" . event_subject($event_uuid);
-	$body = $bodies["event_staff_confirmed"] . get_link($event_uuid) . $bodies["event_report_link"] . get_report_create_link($event_uuid);;
+	$body = $bodies["event_staff_confirmed"] . get_event_link($event_uuid) . $bodies["event_report_link"] . get_report_create_link($event_uuid);;
 	
 	$user = get_staff_user($staff_uuid);
 	$sendOK = $sendOK && send_mail ( $user->email, $subject, $body );
@@ -249,7 +250,7 @@ function mail_add_staff_user($event_uuid, $user_uuid) {
 	
 	//send mail to added user
 	$subject = "In Wache eingeteilt" . event_subject($event_uuid);
-	$body = $bodies["event_staff_add"] . get_link($event_uuid) . $bodies["event_report_link"] . get_report_create_link($event_uuid);;
+	$body = $bodies["event_staff_add"] . get_event_link($event_uuid) . $bodies["event_report_link"] . get_report_create_link($event_uuid);;
 	
 	$user = get_user($user_uuid);
 	$sendOK = $sendOK && send_mail ( $user->email, $subject, $body );
@@ -265,7 +266,7 @@ function mail_remove_staff_user($staff_uuid, $event_uuid) {
 	
 	//inform staff
 	$subject = "Aus Wache entfernt" . event_subject($event_uuid);
-	$body = $bodies["event_unscribe"] . get_link($event_uuid);
+	$body = $bodies["event_unscribe"] . get_event_link($event_uuid);
 	
 	$user = get_staff_user($staff_uuid);
 	send_mail ( $user->email, $subject, $body );
@@ -273,9 +274,9 @@ function mail_remove_staff_user($staff_uuid, $event_uuid) {
 	//send mail to manager of the user
 	if ($config ["settings"] ["enginemgrmailonsubscription"]) {
 		
-		$body = $bodies["event_unscribe_engine"] . get_link($event_uuid);
+		$body = $bodies["event_unscribe_engine"] . get_event_link($event_uuid);
 		
-		$recipients = get_manager_of_engine($user->engine);
+		$recipients = get_eventmanager_of_engine($user->engine);
 		send_mails($recipients, $subject, $body);
 	}
 }
@@ -285,19 +286,19 @@ function mail_remove_staff_user($staff_uuid, $event_uuid) {
  * aux
  */
 
-function get_link($event_uuid){
+function get_event_link($event_uuid){
 	global $config;
-	return $config ["urls"] ["baseUrl"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event_uuid;
+	return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event_uuid;
 }
 
 function get_report_create_link($event_uuid){
 	global $config;
-	return $config ["urls"] ["baseUrl"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/" . $event_uuid;
+	return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/" . $event_uuid;
 }
 
 function get_report_link($report_uuid){
 	global $config;
-	return $config ["urls"] ["baseUrl"] . $config ["urls"] ["guardianapp_home"] . "/reports/" . $report_uuid;
+	return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/" . $report_uuid;
 }
 
 function event_subject($event_uuid){
@@ -313,7 +314,7 @@ function event_subject($event_uuid){
 }
 
 function mail_to_manager($event_obj, $subject, $body){
-	$recipients = get_manager_of_engine($event_obj->engine);
+	$recipients = get_eventmanager_of_engine($event_obj->engine);
 	
 	return send_mails($recipients, $subject, $body);
 }
@@ -338,9 +339,9 @@ function inform_users_manager($event_uuid, $user){
 	if ($config ["settings"] ["enginemgrmailonsubscription"]) {
 		$subject = "Information über Wachteilnahme" . event_subject($event_uuid);
 		
-		$body = $bodies["event_subscribe_manager"] . get_link($event_uuid);
+		$body = $bodies["event_subscribe_manager"] . get_event_link($event_uuid);
 		
-		$recipients = get_manager_of_engine($user->engine);
+		$recipients = get_eventmanager_of_engine($user->engine);
 		return send_mails($recipients, $subject, $body);
 	}
 	return true;
@@ -350,7 +351,7 @@ function inform_users_manager($event_uuid, $user){
  * Reports
  */
 
-function mail_insert_report($report){
+function mail_insert_event_report($report){
 	global $config;
 	global $bodies;
 	
@@ -361,12 +362,12 @@ function mail_insert_report($report){
 	
 	//send report to administration if event is no series
 	//if(!get_eventtype_from_name($report->type)->isseries){
-	$administration = get_user_of_engine(get_administration()->uuid);
+	$administration = get_users_of_engine(get_administration()->uuid);
 	send_mails($administration, $subject, $body, $file);
 	//}
 	
 	//send report to manager of the assigned engine
-	$managerList = get_manager_of_engine($report->engine);
+	$managerList = get_eventmanager_of_engine($report->engine);
 	if(sizeof($managerList) > 0){
 		send_mails($managerList, $subject, $body, $file);
 		return true;
@@ -385,12 +386,12 @@ function mail_update_report($report){
 	
 	//send report to administration if event is no series
 	//if(!get_eventtype_from_name($report->type)->isseries){
-	$administration = get_user_of_engine(get_administration()->uuid);
+	$administration = get_users_with_privilege(FFADMINISTRATION);
 	send_mails($administration, $subject, $body, $file);
 	//}
 	
 	//send report to manager of the assigned engine
-	$managerList = get_manager_of_engine($report->engine);
+	$managerList = get_eventmanager_of_engine($report->engine);
 	if(sizeof($managerList) > 0){
 		send_mails($managerList, $subject, $body, $file);
 		return true;
@@ -407,7 +408,7 @@ function mail_report_approved($report_uuid){
 	
 	$file = $config["paths"]["reports"] . $report_uuid . ".pdf";
 	
-	$administration = get_user_of_engine(get_administration()->uuid);
+	$administration = get_users_with_privilege(FFADMINISTRATION);
 	return send_mails($administration, $subject, $body, $file);
 }
 

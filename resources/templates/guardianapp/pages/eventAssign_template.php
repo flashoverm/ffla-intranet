@@ -3,7 +3,7 @@
 	method="post">
 	
 	<div class="form-group">
-		<label class="mt-1">Personalauswahl (nur Personal aus  <?= get_engine_obj_of_user($_SESSION['guardian_userid'])->name ?>):</label>
+		<label class="mt-1">Personalauswahl (nur Personal aus  <?= get_engine_obj_of_user($_SESSION['intranet_userid'])->name ?>):</label>
 		<select class="form-control" name="user" id="user" required="required" onchange="getUser()">
 			<option value="new">Neuer Eintrag:</option>
 			<?php foreach ( $user as $option ) : ?>

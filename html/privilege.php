@@ -9,9 +9,9 @@ $privileges = get_all_privileges();
 // Pass variables (as an array) to template
 $variables = array (
 		'secured' => true,
-		'privilege' => EVENTADMIN,	//TODO privilege: Global Admin
+		'privilege' => PORTALADMIN,
 		'title' => "Rechteverwaltung",
-		'user' => get_all_user(),
+		'user' => get_users(),
 		'privileges' => $privileges,
 );
 
@@ -19,16 +19,15 @@ if (isset ( $_POST ['user'] ) ) {
 	
 	$user = trim ( $_POST ['user'] );
 	
-	$ok = remove_privileges_from_user($user);
-	
-	if($ok){
-		foreach($privileges as $privileg){
-			
-			$inputName = "priv_" . $privileg->name;
-			
-			if(isset ( $_POST [ $inputName ] )){
-				$ok = $ok && add_privilege_to_user($user, $privileg->name);
-			}
+	$ok = true;
+	foreach($privileges as $privilege){
+
+		remove_privilege_from_user($user, $privilege->privilege);
+		
+		$inputName = "priv_" . $privilege->privilege;
+		
+		if(isset ( $_POST [ $inputName ] )){
+			$ok = $ok && add_privilege_to_user($user, $privilege->privilege);
 		}
 	}
 	

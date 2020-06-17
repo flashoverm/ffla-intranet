@@ -6,12 +6,13 @@ require_once LIBRARY_PATH . "/db_user.php";
 // Pass variables (as an array) to template
 $variables = array(
     'title' => "Passwort ändern",
-    'secured' => true
+    'secured' => true,
+	'privilege' => CHANGEPASSWORD,	
 );
 
-if (isset($_POST['password_old']) && isset($_POST['password']) && isset($_POST['password2']) && isset($_SESSION['guardian_userid'])) {
+if (isset($_POST['password_old']) && isset($_POST['password']) && isset($_POST['password2']) && isset($_SESSION['intranet_userid'])) {
 
-    $uuid = $_SESSION['guardian_userid'];
+    $uuid = $_SESSION['intranet_userid'];
     $password_old = trim($_POST['password_old']);
     $password = trim($_POST['password']);
     $password2 = trim($_POST['password2']);

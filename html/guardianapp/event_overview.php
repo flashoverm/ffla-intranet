@@ -16,17 +16,17 @@ $variables = array (
 if (isset ( $_POST ['delete'] )) {
 	$delete_event_uuid = trim ( $_POST ['delete'] );
 	mail_delete_event ( $delete_event_uuid );
-	if(mark_event_as_deleted ( $delete_event_uuid, $_SESSION ['guardian_userid'])){
+	if(mark_event_as_deleted ( $delete_event_uuid, $_SESSION ['intranet_userid'])){
 		$variables ['successMessage'] = "Wache gelöscht";
 	} else {
 		$variables ['alertMessage'] = "Wache konnte nicht gelöscht werden";
 	}
 }
 
-if(isset($_SESSION ['guardian_userid'])){
+if(userLoggedIn()){
     
-    $events = get_events ($_SESSION ['guardian_userid']);
-    $pastEvents = get_past_events($_SESSION ['guardian_userid']);
+    $events = get_events ($_SESSION ['intranet_userid']);
+    $pastEvents = get_past_events($_SESSION ['intranet_userid']);
     $variables ['events'] = $events;
     $variables ['pastEvents'] = $pastEvents;
 }

@@ -12,17 +12,17 @@
 	
 	<div class="form-group">
 		<div class="table-responsive">
-			<table class="table table-striped" data-toggle="table" data-pagination="true"  data-search="true">
+			<table class="table table-striped" data-toggle="table">
 				<tbody>
 				<?php
 					foreach ( $privileges as $row ) {
 				?>
 					<tr>
-						<td><?= $row->name ?></td>
+						<td><?= $row->privilege ?></td>
 						<td class="text-center">
-							<div class="custom-control custom-checkbox custom-checkbox-big">
-							  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->name ?>" name="priv_<?= $row->name ?>" disabled>
-							  <label class="custom-control-label custom-control-label-table" for="priv_<?= $row->name ?>">&nbsp;</label>
+							<div class="custom-control custom-checkbox mb-1">
+							  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->privilege ?>" name="priv_<?= $row->privilege ?>" disabled>
+							  <label class="custom-control-label custom-control-label-table" for="priv_<?= $row->privilege ?>">&nbsp;</label>
 							</div>
 						</td>
 					</tr>

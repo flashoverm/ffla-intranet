@@ -1,96 +1,88 @@
-<?php
-if (! $isAdmin) {
-	showAlert ( "Kein Administrator angemeldet - <a href=\"" . $config["urls"]["guardianapp_home"] . "/events\" class=\"alert-link\">Zurück</a>" );
-} else {
+<form action="" method="post">
+	<div class="form-group">
+	<label>Wachtyp:</label> <select class="form-control" name="type" id="type" onchange="loadTemplate()">
+			<option value="" disabled selected>Wachtyp auswählen</option>
+			<?php foreach ( $eventtypes as $type ) :
+				if(isset($_GET ['eventtype']) && $_GET ['eventtype'] == $type->uuid){?>
+					<option value="<?= $type->uuid; ?>" selected><?= $type->type; ?></option>
+			<?php } else {?>
+					<option value="<?= $type->uuid; ?>"><?= $type->type; ?></option>
+			<?php }
+			endforeach; ?>
+		</select>
+	</div>    
+	<?php 
+	$staffId = 0;
+	if(isset($template)){
 	?>
-	<form action="" method="post">
-		<div class="form-group">
-		<label>Wachtyp:</label> <select class="form-control" name="type" id="type" onchange="loadTemplate()">
-				<option value="" disabled selected>Wachtyp auswählen</option>
-				<?php foreach ( $eventtypes as $type ) :
-					if(isset($_GET ['eventtype']) && $_GET ['eventtype'] == $type->uuid){?>
-						<option value="<?= $type->uuid; ?>" selected><?= $type->type; ?></option>
-				<?php } else {?>
-						<option value="<?= $type->uuid; ?>"><?= $type->type; ?></option>
-				<?php }
-				endforeach; ?>
-			</select>
-		</div>    
-		<?php 
-		$staffId = 0;
-		if(isset($template)){
-		?>
-		<div class="form-group">
-			<label>Benötigtes Wachpersonal:</label>
-			<div class="table-responsive">
-				<table class="table table-bordered">
-					<tbody id="staffContainer">
-						<tr>
-							<th>Funktion</th>
-							<th class="py-0 text-center align-middle" style="width:  8%">
-								<button type="button" class="btn btn-sm btn-primary" onClick="eventAddStaff()">+</button>
-							</th>
-						</tr>
-						
-						<tr id="staffEntryTemplate" style="display:none;">
+	<div class="form-group">
+		<label>Benötigtes Wachpersonal:</label>
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<tbody id="staffContainer">
+					<tr>
+						<th>Funktion</th>
+						<th class="py-0 text-center align-middle" style="width:  8%">
+							<button type="button" class="btn btn-sm btn-primary" onClick="eventAddStaff()">+</button>
+						</th>
+					</tr>
+					
+					<tr id="staffEntryTemplate" style="display:none;">
+						<td class="p-0">
+								<select class="select-cornered" name="">
+									<option value="" disabled selected>Funktion auswählen</option>
+									<?php foreach ( $staffpositions as $option ) : 
+									?>
+										<option value="<?=  $option->uuid; ?>"><?= $option->position; ?></option>
+									<?php
+									endforeach; 
+						            ?>
+								</select>
+						</td>
+						<td class="p-0 text-center align-middle" style="width:  8%">
+							<button type="button" class="btn btn-sm btn-primary">X</button>
+						</td>
+					</tr>
+					
+					<?php
+					foreach ( $template as $entry ) {
+						$staffId = $staffId +1;
+						?>
+						<tr id="staffEntry<?= $staffId; ?>">
 							<td class="p-0">
-									<select class="select-cornered" name="">
+									<select class="select-cornered" name="<?= $entry->template ?>" required="required" id="<?= $entry->template ?>">
 										<option value="" disabled selected>Funktion auswählen</option>
 										<?php foreach ( $staffpositions as $option ) : 
+											if($option->uuid == $entry->uuid){
 										?>
-											<option value="<?=  $option->uuid; ?>"><?= $option->position; ?></option>
+												<option selected value="<?=  $option->uuid ?>"><?= $option->position ?></option>
+										<?php 
+											} else {
+										?>
+												<option value="<?=  $option->uuid ?>"><?= $option->position ?></option>
 										<?php
+											}
 										endforeach; 
 							            ?>
 									</select>
 							</td>
-							<td class="p-0 text-center align-middle" style="width:  8%">
-								<button type="button" class="btn btn-sm btn-primary">X</button>
+							<td class="p-0 text-center align-middle" style="width:  8%">								
+								<button type="button" class="btn btn-sm btn-primary" onClick="eventRemoveStaff(<?= $staffId ?>)">X</button>
 							</td>
 						</tr>
-						
-						<?php
-						foreach ( $template as $entry ) {
-							$staffId = $staffId +1;
-							?>
-							<tr id="staffEntry<?= $staffId; ?>">
-								<td class="p-0">
-										<select class="select-cornered" name="<?= $entry->template ?>" required="required" id="<?= $entry->template ?>">
-											<option value="" disabled selected>Funktion auswählen</option>
-											<?php foreach ( $staffpositions as $option ) : 
-												if($option->uuid == $entry->uuid){
-											?>
-													<option selected value="<?=  $option->uuid ?>"><?= $option->position ?></option>
-											<?php 
-												} else {
-											?>
-													<option value="<?=  $option->uuid ?>"><?= $option->position ?></option>
-											<?php
-												}
-											endforeach; 
-								            ?>
-										</select>
-								</td>
-								<td class="p-0 text-center align-middle" style="width:  8%">								
-									<button type="button" class="btn btn-sm btn-primary" onClick="eventRemoveStaff(<?= $staffId ?>)">X</button>
-								</td>
-							</tr>
-						<?php
-						}
-						?>					
-					</tbody>
-				</table>
-				<input type="hidden" id="positionCount" name="positionCount" value="<?= $staffId ?>">
-			</div>	
-		</div>
-		<input type="submit" class="btn btn-primary" value="Speichern">
-		<?php 
-		}
-		?>
-	</form>
-<?php
-} 
-?>
+					<?php
+					}
+					?>					
+				</tbody>
+			</table>
+			<input type="hidden" id="positionCount" name="positionCount" value="<?= $staffId ?>">
+		</div>	
+	</div>
+	<input type="submit" class="btn btn-primary" value="Speichern">
+	<?php 
+	}
+	?>
+</form>
 
 <script type='text/javascript'>
 

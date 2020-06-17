@@ -1,5 +1,5 @@
 <?php
-require_once realpath ( dirname ( __FILE__ ) . "/../../resources/config.php" );
+require_once realpath ( dirname ( __FILE__ ) . "/../resources/config.php" );
 require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/db_engines.php";
 require_once LIBRARY_PATH . "/db_user.php";
@@ -59,7 +59,7 @@ if(isset($_POST['engine'])){
 	}
 }
 
-renderLayoutWithContentFile ($config["apps"]["guardian"], "userImport_template.php", $variables );
+renderLayoutWithContentFile ($config["apps"]["landing"], "userImport_template.php", $variables );
 
 function col_to_string($columns){
 	return $columns[0] . " " . $columns[1] . " - " . $columns[2];

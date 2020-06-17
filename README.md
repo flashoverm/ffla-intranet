@@ -7,8 +7,6 @@ Task:
 
 #hydrant
 
-Support for Google Maps (non static)
-
 Hydranten hinzufügen/ändern: Stadtteil als Autovervollständigen
 
 #guardian
@@ -57,12 +55,16 @@ Low prio:
 
 Refactoring: 
 
+- Usage of Classes/Objects
 - report date format from config, not hard coded
-- rename files and functions: xy_z.php and function xy_z()
+- rename files and functions: camelCase or/and underscore
 - consistent usage of " and '
 - move javascript in own js-file -> create cacheable minjs
 
 Done:
+
+- Support for Google Maps (non static)
+
 - Link für vorausgefüllten Berichten für alle sichtbar machen
 - Rechteverwaltung (Personen Rechte aus Liste zuweisen und entfernen)
 

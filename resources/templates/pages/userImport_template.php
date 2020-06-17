@@ -15,5 +15,5 @@
 	</div>
 	<p>*Kein Header - Format Zeile: Vorname; Nachname; E-Mail</p>
 	<input class="btn btn-primary" type="submit" value="Importieren">
-	<a href='<?= $config["urls"]["guardianapp_home"]?>/user' class="btn btn-primary">Zurück</a>
+	<a href='<?= $config["urls"]["intranet_home"]?>/users' class="btn btn-primary">Zurück</a>
 </form>

@@ -242,7 +242,7 @@ function is_user_manager_or_creator($event_uuid, $user_uuid){
 	if($event->creator == $user_uuid){
 		return true;
 	}
-	if(is_manager_of($user_uuid, $event->engine)){
+	if(user_has_privilege($user_uuid, $event->engine)){
 		return true;
 	}
 	

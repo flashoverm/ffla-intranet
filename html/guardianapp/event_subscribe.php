@@ -31,6 +31,13 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     	$variables ['staffUUID'] = $staffUUID;
     	$variables ['subtitle'] = date($config ["formats"] ["date"], strtotime($event->date)) 
     	. " - " . date($config ["formats"] ["time"], strtotime($event->start_time)) . " als " . $staffposition->position;
+    	if(userLoggedIn()){
+    		$variables['currentUser'] = get_user($_SESSION ['intranet_userid']);
+    	}else{
+    		$actual_link = "{$_SERVER['REQUEST_URI']}";
+    		$_SESSION["ref"] = $actual_link;
+    		$variables['infoMessage'] = "Haben Sie bereits einen Benutzer? <a href='" . $config ["urls"] ["intranet_home"] . "/login'>Anmelden</a>";
+    	}
     
     	if (isset ( $_POST ['firstname'] ) and isset ( $_POST ['lastname'] ) && isset ( $_POST ['email'] ) && isset ( $_POST ['engine'] )) {
     
@@ -45,14 +52,14 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     		}
 
     		if(!email_in_use($email) ){
-    			$user = insert_user ( $firstname, $lastname, $email, $engineUUID );
+    			$user = inset_participant_only ( $firstname, $lastname, $email, $engineUUID );
     		} else {
     			$user = get_user_by_data($firstname, $lastname, $email, $engineUUID);
     		}
     		//if user exists with these name/engine ok - else error!
     		if($user){
     				
-    			if($user->available){
+    			if(user_has_privilege($user->uuid, EVENTPARTICIPENT)){
     				//if uuid is already in event -> error
     				if(!is_user_already_staff($eventUUID, $user->uuid)){
     						

@@ -21,8 +21,8 @@ $variables = array (
         'engines' => $engines,
 );
 
-if(isset($_SESSION ['guardian_userid'])){
-	$user = $_SESSION ['guardian_userid'];
+if(userLoggedIn()){
+	$user = $_SESSION ['intranet_userid'];
 	$usersEngine = get_engine_of_user($user);
 	
 	$variables ['usersEngine'] = $usersEngine;
@@ -42,7 +42,7 @@ if (isset($_GET['id'])) {
     	$now = strtotime( $dateNow['year']."-".$dateNow['mon']."-".($dateNow['mday']) );
     	if(strtotime($event->date) >= $now){
 
-    	    if (is_user_manager_or_creator($event->uuid, $_SESSION['guardian_userid'])){
+    		if (userLoggedIn() && is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid'])){
 	            $staff = get_staff($uuid);
 	            $variables['event'] = $event;
 	            $variables['staff'] = $staff;
@@ -100,7 +100,7 @@ if (isset ( $_POST ['type'] ) ) {
 	$publish = false;
 	$staff_confirmation = false;
 	
-	$creator = $_SESSION ['guardian_userid'];
+	$creator = $_SESSION ['intranet_userid'];
 	
 	if (isset ( $_POST ['comment'] )) {
 		$comment = trim ( $_POST ['comment'] );

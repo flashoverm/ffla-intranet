@@ -48,9 +48,9 @@ if (isset($_GET['id'])) {
     	'STATUS:CONFIRMED' . $eol .
     	'UID:wachverwaltung@feuerwehr-landshut.de' . $eol .
     	'LOCATION:' . html_entity_decode($type) . $eol .
-    	'DESCRIPTION:' . html_entity_decode("Weitere Infos unter " . $config ["urls"] ["baseUrl"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event->uuid 
-    			. " sowie der vorausgefüllte Wachbericht unter " . $config ["urls"] ["baseUrl"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/" . $event->uuid) . $eol .
-    	'URL;VALUE=URI:' . $config ["urls"] ["baseUrl"] . "/events/".$event->uuid . $eol .
+    	'DESCRIPTION:' . html_entity_decode("Weitere Infos unter " . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event->uuid . 
+    			" sowie der vorausgefüllte Wachbericht unter " . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/" . $event->uuid) . $eol . 
+    	'URL;VALUE=URI:' . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/".$event->uuid . $eol .
     	'SUMMARY:' . html_entity_decode($type . " " . $event->title) . $eol .
     	'DTSTART:' . dateToCal($event->date, $event->start_time) . $eol .
     	'DTEND:' . getEndDateTime($event->date, $event->end_time, $event->start_time) . $eol .
@@ -73,8 +73,8 @@ if (isset($_GET['id'])) {
     		'DTSTART:' . dateToCal($event->date, $event->start_time) . $eol .
     		'DTEND:' . getEndDateTime($event->date, $event->end_time, $event->start_time) . $eol .
     		'LOCATION;ENCODING=QUOTED-PRINTABLE:' . html_entity_decode($type) . $eol .
-    		'DESCRIPTION:' . html_entity_decode("Weitere Infos unter " . $config ["urls"] ["baseUrl"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event->uuid
-    				. " sowie der vorausgefüllte Wachbericht unter " . $config ["urls"] ["baseUrl"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/" . $event->uuid) . $eol .
+    		'DESCRIPTION:' . html_entity_decode("Weitere Infos unter " . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event->uuid
+    				. " sowie der vorausgefüllte Wachbericht unter " . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/" . $event->uuid) . $eol .
     		'SUMMARY;ENCODING=QUOTED-PRINTABLE:' . html_entity_decode($type . " " . $event->title) . $eol .
 			'PRIORITY:' . '3' . $eol . 
 			'END:VEVENT' . $eol .

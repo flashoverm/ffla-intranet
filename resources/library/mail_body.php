@@ -51,13 +51,13 @@ $bodies = array (
 	
 	"event_report_approved" => $util["head"] . "ein Wachbericht wurde durch einen Wachbeauftragten überprüft und freigegeben. \n\n Der Bericht befindet sich im Anhang oder unter:  \n\n",
 	
-	"manager_add" => $util["head"] . "für Sie wurde ein Zugang als Wachbeauftragter angelegt:",
+	"user_add" => $util["head"] . "für Sie wurde ein Zugang angelegt:",
 	"login" => "\n\nLogin: ",
 	"password" => "\n\nPasswort: ",
-	"manager_add2" => "\n\nSie können sich jetzt im Portal unter " . $config ["urls"] ["baseUrl"] . " anmelden.",
+	"user_add2" => "\n\nSie können sich jetzt im Portal unter " . $config ["urls"] ["base_url"] . " anmelden.",
 	
 	
-	"manager_reset_password" => $util["head"] . "ihr Passwort wurde zurückgesetzt:",
-	"manager_reset_password2" => "\n\n Sie können es im Portal unter " . $config ["urls"] ["baseUrl"] . " in ihr Wunschkennwort ändern.",
+	"reset_password" => $util["head"] . "ihr Passwort wurde zurückgesetzt:",
+	"reset_password2" => "\n\n Sie können es im Portal unter " . $config ["urls"] ["base_url"] . " in ihr Wunschkennwort ändern.",
 	
 );

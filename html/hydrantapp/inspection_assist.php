@@ -8,7 +8,7 @@ require_once LIBRARY_PATH . "/db_inspection.php";
 $variables = array(
     'title' => "Prüfbericht erstellen",
     'secured' => true,
-    'right' => ENGINEHYDRANTMANANGER
+    'privilege' => ENGINEHYDRANTMANANGER
 );
 
 $variables['criteria'] = $hydrant_criteria;

@@ -79,7 +79,7 @@ if ($isCreator) {
 				<td><?php
 					if ($entry->user == NULL and $relevant) {
 						
-						if(isset($_SESSION['guardian_userid']) && is_user_manager_or_creator($event->uuid, $_SESSION['guardian_userid'])){
+						if(isset($_SESSION['intranet_userid']) && is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid'])){
 							echo "<a class='btn btn-primary btn-sm' href='" . $config["urls"]["guardianapp_home"] . "/events/" . $event->uuid . "/assign/" . $entry->uuid . "'>Einteilen</a>";
 							
 						} else {
@@ -88,7 +88,7 @@ if ($isCreator) {
 					}
 					
 					
-					if ($entry->user != NULL and isset($_SESSION['guardian_userid']) and is_user_manager_or_creator($event->uuid, $_SESSION['guardian_userid']) and $relevant and $event->staff_confirmation) {
+					if ($entry->user != NULL and isset($_SESSION['intranet_userid']) and is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid']) and $relevant and $event->staff_confirmation) {
 						if($entry->unconfirmed){
 						?>
     						<button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#confirmConfirmation<?= $entry->uuid ?>'>Bestätigen</button>
@@ -100,7 +100,7 @@ if ($isCreator) {
 					<?php 	}
 					} 
 					
-					if ($entry->user != NULL and isset($_SESSION['guardian_userid']) and is_user_manager_or_creator($event->uuid, $_SESSION['guardian_userid']) and $relevant) {?>
+					if ($entry->user != NULL and isset($_SESSION['intranet_userid']) and (is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid']) || $entry->user == $_SESSION['intranet_userid']) and $relevant) {?>
 						<button type='button' class='btn btn-outline-primary btn-sm' data-toggle='modal' data-target='#confirmUnscribe<?= $entry->uuid ?>'>Austragen</button>
 						<?php 
 						createDialog('confirmUnscribe' . $entry->uuid, "Personal wirklich austragen?", null, "removestaffid", $entry->uuid);
@@ -111,14 +111,14 @@ if ($isCreator) {
 			<tr>
 				<td colspan="3">
 					<b>Link:&nbsp;</b> 
-					<p id="link"><?= $config ["urls"] ["baseUrl"] . $config ["urls"] ["guardianapp_home"] . "/events/".$event->uuid; ?></p>
+					<p id="link"><?= $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/".$event->uuid; ?></p>
 					<button id="btnCpy" onClick='copyToClipBoard()' class='btn btn-primary btn-sm'>Link kopieren</button>
 					<a href='<?= $config ["urls"] ["guardianapp_home"] . '/events/' . $event->uuid . "/calender"; ?>' target="_blank" class='btn btn-primary btn-sm'>Kalendereintrag</a>
 					
 				</td>
 			</tr>
 			<?php
-			if(isset($_SESSION['guardian_userid']) && (is_user_manager_or_creator($event->uuid, $_SESSION['guardian_userid']) || $isAdmin)){
+			if(userLoggedIn() && (is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid']) || current_user_has_privilege(EVENTADMIN))){
 			    $creator = get_user($event->creator);
 			?>
 			    <tr>
@@ -130,7 +130,7 @@ if ($isCreator) {
 			?>
 			<tr>
 				<th colspan="1">Bericht erstellen</th>
-				<td colspan="2"><a href='<?= $config ["urls"] ["baseUrl"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/".$event->uuid; ?>' target='_blank'><?= $config ["urls"] ["baseUrl"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/".$event->uuid; ?></a></td>
+				<td colspan="2"><a href='<?= $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/".$event->uuid; ?>' target='_blank'><?= $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/".$event->uuid; ?></a></td>
 			</tr>
 		</tbody>
 	</table>
@@ -141,7 +141,7 @@ if ($isCreator) {
 				  <div class='float-right'>";
 	    
 	    if(!$event->published){
-	        if(is_user_manager_or_creator($event->uuid, $_SESSION['guardian_userid']) and $relevant) {?>
+	        if(is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid']) and $relevant) {?>
 	          	<a class='btn btn-primary' href='<?= $config["urls"]["guardianapp_home"] ?>/events/<?= $event->uuid ?>/edit'>Bearbeiten</a>
                 <span class='d-inline-block' data-toggle='tooltip' title='Andere Züge über Wache informieren'>
 			  		<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#confirmPublish<?= $event->uuid ?>'>Veröffentlichen</button>
@@ -154,7 +154,7 @@ if ($isCreator) {
 	            echo "<button type='button' class='btn btn-outline-primary ml-1' disabled='disabled' >Wache ist nicht öffentlich</button>";   
 	        }
 		} else {
-			if(is_user_manager_or_creator($event->uuid, $_SESSION['guardian_userid']) and $relevant) {
+			if(is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid']) and $relevant) {
 				echo "<a class='btn btn-primary' href='" . $config["urls"]["guardianapp_home"] . "/events/" . $event->uuid . "/edit'>Bearbeiten</a>";
 			}
 		    echo "<button type='button' class='btn btn-outline-primary ml-1' disabled='disabled' >Wache ist öffentlich</button>";

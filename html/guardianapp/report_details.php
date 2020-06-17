@@ -13,7 +13,6 @@ $variables = array(
 		'privilege' => EVENTMANAGER,
 		'secured' => true,
 		'showFormular' => false,
-		'alertMessage' => "Bericht kann nicht angezeigt werden"
 );
 
 if (! isset($_GET['id'])) {
@@ -31,11 +30,11 @@ if (! isset($_GET['id'])) {
 		
 		get_report_object($uuid);
 		
-		if(isset($_SESSION ['guardian_userid'])){
+		if(userLoggedIn()){
         
-	        $user = get_user($_SESSION ['guardian_userid']);
+	        $user = get_user($_SESSION ['intranet_userid']);
 	        
-	        if($report->engine == $user->engine || is_administration($user->engine) || is_admin($user->uuid)){
+	        if($report->engine == $user->engine || current_user_has_privilege(FFADMINISTRATION) || current_user_has_privilege(EVENTADMIN)){
 	            
 	        	$variables['report'] = $report;
 	        	$variables['units'] = $units;

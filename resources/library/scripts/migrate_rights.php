@@ -72,8 +72,8 @@ function hasRight($uuid, $right){
 }
 
 function userHasRight($right){
-	if(isset ($_SESSION ['guardian_userid'])){
-		return hasRight($_SESSION ['guardian_userid'], $right);
+	if(isset ($_SESSION ['intranet_userid'])){
+		return hasRight($_SESSION ['intranet_userid'], $right);
 	}
 	return false;
 }

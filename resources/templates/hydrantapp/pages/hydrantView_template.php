@@ -35,10 +35,16 @@ if (isset($hydrant)){
 			?>
 		</tbody>
 	</table>
-		
+	
+<div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" id="toogleMaps">
+  <label class="custom-control-label" for="toogleMaps">Verwende Google Maps</label>
+</div>
+
 	<?php 
     if($mapURL != null){
-        echo "<img class='rounded mx-auto d-block' width='" . $config["mapView"]["width"] . "' src='" . $mapURL . "'>";
+        echo "<img id='map' class='rounded mx-auto mt-5' width='" . $config["mapView"]["width"] . "' src='" . $mapURL . "' style='display: block;'>";
     }
+    createHydrantGoogleMap(array($hydrant), false);
 }
 ?>

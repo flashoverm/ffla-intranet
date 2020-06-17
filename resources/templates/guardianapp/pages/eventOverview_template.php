@@ -16,7 +16,7 @@ if (!isset($events) || ! count ( $events ) ) {
 				<th data-sortable="true" class="text-center">Öffentlich</th>
 				<th class="text-center">Details</th>
 				<?php
-				if(is_user_manager_or_creator($events[0]->uuid, $_SESSION['guardian_userid'])){
+				if(is_user_manager_or_creator($events[0]->uuid, $_SESSION['intranet_userid'])){
 					echo"<th class='text-center'>Löschen</th>";
 				}
 				?>
@@ -62,7 +62,7 @@ if (!isset($events) || ! count ( $events ) ) {
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->uuid ?>">Details</a>
 				</td>
 				<?php
-				if(is_user_manager_or_creator($row->uuid, $_SESSION['guardian_userid'])){
+				if(is_user_manager_or_creator($row->uuid, $_SESSION['intranet_userid'])){
 					?>
 					<td class="text-center">
 					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDelete<?= $row->uuid; ?>">Löschen</button>

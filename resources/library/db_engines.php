@@ -111,25 +111,6 @@ function get_engines_without_administration() {
     return $data;
 }
 
-function is_administration($uuid) {
-	global $db;
-	
-	$statement = $db->prepare("SELECT isadministration FROM engine
-		WHERE isadministration = TRUE AND engine.uuid = ?");
-	$statement->bind_param('s', $uuid);
-	
-	if ($statement->execute()) {
-		$result = $statement->get_result();
-		
-		if (mysqli_num_rows ( $result )) {
-			$data = $result->fetch_row ();
-			$result->free ();
-			return $data [0];
-		}
-	}
-	return FALSE;
-}
-
 function create_table_engine() {
 	global $db;
 	

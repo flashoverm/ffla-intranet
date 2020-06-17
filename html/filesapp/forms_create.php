@@ -7,7 +7,7 @@ require_once LIBRARY_PATH . "/db_files.php";
 $variables = array(
     'title' => "Formular hochladen",
     'secured' => true,
-	'right' => FILEADMIN
+	'privilege' => FILEADMIN
 );
 
 if(isset($_FILES['upload']) && isset($_POST['description'])){

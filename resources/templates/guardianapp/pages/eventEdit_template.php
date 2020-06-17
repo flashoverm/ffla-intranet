@@ -47,11 +47,11 @@
 	<div class="form-group">
 		<label>Typ:</label> <select class="form-control" name="type" id="type" onchange="showHideTypeOtherCreate()">
 				<?php foreach ( $eventtypes as $type ) :
-				if(isset($event) && $type->uuid == $event->type) {?>
-					<option value="<?= $type->uuid; ?>" selected><?= $type->type; ?></option>
-				<?php } else {?>
-					<option value="<?= $type->uuid; ?>"><?= $type->type; ?></option>
-				<?php }
+					if(isset($event) && $type->uuid == $event->type) {?>
+						<option value="<?= $type->uuid; ?>" selected><?= $type->type; ?></option>
+					<?php } else {?>
+						<option value="<?= $type->uuid; ?>"><?= $type->type; ?></option>
+					<?php }
 				endforeach; ?>
 			</select>
 	</div>
@@ -81,21 +81,20 @@
 			class="form-control" name="engine" required="required"
 			data-toggle="tooltip" data-placement="top" title="Dieser Zug soll die Wache besetzen">
 			<?php foreach ( $engines as $option ) : 
-			if(isset($event) && $option->uuid == $event->engine){
-			    ?>
-			   	<option selected="selected" value="<?=  $option->uuid;	?> "><?= $option->name; ?></option>
-			    <?php 
-			}else if(!isset($event) && $option->uuid == $usersEngine){
-				?>
-			   	<option selected="selected" value="<?=  $option->uuid;	?> "><?= $option->name; ?></option>
-			    <?php 
-			}else{
-				?>
-			   <option value="<?=  $option->uuid;	?> "><?= $option->name; ?></option>
-			    <?php
-			}
-			?>
-			<?php endforeach; ?>
+				if(isset($event) && $option->uuid == $event->engine){
+				    ?>
+				   	<option selected="selected" value="<?=  $option->uuid;	?> "><?= $option->name; ?></option>
+				    <?php 
+				}else if(!isset($event) && $option->uuid == $usersEngine){
+					?>
+				   	<option selected="selected" value="<?=  $option->uuid;	?> "><?= $option->name; ?></option>
+				    <?php 
+				}else{
+					?>
+				   <option value="<?=  $option->uuid;	?> "><?= $option->name; ?></option>
+				    <?php
+				}
+			endforeach; ?>
 		</select>
 	</div>
 	

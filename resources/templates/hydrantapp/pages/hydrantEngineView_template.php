@@ -14,6 +14,9 @@ if (! count ( $hydrants )) {
 				<th data-sortable="true" class="text-center">Stadtteil</th>
 				<th data-sortable="true" class="text-center">Typ</th>
 				<th class="text-center">Anzeigen</th>
+				<?php if(current_user_has_privilege(HYDRANTADMINISTRATOR)){
+				    echo '<th class="text-center">Bearbeiten</th>';
+				}?>
 			</tr>
 		</thead>
 		<tbody>
@@ -31,6 +34,11 @@ if (! count ( $hydrants )) {
 				<td class="text-center">
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/". $row->hy; ?>">Anzeigen</a>
 				</td>
+				<?php if(current_user_has_privilege(HYDRANTADMINISTRATOR)){
+				    echo '<td>
+                            <a class="btn btn-primary btn-sm" href="' . $config["urls"]["hydrantapp_home"] . "/". $row->hy . '/edit">Bearbeiten</a>
+                         </td>';
+				}?>
 			</tr>
 <?php
 	}
@@ -39,10 +47,18 @@ if (! count ( $hydrants )) {
 		</tbody>
 	</table>
 </div>
+<div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" id="toogleMaps" checked>
+  <label class="custom-control-label" for="toogleMaps">Verwende Google Maps</label>
+</div>
+
 <?php 
 
     if($mapURL != null){
-        echo "<img id='map' class='rounded mx-auto d-block mt-5' width='" . $config["mapView"]["widewidth"] . "' src='" . $mapURL . "'>";
+        echo "<img id='map' class='rounded mx-auto mt-5' width='" . $config["mapView"]["widewidth"] . "' src='" . $mapURL . "' style='display: none;'>";
     }
+    createHydrantGoogleMap($hydrants, true);
 }
 ?>
+
+

@@ -1,61 +1,72 @@
 <?php  
 
-//TODO rename manager to event manager, rename admin to eventadmin
-
-function insert_manager($firstname, $lastname, $email, $password, $engine_uuid) {
+function inset_participant_only($firstname, $lastname, $email, $engine_uuid){
 	global $db;
+	
 	$uuid = getGUID ();
-	$pwhash = password_hash ( $password, PASSWORD_DEFAULT );
-	$mail = strtolower($email);
-		
-	$statement = $db->prepare("INSERT INTO user (uuid, firstname, lastname, email, password, engine, loginenabled, available) 
-		VALUES (?, ?, ?, ?, ?, ?, TRUE, TRUE)");
-	$statement->bind_param('ssssss', $uuid, $firstname, $lastname, $mail, $pwhash, $engine_uuid);
+	$emailLower = strtolower($email);
+	
+	$statement = $db->prepare("INSERT INTO user (uuid, email, firstname, lastname, engine)
+		VALUES (?, ?, ?, ?, ?)");
+	$statement->bind_param('sssss', $uuid, $emailLower, $firstname, $lastname, $engine_uuid);
 	
 	$result = $statement->execute();
-
+	
 	if ($result) {
-		add_privilege_to_user($uuid, EVENTMANAGER);
-		// echo "New record created successfully";
-	    return $uuid;
+		add_privilege_to_user($uuid, EVENTPARTICIPENT);
+		
+		$statement = $db->prepare("SELECT * FROM user WHERE uuid = ?");
+		$statement->bind_param('s', $uuid);
+		$statement->execute();
+		$data = $statement->get_result()->fetch_object ();
+		return $data;
+		
 	} else {
 		// echo "Error: " . $query . "<br>" . $db->error;
 		return false;
 	}
 }
 
-function insert_admin($firstname, $lastname, $email, $password, $engine_uuid) {
-	global $db;
-	$uuid = getGUID ();
-	$pwhash = password_hash ( $password, PASSWORD_DEFAULT );
-	$mail = strtolower($email);
-	
-	$statement = $db->prepare("INSERT INTO user (uuid, firstname, lastname, email, password, engine, loginenabled, available)
-		VALUES (?, ?, ?, ?, ?, ?, TRUE, TRUE)");
-	$statement->bind_param('ssssss', $uuid, $firstname, $lastname, $mail, $pwhash, $engine_uuid);
-	
-	$result = $statement->execute();
+function insert_eventmanager($firstname, $lastname, $email, $password, $engine_uuid) {
+	$result = insert_user($firstname, $lastname, $email, $password, $engine_uuid);
 
 	if ($result) {
-		add_privilege_to_user($uuid, EVENTADMIN);
-		add_privilege_to_user($uuid, EVENTMANAGER);
-		
-		// echo "New record created successfully";
-	    return $uuid;
-	} else {
-		// echo "Error: " . $query . "<br>" . $db->error;
-		return false;
+		add_privilege_to_user($result->uuid, EVENTMANAGER);
+		return $result;
 	}
+	// echo "Error: " . $query . "<br>" . $db->error;
+	return false;
 }
 
+function insert_eventadmin($firstname, $lastname, $email, $password, $engine_uuid) {
+	$result = insert_user($firstname, $lastname, $email, $password, $engine_uuid);
+	
+	if ($result) {
+		add_privilege_to_user($result->uuid, EVENTMANAGER);
+		add_privilege_to_user($result->uuid, EVENTADMIN);
+		
+		return $result;
+	}
+	// echo "Error: " . $query . "<br>" . $db->error;
+	return false;
+}
 
-function get_all_manager() {
+function get_all_eventmanager() {
+	return get_users_with_privilege(EVENTMANAGER);
+}
+
+function get_eventmanager_of_engine($engine_uuid) {
 	global $db;
 	$data = array ();
 	
-	$right = '%' . EVENTMANAGER . '%';
-	$statement = $db->prepare("SELECT * FROM user WHERE rights LIKE ?");
-	$statement->bind_param('s', $right);
+	$privilege  = EVENTMANAGER;
+	
+	$statement = $db->prepare("SELECT * 
+		FROM user, user_privilege 
+		WHERE uuid = user_privilege.user 
+		AND privilege = ? 
+		AND engine = ?");
+	$statement->bind_param('ss', $privilege, $engine_uuid);
 	
 	if ($statement->execute()) {
 		$result = $statement->get_result();
@@ -70,28 +81,7 @@ function get_all_manager() {
 	return $data;
 }
 
-function get_manager_of_engine($engine_uuid) {
-	global $db;
-	$data = array ();
-	
-	$right = '%' . EVENTMANAGER . '%';
-	$statement = $db->prepare("SELECT * FROM user WHERE rights LIKE ? AND engine = ?");
-	$statement->bind_param('ss', $right, $engine_uuid);
-	
-	if ($statement->execute()) {
-		$result = $statement->get_result();
-		
-		if (mysqli_num_rows ( $result )) {
-			while ( $date = $result->fetch_object () ) {
-				$data [] = $date;
-			}
-			$result->free ();
-		}
-	}
-	return $data;
-}
-
-function get_manager_except_engine_and_creator($engine_uuid, $creator_uuid){
+function get_eventmanager_except_engine_and_creator($engine_uuid, $creator_uuid){
 	global $db;
 	$data = array ();
 	
@@ -118,7 +108,7 @@ function get_manager_except_engine_and_creator($engine_uuid, $creator_uuid){
 	return $data;
 }
 
-function is_manager_of($user_uuid, $engine_uuid){
+function is_eventmanager_of($user_uuid, $engine_uuid){
 	global $db;
 	
 	$privilege = EVENTMANAGER;
@@ -141,40 +131,12 @@ function is_manager_of($user_uuid, $engine_uuid){
 	return false;
 }
 
-//TODO rename to deny events
-function hide_user($uuid) {
-	global $db;
-	
-	$statement = $db->prepare("UPDATE user SET available = FALSE WHERE uuid= ?");
-	$statement->bind_param('s', $uuid);
-	
-	$result = $statement->execute();
-
-	if ($result) {
-		// echo "Record ".$uuid." updated successfully";
-		return true;
-	} else {
-		// echo "Error: " . $query . "<br>" . $db->error;
-		return false;
-	}
+function allow_event_participation($uuid) {
+	return add_privilege_to_user($uuid, EVENTPARTICIPENT);
 }
 
-//TODO rename to allow events 
-function show_user($uuid) {
-	global $db;
-	
-	$statement = $db->prepare("UPDATE user SET available = TRUE WHERE uuid= ?");
-	$statement->bind_param('s', $uuid);
-	
-	$result = $statement->execute();
-
-	if ($result) {
-		// echo "Record ".$uuid." updated successfully";
-		return true;
-	} else {
-		// echo "Error: " . $query . "<br>" . $db->error;
-		return false;
-	}
+function deny_event_participation($uuid) {
+	return remove_privilege_from_user($uuid, EVENTPARTICIPENT);
 }
 
 ?>

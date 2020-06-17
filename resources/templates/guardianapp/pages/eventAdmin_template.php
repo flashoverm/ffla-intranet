@@ -1,10 +1,8 @@
 <?php
-if (!$isAdmin) {
-	showAlert ( "Kein Administrator angemeldet - <a href=\"" . $config["urls"]["guardianapp_home"] . "/events\" class=\"alert-link\">Zurück</a>" );
-} else if (!isset($events) || ! count ( $events ) ) {
+if (!isset($events) || ! count ( $events ) ) {
     showInfo ( "Es sind keine Wachen offen" );
 } else {
-    ?>
+?>
 <div class="table-responsive">
 	<table class="table table-striped" data-toggle="table" data-pagination="true"  data-search="true">
 		<thead>

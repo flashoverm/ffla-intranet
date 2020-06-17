@@ -13,7 +13,7 @@ if(isset($_GET['render'])){
     renderPDF($_GET['report']);
     
 } else {
-    if(	isset ( $_SESSION ['guardian_userid'] ) ){
+	if(	userLoggedIn() ){
     	if(!current_user_has_privilege(EVENTMANAGER)){
             showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
         } else if(isset($_GET['report'])){

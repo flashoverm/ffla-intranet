@@ -12,19 +12,17 @@ $variables = array (
 	'privilege' => EVENTADMIN
 );
 
-if(isset($_SESSION ['guardian_userid']) && is_admin($_SESSION ['guardian_userid'])){
-    
-	if (isset ( $_POST ['delete'] )) {
-		$delete_report_uuid = trim ( $_POST ['delete'] );
-		if(delete_report ( $delete_report_uuid )){
-			$variables ['successMessage'] = "Bericht gelöscht";
-		} else {
-			$variables ['alertMessage'] = "Bericht konnte nicht gelöscht werden";
-		}
+  
+if (isset ( $_POST ['delete'] )) {
+	$delete_report_uuid = trim ( $_POST ['delete'] );
+	if(delete_report ( $delete_report_uuid )){
+		$variables ['successMessage'] = "Bericht gelöscht";
+	} else {
+		$variables ['alertMessage'] = "Bericht konnte nicht gelöscht werden";
 	}
-	
-	$variables ['reports'] = get_reports();
 }
+
+$variables ['reports'] = get_reports();
 
 renderLayoutWithContentFile ($config["apps"]["guardian"], "reportOverview_template.php", $variables );
 

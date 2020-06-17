@@ -9,7 +9,7 @@ require_once LIBRARY_PATH . "/db_hydrant.php";
 $variables = array (
     'secured' => true,
     'showFormular' => true,
-    'right' => HYDRANTADMINISTRATOR
+    'privilege' => HYDRANTADMINISTRATOR
 );
 
 $variables ['engines'] = get_engines();

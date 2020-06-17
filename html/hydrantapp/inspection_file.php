@@ -10,8 +10,8 @@ if(isset($_GET['render']) && $_SERVER['HTTP_HOST'] == "localhost"){
     renderPDF($_GET['inspection']);
     
 } else {
-    if(	isset ( $_SESSION ['intranet_userid'] ) ){
-        if(!userHasRight(ENGINEHYDRANTMANANGER)){
+	if(	userLoggedIn() ){
+        if( ! current_user_has_privilege(ENGINEHYDRANTMANANGER)){
             showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
         } else if(isset($_GET['inspection'])){
             

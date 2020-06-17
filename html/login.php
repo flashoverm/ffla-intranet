@@ -4,7 +4,7 @@ require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/db_user.php";
 
 
-if (isset ( $_SESSION ['intranet_userid'] )) {
+if (userLoggedIn()) {
 	header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects
 }
 
@@ -19,16 +19,16 @@ if(isset($_SESSION["ref"])){
 	$variables ['infoMessage'] = "Bitte zuerst einloggen";
 }
 
-if (isset ( $_POST ['username'] ) && isset ( $_POST ['password'] )) {
+if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 
-    $username = strtolower(trim ( $_POST ['username'] ));
+    $email = strtolower(trim ( $_POST ['email'] ));
 	$password = trim ( $_POST ['password'] );
 
-	if (login_enabled ( $email )) {
-		$uuid = check_password ( $username, $password );
+	if (! is_locked ( $email )) {
+		$uuid = check_password ( $email, $password );
 		if ($uuid) {
 			$_SESSION ['intranet_userid'] = $uuid;
-			$_SESSION ['intranet_username'] = $username;
+			$_SESSION ['intranet_email'] = $email;
 			
 			if(isset($_SESSION["ref"]) && $_SESSION["ref"] != ""){
 				$ref = $_SESSION["ref"];
