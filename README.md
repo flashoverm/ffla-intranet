@@ -1,5 +1,5 @@
 # Intranet Feuerwehr Landshut
 
-Support for Google Maps (non static)
+Trello Board for collaboration:
 
-Hydranten hinzufügen/ändern: Stadtteil als Autovervollständigen
+https://trello.com/b/JHfXwwFF/intranet-feuerwehr-landshut
