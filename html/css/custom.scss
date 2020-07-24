@@ -44,6 +44,21 @@ body {
   text-align: center;
 }
 
+.select-cornered {
+	@extend .form-control;
+    outline: 0;
+	border: 0;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+.select-cornered:focus {
+	@extend .form-control:focus;
+    outline: 0;
+	border: 0;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+}
 .loader {
   	position: absolute;
   	left: 50%;

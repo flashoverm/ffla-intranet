@@ -21,25 +21,28 @@ $config = array (
     "apps" => array(
         "landing" => "",
         "files" => "filesapp",
-        "hydrant" => "hydrantapp"
-    ),
+        "hydrant" => "hydrantapp",
+		"guardian" => "guardianapp"
+	),
     "urls" => array (
         "intranet_home" => "/ffla-intranet/html",
         "filesapp_home" => "/ffla-intranet/html/files",
         "hydrantapp_home" => "/ffla-intranet/html/hydrant",
-        
+    	"guardianapp_home" => "/guardian/html/guardian",
+    		
         "files" => "/ffla-intranet/html/files",
         
         "base_url" => "http://localhost/ffla-intranet/html",
-        /* $_SERVER['HTTP_HOST'] */
     ),
     "paths" => array (
         "resources" => $_SERVER ['DOCUMENT_ROOT'] . "/resources/",
         "images" => array (
+        	"content" => $_SERVER ["DOCUMENT_ROOT"] . "/images/content",
             "layout" => $_SERVER ["DOCUMENT_ROOT"] . "/ffla-intranet/html/images/layout/"
         ),
         "files" => $_SERVER ["DOCUMENT_ROOT"] . "/ffla-intranet/resources/files/",
         "maps" => $_SERVER ["DOCUMENT_ROOT"] . "/ffla-intranet/resources/maps/",
+    	"reports" => $_SERVER ["DOCUMENT_ROOT"] . "/guardian/resources/reports/",
         "inspections" => $_SERVER ["DOCUMENT_ROOT"] . "/ffla-intranet/resources/inspections/",
         "nodejs" => "D:/runtimes/nodejs/node.exe"
     ),
@@ -58,7 +61,19 @@ $config = array (
         "zoom" => 18,   //range [0,20]
         "marker" => "/hydrant.png",
         "maptype" => "roadmap" 	//roadmap, satellite, hybrid, and terrain
-    )
+    ),
+	"settings" => array (
+			"reminderAtDay" => 10,                  //days before "not-full-reminder" is sent
+			"selfregistration" => true,                    //enables self registration of managers
+			"autoadmin" => true,                                   //manager is always admin
+			"reportfunction" => true,                               //enalbes function to create event report
+			"publicevents" => true,                                 //enables list of public events
+			"staffconfirmation" => true,
+			
+			"enginemgrmailonsubscription" => false,  //Send mail to all managers of the users engine  on subscription
+			"creatormailonsubscription" => true,    //Send mail to creator of the event (if event is full, a mail is always sent)
+			"usermailonsubscription" => true,               //Send mail to subscribing user on subscribing a event
+	)
 );
 
 $hydrant_criteria = array (
@@ -87,12 +102,21 @@ $hydrant_criteria = array (
 
 //Restrictions
 define("FILEADMIN", "FILEADMIN");
+
 define("FFADMINISTRATION", "FFADMINISTRATION");
+
 define("ENGINEHYDRANTMANANGER", "ENGINEHYDRANTMANANGER");
 define("HYDRANTADMINISTRATOR", "HYDRANTADMINISTRATOR");
 
+define("PORTALADMIN", "PORTALADMIN");
+
+define("EVENTMANAGER", "EVENTMANAGER");
+define("EVENTADMIN", "EVENTADMIN");
+
+
 //Mailing Lists
 define("INSPECTIONREPORT", "INSPECTIONREPORT");
+
 
 
 

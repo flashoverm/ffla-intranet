@@ -9,7 +9,7 @@ require_once LIBRARY_PATH . "/db_user.php";
 $variables = array(
 		'title' => "Prüfkandidaten",
 		'secured' => true,
-		'right' => ENGINEHYDRANTMANANGER
+		'privilege' => ENGINEHYDRANTMANANGER
 );
 
 //get hydrants by engine with last checkup not set or older than 6 years

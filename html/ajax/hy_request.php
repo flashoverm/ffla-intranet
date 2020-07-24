@@ -2,12 +2,11 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/config.php" );
 require_once LIBRARY_PATH . "/db_hydrant.php";
 require_once LIBRARY_PATH . "/db_user.php";
+require_once LIBRARY_PATH . "/util.php";
 
 session_start ();
 
-$user = isset ( $_SESSION ['intranet_userid'] );
-
-if(!$user){
+if(! userLoggedIn()){
     http_response_code(401);
 } else {
     if (isset($_GET['fid']) && isset($_GET['fieldid'])) {

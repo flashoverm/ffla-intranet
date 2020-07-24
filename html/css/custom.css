@@ -1397,7 +1397,7 @@ pre {
   .table-responsive > .table-bordered {
     border: 0; }
 
-.form-control {
+.form-control, .select-cornered {
   display: block;
   width: 100%;
   height: calc(2.25rem + 2px);
@@ -1411,25 +1411,25 @@ pre {
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }
   @media screen and (prefers-reduced-motion: reduce) {
-    .form-control {
+    .form-control, .select-cornered {
       transition: none; } }
-  .form-control::-ms-expand {
+  .form-control::-ms-expand, .select-cornered::-ms-expand {
     background-color: transparent;
     border: 0; }
-  .form-control:focus {
+  .form-control:focus, .select-cornered:focus {
     color: #495057;
     background-color: #fff;
     border-color: #f7392c;
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(157, 16, 6, 0.25); }
-  .form-control::placeholder {
+  .form-control::placeholder, .select-cornered::placeholder {
     color: #6c757d;
     opacity: 1; }
-  .form-control:disabled, .form-control[readonly] {
+  .form-control:disabled, .select-cornered:disabled, .form-control[readonly], [readonly].select-cornered {
     background-color: #e9ecef;
     opacity: 1; }
 
-select.form-control:focus::-ms-value {
+select.form-control:focus::-ms-value, select.select-cornered:focus::-ms-value {
   color: #495057;
   background-color: #fff; }
 
@@ -1486,10 +1486,10 @@ select.form-control:focus::-ms-value {
   line-height: 1.5;
   border-radius: 0.3rem; }
 
-select.form-control[size], select.form-control[multiple] {
+select.form-control[size], select[size].select-cornered, select.form-control[multiple], select[multiple].select-cornered {
   height: auto; }
 
-textarea.form-control {
+textarea.form-control, textarea.select-cornered {
   height: auto; }
 
 .form-group {
@@ -1556,18 +1556,20 @@ textarea.form-control {
   background-color: rgba(40, 167, 69, 0.9);
   border-radius: 0.25rem; }
 
-.was-validated .form-control:valid, .form-control.is-valid,
+.was-validated .form-control:valid, .was-validated .select-cornered:valid, .form-control.is-valid, .is-valid.select-cornered,
 .was-validated .custom-select:valid,
 .custom-select.is-valid {
   border-color: #28a745; }
-  .was-validated .form-control:valid:focus, .form-control.is-valid:focus,
+  .was-validated .form-control:valid:focus, .was-validated .select-cornered:valid:focus, .form-control.is-valid:focus, .is-valid.select-cornered:focus,
   .was-validated .custom-select:valid:focus,
   .custom-select.is-valid:focus {
     border-color: #28a745;
     box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25); }
-  .was-validated .form-control:valid ~ .valid-feedback,
-  .was-validated .form-control:valid ~ .valid-tooltip, .form-control.is-valid ~ .valid-feedback,
+  .was-validated .form-control:valid ~ .valid-feedback, .was-validated .select-cornered:valid ~ .valid-feedback,
+  .was-validated .form-control:valid ~ .valid-tooltip,
+  .was-validated .select-cornered:valid ~ .valid-tooltip, .form-control.is-valid ~ .valid-feedback, .is-valid.select-cornered ~ .valid-feedback,
   .form-control.is-valid ~ .valid-tooltip,
+  .is-valid.select-cornered ~ .valid-tooltip,
   .was-validated .custom-select:valid ~ .valid-feedback,
   .was-validated .custom-select:valid ~ .valid-tooltip,
   .custom-select.is-valid ~ .valid-feedback,
@@ -1631,18 +1633,20 @@ textarea.form-control {
   background-color: rgba(244, 26, 47, 0.9);
   border-radius: 0.25rem; }
 
-.was-validated .form-control:invalid, .form-control.is-invalid,
+.was-validated .form-control:invalid, .was-validated .select-cornered:invalid, .form-control.is-invalid, .is-invalid.select-cornered,
 .was-validated .custom-select:invalid,
 .custom-select.is-invalid {
   border-color: #f41a2f; }
-  .was-validated .form-control:invalid:focus, .form-control.is-invalid:focus,
+  .was-validated .form-control:invalid:focus, .was-validated .select-cornered:invalid:focus, .form-control.is-invalid:focus, .is-invalid.select-cornered:focus,
   .was-validated .custom-select:invalid:focus,
   .custom-select.is-invalid:focus {
     border-color: #f41a2f;
     box-shadow: 0 0 0 0.2rem rgba(244, 26, 47, 0.25); }
-  .was-validated .form-control:invalid ~ .invalid-feedback,
-  .was-validated .form-control:invalid ~ .invalid-tooltip, .form-control.is-invalid ~ .invalid-feedback,
+  .was-validated .form-control:invalid ~ .invalid-feedback, .was-validated .select-cornered:invalid ~ .invalid-feedback,
+  .was-validated .form-control:invalid ~ .invalid-tooltip,
+  .was-validated .select-cornered:invalid ~ .invalid-tooltip, .form-control.is-invalid ~ .invalid-feedback, .is-invalid.select-cornered ~ .invalid-feedback,
   .form-control.is-invalid ~ .invalid-tooltip,
+  .is-invalid.select-cornered ~ .invalid-tooltip,
   .was-validated .custom-select:invalid ~ .invalid-feedback,
   .was-validated .custom-select:invalid ~ .invalid-tooltip,
   .custom-select.is-invalid ~ .invalid-feedback,
@@ -1703,7 +1707,7 @@ textarea.form-control {
       flex-flow: row wrap;
       align-items: center;
       margin-bottom: 0; }
-    .form-inline .form-control {
+    .form-inline .form-control, .form-inline .select-cornered {
       display: inline-block;
       width: auto;
       vertical-align: middle; }
@@ -2418,34 +2422,38 @@ input[type="button"].btn-block {
   flex-wrap: wrap;
   align-items: stretch;
   width: 100%; }
-  .input-group > .form-control,
+  .input-group > .form-control, .input-group > .select-cornered,
   .input-group > .custom-select,
   .input-group > .custom-file {
     position: relative;
     flex: 1 1 auto;
     width: 1%;
     margin-bottom: 0; }
-    .input-group > .form-control + .form-control,
+    .input-group > .form-control + .form-control, .input-group > .select-cornered + .form-control, .input-group > .form-control + .select-cornered, .input-group > .select-cornered + .select-cornered,
     .input-group > .form-control + .custom-select,
+    .input-group > .select-cornered + .custom-select,
     .input-group > .form-control + .custom-file,
+    .input-group > .select-cornered + .custom-file,
     .input-group > .custom-select + .form-control,
+    .input-group > .custom-select + .select-cornered,
     .input-group > .custom-select + .custom-select,
     .input-group > .custom-select + .custom-file,
     .input-group > .custom-file + .form-control,
+    .input-group > .custom-file + .select-cornered,
     .input-group > .custom-file + .custom-select,
     .input-group > .custom-file + .custom-file {
       margin-left: -1px; }
-  .input-group > .form-control:focus,
+  .input-group > .form-control:focus, .input-group > .select-cornered:focus,
   .input-group > .custom-select:focus,
   .input-group > .custom-file .custom-file-input:focus ~ .custom-file-label {
     z-index: 3; }
   .input-group > .custom-file .custom-file-input:focus {
     z-index: 4; }
-  .input-group > .form-control:not(:last-child),
+  .input-group > .form-control:not(:last-child), .input-group > .select-cornered:not(:last-child),
   .input-group > .custom-select:not(:last-child) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0; }
-  .input-group > .form-control:not(:first-child),
+  .input-group > .form-control:not(:first-child), .input-group > .select-cornered:not(:first-child),
   .input-group > .custom-select:not(:first-child) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0; }
@@ -2500,7 +2508,7 @@ input[type="button"].btn-block {
   .input-group-text input[type="checkbox"] {
     margin-top: 0; }
 
-.input-group-lg > .form-control,
+.input-group-lg > .form-control, .input-group-lg > .select-cornered,
 .input-group-lg > .input-group-prepend > .input-group-text,
 .input-group-lg > .input-group-append > .input-group-text,
 .input-group-lg > .input-group-prepend > .btn,
@@ -2511,7 +2519,7 @@ input[type="button"].btn-block {
   line-height: 1.5;
   border-radius: 0.3rem; }
 
-.input-group-sm > .form-control,
+.input-group-sm > .form-control, .input-group-sm > .select-cornered,
 .input-group-sm > .input-group-prepend > .input-group-text,
 .input-group-sm > .input-group-append > .input-group-text,
 .input-group-sm > .input-group-prepend > .btn,
@@ -6812,6 +6820,18 @@ body {
   line-height: 40px;
   /* Vertically center the text there */
   text-align: center; }
+
+.select-cornered {
+  outline: 0;
+  border: 0;
+  box-shadow: none;
+  -webkit-box-shadow: none; }
+
+.select-cornered:focus {
+  outline: 0;
+  border: 0;
+  box-shadow: none;
+  -webkit-box-shadow: none; }
 
 .loader {
   position: absolute;

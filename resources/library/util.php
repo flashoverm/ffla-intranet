@@ -13,12 +13,17 @@ function showInfo($message) {
     echo "<div class=\"alert alert-secondary\" role=\"alert\">" . $message . "</div>";
 }
 
+function userLoggedIn(){
+	return isset ( $_SESSION ['intranet_userid'] );
+}
+
 function goToLogin(){
     global $config;
     
     $actual_link = "{$_SERVER['REQUEST_URI']}";
     $_SESSION["ref"] = $actual_link;
     header("Location: " . $config["urls"]["intranet_home"] . "/login"); // redirects
+    exit();
 }
 
 function endsWith($haystack, $needle)
@@ -29,4 +34,19 @@ function endsWith($haystack, $needle)
     }
     
     return (substr($haystack, -$length) === $needle);
+}
+
+function timeToHm ($time){
+	return substr($time, 0, strlen($time)-3);
+}
+
+function convertToWindowsCharset($string) {
+	$charset =  mb_detect_encoding(
+			$string,
+			"UTF-8, ISO-8859-1, ISO-8859-15",
+			true
+			);
+	
+	$string =  mb_convert_encoding($string, "Windows-1252", $charset);
+	return $string;
 }

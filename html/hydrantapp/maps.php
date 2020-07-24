@@ -4,7 +4,7 @@ require_once LIBRARY_PATH . "/util.php";
 
 session_start ();
 
-if(	isset ( $_SESSION ['intranet_userid'] ) ){
+if(	userLoggedIn() ){
     
     $fullpath = $config["paths"]["maps"] . basename($_GET['hydrant']) . ".png";
     

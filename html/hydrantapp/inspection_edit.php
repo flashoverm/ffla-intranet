@@ -12,7 +12,7 @@ require_once LIBRARY_PATH . "/class/HydrantInspection.php";
 $variables = array(
     'title' => "Prüfbericht erstellen",
     'secured' => true,
-    'right' => ENGINEHYDRANTMANANGER
+    'privilege' => ENGINEHYDRANTMANANGER
 );
 
 $user_engine = get_engine_of_user($_SESSION ['intranet_userid']);

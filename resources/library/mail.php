@@ -11,14 +11,16 @@ require_once "phpmailer/src/Exception.php";
 function init_mail() {
     global $config;
     
-   $mail = new PHPMailer ( true );
+	$mail = new PHPMailer ( true );
     $mail->isSMTP ();
     $mail->Host = $config ["mail"] ["host"];
     $mail->SMTPAuth = true;
-    $mail->Username = $config ["mail"] ["username"];
-    $mail->Password = $config ["mail"] ["password"];
-    $mail->SMTPSecure = $config ["mail"] ["secure"];
-    $mail->Port = $config ["mail"] ["port"];
+    if(isset($config ["mail"] ["username"])){
+    	$mail->Username = $config ["mail"] ["username"];
+    	$mail->Password = $config ["mail"] ["password"];
+    	$mail->SMTPSecure = $config ["mail"] ["secure"];
+    	$mail->Port = $config ["mail"] ["port"];
+    }
     $mail->setFrom ( $config ["mail"] ["fromaddress"], $config ["mail"] ["fromname"] );
     $mail->CharSet = 'utf-8';
     //$mail->SMTPDebug = 2;
@@ -55,12 +57,24 @@ function send_mail($to, $subject, $body, $attachment = NULL) {
 
 function send_mails($recipients, $subject, $body, $attachment = NULL) {
     $noError = true;
-    foreach ($recipients as $to) {
+    foreach (filter_deactivated($recipients) as $to) {
         if(!send_mail($to->email, $subject, $body, $attachment)){
             $noError = false;
         }
     }
     return $noError;
+}
+
+function filter_deactivated($unfiltered){
+    $filtered = array ();
+    
+    foreach ($unfiltered as $user) {
+        #User with password (registered) and login enabled, or unregiered user
+        if( ($user->loginenabled == 1 && isset($user->password) ) || !isset($user->password) ) {
+            $filtered [] = $user;
+        }
+    }
+    return $filtered;
 }
 
 function send_mail_to_mailing($mailing, $subject, $body, $attachment = NULL){

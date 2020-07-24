@@ -4,7 +4,7 @@ require_once LIBRARY_PATH . "/db_user.php";
 
 session_start ();
 
-if(userHasRight(FILEADMIN)){
+if(current_user_has_privilege(FILEADMIN)){
 	header ( "Location: " . $config["urls"]["filesapp_home"] . "/forms/admin" ); // redirects
 } else {
 	header ( "Location: " . $config["urls"]["filesapp_home"] . "/forms" ); // redirects

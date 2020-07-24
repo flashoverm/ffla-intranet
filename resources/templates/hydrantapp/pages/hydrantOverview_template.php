@@ -14,11 +14,11 @@ if (! count ( $hydrants )) {
 				<th data-sortable="true" class="text-center">Stadtteil</th>
 				<th data-sortable="true" class="text-center">Löschzug</th>
 				<th data-sortable="true" class="text-center">Typ</th>
-				<?php if(userHasRight(HYDRANTADMINISTRATOR)){
+				<?php if(current_user_has_privilege(HYDRANTADMINISTRATOR)){
 				    echo '<th data-sortable="true" class="text-center">Betrieb</th>';
 				}?>
 				<th class="text-center">Anzeigen</th>
-				<?php if(userHasRight(HYDRANTADMINISTRATOR)){
+				<?php if(current_user_has_privilege(HYDRANTADMINISTRATOR)){
 				    echo '<th class="text-center">Bearbeiten</th>';
 				}?>
 			</tr>
@@ -35,7 +35,7 @@ if (! count ( $hydrants )) {
 				<td class="text-center"><?= $row->district; ?></td>
 				<td class="text-center"><?= get_engine($row->engine)->name ?></td>
 				<td class="text-center"><?= $row->type; ?></td>
-				<?php if(userHasRight(HYDRANTADMINISTRATOR)){
+				<?php if(current_user_has_privilege(HYDRANTADMINISTRATOR)){
 				    echo '<td class="text-center">';
 				    if($row->operating){
 				        echo " &#10003; ";
@@ -47,7 +47,7 @@ if (! count ( $hydrants )) {
 				<td class="text-center">
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/". $row->hy; ?>">Anzeigen</a>
 				</td>
-				<?php if(userHasRight(HYDRANTADMINISTRATOR)){
+				<?php if(current_user_has_privilege(HYDRANTADMINISTRATOR)){
 				    echo '<td>
                             <a class="btn btn-primary btn-sm" href="' . $config["urls"]["hydrantapp_home"] . "/". $row->hy . '/edit">Bearbeiten</a>
                          </td>';

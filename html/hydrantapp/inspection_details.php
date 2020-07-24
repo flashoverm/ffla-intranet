@@ -10,7 +10,7 @@ require_once LIBRARY_PATH . "/class/HydrantInspection.php";
 $variables = array(
     'title' => "Prüfbericht",
     'secured' => true,
-    'right' => ENGINEHYDRANTMANANGER
+    'privilege' => ENGINEHYDRANTMANANGER
 );
 
 if(isset($_GET['inspection'])){
