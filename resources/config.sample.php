@@ -25,32 +25,32 @@ $config = array (
 		"guardian" => "guardianapp"
 	),
     "urls" => array (
-        "intranet_home" => "/ffla-intranet/html",
-        "filesapp_home" => "/ffla-intranet/html/files",
-        "hydrantapp_home" => "/ffla-intranet/html/hydrant",
-    	"guardianapp_home" => "/guardian/html/guardian",
+    	"intranet_home" => $url_prefix . "",
+    	"filesapp_home" => $url_prefix . "/files",
+    	"hydrantapp_home" => $url_prefix . "/hydrant",
+    	"guardianapp_home" => $url_prefix . "/guardian",
     		
-        "files" => "/ffla-intranet/html/files",
+    	"files" => $url_prefix . "/files",
         
-        "base_url" => "http://localhost/ffla-intranet/html",
+    	"base_url" => "http://127.0.0.1",
     ),
-    "paths" => array (
-        "resources" => $_SERVER ['DOCUMENT_ROOT'] . "/resources/",
-        "images" => array (
-        	"content" => $_SERVER ["DOCUMENT_ROOT"] . "/images/content",
-            "layout" => $_SERVER ["DOCUMENT_ROOT"] . "/ffla-intranet/html/images/layout/"
-        ),
-        "files" => $_SERVER ["DOCUMENT_ROOT"] . "/ffla-intranet/resources/files/",
-        "maps" => $_SERVER ["DOCUMENT_ROOT"] . "/ffla-intranet/resources/maps/",
-    	"reports" => $_SERVER ["DOCUMENT_ROOT"] . "/guardian/resources/reports/",
-        "inspections" => $_SERVER ["DOCUMENT_ROOT"] . "/ffla-intranet/resources/inspections/",
-        "nodejs" => "D:/runtimes/nodejs/node.exe"
-    ),
-    "formats" => array (
-        "date" => "d.m.Y",
-        "time" => "H:i",
-        "datetime" => "d.m.Y H:i"
-    ),
+	"paths" => array (
+		"resources" => $_SERVER ['DOCUMENT_ROOT'] . "/../resources/",
+		"images" => array (
+				"content" => $_SERVER ["DOCUMENT_ROOT"] . "/images/content",
+				"layout" => $_SERVER ["DOCUMENT_ROOT"] . "/images/layout/"
+		),
+		"files" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/files/",
+		"maps" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/maps/",
+		"inspections" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/inspections/",
+		"reports" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/reports/",
+		"nodejs" => "D:/runtimes/nodejs/node.exe"
+	),
+	"formats" => array (
+		"date" => "d.m.Y",
+		"time" => "H:i",
+		"datetime" => "d.m.Y H:i"
+	),
     "mapView" => array (
         "apiUrl" => "https://maps.googleapis.com/maps/api/staticmap",
         "apiKey" => "xxxxxxxxxx",

@@ -15,10 +15,7 @@ if(isset($_FILES['upload']) && isset($_POST['description'])){
     $description = trim($_POST['description']);
     
     //TODO check if file exists!
-    
-    //https://www.tutorialspoint.com/php/php_file_uploading.htm
-    //MAX: 32MB
-    
+
     if (!file_exists($config["paths"]["files"])) {
         mkdir($config["paths"]["files"], 0777, true);
     }

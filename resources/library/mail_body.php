@@ -4,7 +4,8 @@ require_once (realpath ( dirname ( __FILE__ ) . "/../config.php" ));
 $util = array (
 		
 		"head" => "Lieber Nutzer, \n\n",
-		"footer" => "\n\n\nIntranet der Freiwilligen Feuerwehr der Stadt Landshut\n\n" . $config ["urls"] ["base_url"] . $config ["urls"] ["intranet_home"]
+		"footer" => "\n\n\nIntranet der Freiwilligen Feuerwehr der Stadt Landshut\n\n" . $config ["urls"] ["base_url"] . $config ["urls"] ["intranet_home"],
+		"attachment_error" => "\n\n\n - Der Anhang ist aufgrund eines technischen Problems nicht verfügbar - "
 );
 
 $bodies = array (

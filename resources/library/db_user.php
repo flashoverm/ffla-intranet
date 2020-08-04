@@ -277,7 +277,7 @@ function update_user($uuid, $firstname, $lastname, $email, $engine) {
 	$result = $statement->execute();
 	
 	if ($result) {
-		return true;
+		return get_user($uuid);
 	} else {
 		// echo "Error: " . $query . "<br>" . $db->error;
 		return false;

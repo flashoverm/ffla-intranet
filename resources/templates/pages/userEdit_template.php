@@ -111,7 +111,7 @@
 							<div class="custom-control custom-checkbox mb-1">
 							  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->privilege ?>" name="priv_<?= $row->privilege ?>"
 							  <?php
-							  if(isset($user) && in_array($row->privilege, $users_privileges)){
+							  if( (isset($user) && in_array($row->privilege, $users_privileges)) || isset($_POST['priv_' . $row->privilege ])){
 							  	echo "checked";
 							  }
 							  ?>
