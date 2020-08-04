@@ -2,6 +2,26 @@
 Release Documentation
 ******************************
 
+##### V2.0.0
+
+Merge of guardian app into intranet
+
+Config-Update
+htaccess-Update
+
+Migration:
+	Merge development branch in master
+	Shutdown guardian webserver: apachectl stop
+	Dump guardian database: mysqldump -u root -p guardian > dump_guardian.sql
+	Move dump_guardian.sql to import-location
+	Shutdown intranet webserver
+	Pull master repo
+	Create new database "guardian_dump" and import dump
+	Change resource/config.php and html.htaccess (from sample)
+	Run migration script /resources/library/scripts/migrate_guardian.php
+	Start intranet webserver
+	
+	
 ##### V1.1.0
 
 Config:

@@ -7,7 +7,7 @@ require_once LIBRARY_PATH . "/db_files.php";
 $variables = array(
     'title' => "Formular-Verwaltung",
     'secured' => true,
-	'right' => FILEADMIN
+	'privilege' => FILEADMIN
 );
 
 

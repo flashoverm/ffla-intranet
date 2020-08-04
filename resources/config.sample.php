@@ -2,6 +2,8 @@
 
 //DONT FORGET TO CHANGE config.sample.php
 
+$url_prefix = "";
+
 $config = array (
     "db" => array (
         "dbname" => "ffintranet",
@@ -15,39 +17,42 @@ $config = array (
         "password" => "xxxxxxxxxx",
         "secure" => "ssl",
         "port" => 465,
-        "fromaddress" => "xxxxxxxxxx",
+        "fromaddress" => "intranet@feuerwehr-landshut.de",
         "fromname" => "Intranet Feuerwehr Landshut"
     ),
     "apps" => array(
         "landing" => "",
         "files" => "filesapp",
-        "hydrant" => "hydrantapp"
-    ),
+        "hydrant" => "hydrantapp",
+		"guardian" => "guardianapp"
+	),
     "urls" => array (
-        "intranet_home" => "/ffla-intranet/html",
-        "filesapp_home" => "/ffla-intranet/html/files",
-        "hydrantapp_home" => "/ffla-intranet/html/hydrant",
+    	"intranet_home" => $url_prefix . "",
+    	"filesapp_home" => $url_prefix . "/files",
+    	"hydrantapp_home" => $url_prefix . "/hydrant",
+    	"guardianapp_home" => $url_prefix . "/guardian",
+    		
+    	"files" => $url_prefix . "/files",
         
-        "files" => "/ffla-intranet/html/files",
-        
-        "base_url" => "http://localhost/ffla-intranet/html",
-        /* $_SERVER['HTTP_HOST'] */
+    	"base_url" => "http://127.0.0.1",
     ),
-    "paths" => array (
-        "resources" => $_SERVER ['DOCUMENT_ROOT'] . "/resources/",
-        "images" => array (
-            "layout" => $_SERVER ["DOCUMENT_ROOT"] . "/ffla-intranet/html/images/layout/"
-        ),
-        "files" => $_SERVER ["DOCUMENT_ROOT"] . "/ffla-intranet/resources/files/",
-        "maps" => $_SERVER ["DOCUMENT_ROOT"] . "/ffla-intranet/resources/maps/",
-        "inspections" => $_SERVER ["DOCUMENT_ROOT"] . "/ffla-intranet/resources/inspections/",
-        "nodejs" => "D:/runtimes/nodejs/node.exe"
-    ),
-    "formats" => array (
-        "date" => "d.m.Y",
-        "time" => "H:i",
-        "datetime" => "d.m.Y H:i"
-    ),
+	"paths" => array (
+		"resources" => $_SERVER ['DOCUMENT_ROOT'] . "/../resources/",
+		"images" => array (
+				"content" => $_SERVER ["DOCUMENT_ROOT"] . "/images/content",
+				"layout" => $_SERVER ["DOCUMENT_ROOT"] . "/images/layout/"
+		),
+		"files" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/files/",
+		"maps" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/maps/",
+		"inspections" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/inspections/",
+		"reports" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/reports/",
+		"nodejs" => "D:/runtimes/nodejs/node.exe"
+	),
+	"formats" => array (
+		"date" => "d.m.Y",
+		"time" => "H:i",
+		"datetime" => "d.m.Y H:i"
+	),
     "mapView" => array (
         "apiUrl" => "https://maps.googleapis.com/maps/api/staticmap",
         "apiKey" => "xxxxxxxxxx",
@@ -57,8 +62,21 @@ $config = array (
         "retina" => "2",
         "zoom" => 18,   //range [0,20]
         "marker" => "/hydrant.png",
-        "maptype" => "roadmap" 	//roadmap, satellite, hybrid, and terrain
-    )
+        "maptype" => "roadmap", 	//roadmap, satellite, hybrid, and terrain
+    	"defaultcoordinates" => "48.5441917,12.1468532",
+    ),
+	"settings" => array (
+			"reminderAtDay" => 10,                  //days before "not-full-reminder" is sent
+			"selfregistration" => false,                    //enables self registration of managers
+			"autoadmin" => true,                                   //manager is always admin
+			"reportfunction" => true,                               //enalbes function to create event report
+			"publicevents" => true,                                 //enables list of public events
+			"staffconfirmation" => true,
+			
+			"enginemgrmailonsubscription" => false,  //Send mail to all managers of the users engine  on subscription
+			"creatormailonsubscription" => true,    //Send mail to creator of the event (if event is full, a mail is always sent)
+			"usermailonsubscription" => true,               //Send mail to subscribing user on subscribing a event
+	)
 );
 
 $hydrant_criteria = array (
@@ -85,11 +103,6 @@ $hydrant_criteria = array (
     array(20,"Hydrant überteert"),
 );
 
-//Restrictions
-define("FILEADMIN", "FILEADMIN");
-define("FFADMINISTRATION", "FFADMINISTRATION");
-define("ENGINEHYDRANTMANANGER", "ENGINEHYDRANTMANANGER");
-define("HYDRANTADMINISTRATOR", "HYDRANTADMINISTRATOR");
 
 //Mailing Lists
 define("INSPECTIONREPORT", "INSPECTIONREPORT");

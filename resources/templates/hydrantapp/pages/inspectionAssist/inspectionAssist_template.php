@@ -286,7 +286,7 @@ function getHyToFid() {
         var id = getHyTabId();
 	    var fidField = getHydrantField(id, "h" + id + "fid");
 	    
-	    xhr.open('GET', '<?= $config["urls"]["hydrantapp_home"] ?>/ajax/hy/'+ fidField.value + "/field/" + id, true);
+	    xhr.open('GET', '<?= $config["urls"]["intranet_home"] ?>/ajax/hy/'+ fidField.value + "/field/" + id, true);
 	    xhr.setRequestHeader("Content-Type","text/plain");
 	    xhr.onreadystatechange = setHy;
 	    xhr.send(null);

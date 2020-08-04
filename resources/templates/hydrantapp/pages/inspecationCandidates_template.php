@@ -46,10 +46,15 @@ if (! count ( $hydrants )) {
 		</tbody>
 	</table>
 </div>
+<div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" id="toogleMaps" checked>
+  <label class="custom-control-label" for="toogleMaps">Verwende Google Maps</label>
+</div>
 <?php 
     if($mapURL != null){
-        echo "<img id='map' class='rounded mx-auto d-block mt-5' width='" . $config["mapView"]["widewidth"] . "' src='" . $mapURL . "'>";
+        echo "<img id='map' class='rounded mx-auto mt-5' width='" . $config["mapView"]["widewidth"] . "' src='" . $mapURL . "' style='display: none;'>";
     }
+    createHydrantGoogleMap($hydrants, true);
 }
 ?>
 
