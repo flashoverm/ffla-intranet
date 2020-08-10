@@ -59,23 +59,28 @@ if (! count ( $user )) {
 							}
 							?>
 							</form>
+							
 							<div class="dropdown-divider"></div>
 							<?php
 							if($row->password != null){
 							?>
 								<button type="button" class="dropdown-item" data-toggle="modal" data-target="#confirmReset<?= $row->uuid; ?>">Passwort zurücksetzen</button>
 							<?php 
-								createDialog('confirmReset' . $row->uuid, "Passwort wirklich zurücksetzen?", null, "resetpw", $row->uuid);
 							} else {
-								?>
+							?>
 								<button type="button" class="dropdown-item" data-toggle="modal" data-target="#confirmSet<?= $row->uuid; ?>">Passwort hinzufügen</button>
 							<?php 
-								createDialog('confirmSet' . $row->uuid, "Passwort für diesen Benutzer anlegen und Anmeldung freischalten?", null, "setpw", $row->uuid);
 							}
 							?>
 						</div>
 					</div>
-			
+					<?php
+					if($row->password != null){
+						createDialog('confirmReset' . $row->uuid, "Passwort wirklich zurücksetzen?", null, "resetpw", $row->uuid);
+					} else {
+						createDialog('confirmSet' . $row->uuid, "Passwort für diesen Benutzer anlegen und Anmeldung freischalten?", null, "setpw", $row->uuid);
+					}
+					?>
 				</td>
 			</tr>
 		<?php

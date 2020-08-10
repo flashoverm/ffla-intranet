@@ -69,7 +69,7 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 				}
 			} else {
 				if(! isset($_GET['uuid'])){
-					$variables ['alertMessage'] = "E-Mail-Adresse bereits mit anderem Namen/Zug in Verwendung! Bitte Eingaben kontrollieren oder Auswahl verwenden";
+					$variables ['alertMessage'] = "E-Mail-Adresse bereits mit anderem Namen/Zug in Verwendung!";
 					$exit = true;
 				}
 			}
@@ -101,6 +101,8 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 			} else {
 				$mail = mail_add_user($email, $password);
 				$variables ['successMessage'] = "Der Benutzer wurde angelegt und informiert";
+				unset($_POST);
+				unset($variables['user']);
 				if(!$mail){
 					$variables ['alertMessage'] = "E-Mail konnte nicht versendet werden";
 				}

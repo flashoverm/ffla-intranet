@@ -30,34 +30,43 @@ function init_mail() {
 function send_mail($to, $subject, $body, $attachment = NULL) {
     global $util;
     
-    try{
-        $mail = init_mail();
-        
-        $mail->addAddress ( $to );
-        $mail->Subject = $subject;
-        $mail->Body = $body . $util["footer"];
-       
-        if($attachment != NULL){
-            $mail->AddAttachment($attachment, $name = basename($attachment),  $encoding = 'base64', $type = 'application/pdf');
-        }
-    
-        if(!$mail->send ()){
-            throw new Exception;
-        }
-    }catch(Exception $e){
-        echo "<script language='javascript'>
-				alert('Eine E-Mail konnte nicht gesendet werden');
-			</script>";
-        return false;
+    if (filter_var($to, FILTER_VALIDATE_EMAIL)) {
+	    try{
+	        $mail = init_mail();
+	        
+	        $mail->addAddress ( $to );
+	        $mail->Subject = $subject;
+	        
+	        $mailBody = $body . $util["footer"];
+	       
+	        if($attachment != NULL){
+	        	if(file_exists ( basename($attachment) ) ){
+	        		$mail->AddAttachment($attachment, $name = basename($attachment),  $encoding = 'base64', $type = 'application/pdf');
+	        	} else {
+	        		$mailBody = $mailBody . $util["attachment_error"];
+	        	}
+	        }
+	        
+	        $mail->Body = $mailBody;
+	    
+	        if(!$mail->send ()){
+	            throw new Exception;
+	        }
+	    }catch(Exception $e){
+	    	echo $to . " - " . $e->getMessage();
+	        echo "<script language='javascript'>
+					alert('Eine E-Mail konnte nicht gesendet werden');
+				</script>";
+	        return false;
+	    }
     }
-    
     return true;
 }
 
 
 function send_mails($recipients, $subject, $body, $attachment = NULL) {
     $noError = true;
-    foreach (filter_deactivated($recipients) as $to) {
+    foreach (removeLockedUsers($recipients) as $to) {
         if(!send_mail($to->email, $subject, $body, $attachment)){
             $noError = false;
         }
@@ -65,17 +74,6 @@ function send_mails($recipients, $subject, $body, $attachment = NULL) {
     return $noError;
 }
 
-function filter_deactivated($unfiltered){
-    $filtered = array ();
-    
-    foreach ($unfiltered as $user) {
-        #User with password (registered) and login enabled, or unregiered user
-        if( ($user->loginenabled == 1 && isset($user->password) ) || !isset($user->password) ) {
-            $filtered [] = $user;
-        }
-    }
-    return $filtered;
-}
 
 function send_mail_to_mailing($mailing, $subject, $body, $attachment = NULL){
     $recipients = get_member($mailing);
@@ -87,4 +85,17 @@ function send_mail_to_mailing($mailing, $subject, $body, $attachment = NULL){
         }
     }
     return $noError;
+}
+
+function removeLockedUsers($recipients){
+	$filtered = array ();
+	
+	foreach ($recipients as $user) {
+		#User with password (registered) and login enabled, or unregiered user
+		if( ($user->locked == 0 && isset($user->password) ) || !isset($user->password) ) {
+			$filtered [] = $user;
+		}
+	}
+	
+	return $filtered;
 }

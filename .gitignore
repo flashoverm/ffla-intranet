@@ -8,3 +8,4 @@ resources/inspections/*
 resources/reports/*
 
 resources/library/puppeteer/node_modules/
+resources/library/puppeteer/package-lock.json

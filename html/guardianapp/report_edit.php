@@ -152,7 +152,6 @@ if (isset($_POST) && isset($_POST ['start'])) {
     	}
     } else {
     	//Insert
-    	echo $eventReport->toHTML();
     	$uuid = insert_report($eventReport);
     	if($uuid){
     		$eventReport->uuid = $uuid;

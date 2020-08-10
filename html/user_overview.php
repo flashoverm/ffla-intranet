@@ -9,7 +9,7 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 $variables = array (
 		'title' => "Übersicht Benutzer",
 		'secured' => true,
-		'privilege' => EVENTADMIN
+		'privilege' => PORTALADMIN
 );
 
 if (isset ( $_POST ['disable'] )) {
