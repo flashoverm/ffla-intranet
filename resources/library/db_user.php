@@ -7,8 +7,6 @@ require_once LIBRARY_PATH . "/db_user_guardian.php";
 create_table_user ();
 require_once LIBRARY_PATH . "/db_privilege.php";
 
-initialize_user();
-
 function insert_user($firstname, $lastname, $email, $password, $engine_uuid) {
 	global $db;
 
@@ -396,41 +394,38 @@ function create_table_user() {
 }
 
 function initialize_user(){
+			
+	$user = insert_eventadmin("Admin", "Admin", "admin@guardian.de", "admin", get_engine_from_name("Keine Zuordnung")->uuid);
+	add_privilege_to_user($user->uuid, PORTALADMIN);
 	
-	if(false){
-		
-		$user = insert_eventadmin("Admin", "Admin", "admin@guardian.de", "admin", get_engine_from_name("Keine Zuordnung")->uuid);
-		add_privilege_to_user($user->uuid, PORTALADMIN);
-		
-		insert_user("FF Landshut", "FF Landshut", "fflandshut", "ffla112", get_engine_from_name("Keine Zuordnung")->uuid);
-		
-		$user = insert_user("Fileadmin", "Fileadmin", "fffiles", "ffla112", get_engine_from_name("Keine Zuordnung")->uuid);
-		add_privilege_to_user($user->uuid, FILEADMIN);
-		
-		$user = insert_user("LZ 1/2", "LZ 1/2", "lz12", "daigfhrfd", get_engine_from_name("Löschzug 1/2")->uuid);
-		add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
-		$user = insert_user("LZ 3", "LZ 3", "lz3", "ddfgohwsfh", get_engine_from_name("Löschzug 3")->uuid);
-		add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
-		$user = insert_user("LZ 4", "LZ 4", "lz4", "sgfjgsksfn", get_engine_from_name("Löschzug 4")->uuid);
-		add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
-		$user = insert_user("LZ 5", "LZ 5", "lz5", "xvhkgdjdaf", get_engine_from_name("Löschzug 5")->uuid);
-		add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
-		$user = insert_user("LZ 6", "LZ 6", "lz6", "sfhkjgdusd", get_engine_from_name("Löschzug 6")->uuid);
-		add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
-		$user = insert_user("LZ 7", "LZ 7", "lz7", "fgdgfsdgfg", get_engine_from_name("Löschzug 7")->uuid);
-		add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
-		$user = insert_user("LZ 8", "LZ 8", "lz8", "gisksfghjo", get_engine_from_name("Löschzug 8")->uuid);
-		add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
-		$user = insert_user("LZ 9", "LZ 9", "lz9", "fdgisfghkh", get_engine_from_name("Löschzug 9")->uuid);
-		add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
-		$user = insert_user("Brandschutzzug", "Brandschutzzug", "bz", "asshzjfghli", get_engine_from_name("Brandschutzzug")->uuid);
-		add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
-		$user = insert_user("Verwaltung", "Verwaltung", "verwaltung", "ghjoeduldf", get_engine_from_name("Verwaltung")->uuid);
-		add_privilege_to_user($user->uuid, FFADMINISTRATION);
-		
-		$user = insert_user("Hydrantenadmin", "Hydrantenadmin", "hydrantenadmin", "sf0ihsfaoihf", get_engine_from_name("Keine Zuordnung")->uuid);
-		add_privilege_to_user($user->uuid, HYDRANTADMINISTRATOR);
-	}
+	insert_user("FF Landshut", "FF Landshut", "fflandshut", "ffla112", get_engine_from_name("Keine Zuordnung")->uuid);
+	
+	$user = insert_user("Fileadmin", "Fileadmin", "fffiles", "ffla112", get_engine_from_name("Keine Zuordnung")->uuid);
+	add_privilege_to_user($user->uuid, FILEADMIN);
+	
+	$user = insert_user("LZ 1/2", "LZ 1/2", "lz12", "daigfhrfd", get_engine_from_name("Löschzug 1/2")->uuid);
+	add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
+	$user = insert_user("LZ 3", "LZ 3", "lz3", "ddfgohwsfh", get_engine_from_name("Löschzug 3")->uuid);
+	add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
+	$user = insert_user("LZ 4", "LZ 4", "lz4", "sgfjgsksfn", get_engine_from_name("Löschzug 4")->uuid);
+	add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
+	$user = insert_user("LZ 5", "LZ 5", "lz5", "xvhkgdjdaf", get_engine_from_name("Löschzug 5")->uuid);
+	add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
+	$user = insert_user("LZ 6", "LZ 6", "lz6", "sfhkjgdusd", get_engine_from_name("Löschzug 6")->uuid);
+	add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
+	$user = insert_user("LZ 7", "LZ 7", "lz7", "fgdgfsdgfg", get_engine_from_name("Löschzug 7")->uuid);
+	add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
+	$user = insert_user("LZ 8", "LZ 8", "lz8", "gisksfghjo", get_engine_from_name("Löschzug 8")->uuid);
+	add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
+	$user = insert_user("LZ 9", "LZ 9", "lz9", "fdgisfghkh", get_engine_from_name("Löschzug 9")->uuid);
+	add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
+	$user = insert_user("Brandschutzzug", "Brandschutzzug", "bz", "asshzjfghli", get_engine_from_name("Brandschutzzug")->uuid);
+	add_privilege_to_user($user->uuid, ENGINEHYDRANTMANANGER);
+	$user = insert_user("Verwaltung", "Verwaltung", "verwaltung", "ghjoeduldf", get_engine_from_name("Verwaltung")->uuid);
+	add_privilege_to_user($user->uuid, FFADMINISTRATION);
+	
+	$user = insert_user("Hydrantenadmin", "Hydrantenadmin", "hydrantenadmin", "sf0ihsfaoihf", get_engine_from_name("Keine Zuordnung")->uuid);
+	add_privilege_to_user($user->uuid, HYDRANTADMINISTRATOR);
 }
 
 ?>
