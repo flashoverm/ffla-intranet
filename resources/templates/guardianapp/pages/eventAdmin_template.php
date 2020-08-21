@@ -25,7 +25,7 @@ if (!isset($events) || ! count ( $events ) ) {
 	foreach ( $events as $row ) {
 		?>
 				<tr>
-				<td class="text-center" data-sort="<?= strtotime($row->date) ?>"><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
+				<td class="text-center"><span><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
 				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
 				<td class="text-center">
 	<?php
@@ -103,7 +103,7 @@ if ( isset($pastEvents) && count ( $pastEvents )) {
 	foreach ( $pastEvents as $row ) {
 		?>
 				<tr>
-				<td class="text-center" data-sort="<?= strtotime($row->date) ?>"><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
+				<td class="text-center"><span><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
 				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
 				<td class="text-center">
 	<?php
@@ -178,7 +178,7 @@ if ( isset($deletedEvents) && count ( $deletedEvents )) {
 	foreach ( $deletedEvents as $row ) {
 		?>
 				<tr>
-				<td class="text-center" data-sort="<?= strtotime($row->date) ?>"><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
+				<td class="text-center"><span><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
 				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
 				<td class="text-center">
 	<?php

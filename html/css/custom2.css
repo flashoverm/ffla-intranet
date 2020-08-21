@@ -1,3 +1,9 @@
+/* Hide sortable value in tables */
+
+.table span{
+  display:none;
+}
+
 /* Hydrant assist styles */
 
 .tab-pane {

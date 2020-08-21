@@ -25,7 +25,7 @@ if (! count ( $reports )) {
 		foreach ( $reports as $row ) {
 		    ?>
 				<tr>
-				<td class="text-center" data-sort="<?= strtotime($row->date) ?>"><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
+				<td class="text-center"><span><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
 				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
 				<td class="text-center">
 	<?php

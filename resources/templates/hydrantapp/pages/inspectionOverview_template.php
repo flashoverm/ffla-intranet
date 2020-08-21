@@ -25,7 +25,7 @@ if (! count ( $inspections )) {
     foreach ( $inspections as $row ) {
         ?>
 			<tr>
-				<td class="text-center" data-sort="<?= strtotime($row->date) ?>"><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
+				<td class="text-center"><span><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
 				<td class="text-center"><?= get_engine($row->engine)->name; ?></td>
 				<td class="text-center"><?= $row->name; ?></td>
 				<td class="text-center"><?= $row->vehicle; ?></td>
