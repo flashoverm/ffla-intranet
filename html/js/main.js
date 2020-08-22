@@ -20,3 +20,15 @@ function closeOneModal(modalId) {
 		document.body.removeChild(modalBackdrops[0]);
 	}
 }
+
+function showHideElement(id, show){
+	var elem = document.getElementById(id);
+	if(elem != null){
+		if(show){
+			elem.style.display = "inline";
+		} else {
+			elem.style.display = "none";
+		}		
+		
+	}
+}

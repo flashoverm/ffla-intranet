@@ -217,7 +217,7 @@
         <div style="display:none;">
 				<input type='submit' id="reportSubmit"/>
 		</div>
-		<button type="button" id="submitReport" class="btn btn-primary" onClick='checkHydrantCount()'>Abschicken (Dialog)</button>
+		<button type="button" id="submitReport" class="btn btn-primary" onClick='checkHydrantCount()'>Abschicken</button>
 		<div class='modal fade' id='confirmSubmit'>
 			<div class='modal-dialog'>
 				<div class='modal-content'>
@@ -226,7 +226,7 @@
 						<h4 class='modal-title'>Prüfbericht abschicken</h4>
 						<button type='button' class='close' data-dismiss='modal'>&times;</button>
 					</div>
-					<div class='modal-body'>Es wurde nur ein Hydrant hinzugefügt. Prüfbericht trotzdem abschicken?<br><br>Weitere geprüfte Hydranten können mit dem Button "Hydrant hinzufügen" zu diesem Bericht hinzugefügt werden.</div>
+					<div class='modal-body'>Es wurde nur ein Hydrant hinzugefügt. Prüfbericht trotzdem abschicken?<br><br>Weitere geprüfte Hydranten können mit dem Button "Hydrant hinzufügen" oder dem "+" zu diesem Bericht hinzugefügt werden.</div>
 					<div class='modal-footer'>
 						<button type='button' class='btn btn-primary' onClick='processReportForm()'>Abschicken</button>
 						<button type='button' class='btn btn-outline-primary' data-dismiss='modal'>Abbrechen</button>
@@ -234,8 +234,6 @@
 				</div>
 			</div>
 		</div>
-        
-    	<input type="submit" value="Abschicken" class="btn btn-primary">    
     </div>
 </form>
 <script>
@@ -253,6 +251,7 @@ if(isset($inspection)) {
 var cCount = <?php echo sizeof($criteria)?>;
 
 rotateCorrection();
+showHideElement('submitReport', false);
 
 function checkHydrantCount() {
 	if(hy_count < 2){
@@ -357,6 +356,7 @@ function addHydrantOverview(){
 	}
 
 	template.parentNode.insertBefore(newHydrant, template);
+	showHideElement('submitReport', true);
 }
 
 function removeHydrantOverview(id){
@@ -365,6 +365,9 @@ function removeHydrantOverview(id){
 		if(element != null){
 			element.parentNode.removeChild(element);
 			hy_count --;
+			if(hy_count < 1){
+				showHideElement('submitReport', false);
+			}
 		}	
 	} else {
 		console.log("No hydrants to remove left");
