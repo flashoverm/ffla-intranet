@@ -82,6 +82,27 @@ function get_streets(){
     return $data;
 }
 
+function get_districts(){
+	global $db;
+	
+	$data = array ();
+	
+	$statement = $db->prepare("SELECT DISTINCT district FROM hydrant ORDER BY district");
+	if($statement){
+		if ($statement->execute()) {
+			$result = $statement->get_result();
+			
+			if (mysqli_num_rows ( $result )) {
+				while ( $date = $result->fetch_object () ) {
+					$data [] = $date->district;
+				}
+				$result->free ();
+			}
+		}
+	}
+	return $data;
+}
+
 function get_hydrants_of_engine($engine_uuid){
     global $db;
     

@@ -129,3 +129,21 @@
 	>
 	
 </form>
+
+<script>
+
+$(function() {
+    var availableTags = <?php echo json_encode(get_districts()); ?>;
+    $("#district").autocomplete({
+        source: availableTags
+    });
+});
+
+$(function() {
+    var availableTags = <?php echo json_encode(get_streets()); ?>;
+    $("#street").autocomplete({
+        source: availableTags
+    });
+});
+
+</script>
