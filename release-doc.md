@@ -2,6 +2,13 @@
 Release Documentation
 ******************************
 
+##### V2.1.0
+
+Some Bugfixes (e.g. date sorting)
+
+
+
+
 ##### V2.0.0
 
 Merge of guardian app into intranet

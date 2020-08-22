@@ -89,5 +89,5 @@ if (! isset($_GET['id'])) {
     	);
     }
 }
-renderLayoutWithContentFile($config["apps"]["guardian"], "eventDetails_template.php", $variables);
+renderLayoutWithContentFile($config["apps"]["guardian"], "eventDetails/eventDetails_template.php", $variables);
 ?>
