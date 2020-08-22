@@ -30,7 +30,7 @@ if (! count ( $hydrants )) {
 				<?php if(!isset($row->lastcheck)) {?>
 					<td class="text-center">Nie</td>
 				<?php } else { ?>			
-					<td class="text-center"><span><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->lastcheck)); ?></td>
+					<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->lastcheck)); ?></td>
 				<?php } ?>
 				
 				<td class="text-center"><?= $row->cycle; ?></td>

@@ -19,7 +19,7 @@ if (! count ( $files )) {
         ?>
 				<tr>
 				<td class="text-center"><?= $row->description; ?></td>
-				<td class="text-center"><span><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
+				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
 
 				<td class="text-center">
 					<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config ["urls"] ["files"] . "/" . $row->filename; ?>">Anzeigen</a>
