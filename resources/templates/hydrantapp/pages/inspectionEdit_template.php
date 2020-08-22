@@ -85,7 +85,8 @@
                                 <?php
                                 }
                                 ?>
-                                <th class="th-td-small">
+                                <th class="th-td-small text-center">
+									<button type="button" class="btn btn-sm btn-primary" onClick="addHydrantOverview()">+</button>
                     			</th>
                         </tr>
                     	</thead>
@@ -212,7 +213,29 @@
 	<a class="btn btn-primary" href="<?= $config ["urls"] ["hydrantapp_home"] ?>/inspection">Zurück</a>
     <div class="float-right">
         <button type="button" class="btn btn-primary"  onclick="addHydrantOverview()">Hydrant hinzufügen</button>
-    	<input type="submit" value="Speichern" class="btn btn-primary">    
+        
+        <div style="display:none;">
+				<input type='submit' id="reportSubmit"/>
+		</div>
+		<button type="button" id="submitReport" class="btn btn-primary" onClick='checkHydrantCount()'>Abschicken (Dialog)</button>
+		<div class='modal fade' id='confirmSubmit'>
+			<div class='modal-dialog'>
+				<div class='modal-content'>
+		
+					<div class='modal-header'>
+						<h4 class='modal-title'>Prüfbericht abschicken</h4>
+						<button type='button' class='close' data-dismiss='modal'>&times;</button>
+					</div>
+					<div class='modal-body'>Es wurde nur ein Hydrant hinzugefügt. Prüfbericht trotzdem abschicken?<br><br>Weitere geprüfte Hydranten können mit dem Button "Hydrant hinzufügen" zu diesem Bericht hinzugefügt werden.</div>
+					<div class='modal-footer'>
+						<button type='button' class='btn btn-primary' onClick='processReportForm()'>Abschicken</button>
+						<button type='button' class='btn btn-outline-primary' data-dismiss='modal'>Abbrechen</button>
+					</div>
+				</div>
+			</div>
+		</div>
+        
+    	<input type="submit" value="Abschicken" class="btn btn-primary">    
     </div>
 </form>
 <script>
@@ -230,6 +253,21 @@ if(isset($inspection)) {
 var cCount = <?php echo sizeof($criteria)?>;
 
 rotateCorrection();
+
+function checkHydrantCount() {
+	if(hy_count < 2){
+		 $("#confirmSubmit").modal() 
+	} else {
+		processReportForm();
+	}
+}
+
+function processReportForm() {
+	closeOneModal('confirmSubmit');
+    
+    var reportSubmit = document.getElementById('reportSubmit');
+    reportSubmit.click();
+}
 
 function rotateCorrection(){
 
