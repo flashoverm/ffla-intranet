@@ -6,6 +6,9 @@ Release Documentation
 
 Some Bugfixes (e.g. date sorting)
 
+Features:
+	Print button/view for events including QR-Codes
+	Validation (hiding buttons, dialog) of hydrant counts (none, just one) for inspections 
 
 
 
