@@ -32,3 +32,18 @@ function showHideElement(id, show){
 		
 	}
 }
+
+function generatePassword(){
+	return Math.random().toString(36).slice(-8);
+}
+
+function tooglePassword(id){
+	var element = document.getElementById(id);
+	if(element != null){
+		if(element.type === 'password'){
+			element.type = 'text';
+		} else {
+			element.type = "password";
+		}
+	}
+}

@@ -43,19 +43,25 @@
 	</div>
 	<?php 
 	if( ! isset($user)){
-	?>
+	?>	
 		<div class="form-group">
-			<label>Passwort:</label> <input type="password" class="form-control"
-				required="required" name="userpassword" id="userpassword"
-				placeholder="Passwort eingeben" autocomplete="new-password"
-				<?php
-				if(isset($_POST['userpassword'])){
-					echo "value='" . $_POST['userpassword'] . "'";
-				} else {
-					echo "value=''";
-				}
-				?>
-				>
+			<label>Passwort:</label> 
+			<div class="input-group mb-3">
+				<input type="password" class="form-control"
+					required="required" name="userpassword" id="userpassword"
+					placeholder="Passwort eingeben" autocomplete="new-password"
+					<?php
+					if(isset($_POST['userpassword'])){
+						echo "value='" . $_POST['userpassword'] . "'";
+					} else {
+						echo "value=''";
+					}
+					?>
+					>
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="button" onclick="generateAndShowPassword()" >Passwort generieren</button>
+					</div>
+			</div>
 		</div>
 		<div class="form-group">
 			<label>Passwort wiederholen:</label> <input type="password"
@@ -143,3 +149,19 @@
 	?>
 	>
 </form>
+<script>
+
+function generateAndShowPassword(){
+	var password = generatePassword();
+
+	var userpassword = document.getElementById('userpassword');
+	var userpassword2 = document.getElementById('userpassword2');
+
+	userpassword.value = password;
+	userpassword.type = "text";
+	userpassword2.value = password;
+	userpassword2.type = "text";
+}
+
+
+</script>
