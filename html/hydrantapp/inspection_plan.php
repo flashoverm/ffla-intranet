@@ -2,17 +2,7 @@
 require_once realpath(dirname(__FILE__) . "/../../resources/config.php");
 require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/db_inspection.php";
-require_once LIBRARY_PATH . "/db_user.php";
 
-
-// Pass variables (as an array) to template
-$variables = array(
-		'title' => "Hydrantenprüfung planen",
-		'secured' => true,
-		'privilege' => ENGINEHYDRANTMANANGER
-);
-
-//get hydrants by engine with last checkup not set or older than 6 years
 $hydrants = get_candidates_of_engine(get_engine_of_user($_SESSION ['intranet_userid']));
 
 
@@ -24,10 +14,12 @@ $mapUrl = $config["mapView"]["apiUrl"]
 . "&markers=color:red|label:H";
 
 foreach ( $hydrants as $hydrant ) {
-    $mapUrl = $mapUrl . "|" . $hydrant->lat . "," . $hydrant->lng . "";
+	$mapUrl = $mapUrl . "|" . $hydrant->lat . "," . $hydrant->lng . "";
 }
 
 $variables ['mapURL'] = $mapUrl;
 $variables ['hydrants'] = $hydrants;
 
-renderLayoutWithContentFile($config["apps"]["hydrant"], "inspecationCandidates_template.php", $variables);
+renderContentFile($config["apps"]["hydrant"], "inspectionPlan_template.php", $variables);
+
+?>

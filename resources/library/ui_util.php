@@ -33,10 +33,10 @@ function createDialog($id, $title, $name, $additionalValueName = null, $addition
 }
 
 
-function createHydrantGoogleMap($hydrants, $visable){
+function createHydrantGoogleMap($hydrants, $visable, $markerListener = true){
 	global $config;
 	?>
-	<div class="dynamic-map rounded mx-auto mt-5" id="dynamic-map" 
+	<div class="dynamic-map rounded mx-auto mt-2" id="dynamic-map" 
 	<?php
 	if($visable){
 		echo "style='display: block;'";
@@ -49,23 +49,27 @@ function createHydrantGoogleMap($hydrants, $visable){
 	<style>
 	.dynamic-map {
 		height: <?= $config['mapView']['height'] ?>px;
-		width: <?= $config['mapView']['widewidth'] ?>px;
+		width: 100%;
 	}
 	</style>
 	<script>
 	var checkbox = document.getElementById("toogleMaps");
-	checkbox.addEventListener( 'change', function() {
-		var googleMap = document.getElementById("dynamic-map");
-		var staticMap = document.getElementById("map");
-	    if(this.checked) {
-	    	googleMap.style.display = 'block';
-	    	staticMap.style.display = 'none';
-	    } else {
-	    	googleMap.style.display = 'none';
-	    	staticMap.style.display = 'block';
-	    }
-	});
+	if(checkbox != null){
+		checkbox.addEventListener( 'change', function() {
+			var googleMap = document.getElementById("dynamic-map");
+			var staticMap = document.getElementById("map");
+		    if(this.checked) {
+		    	googleMap.style.display = 'block';
+		    	staticMap.style.display = 'none';
+		    } else {
+		    	googleMap.style.display = 'none';
+		    	staticMap.style.display = 'block';
+		    }
+		});
+	}
 
+	var markerList = [];
+	
 	var locations = [
 	    <?php
     	foreach ( $hydrants as $row ) {
@@ -94,20 +98,31 @@ function createHydrantGoogleMap($hydrants, $visable){
 			var marker = new google.maps.Marker({
 				position: new google.maps.LatLng(locations[i][1], locations[i][2]),
 				map: map,
-				title: locations[i][0]
+				title: locations[i][0],
+				<?php if( ! $config["settings"]["useDefaultMapMarker"] ) {?>
+			    icon: '<?= $config["urls"]["intranet_home"] ?>/images/layout/map-icon-alt_sm.png',
+				label: {color: '#ffffff', fontSize: '11px', text: locations[i][0]},
+				hy: locations[i][0],
+				<?php } ?>
 			});
-			google.maps.event.addListener(marker, 'click', (function(marker, i) {
-				return function() {
-					infowindow.setContent("<a href='<?= $config["urls"]["hydrantapp_home"]?>/" + locations[i][0] + "'>Hy: " + locations[i][0] + "&nbsp;</a>");
-					infowindow.open(map, marker);
-				}
-			})(marker, i));
+			<?php
+			if($markerListener == true){
+			?>
+				google.maps.event.addListener(marker, 'click', (function(marker, i) {
+					return function() {
+						infowindow.setContent("<a href='<?= $config["urls"]["hydrantapp_home"]?>/" + locations[i][0] + "'>Hy: " + locations[i][0] + "&nbsp;</a>");
+						infowindow.open(map, marker);
+					}
+				})(marker, i));
+			<?php
+			}
+			?>
+			markerList[locations[i][0]] = marker;
 			bounds.extend(marker.getPosition());
-			
-			
 		}
 		map.fitBounds(bounds);
-		}
+		setListener();
+	}
 	</script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=<?= $config['mapView']['apiKey']?>&callback=initMap" async defer></script>
 	<?php 	

@@ -4,12 +4,17 @@ Release Documentation
 
 ##### V2.1.0
 
-Some Bugfixes (e.g. date sorting)
+Release-Notes:
+	Add Setting useDefaultMapMarker to config
+	Update .htaccess
+
+Bugfixes:
+	Date sorting
 
 Features:
 	Print button/view for events including QR-Codes
 	Validation (hiding buttons, dialog) of hydrant counts (none, just one) for inspections 
-
+	Autocomplete district/street in hydrant edit
 
 
 ##### V2.0.0

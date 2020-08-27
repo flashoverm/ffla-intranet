@@ -76,6 +76,7 @@ $config = array (
 			"enginemgrmailonsubscription" => false,  //Send mail to all managers of the users engine  on subscription
 			"creatormailonsubscription" => true,    //Send mail to creator of the event (if event is full, a mail is always sent)
 			"usermailonsubscription" => true,               //Send mail to subscribing user on subscribing a event
+			"useDefaultMapMarker" => false,
 	)
 );
 

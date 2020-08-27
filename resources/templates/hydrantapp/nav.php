@@ -30,7 +30,7 @@ function left_navigation ($loggedIn){
 				<a class='nav-link dropdown-toggle text-light mx-1' data-toggle='dropdown' href='#'>Hydrantenprüfung</a>
         		<div class='dropdown-menu bg-dark'>
 		        	<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/inspection'>Prüfungsübersicht</a>
-					<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/inspection/candidates'>Aktuelle Prüfobjekte</a>
+					<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/inspection/candidates'>Prüfung planen</a>
                     <a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/inspection/assist'>Neue Prüfung (Assistent)</a>
 		        	<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/inspection/edit'>Neue Prüfung</a>
 		        	<a class='dropdown-item text-light' target='_blank' href='" . $config ["urls"] ["filesapp_home"] . "/hydrant-form.pdf'>Download Formblatt</a>
