@@ -1,7 +1,7 @@
 <?php 
 require_once realpath(dirname(__FILE__) . "/../../../../config.php");
 
-if(isset($inspection)){
+if(isset($inspection) || isset($hydrants)){
 ?>
 <html>
 	<?php require_once TEMPLATES_PATH . "/head.php";?>

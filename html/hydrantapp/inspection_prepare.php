@@ -7,7 +7,7 @@ require_once LIBRARY_PATH . "/db_user.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-		'title' => "Prüfkandidaten",
+		'title' => "Hydrantenprüfung planen",
 		'secured' => true,
 		'privilege' => ENGINEHYDRANTMANANGER
 );
@@ -30,4 +30,4 @@ foreach ( $hydrants as $hydrant ) {
 $variables ['mapURL'] = $mapUrl;
 $variables ['hydrants'] = $hydrants;
 
-renderLayoutWithContentFile($config["apps"]["hydrant"], "inspecationCandidates_template.php", $variables);
+renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionPrepare_template.php", $variables);
