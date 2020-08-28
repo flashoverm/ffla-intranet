@@ -20,6 +20,6 @@ if(isset($_POST['hydrants'])){
 
 $variables ['hydrants'] = $hydrants;
 
-renderContentFile($config["apps"]["hydrant"], "inspectionMap_template.php", $variables);
+renderContentFile($config["apps"]["hydrant"], "inspectionPlan_template.php", $variables);
 
 ?>

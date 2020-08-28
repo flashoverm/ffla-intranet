@@ -101,7 +101,7 @@ if (! count ( $hydrants )) {
 	</div>
 
 	<div id="buttonRow">
-		<input type="submit" class="btn btn-primary" value="Karte anzeigen" formaction="<?= $config["urls"]["hydrantapp_home"] ?>/inspection/map">
+		<input type="submit" class="btn btn-primary" value="Karte anzeigen" formaction="<?= $config["urls"]["hydrantapp_home"] ?>/inspection/plan">
 	</div>
 </form>
 

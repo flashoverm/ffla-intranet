@@ -7,15 +7,20 @@
 			<th class="th-td-padding text-left">Fahrzeug</th>
 		</tr>
 		<tr>
-			<td class="th-td-padding"><?= date($config ["formats"] ["date"], strtotime($inspection->date)); ?></td>
-			<td class="th-td-padding"><?= get_engine($inspection->engine)->name; ?></td>
-			<td class="th-td-padding"><?= $inspection->name ?></td>
+			<td class="th-td-padding"><?= isset($inspection) ? date($config ["formats"] ["date"], strtotime($inspection->date)) : "&nbsp;" ?></td>
+			<td class="th-td-padding"><?= isset($inspection) ? get_engine($inspection->engine)->name : "&nbsp;" ?></td>
+			<td class="th-td-padding"><?= isset($inspection) ? $inspection->name : "&nbsp;" ?></td>
 			<td class="th-td-padding">
-					<?php if($inspection->vehicle == "") {
-        			    echo " - ";
-        			} else {
-        			    echo $inspection->vehicle;
-        			}
+					<?php 
+					if(isset($inspection)){
+						if($inspection->vehicle == "") {
+							echo " - ";
+						} else {
+							echo $inspection->vehicle;
+						}
+					}else{
+						echo "&nbsp;";
+					}
         			?>
 			</td>
 		</tr>
@@ -96,10 +101,15 @@
 		</tr>
 		<tr>
 			<td colspan="4" class="th-td-padding">
-			<?php if($inspection->notes == "") {
-			    echo "Keine";
+			<?php
+			if(isset($inspection)){
+				if($inspection->notes == "") {
+					echo "Keine";
+				} else {
+					echo nl2br($inspection->notes);
+				}
 			} else {
-			    echo nl2br($inspection->notes);
+				echo "&nbsp;";
 			}
 			?>
 			</td>
