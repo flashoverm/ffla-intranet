@@ -1,7 +1,7 @@
 <?php
 
 function generateTableRow($row, $rowIdPrefix = 'candidate'){
-?>
+	?>
 	<tr id='<?= $rowIdPrefix . $row->hy; ?>'>
 	<td class="text-center"><?= $row->hy; ?></td>
 		<td class="text-center"><?= $row->fid; ?></td>
@@ -79,7 +79,7 @@ if (! count ( $hydrants )) {
 
 <h2 class="mt-5 mb-2">Ausgewählte Hydranten</h2>
 
-<form onsubmit="showLoader()" method="post" target="_blank">
+<form method="post" target="_blank">
 
 	<div class="table-responsive form-group" >
 		<table class="table table-striped" data-toggle="table" id="selected">
@@ -101,7 +101,7 @@ if (! count ( $hydrants )) {
 	</div>
 
 	<div id="buttonRow">
-		<input type="submit" class="btn btn-primary" value="Karte anzeigen" formaction="<?= $config["urls"]["hydrantapp_home"] ?>/inspection/plan">
+		<input type="submit" class="btn btn-primary" value="Karte anzeigen" formaction="<?= $config["urls"]["hydrantapp_home"] ?>/inspection/map">
 	</div>
 </form>
 

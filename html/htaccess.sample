@@ -7,8 +7,8 @@ RewriteEngine on
 #RewriteRule ^(.*)guardian/(.*)?$ 					$1guardianapp/$2 [L]
 
 
+RewriteRule ^(.*)hydrant/inspection/map/?$ 		$1/hydrantapp/inspection_map.php
 RewriteRule ^(.*)hydrant/inspection/plan/?$ 		$1/hydrantapp/inspection_plan.php
-RewriteRule ^(.*)hydrant/inspection/candidates/?$ 		$1/hydrantapp/inspection_candidates.php
 RewriteRule ^(.*)hydrant/inspection/assist/?$ 			$1/hydrantapp/inspection_assist.php
 RewriteRule ^(.*)hydrant/inspection/file/([^/]+)/render?$ 	$1/hydrantapp/inspection_file.php?inspection=$2&render=true
 RewriteRule ^(.*)hydrant/inspection/file/([^/]+)/?$ 	$1/hydrantapp/inspection_file.php?inspection=$2

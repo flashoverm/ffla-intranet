@@ -30,4 +30,4 @@ foreach ( $hydrants as $hydrant ) {
 $variables ['mapURL'] = $mapUrl;
 $variables ['hydrants'] = $hydrants;
 
-renderLayoutWithContentFile($config["apps"]["hydrant"], "inspecationCandidates_template.php", $variables);
+renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionPrepare_template.php", $variables);

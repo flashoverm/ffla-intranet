@@ -82,6 +82,13 @@ function createHydrantGoogleMap($hydrants, $visable, $markerListener = true){
 	function initMap() {
 		var center = new google.maps.LatLng(<?= $config['mapView']['defaultcoordinates'] ?>);
 		var mapOptions = {
+				  styles: [{
+			            featureType: "poi",
+			            elementType: "labels",
+			            stylers: [
+			                  { visibility: "off" }
+			          	]
+					}],
 				  zoom: <?= $config['mapView']['zoom'] ?>,
 				  center: center
 				};
