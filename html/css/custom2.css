@@ -5,13 +5,17 @@
     size: auto;   /* auto is the initial value */
     size: A4 portrait;
     margin: 0;  /* this affects the margin in the printer settings */
-    border: 1px solid red;  /* set a border for all printed pages */
+  }
+  body {
+  	margin: 15mm;
   }
 }
 
-.print{
-	margin: 15mm;
+.landscape {
+  width: 29.7cm;
+  height: 21cm;  
 }
+
 
 /* Hydrant assist styles */
 

@@ -27,7 +27,7 @@ if(isset($_GET['render'])){
 		if($error){
 			echo $error;
 		} else {
-			//prepareResponse($fullpath, $uuid);
+			prepareResponse($fullpath, $uuid);
 		}
 	} else {
 		showAlert("Wach-ID nicht übergeben");

@@ -8,10 +8,10 @@ if(isset($event)){
 	
 	<script type="text/javascript">
 	window.print();
-	window.onfocus=function(){ window.close();}
+	//window.onfocus=function(){ window.close();}
 	</script>
 	
-	<body class="print">
+	<body class="print-portrait">
 		<div>
 		<div class="row">
 			<div class="col">
@@ -36,8 +36,8 @@ if(isset($event)){
 					</tr>
 
 					<tr>
-						<td><img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=<?= urlencode($config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/".$event->uuid) ?>&choe=UTF-8" title="Wachlink" /></td>
-						<td><img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=<?= urlencode($config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/".$event->uuid) ?>&choe=UTF-8" title="Wachlink" /></td>
+						<td><img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=<?= urlencode($config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/".$event->uuid) ?>&choe=UTF-8" title="Wachlink" /></td>
+						<td><img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=<?= urlencode($config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/".$event->uuid) ?>&choe=UTF-8" title="Wachlink" /></td>
 					</tr>
 					<tr>
 						<td><?= $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/<br>".$event->uuid ?></td>

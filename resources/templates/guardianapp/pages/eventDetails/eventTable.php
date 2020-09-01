@@ -2,6 +2,10 @@
 	<table class="table table-bordered">
 		<tbody>
 			<tr>
+				<th colspan="1">Titel</th>
+				<td colspan="2"><?= $event->title; ?></td>
+			</tr>
+			<tr>
 				<th>Datum</th>
 				<th>Wachbeginn</th>
 				<th>Ende</th>
@@ -16,9 +20,6 @@
 					echo " - ";
 				}
 				?></td>
-			</tr>
-			<tr>
-				<th colspan="3"><?= $event->title; ?></th>
 			</tr>
 			<tr>
 				<td colspan="3"><?= $event->comment; ?></td>

@@ -5,7 +5,7 @@ if(isset($report)){
 ?>
 <html>
 	<?php require_once TEMPLATES_PATH . "/head.php";?>
-	<body>
+	<body class="print-portrait">
 		<div>
 		<div class="row">
 			<div class="col">

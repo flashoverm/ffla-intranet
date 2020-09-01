@@ -6,7 +6,7 @@ require_once LIBRARY_PATH . "/db_inspection.php";
 require_once LIBRARY_PATH . "/util.php";
 require_once LIBRARY_PATH . "/inspection_file_create.php";
 
-if(isset($_GET['render']) && $_SERVER['HTTP_HOST'] == "localhost"){
+if(isset($_GET['render'])){
     renderPDF($_GET['inspection']);
     
 } else {

@@ -23,6 +23,9 @@
 	<script type="text/javascript" src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.4/locale/bootstrap-table-de-DE.min.js"></script>
 
+	<!-- HTML2Canvas -->
+	<script type="text/javascript" src="<?= $config["urls"]["intranet_home"] ?>/js/html2canvas.min.js"></script>
+
 	<!-- FFLA Intranet CSS/JS -->
 	<script type="text/javascript" src="<?= $config["urls"]["intranet_home"] ?>/js/main.js"></script>
 	<link rel="stylesheet" type="text/css" href='<?= $config["urls"]["intranet_home"] ?>/css/custom2.css'>

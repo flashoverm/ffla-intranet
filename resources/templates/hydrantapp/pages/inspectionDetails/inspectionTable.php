@@ -1,3 +1,34 @@
+<?php 
+function addHydrantRow($hydrant, $criteria, $idx){
+	?>
+	<tr id="hydrant<?= $idx ?>">
+		<td class="th-td-small align-middle text-center" id="hlfd"><?= $idx ?></td>
+		<td class="th-td-small align-middle text-center" ><?= $hydrant->hy ?></td>
+		<td class="th-td-small align-middle text-center"> 
+			<?php  if($hydrant->type == 'overfloor') { echo "<b>X</b>"; } ?>
+		</td>
+		<td class="th-td-small align-middle text-center">
+			<?php  if($hydrant->type == 'underfloor') { echo "<b>X</b>"; } ?>                      			
+		</td>
+		<?php
+		for ($count = 0; $count < sizeof($criteria); $count ++) {
+		?>
+			<td class="th-td-small align-middle text-center">
+				<?php  
+				if(isset($hydrant->criteria) && $hydrant->criteria[$count]->value == true){
+						echo "<b>X</b>"; 
+				} else {
+					echo "&nbsp;";
+				}?>                      			
+			</td>
+		<?php
+		}
+		?>
+	</tr>
+<?php 
+}
+?>
+
 <table class="table table-bordered">
 	<tbody>
 		<tr>
@@ -68,28 +99,12 @@
                 	<?php 
                 		if(isset($inspection)){
                 		    foreach ($inspection->hydrants as $hydrant) {
-                		        ?>
-        						<tr id="hydrant<?= $hydrant->idx ?>">
-                        			<td class="th-td-small align-middle text-center" id="hlfd"><?= $hydrant->idx ?></td>
-                        			<td class="th-td-small align-middle text-center" ><?= $hydrant->hy ?></td>
-                        			<td class="th-td-small align-middle text-center"> 
-                    					<?php  if($hydrant->type == 'overfloor') { echo "<b>X</b>"; } ?>
-                                    </td>
-                        			<td class="th-td-small align-middle text-center">
-                      					<?php  if($hydrant->type == 'underfloor') { echo "<b>X</b>"; } ?>                      			
-                                    </td>
-                        			<?php
-                                    for ($count = 0; $count < sizeof($criteria); $count ++) {
-                                    ?>
-                                    	<td class="th-td-small align-middle text-center">
-                                            <?php  if($hydrant->criteria[$count]->value == true) { echo "<b>X</b>"; } ?>                      			
-                                    	</td>
-                                    <?php
-                                    }
-                                    ?>
-                        		</tr>
-                		        <?php 
+                		    	addHydrantRow($hydrant, $criteria, $hydrant->idx);
                 		    }
+                		} else if (isset($hydrants)){
+                			foreach ($hydrants as $key=>$hydrant) {
+                				addHydrantRow($hydrant, $criteria, $key+1);
+                			}
                 		}
                 		?> 
                 	</tbody>
