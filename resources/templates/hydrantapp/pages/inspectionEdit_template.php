@@ -69,7 +69,7 @@
                                 <?php
                                 for ($count = 0; $count < sizeof($criteria); $count ++) {
                                     ?>
-                              	<th class="th-td-small">
+                              	<th class="th-td-small  font-weight-normal">
                               		<div id="doc<?= $count ?>">
                                   		<div class="element-to-rotate" id="dc<?= $count ?>">
                                   			<?php
