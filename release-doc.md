@@ -16,6 +16,8 @@ Features:
 	Print button/view for events including QR-Codes
 	Validation (hiding buttons, dialog) of hydrant counts (none, just one) for inspections 
 	Autocomplete district/street in hydrant edit
+	Plan inspection feature
+	Show password on password fields
 
 
 ##### V2.0.0
