@@ -1,40 +1,28 @@
-<?php
-if (! count ( $hydrants )) {
-	showInfo ( "Keine Hydranten ausgewählt" );
-} else {
-?>
-	<html>
-		<?php 
-		require_once TEMPLATES_PATH . "/head.php";
-		setPrintToLandscape();
+<?php 
+require_once realpath(dirname(__FILE__) . "/../../../config.php");
+
+if(isset($inspection) || isset($hydrants)){
+	
+	if (! count ( $hydrants )) {
+		showInfo ( "Keine Hydranten ausgewählt" );
+	} else {
+	?>
+	<script>
+		document.body.style.width='27.7cm';
+		document.body.classList.remove("landscape");
+		$('html,body').scrollTop(0);
+	</script>
+	<div class='landscape' style='padding-bottom: 10mm'>
+		<?php
+		require_once TEMPLATES_PATH . "/hydrantapp/pages/inspectionDetails/inspectionTable.php";
 		?>
-		<body>
-			<div id="overlay" style="display:inline;">
-		 		<div class="loader"></div>
-		 	</div>
-		 	
-			<div class="print landscape">
-				<?php
-				global $hydrant_criteria;
-				
-				$variables = array(
-						'title' => "Prüfbericht",
-						'criteria' => $hydrant_criteria,
-						'hydrants' => 	$hydrants
-				);
-				
-				renderContentFile($config["apps"]["hydrant"], "inspectionDetails/inspectionPDF_template.php", $variables);
-				?>
-			</div>
-
-		 	<div class="print landscape" id="mapplaceholder">
-				<?php		
-				createHydrantGoogleMap($hydrants, true, true, '100%', '100%', true);
-				?>
-			</div>
-
-		</body>
-	</html>
+	</div>
+ 	<div class='landscape' id="mapplaceholder" style='padding-top: 10mm'>
+		<?php		
+		createHydrantGoogleMap($hydrants, true, true, '100%', '100%', true);
+		?>
+	</div>
 	<?php
+	}
 }
 ?>

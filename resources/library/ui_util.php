@@ -2,14 +2,11 @@
 function setPrintToLandscape(){ ?>
 	<style>
 		@media print{
-		  @page {
-		    size: auto;   /* auto is the initial value */
-		    size: A4 landscape;
-		    margin: 0;  /* this affects the margin in the printer settings */
-		  }
-		  body {
-		  	margin: 15mm;
-		  }
+			@page {
+				size: auto;   /* auto is the initial value */
+				size: A4 landscape;
+				margin: 0;  /* this affects the margin in the printer settings */
+			}
 		}
 	</style>
 <?php
@@ -147,14 +144,13 @@ function createHydrantGoogleMap($hydrants, $visable, $markerListener = true, $he
 			html2canvas($( "#dynamic-map")[0], {
 				useCORS: true
 				}).then(canvas => {
-				var map = $("#dynamic-map");
-				var bdy = document.getElementById("mapplaceholder");
-				var image = document.createElement("img");
-				image.src = canvas.toDataURL("image/jpeg");
-				bdy.appendChild(image);
-				
-			    map.toggleClass('d-none');
-			    bdy.style.margin = null;
+					
+					var map = $("#dynamic-map");
+					var bdy = document.getElementById("mapplaceholder");
+					var image = document.createElement("img");
+					image.src = canvas.toDataURL("image/jpeg");
+					bdy.appendChild(image);
+				    map.toggleClass('d-none');
 			});
 		});	
 		<?php } ?>

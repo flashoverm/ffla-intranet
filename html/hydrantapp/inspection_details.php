@@ -31,5 +31,3 @@ if(isset($_GET['inspection'])){
 $variables['criteria'] = $hydrant_criteria;
 
 renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionDetails/inspectionDetails_template.php", $variables);
-
-//renderContentFile($config["apps"]["hydrant"], "inspectionDetails/inspectionPDF_template.php", $variables);

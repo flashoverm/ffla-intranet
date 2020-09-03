@@ -57,8 +57,9 @@ function renderPDF(){
     $variables = array(
         'title' => "Prüfbericht",
         'inspection' => get_inspection($_GET['inspection']),
-        'criteria' => $hydrant_criteria
+        'criteria' => $hydrant_criteria,
+    	'orientation' => 'landscape'
     );
     
-    renderContentFile($config["apps"]["hydrant"], "inspectionDetails/inspectionPDF_template.php", $variables);
+    renderPrintContentFile($config["apps"]["hydrant"], "inspectionDetails/inspectionPDF_template.php", $variables);
 }

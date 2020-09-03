@@ -32,16 +32,16 @@ function addHydrantRow($hydrant, $criteria, $idx){
 <table class="table table-bordered">
 	<tbody>
 		<tr>
-			<th class="th-td-padding text-left">Datum</th>
-			<th class="th-td-padding text-left">Löschzug</th>
-			<th class="th-td-padding text-left">Name(n)</th>
-			<th class="th-td-padding text-left">Fahrzeug</th>
+			<th class="th-td-padding text-left th-td-small">Datum</th>
+			<th class="th-td-padding text-left th-td-small">Löschzug</th>
+			<th class="th-td-padding text-left th-td-small">Name(n)</th>
+			<th class="th-td-padding text-left th-td-small">Fahrzeug</th>
 		</tr>
 		<tr>
-			<td class="th-td-padding"><?= isset($inspection) ? date($config ["formats"] ["date"], strtotime($inspection->date)) : "&nbsp;" ?></td>
-			<td class="th-td-padding"><?= isset($inspection) ? get_engine($inspection->engine)->name : "&nbsp;" ?></td>
-			<td class="th-td-padding"><?= isset($inspection) ? $inspection->name : "&nbsp;" ?></td>
-			<td class="th-td-padding">
+			<td class="th-td-padding th-td-small"><?= isset($inspection) ? date($config ["formats"] ["date"], strtotime($inspection->date)) : "&nbsp;" ?></td>
+			<td class="th-td-padding th-td-small"><?= isset($inspection) ? get_engine($inspection->engine)->name : "&nbsp;" ?></td>
+			<td class="th-td-padding th-td-small"><?= isset($inspection) ? $inspection->name : "&nbsp;" ?></td>
+			<td class="th-td-padding th-td-small">
 					<?php 
 					if(isset($inspection)){
 						if($inspection->vehicle == "") {
@@ -83,7 +83,7 @@ function addHydrantRow($hydrant, $criteria, $idx){
                             <?php
                             for ($count = 0; $count < sizeof($criteria); $count ++) {
                                 ?>
-                          	<th class="th-td-small">
+                          	<th class="th-td-small" style="font-weight: normal;">
                           		<div id="doc<?= $count ?>">
                               		<div class="element-to-rotate" id="dc<?= $count ?>">
                               			<?= $criteria[$count][0] . ": " . $criteria[$count][1] ?>
@@ -112,10 +112,10 @@ function addHydrantRow($hydrant, $criteria, $idx){
             </td>
 		</tr>
 		<tr>
-			<th colspan="4" class="th-td-padding text-left">Hinweise</th>
+			<th colspan="4" class="th-td-padding text-left th-td-small">Hinweise</th>
 		</tr>
 		<tr>
-			<td colspan="4" class="th-td-padding">
+			<td colspan="4" class="th-td-padding th-td-small">
 			<?php
 			if(isset($inspection)){
 				if($inspection->notes == "") {

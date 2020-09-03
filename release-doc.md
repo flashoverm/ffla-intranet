@@ -6,6 +6,7 @@ Release Documentation
 
 Release-Notes:
 	Add Setting useDefaultMapMarker to config
+	Update inspection criteria 8
 	Update .htaccess
 
 Bugfixes:

@@ -61,7 +61,8 @@ function renderPDF(){
         'title' => "Wachbericht",
         'report' => get_report($_GET['report']),
         'units' => get_report_units($_GET['report']),
+    	'orientation' => 'portrait'
     );
     
-    renderContentFile($config["apps"]["guardian"], "reportDetails/reportPDF_template.php", $variables);
+    renderPrintContentFile($config["apps"]["guardian"], "reportDetails/reportPDF_template.php", $variables);
 }

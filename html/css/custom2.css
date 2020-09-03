@@ -1,19 +1,29 @@
 /* Print */
 
 @media print{
-  @page {
-    size: auto;   /* auto is the initial value */
-    size: A4 portrait;
-    margin: 0;  /* this affects the margin in the printer settings */
-  }
-  body {
-  	margin: 15mm;
-  }
+	@page {
+		size: auto;   /* auto is the initial value */
+		size: A4 portrait;
+		margin: 0;  /* this affects the margin in the printer settings */
+	}
+}
+
+.page{
+	padding: 10mm;
+}
+
+.page .table {
+	margin-bottom: 0mm;
+}
+
+.portrait {
+	width: 19cm;
+	height: 27.7cm; 
 }
 
 .landscape {
-  width: 29.7cm;
-  height: 21cm;  
+	width: 27.7cm;
+	height: 19cm;
 }
 
 
@@ -42,8 +52,7 @@
 /* Hydrant table styles */
 
 .th-td-small {
-	padding: 0.2rem !important;
-	font-weight: normal;
+	padding: 0.15rem !important;
 	font-size: 0.8rem;
 }
 
