@@ -27,7 +27,7 @@ if(isset($_GET['render'])){
 		if($error){
 			echo $error;
 		} else {
-			//prepareResponse($fullpath, $uuid);
+			prepareResponse($fullpath, $uuid);
 		}
 	} else {
 		showAlert("Wach-ID nicht übergeben");
@@ -55,8 +55,9 @@ function renderPDF(){
         'title' => "Wache",
         'event' => get_event($_GET['event']),
     	'staff' => get_staff($_GET['event']),
-    	'print' => TRUE
+    	'print' => TRUE,
+    	'orientation' => 'portrait'
     );
     
-    renderContentFile($config["apps"]["guardian"], "eventDetails/eventPrint_template.php", $variables);
+    renderPrintContentFile($config["apps"]["guardian"], "eventDetails/eventPrint_template.php", $variables);
 }

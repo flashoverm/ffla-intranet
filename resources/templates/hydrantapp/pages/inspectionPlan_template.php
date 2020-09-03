@@ -1,26 +1,28 @@
-<?php
-if (! count ( $hydrants )) {
-	showInfo ( "Keine Hydranten ausgewählt" );
-} else {
-	
-	//createHydrantGoogleMap($hydrants, true, true);
-}
-?>
-<style>
-.dynamic-map {
-	height: 100%;
-	width: 100%;
-}
-</style>
-
 <?php 
-global $hydrant_criteria;
+require_once realpath(dirname(__FILE__) . "/../../../config.php");
 
-$variables = array(
-	'title' => "Prüfbericht",
-	'criteria' => $hydrant_criteria,
-	'hydrants' => 	$hydrants
-	);
-
-renderContentFile($config["apps"]["hydrant"], "inspectionDetails/inspectionPDF_template.php", $variables);
+if(isset($inspection) || isset($hydrants)){
+	
+	if (! count ( $hydrants )) {
+		showInfo ( "Keine Hydranten ausgewählt" );
+	} else {
+	?>
+	<script>
+		document.body.style.width='27.7cm';
+		document.body.classList.remove("landscape");
+		$('html,body').scrollTop(0);
+	</script>
+	<div class='landscape' style='padding-bottom: 10mm'>
+		<?php
+		require_once TEMPLATES_PATH . "/hydrantapp/pages/inspectionDetails/inspectionTable.php";
+		?>
+	</div>
+ 	<div class='landscape' id="mapplaceholder" style='padding-top: 10mm'>
+		<?php		
+		createHydrantGoogleMap($hydrants, true, true, '100%', '100%', true);
+		?>
+	</div>
+	<?php
+	}
+}
 ?>

@@ -6,7 +6,7 @@ require_once LIBRARY_PATH . "/db_inspection.php";
 require_once LIBRARY_PATH . "/util.php";
 require_once LIBRARY_PATH . "/inspection_file_create.php";
 
-if(isset($_GET['render']) && $_SERVER['HTTP_HOST'] == "localhost"){
+if(isset($_GET['render'])){
     renderPDF($_GET['inspection']);
     
 } else {
@@ -57,8 +57,9 @@ function renderPDF(){
     $variables = array(
         'title' => "Prüfbericht",
         'inspection' => get_inspection($_GET['inspection']),
-        'criteria' => $hydrant_criteria
+        'criteria' => $hydrant_criteria,
+    	'orientation' => 'landscape'
     );
     
-    renderContentFile($config["apps"]["hydrant"], "inspectionDetails/inspectionPDF_template.php", $variables);
+    renderPrintContentFile($config["apps"]["hydrant"], "inspectionDetails/inspectionPDF_template.php", $variables);
 }

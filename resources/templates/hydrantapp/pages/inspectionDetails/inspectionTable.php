@@ -1,16 +1,47 @@
+<?php 
+function addHydrantRow($hydrant, $criteria, $idx){
+	?>
+	<tr id="hydrant<?= $idx ?>">
+		<td class="th-td-small align-middle text-center" id="hlfd"><?= $idx ?></td>
+		<td class="th-td-small align-middle text-center" ><?= $hydrant->hy ?></td>
+		<td class="th-td-small align-middle text-center"> 
+			<?php  if($hydrant->type == 'overfloor') { echo "<b>X</b>"; } ?>
+		</td>
+		<td class="th-td-small align-middle text-center">
+			<?php  if($hydrant->type == 'underfloor') { echo "<b>X</b>"; } ?>                      			
+		</td>
+		<?php
+		for ($count = 0; $count < sizeof($criteria); $count ++) {
+		?>
+			<td class="th-td-small align-middle text-center">
+				<?php  
+				if(isset($hydrant->criteria) && $hydrant->criteria[$count]->value == true){
+						echo "<b>X</b>"; 
+				} else {
+					echo "&nbsp;";
+				}?>                      			
+			</td>
+		<?php
+		}
+		?>
+	</tr>
+<?php 
+}
+?>
+
 <table class="table table-bordered">
 	<tbody>
 		<tr>
-			<th class="th-td-padding text-left">Datum</th>
-			<th class="th-td-padding text-left">Löschzug</th>
-			<th class="th-td-padding text-left">Name(n)</th>
-			<th class="th-td-padding text-left">Fahrzeug</th>
+			<th class="th-td-padding text-left th-td-small">Datum</th>
+			<th class="th-td-padding text-left th-td-small">Löschzug</th>
+			<th class="th-td-padding text-left th-td-small">Name(n)</th>
+			<th class="th-td-padding text-left th-td-small">Fahrzeug</th>
 		</tr>
 		<tr>
-			<td class="th-td-padding"><?= isset($inspection) ? date($config ["formats"] ["date"], strtotime($inspection->date)) : "&nbsp;" ?></td>
-			<td class="th-td-padding"><?= isset($inspection) ? get_engine($inspection->engine)->name : "&nbsp;" ?></td>
-			<td class="th-td-padding"><?= isset($inspection) ? $inspection->name : "&nbsp;" ?></td>
-			<td class="th-td-padding">
+			<td class="th-td-padding th-td-small"><?= isset($inspection) ? date($config ["formats"] ["date"], strtotime($inspection->date)) : "&nbsp;" ?></td>
+			<td class="th-td-padding th-td-small"><?= isset($inspection) ? get_engine($inspection->engine)->name : "&nbsp;" ?></td>
+			<td class="th-td-padding th-td-small"><?= isset($inspection) ? $inspection->name : "&nbsp;" ?></td>
+			<td class="th-td-padding th-td-small">
 					<?php 
 					if(isset($inspection)){
 						if($inspection->vehicle == "") {
@@ -52,7 +83,7 @@
                             <?php
                             for ($count = 0; $count < sizeof($criteria); $count ++) {
                                 ?>
-                          	<th class="th-td-small">
+                          	<th class="th-td-small" style="font-weight: normal;">
                           		<div id="doc<?= $count ?>">
                               		<div class="element-to-rotate" id="dc<?= $count ?>">
                               			<?= $criteria[$count][0] . ": " . $criteria[$count][1] ?>
@@ -68,28 +99,12 @@
                 	<?php 
                 		if(isset($inspection)){
                 		    foreach ($inspection->hydrants as $hydrant) {
-                		        ?>
-        						<tr id="hydrant<?= $hydrant->idx ?>">
-                        			<td class="th-td-small align-middle text-center" id="hlfd"><?= $hydrant->idx ?></td>
-                        			<td class="th-td-small align-middle text-center" ><?= $hydrant->hy ?></td>
-                        			<td class="th-td-small align-middle text-center"> 
-                    					<?php  if($hydrant->type == 'overfloor') { echo "<b>X</b>"; } ?>
-                                    </td>
-                        			<td class="th-td-small align-middle text-center">
-                      					<?php  if($hydrant->type == 'underfloor') { echo "<b>X</b>"; } ?>                      			
-                                    </td>
-                        			<?php
-                                    for ($count = 0; $count < sizeof($criteria); $count ++) {
-                                    ?>
-                                    	<td class="th-td-small align-middle text-center">
-                                            <?php  if($hydrant->criteria[$count]->value == true) { echo "<b>X</b>"; } ?>                      			
-                                    	</td>
-                                    <?php
-                                    }
-                                    ?>
-                        		</tr>
-                		        <?php 
+                		    	addHydrantRow($hydrant, $criteria, $hydrant->idx);
                 		    }
+                		} else if (isset($hydrants)){
+                			foreach ($hydrants as $key=>$hydrant) {
+                				addHydrantRow($hydrant, $criteria, $key+1);
+                			}
                 		}
                 		?> 
                 	</tbody>
@@ -97,10 +112,10 @@
             </td>
 		</tr>
 		<tr>
-			<th colspan="4" class="th-td-padding text-left">Hinweise</th>
+			<th colspan="4" class="th-td-padding text-left th-td-small">Hinweise</th>
 		</tr>
 		<tr>
-			<td colspan="4" class="th-td-padding">
+			<td colspan="4" class="th-td-padding th-td-small">
 			<?php
 			if(isset($inspection)){
 				if($inspection->notes == "") {

@@ -7,7 +7,6 @@ require_once LIBRARY_PATH . "/db_inspection.php";
 $variables = array(
 		'title' => "Hydrantenprüfung Karte",
 		'secured' => true,
-		'privilege' => ENGINEHYDRANTMANANGER
 );
 
 $hydrants = array();
@@ -18,8 +17,15 @@ if(isset($_POST['hydrants'])){
 	}
 }
 
-$variables ['hydrants'] = $hydrants;
+$variables = array(
+		'title' => "Prüfbericht",
+		'secured' => true,
+		'privilege' => ENGINEHYDRANTMANANGER,
+		'criteria' => $hydrant_criteria,
+		'hydrants' => $hydrants,
+		'orientation' => 'landscape'
+);
 
-renderContentFile($config["apps"]["hydrant"], "inspectionPlan_template.php", $variables);
+renderPrintContentFile($config["apps"]["hydrant"], "inspectionPlan_template.php", $variables);
 
 ?>

@@ -70,12 +70,11 @@ if (! count ( $hydrants )) {
 		</tbody>
 	</table>
 </div>
-<div>
+<br>
 <?php 
-    createHydrantGoogleMap($hydrants, true, false);
+createHydrantGoogleMap($hydrants, true, false, $config['mapView']['height'] . 'px', '100%');
 }
 ?>
-</div>
 
 <h2 class="mt-5 mb-2">Ausgewählte Hydranten</h2>
 
@@ -101,7 +100,7 @@ if (! count ( $hydrants )) {
 	</div>
 
 	<div id="buttonRow">
-		<input type="submit" class="btn btn-primary" value="Karte anzeigen" formaction="<?= $config["urls"]["hydrantapp_home"] ?>/inspection/plan">
+		<input type="submit" class="btn btn-primary" value="Pläne anzeigen" formaction="<?= $config["urls"]["hydrantapp_home"] ?>/inspection/plan">
 	</div>
 </form>
 

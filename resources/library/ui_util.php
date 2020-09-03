@@ -1,4 +1,16 @@
 <?php 
+function setPrintToLandscape(){ ?>
+	<style>
+		@media print{
+			@page {
+				size: auto;   /* auto is the initial value */
+				size: A4 landscape;
+				margin: 0;  /* this affects the margin in the printer settings */
+			}
+		}
+	</style>
+<?php
+}
 
 function createDialog($id, $title, $name, $additionalValueName = null, $additionalValue = null, $positiveButton="Ja", $negativeButton="Abbrechen", $text = null){
 	echo "
@@ -33,25 +45,20 @@ function createDialog($id, $title, $name, $additionalValueName = null, $addition
 }
 
 
-function createHydrantGoogleMap($hydrants, $visable, $markerListener = true){
+function createHydrantGoogleMap($hydrants, $visable, $markerListener = true, $height, $width, $replaceWithImage = false){
 	global $config;
 	?>
-	<div class="dynamic-map rounded mx-auto mt-2" id="dynamic-map" 
+	<div class="dynamic-map rounded mx-auto" id="dynamic-map" 
 	<?php
 	if($visable){
-		echo "style='display: block;'";
+		echo "style='display: block; height: " . $height . "; width: " . $width . ";'";
 	} else {
-		echo "style='display: none;'";
+		echo "style='display: none; height: " . $height . "; width: " . $width . ";'";
 	}
 	?>
-	></div>
-	
-	<style>
-	.dynamic-map {
-		height: <?= $config['mapView']['height'] ?>px;
-		width: 100%;
-	}
-	</style>
+	>
+	</div>
+
 	<script>
 	var checkbox = document.getElementById("toogleMaps");
 	if(checkbox != null){
@@ -69,10 +76,9 @@ function createHydrantGoogleMap($hydrants, $visable, $markerListener = true){
 	}
 
 	var markerList = [];
-	
 	var locations = [
 	    <?php
-    	foreach ( $hydrants as $row ) {
+	    foreach ( $hydrants as $row ) {
     	 	echo "['" . $row->hy . "'," . $row->lat . "," . $row->lng . "],";
     	}
 	    ?>
@@ -85,9 +91,7 @@ function createHydrantGoogleMap($hydrants, $visable, $markerListener = true){
 				  styles: [{
 			            featureType: "poi",
 			            elementType: "labels",
-			            stylers: [
-			                  { visibility: "off" }
-			          	]
+			            stylers: [{ visibility: "off" }]
 					}],
 				  zoom: <?= $config['mapView']['zoom'] ?>,
 				  center: center
@@ -108,8 +112,9 @@ function createHydrantGoogleMap($hydrants, $visable, $markerListener = true){
 				title: locations[i][0],
 				<?php if( ! $config["settings"]["useDefaultMapMarker"] ) {?>
 			    icon: '<?= $config["urls"]["intranet_home"] ?>/images/layout/map-icon-alt_sm.png',
-				label: {color: '#ffffff', fontSize: '11px', text: locations[i][0]},
+				label: {color: 'white', fontSize: '11px', text: locations[i][0]},
 				hy: locations[i][0],
+		        zIndex: 0
 				<?php } ?>
 			});
 			<?php
@@ -121,14 +126,34 @@ function createHydrantGoogleMap($hydrants, $visable, $markerListener = true){
 						infowindow.open(map, marker);
 					}
 				})(marker, i));
-			<?php
-			}
-			?>
+			<?php } ?>
 			markerList[locations[i][0]] = marker;
 			bounds.extend(marker.getPosition());
 		}
 		map.fitBounds(bounds);
-		setListener();
+
+		if(typeof setListener === "function"){
+			setListener();
+		}
+		
+		<?php if($replaceWithImage) {?>
+		showLoader();
+		google.maps.event.addListener(map, 'tilesloaded', function(){
+
+			hideLoader();
+			html2canvas($( "#dynamic-map")[0], {
+				useCORS: true
+				}).then(canvas => {
+					
+					var map = $("#dynamic-map");
+					var bdy = document.getElementById("mapplaceholder");
+					var image = document.createElement("img");
+					image.src = canvas.toDataURL("image/jpeg");
+					bdy.appendChild(image);
+				    map.toggleClass('d-none');
+			});
+		});	
+		<?php } ?>
 	}
 	</script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=<?= $config['mapView']['apiKey']?>&callback=initMap" async defer></script>

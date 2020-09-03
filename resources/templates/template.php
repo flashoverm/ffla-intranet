@@ -6,7 +6,7 @@ require_once LIBRARY_PATH . "/ui_util.php";
 
 session_start ();
 
-function renderContentFile($app, $contentFile, $variables = array()){
+function renderPrintContentFile($app, $contentFile, $variables = array()){
     global $config;
     
     $contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $contentFile;
@@ -21,6 +21,33 @@ function renderContentFile($app, $contentFile, $variables = array()){
         }
     }
     
+    $loggedIn = userLoggedIn();
+    
+    if (isset($secured) && $secured && ! $loggedIn) {
+    	showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
+    	return;
+    }
+    
+    require_once (TEMPLATES_PATH . "/header_print.php");
+    
+    if(isset($privilege) && ! current_user_has_privilege($privilege)){
+    	showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
+    	$showFormular = false;
+    }
+    
+    if(isset($alertMessage)){
+    	showAlert($alertMessage);
+    }
+    
+    if(isset($successMessage)){
+    	showSuccess($successMessage);
+    }
+    
+    if(isset($infoMessage)){
+    	showInfo($infoMessage);
+    }
+    
+    
     if (file_exists ( $contentFileFullPath )) {
         if(!isset($showFormular) || $showFormular){
             require_once ($contentFileFullPath);
@@ -28,7 +55,12 @@ function renderContentFile($app, $contentFile, $variables = array()){
     } else {
     	echo "Requested template  " . $contentFileFullPath . " not existing";
     }
-    
+        
+    echo "</body>
+    <script>
+    window.onload=hideLoader;
+    </script>
+    </html>";
 }
 
 
