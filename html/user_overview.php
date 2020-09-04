@@ -59,9 +59,18 @@ if (isset ( $_POST ['setpw'] )) {
 	}
 }
 
+if(isset($_GET['filter'])){
+	$variables ['title'] = 'Rechte-Gruppe ' . $_GET['filter'];
+	$user = get_users_with_privilege ($_GET['filter']);
+	$variables ['infoMessage'] = "Es werden nur Benutzer mit Recht '" . $_GET['filter'] . "' angezeigt! <a href='" . $config["urls"]["intranet_home"] . "/privilege'>Zurück zur Auswahl</a>";
+} else {
+	$user = get_users ();
+}
 
-$user = get_users ();
+
 $variables ['user'] = $user;
+
+
 
 renderLayoutWithContentFile ($config["apps"]["landing"], "userOverview_template.php", $variables );
 
