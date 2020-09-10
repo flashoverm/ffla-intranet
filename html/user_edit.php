@@ -97,9 +97,11 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 			}
 			
 			if(isset($_GET['uuid'])){
+				insert_log(LogbookActions::UserUpdated, $user->uuid);
 				$variables ['successMessage'] = "Der Benutzer wurde aktualisiert";
 			} else {
 				$mail = mail_add_user($email, $password);
+				insert_log(LogbookActions::UserCreated, $user->uuid);
 				$variables ['successMessage'] = "Der Benutzer wurde angelegt und informiert";
 				unset($_POST);
 				unset($variables['user']);

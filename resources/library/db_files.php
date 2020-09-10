@@ -16,7 +16,7 @@ function insert_file($description, $date, $filename){
     
     if ($result) {
         // echo "Record ".$fid." updated successfully";
-        return true;
+    	return $uuid;
     } else {
         // echo "Error: " . $query . "<br>" . $db->error;
         return false;

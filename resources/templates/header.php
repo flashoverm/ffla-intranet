@@ -97,6 +97,7 @@
 								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users'>Benutzerverwaltung</a>
 								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users/new'>Benutzer anlegen</a>
 								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/privilege'>Rechteverwaltung</a>
+								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/logbook'>Logbuch</a>
 							</div>
 						</li>
 					<?php 

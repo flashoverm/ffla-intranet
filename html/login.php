@@ -23,12 +23,17 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 
     $email = strtolower(trim ( $_POST ['email'] ));
 	$password = trim ( $_POST ['password'] );
-
+	
+	$loggedIn = false;
 	if (! is_locked ( $email )) {
 		$uuid = check_password ( $email, $password );
 		if ($uuid) {
+			insert_log(LogbookActions::UserLogedIn, $uuid);
+			
 			$_SESSION ['intranet_userid'] = $uuid;
 			$_SESSION ['intranet_email'] = $email;
+			
+			$loggedIn = true;
 			
 			if(isset($_SESSION["ref"]) && $_SESSION["ref"] != ""){
 				$ref = $_SESSION["ref"];
@@ -39,7 +44,14 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 			}
 		}
 	}
-	$variables ['alertMessage'] = "Zugangsdaten ungültig";
+	if( ! $loggedIn){
+		$variables ['alertMessage'] = "Zugangsdaten ungültig";
+		$user = get_user_by_email($email);
+		if($user){
+			insert_log(LogbookActions::UserLoginFailed, $user->uuid);
+		}
+	}
+
 }
 
 renderLayoutWithContentFile ($config["apps"]["landing"], "login_template.php", $variables );

@@ -43,6 +43,7 @@ if (! isset($_GET['id'])) {
 	            if(isset($_POST['emsEntry'])){
 	            	if(set_ems_entry($uuid)){
 	                    $variables['successMessage'] = "Bericht aktualisiert";
+	                    insert_log(LogbookActions::ReportEMSSet, $uuid);
 	                } else {
 	                    $variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
 	                }
@@ -52,6 +53,7 @@ if (! isset($_GET['id'])) {
 	            if(isset($_POST['emsEntryRemoved'])){
 	            	if(delete_ems_entry($uuid)){
 	            		$variables['successMessage'] = "Bericht aktualisiert";
+	            		insert_log(LogbookActions::ReportEMSUnset, $uuid);
 	            	} else {
 	            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
 	            	}
@@ -62,6 +64,7 @@ if (! isset($_GET['id'])) {
 	            	if(set_approval($uuid)){
 	            		mail_report_approved($uuid);
 	            		$variables['successMessage'] = "Bericht aktualisiert und an Verwaltung versandt";
+	            		insert_log(LogbookActions::ReportApproved, $uuid);
 	            	} else {
 	            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
 	            	}
@@ -71,6 +74,7 @@ if (! isset($_GET['id'])) {
 	            if(isset($_POST['managerApproveRemove'])){
 	            	if(delete_approval($uuid)){
 	            		$variables['successMessage'] = "Bericht aktualisiert";
+	            		insert_log(LogbookActions::ReportApprovRemoved, $uuid);
 	            	} else {
 	            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
 	            	}
@@ -80,6 +84,7 @@ if (! isset($_GET['id'])) {
 	            if (isset ( $_POST ['delete'] )) {
 	            	if(delete_report ( $uuid )){
 	            		$variables ['successMessage'] = "Bericht gelöscht";
+	            		insert_log(LogbookActions::ReportDeleted, $uuid);
 	            		header ( "Location: " . $config["urls"]["guardianapp_home"] . "/reports"); // redirects
 	            	} else {
 	            		$variables ['alertMessage'] = "Bericht konnte nicht gelöscht werden";

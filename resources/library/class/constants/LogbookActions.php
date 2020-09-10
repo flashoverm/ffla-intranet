@@ -1,89 +1,180 @@
 <?php
-require_once realpath(dirname(__FILE__) . "/../../resources/config.php");
+require_once realpath(dirname(__FILE__) . "/../../../../resources/config.php");
 
-abstract class LogbookActions {
-	
+$logbookActions = array(
+
 	/*
 	 * 	User
 	 */
-	const UserCreated = array(001, "Benutzer angelegt");
-	const UserUpdated = array(002, "Benutzer aktualisiert");
-	const UserLocked = array(003, "Benutzer gesperrt");
-	const UserUnlocked = array(004, "Benutzer entsperrt");
-	const UserDeleted = array(005, "Benutzer entfernt");
-	const UserAddedPassword = array(006, "Benutzerpasswort hinzugefügt");
-	
-	const UserLogedIn = array(021, "Benutzer hat sich angemeldet");
-	
+	1 => "Benutzer angelegt",
+	2 => "Benutzer aktualisiert",
+	3 => "Benutzer gesperrt",
+	4 => "Benutzer entsperrt",
+	5 => "Benutzer entfernt",
+	6 => "Benutzerpasswort hinzugefügt",
+	7 => "Benutzerpasswort zurückgesetzt",
+		
+	21 => "Benutzer hat sich angemeldet",
+	22 => "Benutzer hat falsches Passwort eingegeben",	
+
 	/*
 	 * Mail
 	 */
-	const MailSent = array(031, "E-Mail wurde versandt");
+	31 => "E-Mail wurde versandt",
+
+		
+	/*
+	 * Guradian - Event
+	 */
+	101 => "Wache angelegt",
+	102 => "Wache aktualisiert",
+	103 => "Wache entfernt",
+	104 => "Wache aus Datenbank entfernt",
+	105 => "Wache veröffentlicht",
+
+	/*
+	 * Guradian - Event Staff
+	 */
+	111 => "Einer Wache zugewiesen",
+	112 => "Für Wache eingetragen",
+	113 => "Für Wache eingetragen (Bestätigung ausstehend)",
+	114 => "Wachteilnahme bestätigt",
+	115 => "Wachteilnehmer entfernt",
+
+	/*
+	 * Guradian - Staff Template
+	 */
+	131 => "Wachpersonal-Vorlage erstellt",
+	132 => "Wachpersonal-Vorlage aktualisiert",
+	133 => "Wachpersonal-Vorlage entfernt",
+
+	/*
+	 * Guradian - Report
+	 */
+	150 => "Wachbericht erstellt",
+	151 => "Wachbericht aus Wache erstellt",
+	152 => "Wachbericht aktualisiert",
+	153 => "Wachbericht entfernt",
+	154 => "Wachebericht aus Datenbank entfernt",
+
+	156 => "Wachbreicht freigegeben",
+	157 => "Wachbericht-Freigabe entfernt",
+	158 => "Wachbericht-EMS-Eintrag angelegt",
+	159 => "Wachbericht-EMS-Eintrag entfernt",
+
+		
+	190 => "Wachberichte exportiert",
+		
+	/*
+	 * Hydrant
+	 */
+	201 => "Hydrant angelegt",
+	202 => "Hydrant aktualisiert",
+	203 => "Hydrant entfernt",
+
+	/*
+	 * Hydrant Inspection
+	 */
+	211 => "Hydrantenprüfung angelegt",
+	212 => "Hydrantenprüfung aktualisiert",
+	213 => "Hydrantenprüfung entfernt",
+	214 => "Hydrantenprüfung aus Datenbank entfernt",
+
+		
+	/*
+	 * 	Files
+	 */
+	301 => "Formular/Datei angelegt",
+	302 => "Formular/Datei aktualsiert",
+	303 => "Formular/Datei entfernt",
+
+);
+
+abstract class LogbookActions {
+
+	const UserCreated = 1;
+	const UserUpdated = 2;
+	const UserLocked = 3;
+	const UserUnlocked = 4;
+	const UserDeleted = 5;		//Not in use
+	const UserAddedPassword = 6;
+	const UserResetPassword = 7;
+	
+	const UserLogedIn = 21;
+	const UserLoginFailed = 22;
+	
+		
+	/*
+	 * Mail
+	 */
+	const MailSent = 31;
 	
 	
 	/*
 	 * Guradian - Event
 	 */
-	const EventCreated = array(101, "Wache angelegt");
-	const EventUpdated = array(102, "Wache aktualisiert");
-	const EventDeleted = array(103, "Wache entfernt");
-	const EventDeletedDB = array(104, "Wache aus Datenbank entfernt");
-	const EventPublished = array(105, "Wache veröffentlicht");
+	const EventCreated = 101;
+	const EventUpdated = 102;
+	const EventDeleted = 103;
+	const EventDeletedDB = 104;
+	const EventPublished = 105;
 	
 	/*
 	 * Guradian - Event Staff
 	 */
-	const EventAssigned = array(111, "Einer Wache zugewiesen");
-	const EventSubscribed = array(112, "Für Wache eingetragen");
-	const EventSubscribedPending = array(113, "Für Wache eingetragen (Bestätigung ausstehend)");
-	const EventStaffConfirmed = array(114, "Wachteilnahme bestätigt");
-	const EventUnscribed = array(115, "Wachteilnehmer entfernt");
+	const EventAssigned = 111;
+	const EventSubscribed = 112;
+	const EventSubscribedPending = 113;		//Not in use
+	const EventStaffConfirmed = 114;
+	const EventUnscribed = 115;
+	
 	
 	/*
 	 * Guradian - Staff Template
 	 */
-	const StaffTemplateCreated = array(131, "Wachpersonal-Vorlage erstellt");
-	const StaffTemplateUpdated = array(132, "Wachpersonal-Vorlage aktualisiert");
-	const StaffTemplateDeleted = array(133, "Wachpersonal-Vorlage entfernt");
+	const StaffTemplateCreated = 131;		//Not in use
+	const StaffTemplateUpdated = 132;		//Not in use
+	const StaffTemplateDeleted = 133;		//Not in use
+	
 	
 	/*
 	 * Guradian - Report
 	 */
-	const ReportCreated = array(150, "Wachbericht erstellt");
-	const ReportCreatedFromEvent = array(151, "Wachbericht aus Wache erstellt");
-	const ReportUpdated = array(152, "Wachbericht aktualisiert");
-	const ReportDeleted = array(153, "Wachbericht entfernt");
-	const ReportDeletedDB = array(154, "Wachebricht aus Datenbank entfernt");
-	const ReportsExported = array(155, "Wachberichte exportiert");
-	
-	const ReportApproved = array(156, "Wachbreicht freigegeben");
-	const ReportApprovRemoved = array(157, "Wachbericht-Freigabe entfernt");
-	const ReportEMSSet = array(158, "Wachbericht-EMS-Eintrag angelegt");
-	const ReportEMSUnset = array(159, "Wachbericht-EMS-Eintrag entfernt");
-	
+	const ReportCreated = 150;
+	const ReportCreatedFromEvent = 151;		//Not in use
+	const ReportUpdated = 152;
+	const ReportDeleted = 153;
+	const ReportDeletedDB = 154;			//Not in use
 		
+	const ReportApproved = 156;
+	const ReportApprovRemoved = 157;
+	const ReportEMSSet = 158;
+	const ReportEMSUnset = 159;
+	
+	const ReportsExported = 190;
+	
+	
 	/*
 	 * Hydrant
 	 */
-	const HydrantCreated = array(201, "Hydrant angelegt");
-	const HydrantUpdated = array(202, "Hydrant aktualisiert");
-	const HydrantDeleted = array(203, "Hydrant entfernt");
+	const HydrantCreated = 201;
+	const HydrantUpdated = 202;
+	const HydrantDeleted = 203;			//Not in use
 	
 	/*
 	 * Hydrant Inspection
 	 */
-	const InspectionCreated = array(211, "Hydrantenprüfung angelegt");
-	const InspectionUpdated = array(212, "Hydrantenprüfung aktualisiert");
-	const InspectionDeleted = array(213, "Hydrantenprüfung entfernt");
-	const InspectionDeletedDB = array(214, "Hydrantenprüfung aus Datenbank entfernt");
+	const InspectionCreated = 211;
+	const InspectionUpdated = 212;
+	const InspectionDeleted = 213;
+	const InspectionDeletedDB = 214;	//Not in use
 
 	
 	/*
 	 * 	Files
 	 */
-	const FileCreated = array(301, "Formular/Datei angelegt");
-	const FileUpdated = array(302, "Formular/Datei aktualsiert");
-	const FileDeleted = array(303, "Formular/Datei entfernt");
+	const FileCreated = 301;
+	const FileUpdated = 302;			//Not in use
+	const FileDeleted = 303;
 	
 }
-	

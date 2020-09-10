@@ -20,7 +20,7 @@ if (isset($_POST['delete'])) {
     if(delete_file_fs($file)){
         
         if(delete_file($uuid)){
-            
+        	insert_log(LogbookActions::FileDeleted, $uuid);
             $variables ['successMessage'] = "Datei " . $file->description . " wurde entfernt";
             
         } else {

@@ -146,6 +146,7 @@ if (isset ( $_POST ['type'] ) ) {
 	
 	if(isset($_POST ['eventid'])){
 		if($updateSuccess){
+			insert_log(LogbookActions::EventUpdated, $event_uuid);
 			$variables ['successMessage'] = "Wache aktualisiert";
 			
 			if($inform){
@@ -167,6 +168,7 @@ if (isset ( $_POST ['type'] ) ) {
 			}
 			
 			if(mail_insert_event ( $event_uuid, $informMe, $publish)){
+				insert_log(LogbookActions::EventCreated, $event_uuid);
 				$variables ['successMessage'] = "Wache angelegt";
 				
 				if(isset($_POST ['forwardToEvent']) && $_POST ['forwardToEvent'] == 1){

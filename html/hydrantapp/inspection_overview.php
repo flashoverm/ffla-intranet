@@ -17,6 +17,7 @@ if(isset($_POST['delete'])){
     
     if(delete_inspection($_POST['delete'])){
         $variables ['successMessage'] = "Prüfbericht gelöscht";
+        insert_log(LogbookActions::InspectionDeleted, $_POST['delete']);
     } else {
         $variables ['alertMessage'] = "Prüfbericht konnte nicht gelöscht werden";
     }

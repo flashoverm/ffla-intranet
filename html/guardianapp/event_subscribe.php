@@ -68,8 +68,9 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     					if($result == 1){
     							
     						mail_subscribe_staff_user ( $eventUUID, $user->uuid, $informMe);
-    							
     						$variables ['successMessage'] = "Als Wachteilnehmer eingetragen - <a href=\"" . $config["urls"]["guardianapp_home"] . "/events/" . $eventUUID . "\" class=\"alert-link\">Zurück</a>";
+    						
+    						insert_log(LogbookActions::EventSubscribed, array($staffUUID,$user->uuid));
     						$variables ['showFormular'] = false;
     						header ( "Location: " . $config["urls"]["guardianapp_home"] . "/events/".$eventUUID); // redirects
     							

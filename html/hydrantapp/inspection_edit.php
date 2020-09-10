@@ -101,6 +101,7 @@ if(isset($_POST['maxidx'])){
                         $variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
                     }
                     $variables ['successMessage'] = "Prüfbericht aktualisiert";
+                    insert_log(LogbookActions::InspectionUpdated, $inspection->uuid);
                     header ( "Location: " . $config["urls"]["hydrantapp_home"] . "/inspection/". $inspection->uuid ); // redirects
                 } else {
                     $variables ['alertMessage'] = "Prüfbericht konnte nicht aktualisiert werden";
@@ -114,6 +115,7 @@ if(isset($_POST['maxidx'])){
                         $variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
                     }
                     $variables ['successMessage'] = "Prüfbericht gespeichert";
+                    insert_log(LogbookActions::InspectionCreated, $inspection->uuid);
    					header ( "Location: " . $config["urls"]["hydrantapp_home"] . "/inspection/". $inspection->uuid ); // redirects
                     
                 } else {

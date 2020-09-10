@@ -49,6 +49,8 @@ if (! isset($_GET['id'])) {
     		$staff_uuid = trim($_POST['removestaffid']);
     		mail_remove_staff_user($staff_uuid, $uuid);
     		if(remove_staff_user($staff_uuid)){
+    			$staffpos = get_events_staffposition($staff_uuid);
+    			insert_log(LogbookActions::EventUnscribed, array($staff_uuid,$staffpos->user));
     			$variables['successMessage'] = "Personal-Eintrag entfernt";
     		} else {
     			$variables['alertMessage'] = "Eintrag konnte nicht entfernt werden";
@@ -59,7 +61,9 @@ if (! isset($_GET['id'])) {
     		$staff_uuid = trim($_POST['confirmstaffid']);
     		mail_confirm_staff_user($staff_uuid, $uuid);
     		if(confirm_staff_user($staff_uuid)){
+    			$staffpos = get_events_staffposition($staff_uuid);
     			$variables['successMessage'] = "Personal bestätigt";
+    			insert_log(LogbookActions::EventStaffConfirmed, array($staff_uuid,$staffpos->user));
     		} else {
     			$variables['alertMessage'] = "Personal konnte nicht bestätigt werden";
     		}
@@ -70,6 +74,7 @@ if (! isset($_GET['id'])) {
     			$event = get_event($uuid);
     			mail_publish_event($event);
     			$variables['successMessage'] = "Wache veröffentlich - Wachbeauftragte informiert";
+    			insert_log(LogbookActions::EventPublished, $uuid);
     			$event = get_event($uuid);
     		} else {
     			$variables['alertMessage'] = "Wache konnte nicht veröffentlicht werden";

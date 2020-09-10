@@ -5,13 +5,21 @@ create_table_logbook();
 
 function insert_log($action_id, $object_uuid){
 	global $db;
-	
+		
 	$uuid = getGUID ();
-	$user_uuid = $_SESSION ['intranet_userid'];
+	$user_uuid = NULL;
+	if(isset($_SESSION ['intranet_userid'])){
+		$user_uuid = $_SESSION ['intranet_userid'];
+	}
 	
-	$statement = $db->prepare("INSERT INTO event (uuid, timestamp, action, object, user)
+	$objects = $object_uuid;
+	if(is_array($object_uuid)){
+		$objects = implode(",", $object_uuid);
+	}
+	
+	$statement = $db->prepare("INSERT INTO logbook (uuid, timestamp, action, object, user)
 		VALUES(?, NOW(), ?, ?, ?)");
-	$statement->bind_param('siss', $uuid, $action_id, $object_uuid, $user_uuid);
+	$statement->bind_param('siss', $uuid, $action_id, $objects, $user_uuid);
 	
 	$result = $statement->execute();
 	
@@ -23,6 +31,25 @@ function insert_log($action_id, $object_uuid){
 	}
 }
 
+function get_logbook(){
+	global $db;
+	$data = array ();
+	
+	$statement = $db->prepare("SELECT * FROM logbook ORDER BY timestamp DESC");
+	
+	if ($statement->execute()) {
+		$result = $statement->get_result();
+		
+		if (mysqli_num_rows ( $result )) {
+			while ( $date = $result->fetch_object () ) {
+				$data [] = $date;
+			}
+			$result->free ();
+		}
+	}
+	return $data;
+}
+
 function create_table_logbook() {
 	global $db;
 	
@@ -30,10 +57,10 @@ function create_table_logbook() {
                           uuid CHARACTER(36) NOT NULL,
 						  timestamp DATETIME NOT NULL,
 						  action SMALLINT NOT NULL,
-						  object CHARACTER(36) NOT NULL,
+						  object VARCHAR(255),
 						  user CHARACTER(36),
                           PRIMARY KEY  (uuid),
-						  FOREIGN KEY (user) REFERENCES user(uuid),
+						  FOREIGN KEY (user) REFERENCES user(uuid)
                           )");
 	
 	$result = $statement->execute();
@@ -41,7 +68,6 @@ function create_table_logbook() {
 	if ($result) {
 		return true;
 	} else {
-		// echo "Error: " . $db->error . "<br><br>";
 		return false;
 	}
 }

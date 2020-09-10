@@ -17,6 +17,7 @@ if (isset ( $_POST ['delete'] )) {
 	$delete_report_uuid = trim ( $_POST ['delete'] );
 	if(delete_report ( $delete_report_uuid )){
 		$variables ['successMessage'] = "Bericht gelöscht";
+		insert_log(LogbookActions::ReportDeleted, $delete_report_uuid);
 	} else {
 		$variables ['alertMessage'] = "Bericht konnte nicht gelöscht werden";
 	}

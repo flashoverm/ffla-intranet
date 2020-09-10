@@ -24,7 +24,9 @@ if(isset($_FILES['upload']) && isset($_POST['description'])){
     
     if($result){
       
-        if(insert_file($description, date('Y-m-d H:i:s', time()), $_FILES['upload']['name'])){
+    	$uuid = insert_file($description, date('Y-m-d H:i:s', time()), $_FILES['upload']['name']);
+    	if($uuid){
+    		insert_log(LogbookActions::FileCreated, $uuid);
             $variables ['successMessage'] = "Datei wurde hochgeladen";
             header ( "Location: " . $config["urls"]["filesapp_home"] . "/forms/admin" ); // redirects
                         

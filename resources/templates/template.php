@@ -2,6 +2,8 @@
 require_once realpath(dirname(__FILE__) . "/../config.php");
 require_once LIBRARY_PATH . '/util.php';
 require_once LIBRARY_PATH . "/db_user.php";
+require_once LIBRARY_PATH . "/db_logbook.php";
+require_once LIBRARY_PATH . "/class/constants/LogbookActions.php";
 require_once LIBRARY_PATH . "/ui_util.php";
 
 session_start ();

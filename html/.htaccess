@@ -80,6 +80,7 @@ RewriteRule ^(.*)users/filter/([^.]+)/?$ 	$1/user_overview.php?filter=$2
 RewriteRule ^(.*)users/([^/]+)/edit/?$		$1/user_edit.php?uuid=$2
 RewriteRule ^(.*)users/?$ 					$1/user_overview.php 
 
+RewriteRule ^(.*)logbook/?$ 					$1/logbook.php 
 
 
 #If request does not end with .php -> add .php
