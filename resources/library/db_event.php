@@ -242,7 +242,8 @@ function is_user_manager_or_creator($event_uuid, $user_uuid){
 	if($event->creator == $user_uuid){
 		return true;
 	}
-	if(user_has_privilege($user_uuid, $event->engine)){
+	if(user_has_privilege($user_uuid, ENGINEHYDRANTMANANGER) 
+			&& strcmp(get_engine_of_user($user_uuid),$event->engine) == 0){
 		return true;
 	}
 	
