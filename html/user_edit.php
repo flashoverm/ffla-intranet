@@ -56,7 +56,9 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 			if($user){
 				if($user->password == NULL){
 					if(reset_password($user->uuid)){
-						$variables ['successMessage'] = "Der Benutzer wurde angelegt und informiert";
+						$variables ['successMessage'] = "Das Passwort wurde zurückgesetzt und gesendet";
+						insert_log(LogbookActions::UserResetPassword, $user->uuid);
+						
 					} else {
 						$variables ['alertMessage'] = "Ein unbekannter Fehler ist aufgetreten";
 					}

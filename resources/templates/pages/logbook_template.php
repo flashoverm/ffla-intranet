@@ -21,11 +21,15 @@ if (! count ( $logbook )) {
 			if($row->user != null){
 				$user = get_user($row->user);
 			}
+			$entry = logbookEnry($row->action, $row->object);
+			if( ! $entry){
+				$entry = $row->message;
+			}
 		?>
 			<tr>
 				<td class="text-center"><span class='d-none'><?= strtotime($row->timestamp) ?></span><?= date($config ["formats"] ["datetime"], strtotime($row->timestamp)); ?></td>
 				<td class="text-center"><?= $row->action; ?></td>
-				<td class="text-center"><?= logbookEnry($row->action, $row->object); ?></td>
+				<td class="text-center"><?= $entry ?></td>
 				<td class="text-center">
 					<?php 
 					if ($user != null){

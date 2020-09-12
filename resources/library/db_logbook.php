@@ -1,10 +1,11 @@
 <?php
 require_once LIBRARY_PATH . "/db_connect.php";
+require_once LIBRARY_PATH . "/logbook_controller.php";
 
 create_table_logbook();
 
-function insert_log($action_id, $object_uuid){
-	global $db;
+function insert_log($action_id, $object_uuid, $message = null){
+	global $db, $logbookActions;
 		
 	$uuid = getGUID ();
 	$user_uuid = NULL;
@@ -12,14 +13,23 @@ function insert_log($action_id, $object_uuid){
 		$user_uuid = $_SESSION ['intranet_userid'];
 	}
 	
+	if($message == null){
+		$logmessage = logbookEnry($action_id, $object_uuid);
+		if($logmessage == null){
+			$logmessage = "Log-Eintrag fehlgeschlagen für: " . $logbookActions[$action_id];
+		}
+	} else {
+		$logmessage = $message;
+	}
+	
 	$objects = $object_uuid;
 	if(is_array($object_uuid)){
 		$objects = implode(",", $object_uuid);
 	}
 	
-	$statement = $db->prepare("INSERT INTO logbook (uuid, timestamp, action, object, user)
-		VALUES(?, NOW(), ?, ?, ?)");
-	$statement->bind_param('siss', $uuid, $action_id, $objects, $user_uuid);
+	$statement = $db->prepare("INSERT INTO logbook (uuid, timestamp, action, object, user, message)
+		VALUES(?, NOW(), ?, ?, ?, ?)");
+	$statement->bind_param('sisss', $uuid, $action_id, $objects, $user_uuid, $logmessage);
 	
 	$result = $statement->execute();
 	
@@ -59,6 +69,7 @@ function create_table_logbook() {
 						  action SMALLINT NOT NULL,
 						  object VARCHAR(255),
 						  user CHARACTER(36),
+						  message CHARACTER(255),
                           PRIMARY KEY  (uuid),
 						  FOREIGN KEY (user) REFERENCES user(uuid)
                           )");

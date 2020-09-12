@@ -48,7 +48,7 @@ function get_file($uuid){
     global $db;
     
     $statement = $db->prepare("SELECT * FROM file WHERE uuid = ?");
-    $statement->bind_param('i', $uuid);
+    $statement->bind_param('s', $uuid);
     
     if ($statement->execute()) {
     	$result = $statement->get_result();

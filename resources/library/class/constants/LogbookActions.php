@@ -21,7 +21,8 @@ $logbookActions = array(
 	 * Mail
 	 */
 	31 => "E-Mail wurde versandt",
-
+	32 => "E-Mail konnte nicht gesendet werden",
+	33 => "E-Mail wurde nur geloggt (Debug-Mode)",
 		
 	/*
 	 * Guradian - Event
@@ -108,6 +109,8 @@ abstract class LogbookActions {
 	 * Mail
 	 */
 	const MailSent = 31;
+	const MailFailed = 32;
+	const MailDebug = 33;
 	
 	
 	/*

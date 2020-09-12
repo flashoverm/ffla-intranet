@@ -25,11 +25,11 @@ if(isset($_GET ['eventtype'])){
 	if(isset($_POST ['positionCount'])){
 		
 		foreach($template as $entry):
-		if(!isset($_POST [$entry->template])){
-			delete_template_entry($entry->template);
-		} else {
-			update_template_entry($entry->template, $_POST [$entry->template]);
-		}
+			if(!isset($_POST [$entry->template])){
+				delete_template_entry($entry->template);
+			} else {
+				update_template_entry($entry->template, $_POST [$entry->template]);
+			}
 		endforeach;
 		
 		$count = $_POST ['positionCount'];
