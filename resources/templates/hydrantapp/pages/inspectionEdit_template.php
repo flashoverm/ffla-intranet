@@ -251,7 +251,12 @@ if(isset($inspection)) {
 var cCount = <?php echo sizeof($criteria)?>;
 
 rotateCorrection();
-showHideElement('submitReport', false);
+
+<?php
+if(isset($inspection) && $inspection->getCount() < 1){
+	echo "showHideElement('submitReport', false);";
+}
+?>
 
 function checkHydrantCount() {
 	if(hy_count < 2){

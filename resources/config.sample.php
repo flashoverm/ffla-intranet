@@ -18,7 +18,7 @@ $config = array (
         "secure" => "ssl",
         "port" => 465,
         "fromaddress" => "intranet@feuerwehr-landshut.de",
-        "fromname" => "Intranet Feuerwehr Landshut"
+    	"fromname" => "Intranet Feuerwehr Landshut"
     ),
     "apps" => array(
         "landing" => "",
@@ -66,17 +66,17 @@ $config = array (
     	"defaultcoordinates" => "48.5441917,12.1468532",
     ),
 	"settings" => array (
-			"reminderAtDay" => 10,                  //days before "not-full-reminder" is sent
-			"selfregistration" => false,                    //enables self registration of managers
-			"autoadmin" => true,                                   //manager is always admin
-			"reportfunction" => true,                               //enalbes function to create event report
-			"publicevents" => true,                                 //enables list of public events
-			"staffconfirmation" => true,
-			
-			"enginemgrmailonsubscription" => false,  //Send mail to all managers of the users engine  on subscription
-			"creatormailonsubscription" => true,    //Send mail to creator of the event (if event is full, a mail is always sent)
-			"usermailonsubscription" => true,               //Send mail to subscribing user on subscribing a event
-			"useDefaultMapMarker" => false,
+		"reminderAtDay" => 10,                  //days before "not-full-reminder" is sent
+		"selfregistration" => false,                    //enables self registration of managers
+		"autoadmin" => true,                                   //manager is always admin
+		"reportfunction" => true,                               //enalbes function to create event report
+		"publicevents" => true,                                 //enables list of public events
+		"staffconfirmation" => true,
+		
+		"enginemgrmailonsubscription" => false,  //Send mail to all managers of the users engine  on subscription
+		"creatormailonsubscription" => true,    //Send mail to creator of the event (if event is full, a mail is always sent)
+		"usermailonsubscription" => true,               //Send mail to subscribing user on subscribing a event
+		"useDefaultMapMarker" => false,
 	)
 );
 

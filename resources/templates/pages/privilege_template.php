@@ -1,41 +1,85 @@
-<form action="" method="post" onsubmit="showLoader()">
-
-	<div class="form-group">
-		<label class="mt-1">Benutzer:</label>
-		<select class="form-control" name="user" id="user" required="required" onchange="getUsersPrivileges()">
-			<option value="" disabled selected>Benutzer auswählen</option>
-			<?php foreach ( $user as $option ) : ?>
-			<option value="<?=  $option->uuid; ?>"><?= $option->lastname . ", " . $option->firstname . " (" . $option->email . ")" ?></option>
-			<?php endforeach; ?>
-		</select> 
-	</div>
-	
-	<div class="form-group">
-		<div class="table-responsive">
-			<table class="table table-striped" data-toggle="table">
-				<tbody>
-				<?php
-					foreach ( $privileges as $row ) {
-				?>
-					<tr>
-						<td><?= $row->privilege ?></td>
-						<td class="text-center">
-							<div class="custom-control custom-checkbox mb-1">
-							  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->privilege ?>" name="priv_<?= $row->privilege ?>" disabled>
-							  <label class="custom-control-label custom-control-label-table" for="priv_<?= $row->privilege ?>">&nbsp;</label>
-							</div>
-						</td>
-					</tr>
-				<?php
-					}
-				?>
-				</tbody>
-			</table>
+<div id="accordion">
+	<div class="card">
+		<div class="card-header">
+			<button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne">
+          		Benutzer nach Rechten
+        	</button>
+		</div>
+		<div id="collapseOne" class="collapse show" data-parent="#accordion">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-striped" data-toggle="table">
+						<tbody>
+						<?php
+							foreach ( $privileges as $row ) {
+						?>
+							<tr>
+								<td><?= $row->privilege ?></td>
+								<td class="text-center">
+									<a class="btn btn-primary btn-sm" href='<?= $config["urls"]["intranet_home"]?>/users/filter/<?= $row->privilege ?>'>
+									Benutzer anzeigen
+									</a>
+							</tr>
+						<?php
+							}
+						?>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
+	<div class="card">
+		<div class="card-header">
+			<button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo">
+          		Benutzerrechte
+        	</button>
+		</div>
+		<div id="collapseTwo" class="collapse" data-parent="#accordion">
+			<div class="card-body">
+			
+				<form action="" method="post" onsubmit="showLoader()">
+					<div class="form-group">
+						<select class="form-control" name="user" id="user" required="required" onchange="getUsersPrivileges()">
+							<option value="" disabled selected>Benutzer auswählen</option>
+							<?php foreach ( $user as $option ) : ?>
+							<option value="<?=  $option->uuid; ?>"><?= $option->lastname . ", " . $option->firstname . " (" . $option->email . ")" ?></option>
+							<?php endforeach; ?>
+						</select> 
+					</div>
+					<div class="form-group">
+						<div class="table-responsive">
+							<table class="table table-striped" data-toggle="table">
+								<tbody>
+								<?php
+									foreach ( $privileges as $row ) {
+								?>
+									<tr>
+										<td><?= $row->privilege ?></td>
+										<td class="text-center">
+											<div class="custom-control custom-checkbox mb-1">
+											  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->privilege ?>" name="priv_<?= $row->privilege ?>" disabled>
+											  <label class="custom-control-label custom-control-label-table" for="priv_<?= $row->privilege ?>">&nbsp;</label>
+											</div>
+										</td>
+									</tr>
+								<?php
+									}
+								?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<input type="submit" class="btn btn-primary" value='Speichern' id='save' disabled>
+				</form>
+							
+			</div>
+		</div>
+	</div>
+</div>
+
+
 	
-	<input type="submit" class="btn btn-primary" value='Speichern' id='save' disabled>
-</form>
 
 <script type='text/javascript'>
 

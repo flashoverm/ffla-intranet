@@ -76,10 +76,12 @@ RewriteRule ^(.*)ajax/privileges/([^/]+)/?$	$1/ajax/privileges.php?uuid=$2
 
 RewriteRule ^(.*)users/import?$ 			$1/user_import.php
 RewriteRule ^(.*)users/new/?$ 				$1/user_edit.php 
+RewriteRule ^(.*)users/filter/([^.]+)/?$ 	$1/user_overview.php?filter=$2 
 RewriteRule ^(.*)users/([^/]+)/edit/?$		$1/user_edit.php?uuid=$2
 RewriteRule ^(.*)users/?$ 					$1/user_overview.php 
 
-
+RewriteRule ^(.*)maillog/page/([^.]+)/?$	$1/maillog.php?page=$2
+RewriteRule ^(.*)maillog/?$ 				$1/maillog.php 
 
 #If request does not end with .php -> add .php
 RewriteCond %{THE_REQUEST} "!^[^ ]* .*?\.php[? ].*$"
