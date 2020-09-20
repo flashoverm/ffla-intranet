@@ -2,6 +2,11 @@
 Release Documentation
 ******************************
 
+##### V2.1.1
+
+Features:
+	Mail logbook for sent mails (and errors)
+
 ##### V2.1.0
 
 Release-Notes:

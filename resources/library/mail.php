@@ -71,11 +71,9 @@ function send_mail($to, $subject, $body, $attachment = NULL) {
 	    	} else {
 	    		insert_maillog($to, $subject, MaillogStates::Failed, $mailBody, $e->getMessage());
 	    	}
-	    	/*
 	        echo "<script language='javascript'>
 					alert('Eine E-Mail konnte nicht gesendet werden');
 				</script>";
-			*/
 	    	return false;
 	    }
     }
