@@ -28,10 +28,12 @@ function get_maillogs($page, $resultSize = 20) {
 	
 	$fromRowNumber = (($page-1)*$resultSize)+1;
 	$toRowNumber = $fromRowNumber+$resultSize;
+	
+	$db->query("SET @row_number = 0;");
 		
 	$statement = $db->prepare("
 		SELECT  * 
-		FROM ( SELECT *, ROW_NUMBER() OVER ( ORDER BY timestamp DESC ) AS RowNum FROM maillog) AS Data
+		FROM ( SELECT *, (@row_number:=@row_number + 1) AS RowNum FROM maillog ORDER BY timestamp DESC) AS Data
 		WHERE   RowNum >= ? AND RowNum < ? 
 		ORDER BY RowNum");
 	$statement->bind_param('ii', $fromRowNumber, $toRowNumber);
