@@ -3,6 +3,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 require_once (realpath ( dirname ( __FILE__ ) . "/../config.php" ));
 require_once LIBRARY_PATH . "/db_mailing.php";
+require_once LIBRARY_PATH . "/db_maillog.php";
+require_once LIBRARY_PATH . "/mail_body.php";
+require_once LIBRARY_PATH . "/class/constants/MaillogStates.php";
 
 require_once "phpmailer/src/PHPMailer.php";
 require_once "phpmailer/src/SMTP.php";
@@ -34,16 +37,19 @@ function send_mail($to, $subject, $body, $attachment = NULL) {
 	    try{
 	        $mail = init_mail();
 	        
+	        $mailState = NULL;
+	        
 	        $mail->addAddress ( $to );
 	        $mail->Subject = $subject;
 	        
 	        $mailBody = $body . $util["footer"];
 	       
 	        if($attachment != NULL){
-	        	if(file_exists ( basename($attachment) ) ){
+	        	if(file_exists ( $attachment ) ){
 	        		$mail->AddAttachment($attachment, $name = basename($attachment),  $encoding = 'base64', $type = 'application/pdf');
 	        	} else {
 	        		$mailBody = $mailBody . $util["attachment_error"];
+	        		$mailState = MaillogStates::AttachmentError;
 	        	}
 	        }
 	        
@@ -52,15 +58,29 @@ function send_mail($to, $subject, $body, $attachment = NULL) {
 	        if(!$mail->send ()){
 	            throw new Exception;
 	        }
+	        
+	        if( $mailState == NULL){
+	        	$mailState = MaillogStates::Sent;
+	        }
+	        insert_maillog($to, $subject, $mailState, $mailBody);
+	        return true;
+	        
 	    }catch(Exception $e){
-	    	echo $to . " - " . $e->getMessage();
+	    	if( startsWith($e->getMessage(), "SMTP connect() failed") ){
+	    		insert_maillog($to, $subject, MaillogStates::MailConnectError, $mailBody, $e->getMessage());
+	    	} else {
+	    		insert_maillog($to, $subject, MaillogStates::Failed, $mailBody, $e->getMessage());
+	    	}
+	    	/*
 	        echo "<script language='javascript'>
 					alert('Eine E-Mail konnte nicht gesendet werden');
 				</script>";
-	        return false;
+			*/
+	    	return false;
 	    }
     }
-    return true;
+    insert_maillog($to, $subject, MaillogStates::Failed, $mailBody, "Invalid Mail Adress");
+    return false;
 }
 
 
