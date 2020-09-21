@@ -22,13 +22,13 @@ $bodies = array (
 	
 	"event_publish" => $util["head"] . "eine neue Wache wurde veröffentlicht: \n\n",
 	
-	"event_staff_confirmed" => $util["head"] . "sie können an einer Wache teilnehmen, bei der sie sich eingetragen haben: \n\n",
+	"event_staff_confirmed" => $util["head"] . "Sie können an einer Wache teilnehmen, bei der Sie sich eingetragen haben: \n\n",
 	
 	"event_delete" => $util["head"] . "eine Wache, bei der Sie sich eingetragen haben, wurde abgesagt: \n\n",
 	
-	"event_subscribe" => $util["head"] . "sie haben sich in eine Wache eingeschrieben: \n\n",
+	"event_subscribe" => $util["head"] . "Sie haben sich in eine Wache eingeschrieben: \n\n",
 	
-	"event_staff_add" => $util["head"] . "sie wurden in eine Wache eingeteilt: \n\n",
+	"event_staff_add" => $util["head"] . "Sie wurden in eine Wache eingeteilt: \n\n",
 	
 	"event_report_link" => "\n\n Unter folgendem Link kann im Anschluss der Wache der bereits vorausgefüllte Wachbericht erstellt werden:\n\n",
 	
@@ -42,7 +42,7 @@ $bodies = array (
 	
 	"event_not_full" => $util["head"] . "eine Wache findet in ".$config ["settings"] ["reminderAtDay"]." Tagen statt und hat noch nicht die nötige Besetzung erreicht: \n\n",
 	
-	"event_unscribe" => $util["head"] . "sie wurden durch den Wachbeauftragten von der Wache entfernt: \n\n",
+	"event_unscribe" => $util["head"] . "Sie wurden durch den Wachbeauftragten von der Wache entfernt: \n\n",
 	
 	"event_unscribe_engine" => $util["head"] . "jemand aus Ihrem Zug wurde durch den Wachbeauftragten von der Wache entfernt:  \n\n",
 	
