@@ -2,6 +2,17 @@
 Release Documentation
 ******************************
 
+##### V2.1.1
+
+Features:
+	Mail logbook for sent mails (and errors)
+	Show user by rights
+	
+Bugfix:
+	Mail attachment error
+	Send button missing on edit hydrant inspection
+	clear form after creating new user
+
 ##### V2.1.0
 
 Release-Notes:
