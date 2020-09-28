@@ -12,6 +12,7 @@ $variables = array (
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if( isset($_POST['purge']) ){
+		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::MaillogDeleted, NULL));
 		clear_maillog();		
 	}
 	if( isset($_POST['testmail']) ){

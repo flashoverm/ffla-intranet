@@ -2,6 +2,13 @@
 Release Documentation
 ******************************
 
+##### V2.1.2
+
+Features:
+	Application Logbook
+	Extra button to subscribe for manager (not assign himself)
+	Event particiants can unscribe themselfes
+
 ##### V2.1.1
 
 Features:

@@ -15,9 +15,10 @@ $variables = array (
   
 if (isset ( $_POST ['delete'] )) {
 	$delete_report_uuid = trim ( $_POST ['delete'] );
+	$log = LogbookEntry::fromAction(LogbookActions::ReportDeleted, $delete_report_uuid);
 	if(delete_report ( $delete_report_uuid )){
 		$variables ['successMessage'] = "Bericht gelöscht";
-		insert_log(LogbookActions::ReportDeleted, $delete_report_uuid);
+		insert_logbook_entry($log);
 	} else {
 		$variables ['alertMessage'] = "Bericht konnte nicht gelöscht werden";
 	}

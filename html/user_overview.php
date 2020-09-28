@@ -17,7 +17,7 @@ if (isset ( $_POST ['disable'] )) {
 	if($uuid == $_SESSION ['intranet_userid']){
 		$variables ['alertMessage'] = "Eigenes Konto kann nicht gesperrt werden";
 	} else if(lock_user ( $uuid )) {
-		insert_log(LogbookActions::UserLocked, $uuid);
+		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserLocked, $uuid));
 		$variables ['successMessage'] = "Benutzer gesperrt";
 	} else {
 		$variables ['alertMessage'] = "Benutzer sperren fehlgeschlagen";
@@ -26,7 +26,7 @@ if (isset ( $_POST ['disable'] )) {
 if (isset ( $_POST ['enable'] )) {
 	$uuid = trim ( $_POST ['enable'] );
 	if(unlock_user ( $uuid )){
-		insert_log(LogbookActions::UserUnlocked, $uuid);
+		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserUnlocked, $uuid));
 		$variables ['successMessage'] = "Benutzer freigegeben";
 	} else {
 		$variables ['alertMessage'] = "Benutzer freigeben fehlgeschlagen";
@@ -38,7 +38,7 @@ if (isset ( $_POST ['resetpw'] )) {
 	$password = reset_password ( $resetpw_user_uuid );
 	if($password){
 		$mail = mail_reset_password ( $resetpw_user_uuid, $password );
-		insert_log(LogbookActions::UserResetPassword, $uuid);
+		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserResetPassword, $uuid));
 		$variables ['successMessage'] = "Passwort zurückgesetzt";
 		if(!$mail){
 			$variables ['alertMessage'] = "E-Mail konnte nicht versendet werden";
@@ -53,7 +53,7 @@ if (isset ( $_POST ['setpw'] )) {
 	$password = reset_password ( $setpw_user_uuid );
 	if($password){
 		$mail = mail_add_user(get_user($setpw_user_uuid)->email, $password);
-		insert_log(LogbookActions::UserAddedPassword, $uuid);
+		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserAddedPassword, $uuid));
 		$variables ['successMessage'] = "Der Benutzer wurde angelegt und informiert";
 		if(!$mail){
 			$variables ['alertMessage'] = "E-Mail konnte nicht versendet werden";

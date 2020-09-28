@@ -18,7 +18,7 @@ if(userLoggedIn()){
     
     if (isset ( $_POST ['emsEntry'] )) {
         if(set_ems_entry($_POST ['emsEntry'])){
-        	insert_log(LogbookActions::ReportEMSSet, $_POST ['emsEntry']);
+        	insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ReportEMSSet, $_POST ['emsEntry']));
             $variables['successMessage'] = "Bericht aktualisiert";
         } else {
             $variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";

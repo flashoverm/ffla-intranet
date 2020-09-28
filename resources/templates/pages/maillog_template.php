@@ -4,50 +4,52 @@ if (!isset($mails) || ! count ( $mails ) ) {
 } else {
 	global $maillogStates;
 ?>
-<table class="table table-hover table-striped">
-	<thead>
-		<tr>
-			<th>#</th>
-			<th>Datum</th>
-			<th>Empfänger</th>
-			<th>Betreff</th>
-			<th>Status</th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php
-		$index = 0;
-		foreach ( $mails as $row ) {
-		?>
-		<tr data-toggle="collapse" data-target="#collapseme<?= $index ?>">
-			<td><?= $row->RowNum ?></td>
-			<td><?= date($config ["formats"] ["datetime"] . ":s", strtotime($row->timestamp)); ?></td>
-			<td><?= $row->recipient ?></td>
-			<td><?= $row->subject ?></td>
-			<td><?= $maillogStates[$row->state] ?></td>
-		</tr>
-		<tr>
-			<td class="collapse-td" colspan="5">
-				<div class="collapse" id="collapseme<?= $index ?>">
-					<div class="collapse-content">
-						<?php 
-						$body = nl2br($row->body);
-							
-							if($row->error != NULL){
-								$body = $body . "<br><br><br><b>Fehlermeldung:</b><br>" . $row->error;
-							}
-							echo $body;
-						?>
+<div class="table-responsive">
+	<table class="table table-hover table-striped table-bordered">
+		<thead>
+			<tr>
+				<!-- <th>#</th> -->
+				<th>Datum</th>
+				<th>Empfänger</th>
+				<th>Betreff</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			$index = 0;
+			foreach ( $mails as $row ) {
+			?>
+			<tr data-toggle="collapse" data-target="#collapseme<?= $index ?>">
+				<!-- <td><?= $row->RowNum ?></td> -->
+				<td><?= date($config ["formats"] ["datetime"] . ":s", strtotime($row->timestamp)); ?></td>
+				<td><?= $row->recipient ?></td>
+				<td><?= $row->subject ?></td>
+				<td><?= $maillogStates[$row->state] ?></td>
+			</tr>
+			<tr>
+				<td class="collapse-td" colspan="5">
+					<div class="collapse" id="collapseme<?= $index ?>">
+						<div class="collapse-content">
+							<?php 
+							$body = nl2br($row->body);
+								
+								if($row->error != NULL){
+									$body = $body . "<br><br><br><b>Fehlermeldung:</b><br>" . $row->error;
+								}
+								echo $body;
+							?>
+						</div>
 					</div>
-				</div>
-			</td>
-		</tr>
-		<?php
-			$index ++;
-		}
-		?>
-	</tbody>
-</table>
+				</td>
+			</tr>
+			<?php
+				$index ++;
+			}
+			?>
+		</tbody>
+	</table>
+</div>
 <nav>
   <ul class="pagination justify-content-center">
   	<?php

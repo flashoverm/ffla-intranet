@@ -26,7 +26,7 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 	    
     	$variables ['title'] = "In " . get_eventtype($event->type)->type . " einteilen";
     	$variables ['engines'] = get_engines ();
-    	$variables ['user'] = get_users_of_engine(get_engine_of_user($_SESSION ['intranet_userid']));
+    	$variables ['user'] = get_eventparticipent_of_engine(get_engine_of_user($_SESSION ['intranet_userid']));
     	$variables ['eventUUID'] = $eventUUID;
     	$variables ['staffUUID'] = $staffUUID;
     	$variables ['subtitle'] = date($config ["formats"] ["date"], strtotime($event->date)) 
@@ -61,7 +61,7 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     						mail_add_staff_user ($eventUUID, $user->uuid);
     						
     						$variables ['successMessage'] = "Wachteilnehmer zugewiesen - <a href=\"" . $config["urls"]["guardianapp_home"] . "/events/" . $eventUUID . "\" class=\"alert-link\">Zurück</a>";
-    						insert_log(LogbookActions::EventAssigned, array($staffUUID,$user->uuid));
+    						insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::EventAssigned, $staffUUID));
     						$variables ['showFormular'] = false;
     						header ( "Location: " . $config["urls"]["guardianapp_home"] . "/events/".$eventUUID); // redirects
     					} else {

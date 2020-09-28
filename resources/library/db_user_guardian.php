@@ -108,6 +108,33 @@ function get_eventmanager_except_engine_and_creator($engine_uuid, $creator_uuid)
 	return $data;
 }
 
+function get_eventparticipent_of_engine($engine_uuid){
+	global $db;
+	$data = array ();
+	
+	$privilege  = EVENTPARTICIPENT;
+	
+	$statement = $db->prepare("SELECT *
+		FROM user, user_privilege
+		WHERE uuid = user_privilege.user
+		AND privilege = ?
+		AND engine = ?
+ 		ORDER BY lastname");
+	$statement->bind_param('ss', $privilege, $engine_uuid);
+	
+	if ($statement->execute()) {
+		$result = $statement->get_result();
+		
+		if (mysqli_num_rows ( $result )) {
+			while ( $date = $result->fetch_object () ) {
+				$data [] = $date;
+			}
+			$result->free ();
+		}
+	}
+	return $data;
+}
+
 function is_eventmanager_of($user_uuid, $engine_uuid){
 	global $db;
 	

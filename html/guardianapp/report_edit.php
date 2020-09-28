@@ -137,7 +137,7 @@ if (isset($_POST) && isset($_POST ['start'])) {
     if(isset($_GET['id'])){
         //Update        
     	if(update_report($eventReport)){
-    		insert_log(LogbookActions::ReportUpdated, $eventReport->uuid);
+    		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ReportUpdated, $eventReport->uuid));
     		if(!createReportFile($uuid)){
     			if(mail_update_report ($eventReport)){
     				$variables ['successMessage'] = "Aktualisierter Bericht versendet";
@@ -156,7 +156,7 @@ if (isset($_POST) && isset($_POST ['start'])) {
     	$uuid = insert_report($eventReport);
     	if($uuid){
     		$eventReport->uuid = $uuid;
-    		insert_log(LogbookActions::ReportCreated, $eventReport->uuid);
+    		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ReportCreated, $eventReport->uuid));
     		if(!createReportFile($uuid)){
     			if(mail_insert_event_report ($eventReport)){
     				$variables ['successMessage'] = "Bericht versendet";

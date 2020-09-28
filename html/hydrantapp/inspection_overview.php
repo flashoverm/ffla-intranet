@@ -14,10 +14,10 @@ $variables = array(
 $engine = get_engine_of_user($_SESSION ['intranet_userid']);
 
 if(isset($_POST['delete'])){
-    
+	$log = LogbookEntry::fromAction(LogbookActions::InspectionDeleted, $_POST['delete']);
     if(delete_inspection($_POST['delete'])){
         $variables ['successMessage'] = "Prüfbericht gelöscht";
-        insert_log(LogbookActions::InspectionDeleted, $_POST['delete']);
+        insert_logbook_entry($log);
     } else {
         $variables ['alertMessage'] = "Prüfbericht konnte nicht gelöscht werden";
     }

@@ -16,11 +16,11 @@ if (isset($_POST['delete'])) {
     $uuid = trim($_POST['delete']);
     
     $file = get_file($uuid);
-    
+    $log = LogbookEntry::fromAction(LogbookActions::FileDeleted, $uuid);
     if(delete_file_fs($file)){
         
         if(delete_file($uuid)){
-        	insert_log(LogbookActions::FileDeleted, $uuid);
+        	insert_logbook_entry($log);
             $variables ['successMessage'] = "Datei " . $file->description . " wurde entfernt";
             
         } else {

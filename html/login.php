@@ -28,7 +28,7 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 	if (! is_locked ( $email )) {
 		$uuid = check_password ( $email, $password );
 		if ($uuid) {
-			insert_log(LogbookActions::UserLogedIn, $uuid);
+			insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserLogedIn, $uuid));
 			
 			$_SESSION ['intranet_userid'] = $uuid;
 			$_SESSION ['intranet_email'] = $email;
@@ -48,7 +48,7 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 		$variables ['alertMessage'] = "Zugangsdaten ungültig";
 		$user = get_user_by_email($email);
 		if($user){
-			insert_log(LogbookActions::UserLoginFailed, $user->uuid);
+			insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserLoginFailed, $user->uuid));
 		}
 	}
 

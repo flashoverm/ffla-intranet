@@ -43,9 +43,13 @@ $bodies = array (
 	"event_not_full" => $util["head"] . "eine Wache findet in ".$config ["settings"] ["reminderAtDay"]." Tagen statt und hat noch nicht die nötige Besetzung erreicht: \n\n",
 	
 	"event_unscribe" => $util["head"] . "Sie wurden durch den Wachbeauftragten von der Wache entfernt: \n\n",
-	
+		
+	"event_unscribe_by_user" => $util["head"] . "jemand hat sich aus eine Ihrem Zug zugewiesene Wache ausgetragen: \n\n",
+			
 	"event_unscribe_engine" => $util["head"] . "jemand aus Ihrem Zug wurde durch den Wachbeauftragten von der Wache entfernt:  \n\n",
 	
+	"event_unscribe_by_user_engine" => $util["head"] . "jemand aus Ihrem Zug hat sich aus einer Wache ausgetragen: \n\n",
+		
 	"event_report" => $util["head"] . "ein Wachbericht wurde angelegt und ist als Anhang verfügbar oder unter:  \n\n",
 	
 	"event_report_update" => $util["head"] . "ein Wachbericht wurde aktualisiert und ist als Anhang verfügbar oder unter: \n\n",

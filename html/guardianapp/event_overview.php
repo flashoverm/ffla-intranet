@@ -17,7 +17,7 @@ if (isset ( $_POST ['delete'] )) {
 	$delete_event_uuid = trim ( $_POST ['delete'] );
 	mail_delete_event ( $delete_event_uuid );
 	if(mark_event_as_deleted ( $delete_event_uuid, $_SESSION ['intranet_userid'])){
-		insert_log(LogbookActions::EventDeleted, $delete_event_uuid);
+		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::EventDeleted, $delete_event_uuid));
 		$variables ['successMessage'] = "Wache gelöscht";
 	} else {
 		$variables ['alertMessage'] = "Wache konnte nicht gelöscht werden";

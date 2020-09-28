@@ -57,7 +57,7 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 				if($user->password == NULL){
 					if(reset_password($user->uuid)){
 						$variables ['successMessage'] = "Das Passwort wurde zurückgesetzt und gesendet";
-						insert_log(LogbookActions::UserResetPassword, $user->uuid);
+						insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserResetPassword, $user->uuid));
 						
 					} else {
 						$variables ['alertMessage'] = "Ein unbekannter Fehler ist aufgetreten";
@@ -99,11 +99,11 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 			}
 			
 			if(isset($_GET['uuid'])){
-				insert_log(LogbookActions::UserUpdated, $user->uuid);
+				insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserUpdated, $user->uuid));
 				$variables ['successMessage'] = "Der Benutzer wurde aktualisiert";
 			} else {
 				$mail = mail_add_user($email, $password);
-				insert_log(LogbookActions::UserCreated, $user->uuid);
+				insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserCreated, $user->uuid));
 				$variables ['successMessage'] = "Der Benutzer wurde angelegt und informiert";
 				unset($_POST);
 				unset($variables['user']);

@@ -67,7 +67,7 @@ if((isset($_POST['csv']) || isset($_POST['invoice'])) && current_user_has_privil
     	reportsToInvoiceCSV($reports, $head);
     }
     
-    insert_log(LogbookActions::ReportsExported, null);
+    insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ReportsExported, null));
 
     return;
 }

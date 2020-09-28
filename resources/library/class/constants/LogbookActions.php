@@ -16,16 +16,15 @@ $logbookActions = array(
 		
 	21 => "Benutzer hat sich angemeldet",
 	22 => "Benutzer hat falsches Passwort eingegeben",	
+	
+	/*
+	 * Logs
+	 */
+	51 => "Logbuch gelöscht",
+	52 => "Maillog gelöscht",
 
 	/*
-	 * Mail
-	 */
-	31 => "E-Mail wurde versandt",
-	32 => "E-Mail konnte nicht gesendet werden",
-	33 => "E-Mail wurde nur geloggt (Debug-Mode)",
-		
-	/*
-	 * Guradian - Event
+	 * Guardian - Event
 	 */
 	101 => "Wache angelegt",
 	102 => "Wache aktualisiert",
@@ -34,13 +33,14 @@ $logbookActions = array(
 	105 => "Wache veröffentlicht",
 
 	/*
-	 * Guradian - Event Staff
+	 * Guardian - Event Staff
 	 */
 	111 => "Einer Wache zugewiesen",
 	112 => "Für Wache eingetragen",
 	113 => "Für Wache eingetragen (Bestätigung ausstehend)",
 	114 => "Wachteilnahme bestätigt",
 	115 => "Wachteilnehmer entfernt",
+	116 => "Aus Wache ausgetragen",
 
 	/*
 	 * Guradian - Staff Template
@@ -104,15 +104,10 @@ abstract class LogbookActions {
 	const UserLogedIn = 21;
 	const UserLoginFailed = 22;
 	
-		
-	/*
-	 * Mail
-	 */
-	const MailSent = 31;
-	const MailFailed = 32;
-	const MailDebug = 33;
+	const LogbookDeleted = 51;
+	const MaillogDeleted = 52;
 	
-	
+
 	/*
 	 * Guradian - Event
 	 */
@@ -130,6 +125,7 @@ abstract class LogbookActions {
 	const EventSubscribedPending = 113;		//Not in use
 	const EventStaffConfirmed = 114;
 	const EventUnscribed = 115;
+	const EventUnscribedByUser = 116;
 	
 	
 	/*

@@ -52,15 +52,13 @@
 				<td><?php
 					if( ! isset($print) ){
 						if ($entry->user == NULL and $relevant) {
-							
 							if(isset($_SESSION['intranet_userid']) && is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid'])){
 								echo "<a class='btn btn-primary btn-sm' href='" . $config["urls"]["guardianapp_home"] . "/events/" . $event->uuid . "/assign/" . $entry->uuid . "'>Einteilen</a>";
-								
-							} else {
-								echo "<a class='btn btn-primary btn-sm' href='" . $config["urls"]["guardianapp_home"] . "/events/" . $event->uuid . "/subscribe/" . $entry->uuid . "'>Eintragen</a>";
 							}
+							?>
+							<a class='btn btn-primary btn-sm' href='<?= $config["urls"]["guardianapp_home"] . "/events/" . $event->uuid . "/subscribe/" . $entry->uuid ?>'>Eintragen</a>
+							<?php
 						}
-						
 						
 						if ($entry->user != NULL and isset($_SESSION['intranet_userid']) and is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid']) and $relevant and $event->staff_confirmation) {
 							if($entry->unconfirmed){
@@ -68,17 +66,29 @@
 	    						<button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#confirmConfirmation<?= $entry->uuid ?>'>Bestätigen</button>
 	    						<?php 
 	    						createDialog('confirmConfirmation' . $entry->uuid, "Personal wirklich bestätigen?", null, "confirmstaffid", $entry->uuid);
+	        					} else { 
 	        					?>
-						<?php 	} else { ?>
 								<button type='button' class='btn btn-outline-primary btn-sm' disabled>Bestätigt</button>
-						<?php 	}
+								<?php
+						 	}
 						} 
 						
-						if ($entry->user != NULL and isset($_SESSION['intranet_userid']) and (is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid']) || $entry->user == $_SESSION['intranet_userid']) and $relevant) {?>
-							<button type='button' class='btn btn-outline-primary btn-sm' data-toggle='modal' data-target='#confirmUnscribe<?= $entry->uuid ?>'>Austragen</button>
-							<?php 
-							createDialog('confirmUnscribe' . $entry->uuid, "Personal wirklich austragen?", null, "removestaffid", $entry->uuid);
-	        			} 
+						if($entry->user != NULL and isset($_SESSION['intranet_userid']) && $relevant){
+							
+							if ($entry->user == $_SESSION['intranet_userid']) {
+								// Remove by user himself
+								?>
+								<button type='button' class='btn btn-outline-primary btn-sm' data-toggle='modal' data-target='#confirmUnscribeByUser<?= $entry->uuid ?>'>Austragen</button>
+								<?php 
+								createDialog('confirmUnscribeByUser' . $entry->uuid, "Personal wirklich austragen?", null, "removestaffbyuserid", $entry->uuid);
+		        			} else if (is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid'])) {
+		        				// Remove by manager
+		        				?>
+								<button type='button' class='btn btn-outline-primary btn-sm' data-toggle='modal' data-target='#confirmUnscribe<?= $entry->uuid ?>'>Entfernen</button>
+								<?php 
+								createDialog('confirmUnscribe' . $entry->uuid, "Personal wirklich austragen?", null, "removestaffid", $entry->uuid);
+		        			}
+						}
 					} ?>
 				</td>
 			</tr>

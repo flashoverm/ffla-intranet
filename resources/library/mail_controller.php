@@ -223,6 +223,31 @@ function mail_subscribe_staff_user($event_uuid, $user_uuid, $informMe) {
 	return $sendOK;
 }
 
+function mail_unscribe_staff_user($staff_uuid, $event_uuid) {
+	global $config;
+	global $bodies;
+	
+	$event = get_event( $event_uuid );
+	$staffuser = get_staff_user( $staff_uuid );
+	$sendOK = true;
+	
+	$subject = "Aus Wache ausgetragen" . event_subject($event_uuid);
+	
+	//send mail to manager of the user
+	if ($config ["settings"] ["enginemgrmailonsubscription"]) {
+		
+		$body = $bodies["event_unscribe_by_user_engine"] . get_event_link($event_uuid);
+		$recipients = get_eventmanager_of_engine($staffuser->engine);
+		$sendOK = send_mails($recipients, $subject, $body);
+	}
+	
+	//send mail to manager of the event
+	$body = $bodies["event_unscribe_by_user"] . get_event_link($event_uuid);
+	$sendOK = $sendOK && mail_to_manager($event, $subject, $body);
+	
+	return $sendOK;
+}
+
 //by manager
 function mail_confirm_staff_user($staff_uuid, $event_uuid) {
 	global $bodies;
