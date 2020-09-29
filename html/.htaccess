@@ -74,10 +74,12 @@ RewriteRule ^(.*)ajax/templates/([^/]+)/?$ 	$1/ajax/staff_template.php?uuid=$2
 RewriteRule ^(.*)ajax/user/([^/]+)/?$			$1/ajax/user.php?uuid=$2
 RewriteRule ^(.*)ajax/privileges/([^/]+)/?$	$1/ajax/privileges.php?uuid=$2
 
-RewriteRule ^(.*)users/import?$ 			$1/user_import.php
 RewriteRule ^(.*)users/new/?$ 				$1/user_edit.php 
-RewriteRule ^(.*)users/filter/([^.]+)/?$ 	$1/user_overview.php?filter=$2 
 RewriteRule ^(.*)users/([^/]+)/edit/?$		$1/user_edit.php?uuid=$2
+RewriteRule ^(.*)users/edit/?$				$1/user_edit.php?self=true
+
+RewriteRule ^(.*)users/import?$ 			$1/user_import.php
+RewriteRule ^(.*)users/filter/([^.]+)/?$ 	$1/user_overview.php?filter=$2 
 RewriteRule ^(.*)users/?$ 					$1/user_overview.php 
 
 RewriteRule ^(.*)logbook/page/([^.]+)/?$	$1/logbook.php?page=$2

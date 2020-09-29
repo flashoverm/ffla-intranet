@@ -11,26 +11,48 @@ $privileges = get_all_privileges();
 
 // Pass variables (as an array) to template
 $variables = array (
-		'title' => "Benutzer anlegen",
-		'secured' => true,
-		'engines' => get_engines(),
-		'privileges' => $privileges,
+	'secured' => true,
+	'engines' => get_engines(),
+	'privileges' => $privileges,
 );
 
-if( $config ["settings"] ["selfregistration"]){
-	$variables['secured'] = false;
-}
-
-if(isset($_GET['uuid'])){
-	$variables['privilege'] = PORTALADMIN;
+if( isset($_GET['self']) ){
+	// edit by user itself
 	$variables['title'] = "Benutzer bearbeiten";
+	
+	$variables['showRights'] = false;
+	$variables['user'] = get_user($_SESSION ['intranet_userid']);
+	
+	
+} else if( isset($_GET['uuid']) ){
+	// edit by admin
+	$variables['title'] = "Benutzer bearbeiten";
+	$variables['privilege'] = PORTALADMIN;
+	
+	$variables['showRights'] = true;
 	$user = get_user($_GET['uuid']);
 	if($user){
 		$variables['user'] = $user;
 	} else {
 		$variables ['alertMessage'] = "Benutzer wurde nicht gefunden";
 	}
+	
+} else {
+	// new user
+	$variables['title'] = "Benutzer anlegen";
+	if( $config ["settings"] ["selfregistration"]){
+		$variables['secured'] = false;
+		
+		$variables['showRights'] = false;
+	} else {
+		$variables['privilege'] = PORTALADMIN;
+		
+		$variables['showRights'] = true;
+	}
+	
 }
+
+
 
 if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_POST ['firstname'] ) && isset ( $_POST ['lastname'] )) {
 
