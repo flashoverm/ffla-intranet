@@ -10,7 +10,8 @@ Release-Notes:
 	Execute: UPDATE privilege SET privilege = 'EDITUSER' WHERE privilege.uuid = '231C64FA-24F4-CDA4-60FE-B211A364D5AE'; 
 	
 Features:
-	User can edit their data by themselfs
+	User can edit their data by themselves
+	Privileges can be added by default to new users (self registration, by admin)
 	Application Logbook
 	Extra button to subscribe for manager (not assign himself)
 	Event particiants can unscribe themselfes
