@@ -55,7 +55,7 @@ function send_mail($to, $subject, $body, $attachment = NULL) {
 	        
 	        $mail->Body = $mailBody;
 	    
-	        if(false && !$mail->send ()){
+	        if(true && !$mail->send ()){
 	            throw new Exception;
 	        }
 	        
