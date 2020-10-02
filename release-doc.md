@@ -4,6 +4,11 @@ Release Documentation
 
 ##### V2.1.2
 
+Release-Notes:
+	Execute resources/library/scripts/sql/migrate_privileges.sql
+	
+	UPDATE privilege SET privilege = 'EDITUSER' WHERE privilege.uuid = '231C64FA-24F4-CDA4-60FE-B211A364D5AE'; 
+	
 Features:
 	Application Logbook
 	Extra button to subscribe for manager (not assign himself)

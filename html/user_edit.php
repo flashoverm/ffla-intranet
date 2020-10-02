@@ -22,6 +22,7 @@ if( isset($_GET['self']) ){
 	
 	$variables['showRights'] = false;
 	$variables['user'] = get_user($_SESSION ['intranet_userid']);
+	$variables['privilege'] = EDITUSER;
 	
 	
 } else if( isset($_GET['uuid']) ){
@@ -61,6 +62,7 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 	$email = strtolower(trim($_POST ['useremail']));
 	$engine = trim($_POST ['engine']);	
 	
+	//check if password equals (if set)
 	$exit = false;
 	if(isset($_POST ['userpassword'])){
 		$password = trim($_POST ['userpassword']);
@@ -73,54 +75,81 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 	}
 
 	if (! $exit) {
+		/*
+		 * logic for adding login (password) to existing user
+		 * if mail is in use and entered data matches with user, create password for user
+		 * else: if user is updated (uuid or self is set as parameter) skip
+		 * 		 else: print error
+		 */
 		if (email_in_use ( $email )) {
 			$user = get_user_by_data($firstname, $lastname, $email, $engine);
 			if($user){
 				if($user->password == NULL){
 					if(reset_password($user->uuid)){
-						$variables ['successMessage'] = "Das Passwort wurde zurückgesetzt und gesendet";
+						$variables ['successMessage'] = "Das Passwort wurde gesetzt und gesendet";
 						insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserResetPassword, $user->uuid));
-						
 					} else {
 						$variables ['alertMessage'] = "Ein unbekannter Fehler ist aufgetreten";
 					}
 					$exit = true;
 				} else {
-					if( ! isset($_GET['uuid'])){
+					if( ! isset($_GET['uuid']) && ! isset($_GET['self']) ){
 						$variables ['alertMessage'] = "Diese E-Mail-Adresse ist bereits vergeben";
 						$exit = true;
 					}
 				}
 			} else {
-				if(! isset($_GET['uuid'])){
+				if(! isset($_GET['uuid'])  && ! isset($_GET['self']) ){
 					$variables ['alertMessage'] = "E-Mail-Adresse bereits mit anderem Namen/Zug in Verwendung!";
 					$exit = true;
 				}
 			}
 		}
 	}
+	
 	if (! $exit) {
-		if(isset($_GET['uuid'])){
+		/*
+		 * logic to create or update existing user (with password)
+		 * 
+		 * if: user is updated by admin (uuid is parameter): update
+		 * else if: user is updated by himself (self is parameter): update
+		 * else: insert new user
+		 */
+		if( isset($_GET['uuid']) ){
 			$user = update_user($_GET['uuid'], $firstname, $lastname, $email, $engine );
+		} else if( isset($_GET['self']) ){
+			$user = update_user($_SESSION ['intranet_userid'], $firstname, $lastname, $email, $engine );
 		} else {
 			$user = insert_user ( $firstname, $lastname, $email, $password, $engine );
+			// add default privileges to new user
+			$privileges = get_all_privileges();
+			foreach($privileges as $privilege){
+				if($privilege->is_default){
+					add_privilege_to_user($user->uuid, $privilege->uuid);
+				}
+			}
 		}
+		
 		if ($user) {
 			$variables['user'] = $user;
+			/*
+			 * update privileges if privilege-list is displayed (param updateRights)
+			 * delete all from user and set all marked privileges
+			 */
 			if(isset($_POST['updateRights'])){
 				foreach($privileges as $privilege){
 					
-					remove_privilege_from_user($user->uuid, $privilege->privilege);
+					remove_privilege_from_user($user->uuid, $privilege->uuid);
 					
-					$inputName = "priv_" . $privilege->privilege;
+					$inputName = "priv_" . $privilege->uuid;
 					
 					if(isset ( $_POST [ $inputName ] )){
-						add_privilege_to_user($user->uuid, $privilege->privilege);
+						add_privilege_to_user($user->uuid, $privilege->uuid);
 					}
 				}
 			}
 			
-			if(isset($_GET['uuid'])){
+			if( isset($_GET['uuid']) || isset($_GET['self']) ){
 				insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserUpdated, $user->uuid));
 				$variables ['successMessage'] = "Der Benutzer wurde aktualisiert";
 			} else {
@@ -133,6 +162,7 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 					$variables ['alertMessage'] = "E-Mail konnte nicht versendet werden";
 				}
 			}
+			
 			if(userLoggedIn()){
 				//header ( "Location: " . $config["urls"]["intranet_home"] . "/users" ); // redirects
 			}else{

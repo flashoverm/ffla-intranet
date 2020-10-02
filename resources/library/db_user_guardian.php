@@ -13,7 +13,7 @@ function inset_participant_only($firstname, $lastname, $email, $engine_uuid){
 	$result = $statement->execute();
 	
 	if ($result) {
-		add_privilege_to_user($uuid, EVENTPARTICIPENT);
+		add_privilege_to_user_by_name($uuid, EVENTPARTICIPENT);
 		
 		$statement = $db->prepare("SELECT * FROM user WHERE uuid = ?");
 		$statement->bind_param('s', $uuid);
@@ -31,7 +31,7 @@ function insert_eventmanager($firstname, $lastname, $email, $password, $engine_u
 	$result = insert_user($firstname, $lastname, $email, $password, $engine_uuid);
 
 	if ($result) {
-		add_privilege_to_user($result->uuid, EVENTMANAGER);
+		add_privilege_to_user_by_name($result->uuid, EVENTMANAGER);
 		return $result;
 	}
 	// echo "Error: " . $query . "<br>" . $db->error;
@@ -42,8 +42,8 @@ function insert_eventadmin($firstname, $lastname, $email, $password, $engine_uui
 	$result = insert_user($firstname, $lastname, $email, $password, $engine_uuid);
 	
 	if ($result) {
-		add_privilege_to_user($result->uuid, EVENTMANAGER);
-		add_privilege_to_user($result->uuid, EVENTADMIN);
+		add_privilege_to_user_by_name($result->uuid, EVENTMANAGER);
+		add_privilege_to_user_by_name($result->uuid, EVENTADMIN);
 		
 		return $result;
 	}
@@ -159,7 +159,7 @@ function is_eventmanager_of($user_uuid, $engine_uuid){
 }
 
 function allow_event_participation($uuid) {
-	return add_privilege_to_user($uuid, EVENTPARTICIPENT);
+	return add_privilege_to_user_by_name($uuid, EVENTPARTICIPENT);
 }
 
 function deny_event_participation($uuid) {

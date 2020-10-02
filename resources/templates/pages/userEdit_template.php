@@ -96,7 +96,7 @@
 	</div>
 	
 	<?php 
-	if( current_user_has_privilege(PORTALADMIN)){
+	if( $showRights ){
 	?>
 	<div class="form-group">
 		<label>Rechte:</label>  
@@ -107,7 +107,7 @@
 				<?php
 				$users_privileges = null;
 				if(isset($user)){
-					$users_privileges = get_users_privileges_array($user->uuid);
+					$users_privileges = get_users_privileges($user->uuid);
 				}
 				foreach ( $privileges as $row ) {
 				?>
@@ -115,14 +115,17 @@
 						<td><?= $row->privilege ?></td>
 						<td class="text-center">
 							<div class="custom-control custom-checkbox mb-1">
-							  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->privilege ?>" name="priv_<?= $row->privilege ?>"
+							  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->uuid ?>" name="priv_<?= $row->uuid ?>"
 							  <?php
-							  if( (isset($user) && in_array($row->privilege, $users_privileges)) || isset($_POST['priv_' . $row->privilege ])){
+							  if( 	(isset($user) && in_array($row->uuid, $users_privileges)) 
+							  		|| isset($_POST['priv_' . $row->privilege ]) 
+							  		|| (! isset($user) && $_SERVER['REQUEST_METHOD'] === 'GET' && $row->is_default )
+							  ){
 							  	echo "checked";
 							  }
 							  ?>
 							  >
-							  <label class="custom-control-label custom-control-label-table" for="priv_<?= $row->privilege ?>">&nbsp;</label>
+							  <label class="custom-control-label custom-control-label-table" for="priv_<?= $row->uuid ?>">&nbsp;</label>
 							</div>
 						</td>
 					</tr>

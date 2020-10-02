@@ -16,7 +16,7 @@
 							<tr>
 								<td><?= $row->privilege ?></td>
 								<td class="text-center">
-									<a class="btn btn-primary btn-sm" href='<?= $config["urls"]["intranet_home"]?>/users/filter/<?= $row->privilege ?>'>
+									<a class="btn btn-primary btn-sm" href='<?= $config["urls"]["intranet_home"]?>/users/filter/<?= $row->uuid ?>'>
 									Benutzer anzeigen
 									</a>
 							</tr>
@@ -58,8 +58,8 @@
 										<td><?= $row->privilege ?></td>
 										<td class="text-center">
 											<div class="custom-control custom-checkbox mb-1">
-											  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->privilege ?>" name="priv_<?= $row->privilege ?>" disabled>
-											  <label class="custom-control-label custom-control-label-table" for="priv_<?= $row->privilege ?>">&nbsp;</label>
+											  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->uuid ?>" name="priv_<?= $row->uuid ?>" disabled>
+											  <label class="custom-control-label custom-control-label-table" for="priv_<?= $row->uuid ?>">&nbsp;</label>
 											</div>
 										</td>
 									</tr>
@@ -125,9 +125,6 @@ function setUserPrivileges(){
             	}
             	inputs[i].disabled = false;
             }
-    	} else {
-	    	var button = document.getElementById("loadTemplate");
-	    	button.innerHTML = "Vorschlag nicht gefunden";
     	}
     }
 }

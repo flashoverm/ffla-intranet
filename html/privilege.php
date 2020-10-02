@@ -22,12 +22,12 @@ if (isset ( $_POST ['user'] ) ) {
 	$ok = true;
 	foreach($privileges as $privilege){
 
-		remove_privilege_from_user($user, $privilege->privilege);
+		remove_privilege_from_user($user, $privilege->uuid);
 		
-		$inputName = "priv_" . $privilege->privilege;
+		$inputName = "priv_" . $privilege->uuid;
 		
 		if(isset ( $_POST [ $inputName ] )){
-			$ok = $ok && add_privilege_to_user($user, $privilege->privilege);
+			$ok = $ok && add_privilege_to_user($user, $privilege->uuid);
 		}
 	}
 	

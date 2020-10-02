@@ -110,7 +110,14 @@
 			        	<div class='dropdown-menu dropdown-menu-right bg-dark'>
 							<a class='dropdown-item disabled text-secondary'><?= get_engine_obj_of_user($_SESSION ['intranet_userid'])->name ?></a>
 							<div class='dropdown-divider'></div>
-							<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/change_password'>Passwort ändern</a>
+							<?php
+							if(current_user_has_privilege(EDITUSER)) {
+							?>
+								<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/users/edit'>Benutzer bearbeiten</a>
+								<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/change_password'>Passwort ändern</a>
+							<?php
+							}
+							?>
 					       	<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/logout'>Abmelden</a>
 						</div>
 					</li>

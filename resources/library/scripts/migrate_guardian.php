@@ -37,7 +37,7 @@ while ( $user = $result->fetch_object () ) {
 		echo "Error migrating user " . $user->email . ": " . $db->error . "\n";
 	}
 	if($user->available){
-		add_privilege_to_user($user->uuid, EVENTPARTICIPENT);
+		add_privilege_to_user_by_name($user->uuid, EVENTPARTICIPENT);
  	}
 	
  }
@@ -48,7 +48,7 @@ migrateTables();
 
 
 $admin = get_user_by_email("admin");
-add_privilege_to_user($admin->uuid, PORTALADMIN);
+add_privilege_to_user_by_name($admin->uuid, PORTALADMIN);
 
 
 function migrateTables(){
@@ -104,7 +104,7 @@ function migrate_rights(){
 			foreach ( $rights as $right ) {
 				
 				
-				$ok = add_privilege_to_user($user->uuid, $right);
+				$ok = add_privilege_to_user_by_name($user->uuid, $right);
 				echo $ok . ":" . $user->firstname . " " . $user->lastname . ": " . $right . "\n";
 				$allok = $allok && $ok;
 				

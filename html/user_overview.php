@@ -64,9 +64,10 @@ if (isset ( $_POST ['setpw'] )) {
 }
 
 if(isset($_GET['filter'])){
-	$variables ['title'] = 'Rechte-Gruppe ' . $_GET['filter'];
+	$privilege = get_privilege($_GET['filter']);
+	$variables ['title'] = 'Rechte-Gruppe ' . $privilege->privilege;
 	$user = get_users_with_privilege ($_GET['filter']);
-	$variables ['infoMessage'] = "Es werden nur Benutzer mit Recht '" . $_GET['filter'] . "' angezeigt! <a href='" . $config["urls"]["intranet_home"] . "/privilege'>Zurück zur Auswahl</a>";
+	$variables ['infoMessage'] = "Es werden nur Benutzer mit Recht '" . $privilege->privilege . "' angezeigt! <a href='" . $config["urls"]["intranet_home"] . "/privilege'>Zurück zur Auswahl</a>";
 } else {
 	$user = get_users ();
 }

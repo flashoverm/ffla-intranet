@@ -15,7 +15,7 @@ if(!$isAdmin){
 		//if($privileges){
 			$string = "[";
 			foreach($privileges as $privilege){
-				$string .= "\n\t\"" . $privilege->privilege . "\",";
+				$string .= "\n\t\"" . $privilege . "\",";
 			}
 			if(strlen($string) > 1){
 				$string = substr($string, 0, -1);
