@@ -5,9 +5,9 @@ Release Documentation
 ##### V2.1.2
 
 Release-Notes:
+	config.php: Add setting deactivateOutgoingMails (set to false in prod, true on dev and test)
 	Execute resources/library/scripts/sql/migrate_privileges.sql
-	
-	UPDATE privilege SET privilege = 'EDITUSER' WHERE privilege.uuid = '231C64FA-24F4-CDA4-60FE-B211A364D5AE'; 
+	Execute: UPDATE privilege SET privilege = 'EDITUSER' WHERE privilege.uuid = '231C64FA-24F4-CDA4-60FE-B211A364D5AE'; 
 	
 Features:
 	Application Logbook

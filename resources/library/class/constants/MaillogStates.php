@@ -6,7 +6,8 @@ $maillogStates = array(
 	1 => "Gesendet",
 	2 => "Fehlgeschlagen",
 	3 => "Anhang-Fehler",
-	4 => "Server-Verbindungs-Fehler"
+	4 => "Server-Verbindungs-Fehler",
+	5 => "Mailausgang deaktiviert",
 );
 
 abstract class MaillogStates {
@@ -15,4 +16,5 @@ abstract class MaillogStates {
 	const Failed = 2;
 	const AttachmentError = 3;
 	const MailConnectError = 4;
+	const Deactivated = 5;
 }

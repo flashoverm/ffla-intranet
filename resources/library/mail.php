@@ -31,7 +31,7 @@ function init_mail() {
 }
 
 function send_mail($to, $subject, $body, $attachment = NULL) {
-    global $util;
+	global $util, $config;
     
     if (filter_var($to, FILTER_VALIDATE_EMAIL)) {
 	    try{
@@ -55,10 +55,16 @@ function send_mail($to, $subject, $body, $attachment = NULL) {
 	        
 	        $mail->Body = $mailBody;
 	    
-	        if(true && !$mail->send ()){
-	            throw new Exception;
+	        if( ! $config ["settings"] ["deactivateOutgoingMails"] ) {
+	        	if( ! $mail->send ()){
+	        		throw new Exception;
+	        	}
+	        } else {
+	        	if( $mailState == NULL){
+	        		$mailState = MaillogStates::Deactivated;
+	        	}
 	        }
-	        
+
 	        if( $mailState == NULL){
 	        	$mailState = MaillogStates::Sent;
 	        }

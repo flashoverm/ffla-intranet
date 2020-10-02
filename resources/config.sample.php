@@ -77,6 +77,7 @@ $config = array (
 		"creatormailonsubscription" => true,    //Send mail to creator of the event (if event is full, a mail is always sent)
 		"usermailonsubscription" => true,               //Send mail to subscribing user on subscribing a event
 		"useDefaultMapMarker" => false,
+		"deactivateOutgoingMails" => false,
 	)
 );
 
