@@ -62,9 +62,9 @@ function get_eventmanager_of_engine($engine_uuid) {
 	$privilege  = EVENTMANAGER;
 	
 	$statement = $db->prepare("SELECT * 
-		FROM user, user_privilege 
-		WHERE uuid = user_privilege.user 
-		AND privilege = ? 
+		FROM user, user_privilege, privilege
+		WHERE user.uuid = user_privilege.user AND privilege.uuid = user_privilege.privilege
+		AND privilege.privilege = ? 
 		AND engine = ?");
 	$statement->bind_param('ss', $privilege, $engine_uuid);
 	
@@ -88,11 +88,11 @@ function get_eventmanager_except_engine_and_creator($engine_uuid, $creator_uuid)
 	$privilege = EVENTMANAGER;
 	
 	$statement = $db->prepare("SELECT *
-		FROM user
-		WHERE user.uuid = privilege_user.user
+		FROM user, privilege_user, privilege
+		WHERE user.uuid = user_privilege.user AND privilege.uuid = user_privilege.privilege
 		AND NOT engine = ?
 		AND NOT uuid = ?
-		AND privilege_user.privilege = ?");
+		AND privilege.privilege = ?");
 	$statement->bind_param('sss', $engine_uuid, $creator_uuid, $privilege);
 	
 	if ($statement->execute()) {
@@ -115,9 +115,9 @@ function get_eventparticipent_of_engine($engine_uuid){
 	$privilege  = EVENTPARTICIPENT;
 	
 	$statement = $db->prepare("SELECT *
-		FROM user, user_privilege
-		WHERE uuid = user_privilege.user
-		AND privilege = ?
+		FROM user, privilege_user, privilege
+		WHERE user.uuid = user_privilege.user AND privilege.uuid = user_privilege.privilege
+		AND privilege.privilege = ?
 		AND engine = ?
  		ORDER BY lastname");
 	$statement->bind_param('ss', $privilege, $engine_uuid);
@@ -141,11 +141,11 @@ function is_eventmanager_of($user_uuid, $engine_uuid){
 	$privilege = EVENTMANAGER;
 	
 	$statement = $db->prepare("SELECT *
-		FROM user, privilege_user
-		WHERE user.uuid = privilege_user.user
+		FROM user, privilege_user, privilege
+		WHERE user.uuid = user_privilege.user AND privilege.uuid = user_privilege.privilege
 		AND user.uuid = ?
 		AND user.engine = ?
-		AND privilege_user.privilege = ?");
+		AND privilege.privilege = ?");
 	$statement->bind_param('sss', $user_uuid, $engine_uuid, $privilege);
 	
 	if ($statement->execute()) {
@@ -156,14 +156,6 @@ function is_eventmanager_of($user_uuid, $engine_uuid){
 		}
 	}
 	return false;
-}
-
-function allow_event_participation($uuid) {
-	return add_privilege_to_user_by_name($uuid, EVENTPARTICIPENT);
-}
-
-function deny_event_participation($uuid) {
-	return remove_privilege_from_user($uuid, EVENTPARTICIPENT);
 }
 
 ?>
