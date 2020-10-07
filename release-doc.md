@@ -2,6 +2,15 @@
 Release Documentation
 ******************************
 
+#### V2.2
+
+Release-Notes:
+	Add config urls: "employerapp_home" => $url_prefix . "/employer",
+	Add config apps: "employer" => "employerapp",
+	
+New app:
+	employer confirmations
+
 ##### V2.1.2
 
 Release-Notes:

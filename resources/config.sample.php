@@ -24,13 +24,15 @@ $config = array (
         "landing" => "",
         "files" => "filesapp",
         "hydrant" => "hydrantapp",
-		"guardian" => "guardianapp"
+		"guardian" => "guardianapp",
+    	"employer" => "employerapp",
 	),
     "urls" => array (
     	"intranet_home" => $url_prefix . "",
     	"filesapp_home" => $url_prefix . "/files",
     	"hydrantapp_home" => $url_prefix . "/hydrant",
     	"guardianapp_home" => $url_prefix . "/guardian",
+    	"employerapp_home" => $url_prefix . "/employer",
     		
     	"files" => $url_prefix . "/files",
         

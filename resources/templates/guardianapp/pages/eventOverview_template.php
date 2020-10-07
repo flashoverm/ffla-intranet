@@ -4,7 +4,7 @@ if (!isset($events) || ! count ( $events ) ) {
 } else {
 ?>
 <div class="table-responsive">
-	<table class="table table-striped" data-toggle="table" data-pagination="true"  data-search="true">
+	<table class="table table-striped" data-toggle="table" data-pagination="true" data-search="true">
 		<thead>
 			<tr>
 				<th data-sortable="true" class="text-center">Datum</th>
