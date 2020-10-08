@@ -88,6 +88,14 @@ $logbookActions = array(
 	301 => "Formular/Datei angelegt",
 	302 => "Formular/Datei aktualsiert",
 	303 => "Formular/Datei entfernt",
+		
+	/*
+	 * Employer
+	 */
+	401 => "Anfrage Arbeitgebernachweis angelegt",
+	402 => "Anfrage Arbeitgebernachweis aktualsiert",
+	403 => "Anfrage Arbeitgebernachweis akzeptiert",
+	404 => "Anfrage Arbeitgebernachweis abgelehnt",
 
 );
 
@@ -175,5 +183,14 @@ abstract class LogbookActions {
 	const FileCreated = 301;
 	const FileUpdated = 302;			//Not in use
 	const FileDeleted = 303;
+	
+	
+	/*
+	 * Employer
+	 */
+	const ConfirmationRequested = 401;
+	const ConfirmationUpdated = 402;
+	const ConfirmationAccepted = 403;
+	const ConfirmationDeclined = 404;
 	
 }

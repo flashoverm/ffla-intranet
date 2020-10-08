@@ -11,6 +11,8 @@ require_once "phpmailer/src/PHPMailer.php";
 require_once "phpmailer/src/SMTP.php";
 require_once "phpmailer/src/Exception.php";
 
+//TODO successfull mail sending should answer with true, error with false
+
 function init_mail() {
     global $config;
     

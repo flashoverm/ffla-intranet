@@ -14,16 +14,35 @@ if( isset($_POST['confirmation']) ){
 	$confirmation_uuid = trim ( $_POST['confirmation'] );
 	
 	if( isset($_POST['accept']) ){
-		accept_confirmation($confirmation_uuid, $_SESSION ['intranet_userid']);
-		//TODO log, info and mail (to special address)
+		$confirmation_uuid = accept_confirmation($confirmation_uuid, $_SESSION ['intranet_userid']);
+		if($confirmation_uuid){
+			if(mail_send_confirmation($confirmation_uuid)){
+				$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
+			}
+			$variables ['successMessage'] = "Anfrage akzeptiert";
+			insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ConfirmationAccepted, $confirmation_uuid));
+						
+		} else {
+			$variables ['alertMessage'] = "Anfrage konnte nicht bearbeitet werden";
+		}
 		
 	} else if ( isset($_POST['decline']) ){
 		$reason = null;
 		if(isset( $_POST ['reason'] ) && !empty( $_POST ['reason'] ) ){
 			$reason = trim( $_POST ['reason'] );
 		}
-		decline_confirmation($confirmation_uuid, $reason, $_SESSION ['intranet_userid']);
-		//TODO log, info and mail (to user)
+		
+		$confirmation_uuid = decline_confirmation($confirmation_uuid, $reason, $_SESSION ['intranet_userid']);
+		if($confirmation_uuid){
+			if(mail_send_confirmation_declined($confirmation_uuid)){
+				$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
+			}
+			$variables ['successMessage'] = "Anfrage abgelehnt";
+			insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ConfirmationDeclined, $confirmation_uuid));
+			
+		} else {
+			$variables ['alertMessage'] = "Anfrage konnte nicht bearbeitet werden";
+		}
 	}
 	
 }

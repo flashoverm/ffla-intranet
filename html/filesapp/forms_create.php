@@ -14,8 +14,6 @@ if(isset($_FILES['upload']) && isset($_POST['description'])){
     
     $description = trim($_POST['description']);
     
-    //TODO check if file exists!
-
     if (!file_exists($config["paths"]["files"])) {
         mkdir($config["paths"]["files"], 0777, true);
     }

@@ -55,6 +55,8 @@ $bodies = array (
 	"event_report_update" => $util["head"] . "ein Wachbericht wurde aktualisiert und ist als Anhang verfügbar oder unter: \n\n",
 	
 	"event_report_approved" => $util["head"] . "ein Wachbericht wurde durch einen Wachbeauftragten überprüft und freigegeben. \n\n Der Bericht befindet sich im Anhang oder unter:  \n\n",
+		
+	"confirmation_requested" => $util["head"] . "eine neue Anfrage einer Arbeitgeberbestätigung wurde erstellt. \n\n Bearbeitung der Anfragen unter: \n\n", 
 	
 	"user_add" => $util["head"] . "für Sie wurde ein Zugang angelegt:",
 	"login" => "\n\nLogin: ",

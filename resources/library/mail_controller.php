@@ -437,4 +437,52 @@ function mail_report_approved($report_uuid){
 	return send_mails($administration, $subject, $body, $file);
 }
 
+
+/*
+ * Confirmations
+ */
+
+function mail_send_confirmation_request($confirmation_uuid){
+	global $config;
+	global $bodies;
+	
+	$subject = "Neue Anfrage einer Arbeitgeberbestätigung";
+	$body = $bodies["confirmation_requested"] . $config["urls"]["employerapp_home"] . "/confirmations/process";
+		
+	$administration = get_users_with_privilege(FFADMINISTRATION);
+	return send_mails($administration, $subject, $body);
+}
+
+function mail_send_confirmation_declined($confirmation_uuid){
+	global $config;
+	global $bodies;
+	
+	//TODO implement function
+	
+	$subject = "Anfrage Arbeitgeberbestätigung abgelehnt";
+	$body = $bodies["confirmation_requested"] . $config["urls"]["employerapp_home"] . "/confirmations";
+}
+
+function mail_send_confirmation($confirmation_uuid){
+	global $config;
+	global $bodies;
+	
+	$confirmation = get_confirmation($confirmation_uuid);
+	$user = get_user($confirmation->user);
+	
+	$subject = "Arbeitgebernachweis für Einsatztätigkeit";
+	if($user->mail_employer){
+	} else {
+		$subject = "Arbeitgebernachweis für Einsatztätigkeit";
+	}
+	//TODO implement function
+	
+	
+	$body = $bodies["event_report_approved"] . get_report_link($report_uuid);
+	
+	$file = $config["paths"]["reports"] . $report_uuid . ".pdf";
+	
+	return send_mails($administration, $subject, $body, $file);
+}
+
 ?>

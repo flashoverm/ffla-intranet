@@ -97,7 +97,7 @@ function update_confirmations($uuid, $date, $start_time, $end_time, $description
 	$result = $statement->execute();
 	
 	if ($result) {
-		return true;
+		return $uuid;
 	} else {
 		// echo "Error: " . $query . "<br>" . $db->error;
 		return false;
@@ -113,7 +113,7 @@ function set_confirmation_state($uuid, ConfirmationState $state) {
 	$result = $statement->execute();
 	
 	if ($result) {
-		return true;
+		return $uuid;
 	} else {
 		// echo "Error: " . $query . "<br>" . $db->error;
 		return false;
@@ -131,7 +131,7 @@ function accept_confirmation($uuid, $advisor) {
 	$result = $statement->execute();
 	
 	if ($result) {
-		return true;
+		return $uuid;
 	} else {
 		// echo "Error: " . $query . "<br>" . $db->error;
 		return false;
@@ -149,7 +149,7 @@ function decline_confirmation($uuid, $reason, $advisor) {
 	$result = $statement->execute();
 	
 	if ($result) {
-		return true;
+		return $uuid;
 	} else {
 		// echo "Error: " . $query . "<br>" . $db->error;
 		return false;
