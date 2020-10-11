@@ -23,7 +23,7 @@ if (! isset($_GET['id'])) {
     	
         $isCreator = false;
         $otherEngine = null;
-    	if (isset($_SESSION['intranet_userid'])) {
+    	if (userLoggedIn()) {
     		$isCreator = (strcmp($event->creator, $_SESSION['intranet_userid']) == 0);
     		
     		if(strcmp(get_user($_SESSION['intranet_userid'])->engine, $event->engine) != 0){
@@ -107,5 +107,14 @@ if (! isset($_GET['id'])) {
     	);
     }
 }
-renderLayoutWithContentFile($config["apps"]["guardian"], "eventDetails/eventDetails_template.php", $variables);
+
+if(isset($_GET['print'])){
+	
+	$variables['showFormular'] = true;
+	$variables['orientation'] = 'portrait';
+	renderPrintContentFile($config["apps"]["guardian"], "eventDetails/eventPrint_template.php", $variables);
+
+} else {
+	renderLayoutWithContentFile($config["apps"]["guardian"], "eventDetails/eventDetails_template.php", $variables);
+}
 ?>

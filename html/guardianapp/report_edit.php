@@ -6,7 +6,7 @@ require_once LIBRARY_PATH . '/db_eventtypes.php';
 require_once LIBRARY_PATH . '/db_staffpositions.php';
 require_once LIBRARY_PATH . '/db_report.php';
 require_once LIBRARY_PATH . '/mail_controller.php';
-require_once LIBRARY_PATH . '/file_create_report.php';
+require_once LIBRARY_PATH . '/file_create.php';
 
 require_once LIBRARY_PATH . '/class/EventReport.php';
 require_once LIBRARY_PATH . '/class/ReportUnit.php';

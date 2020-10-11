@@ -34,7 +34,7 @@ if (! count ( $inspections )) {
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->uuid; ?>">Anzeigen</a>
 				</td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/file/". $row->uuid; ?>">PDF</a>
+					<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->uuid . "/file"; ?>">PDF</a>
 				</td>
 				<td class="text-center">
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/edit/". $row->uuid; ?>">Bearbeiten</a>

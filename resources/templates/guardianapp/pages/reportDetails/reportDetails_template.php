@@ -39,8 +39,8 @@ require_once 'reportTable.php';
 <div class="dropdown float-right">
 	<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Berichts-Optionen</button>
 	<div class="dropdown-menu">
-		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/file/". $report->uuid; ?>">PDF anzeigen</a>
-		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/file/". $report->uuid . "&force=true"; ?>">PDF neu erzeugen</a>
+		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/". $report->uuid . "/file"; ?>">PDF anzeigen</a>
+		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/". $report->uuid . "/file&force=true"; ?>">PDF neu erzeugen</a>
 		<div class="dropdown-divider"></div>
 	
 	<?php if(!$report->emsEntry){ ?>

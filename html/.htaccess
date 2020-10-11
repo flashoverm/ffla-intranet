@@ -2,18 +2,13 @@ RewriteEngine on
 
 #DONT FORGET TO CHANGE htaccess.sample
 
-#RewriteRule ^(.*)hydrant/(.*)?$ 					$1hydrantapp/$2 [L]
-#RewriteRule ^(.*)files/(.*)?$ 						$1filesapp/$2 [L]
-#RewriteRule ^(.*)guardian/(.*)?$ 					$1guardianapp/$2 [L]
-
-
 RewriteRule ^(.*)hydrant/inspection/plan/?$ 		$1/hydrantapp/inspection_plan.php
 RewriteRule ^(.*)hydrant/inspection/prepare/?$ 		$1/hydrantapp/inspection_prepare.php
-RewriteRule ^(.*)hydrant/inspection/assist/?$ 				$1/hydrantapp/inspection_assist.php
-RewriteRule ^(.*)hydrant/inspection/file/([^/]+)/render?$ 	$1/hydrantapp/inspection_file.php?inspection=$2&render=true
-RewriteRule ^(.*)hydrant/inspection/file/([^/]+)/?$ 		$1/hydrantapp/inspection_file.php?inspection=$2
-RewriteRule ^(.*)hydrant/inspection/edit/([^/]+)/?$ 		$1/hydrantapp/inspection_edit.php?inspection=$2
-RewriteRule ^(.*)hydrant/inspection/edit/?$ 				$1/hydrantapp/inspection_edit.php
+RewriteRule ^(.*)hydrant/inspection/assist/?$ 			$1/hydrantapp/inspection_assist.php
+RewriteRule ^(.*)hydrant/inspection/([^/]+)/print?$ 	$1/hydrantapp/inspection_details.php?inspection=$2&print=true
+RewriteRule ^(.*)hydrant/inspection/([^/]+)/file([^/]+)?$ 		$1/hydrantapp/inspection_details.php?inspection=$2&file=true$3
+RewriteRule ^(.*)hydrant/inspection/edit/([^/]+)/?$ 	$1/hydrantapp/inspection_edit.php?inspection=$2
+RewriteRule ^(.*)hydrant/inspection/edit/?$ 			$1/hydrantapp/inspection_edit.php
 RewriteRule ^(.*)hydrant/inspection/([^/]+)/?$ 		$1/hydrantapp/inspection_details.php?inspection=$2
 RewriteRule ^(.*)hydrant/inspection/?$ 				$1/hydrantapp/inspection_overview.php
 
@@ -36,28 +31,28 @@ RewriteRule ^(.*)files/$ 				$1/filesapp/index.php
 
 RewriteRule ^(.*)employer/confirmations/new/?$			$1/employerapp/confirmation_edit.php
 RewriteRule ^(.*)employer/confirmations/([^/]+)/edit?$ 	$1/employerapp/confirmation_edit.php?id=$2
-RewriteRule ^(.*)employer/confirmations/process$ 		$1/employerapp/confirmation_process.php 
+RewriteRule ^(.*)employer/confirmations/([^/]+)?$ 		$1/employerapp/confirmation.php?id=$2
+RewriteRule ^(.*)employer/confirmations/process?$ 		$1/employerapp/confirmation_process.php 
 RewriteRule ^(.*)employer/confirmations/?$ 				$1/employerapp/confirmation_overview.php 
 RewriteRule ^(.*)employer/$ 							$1/employerapp/index.php 
 
 RewriteRule ^(.*)guardian/events/new/?$					$1/guardianapp/event_edit.php
 RewriteRule ^(.*)guardian/events/public/?$ 				$1/guardianapp/event_public.php
 RewriteRule ^(.*)guardian/events/admin/?$ 				$1/guardianapp/event_admin.php
-RewriteRule ^(.*)guardian/events/([^/]+)/calender?$ 	$1/guardianapp/calender.php?id=$2
+RewriteRule ^(.*)guardian/events/([^/]+)/print?$ 		$1/guardianapp/event_details.php?id=$2&print=true
+
 RewriteRule ^(.*)guardian/events/([^/]+)/edit?$ 		$1/guardianapp/event_edit.php?id=$2
 RewriteRule ^(.*)guardian/events/([^/]+)/assign/?([^/]+)/?$		$1/guardianapp/event_assign.php?id=$2&staffid=$3
 RewriteRule ^(.*)guardian/events/([^/]+)/subscribe/?([^/]+)/?$ 	$1/guardianapp/event_subscribe.php?id=$2&staffid=$3
-RewriteRule ^(.*)guardian/events/file/([^/]+)/render?$ 	$1/guardianapp/event_file.php?event=$2&render=true
-RewriteRule ^(.*)guardian/events/file/([^/]+)/?$ 		$1/guardianapp/event_file.php?event=$2
 RewriteRule ^(.*)guardian/events/([^/]+)/?$ 			$1/guardianapp/event_details.php?id=$2
 RewriteRule ^(.*)guardian/events/?$ 					$1/guardianapp/event_overview.php
 
 RewriteRule ^(.*)guardian/reports/export/?$ 		$1/guardianapp/report_export.php
 RewriteRule ^(.*)guardian/reports/admin/?$ 			$1/guardianapp/report_admin.php
 RewriteRule ^(.*)guardian/reports/new/?$ 			$1/guardianapp/report_edit.php
-RewriteRule ^(.*)guardian/reports/new/([^/]+)?$ 	$1/guardianapp/report_edit.php?event=$2
-RewriteRule ^(.*)guardian/reports/file/([^/]+)/render?$ 	$1/guardianapp/report_file.php?report=$2&render=true
-RewriteRule ^(.*)guardian/reports/file/([^/]+)/?$ 			$1/guardianapp/report_file.php?report=$2
+RewriteRule ^(.*)guardian/reports/new/([^/]+)?$ 			$1/guardianapp/report_edit.php?event=$2
+RewriteRule ^(.*)guardian/reports/([^/]+)/print?$ 			$1/guardianapp/report_details.php?id=$2&print=true
+RewriteRule ^(.*)guardian/reports/([^/]+)/file([^/]+)?$ 	$1/guardianapp/report_details.php?id=$2&file=true$3
 RewriteRule ^(.*)guardian/reports/([^/]+)/edit?$ 			$1/guardianapp/report_edit.php?id=$2
 RewriteRule ^(.*)guardian/reports/([^/]+)/?$ 		$1/guardianapp/report_details.php?id=$2
 RewriteRule ^(.*)guardian/reports/?$ 				$1/guardianapp/report_overview.php
