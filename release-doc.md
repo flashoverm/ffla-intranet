@@ -7,6 +7,7 @@ Release Documentation
 Release-Notes:
 	Add config urls: "employerapp_home" => $url_prefix . "/employer",
 	Add config apps: "employer" => "employerapp",
+	Add config paths: "confirmations" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/confirmations/",
 	
 New app:
 	employer confirmations

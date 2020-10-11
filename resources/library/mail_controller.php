@@ -457,10 +457,13 @@ function mail_send_confirmation_declined($confirmation_uuid){
 	global $config;
 	global $bodies;
 	
-	//TODO implement function
+	$confirmation = get_confirmation($confirmation_uuid);
+	$user = get_user($confirmation->user);
 	
-	$subject = "Anfrage Arbeitgeberbestätigung abgelehnt";
-	$body = $bodies["confirmation_requested"] . $config["urls"]["employerapp_home"] . "/confirmations";
+	$subject = "Angefragte Arbeitgeberbestätigung abgelehnt";
+	$body = $bodies["confirmation_declined"] . $config["urls"]["employerapp_home"] . "/confirmations";
+	
+	return send_mail ( $user->email, $subject, $body );
 }
 
 function mail_send_confirmation($confirmation_uuid){
@@ -470,19 +473,43 @@ function mail_send_confirmation($confirmation_uuid){
 	$confirmation = get_confirmation($confirmation_uuid);
 	$user = get_user($confirmation->user);
 	
-	$subject = "Arbeitgebernachweis für Einsatztätigkeit";
-	if($user->mail_employer){
-	} else {
-		$subject = "Arbeitgebernachweis für Einsatztätigkeit";
+	$employer_informed = false;
+	if( $user->mail_employer ){
+		$employer_informed = mail_send_to_employer($confirmation, $user);
 	}
-	//TODO implement function
+
+	$file = $config["paths"]["confirmations"] . $confirmation->uuid . ".pdf";
+	$subject = "Arbeitgebernachweis für Einsatztätigkeit";
+	$body = $bodies["event_report_approved"] . $config["urls"]["employerapp_home"] . "/confirmations";
 	
+	if($user->mail_employer){
+		if( $employer_informed ){
+			$body = $body . "\n\n" . "Die Bestätigung wurde bereits an die in den Benutzerdaten hinterlegte E-Mail-Adresse des Arbeitgebers gesendet.";
+		} else {
+			$body = $body . "\n\n" . "Die Bestätigung konnte aufgrund eines Fehler nicht an den Arbeitgeber gesendet werden. \n"
+						. "Bitte leiten Sie die Bestätigung selbst weiter.";
+		}
+	} else {
+		$body = $body . "\n\n" . "Bitte leiten Sie die Bestätigung an Ihren Arbeitgeber weiter. \n"
+					. "(In den Benutzerdaten kann die E-Mail-Adresse des Arbeitgebers hinterlegt werden. Die Bestätigung wird dann direkt an diese Adresse gesendet)";
+	}
+		
+	return send_mail ( $user->email, $subject, $body, $file);
+}
+
+function mail_send_to_employer($confirmation, $user){
+	global $config;
+
+	$file = $config["paths"]["confirmations"] . $confirmation->uuid . ".pdf";
+	$subject = "Arbeitgebernachweis für Einsatztätigkeit";
+	$body = "Sehr geehrte Damen und Herren,\n\n"
+		. "der/die Feuerwehrmann/frau" . $user->firstname . " " . $user->lastname . "\n\n"
+		. "war am " . $confirmation->date . " zwischen " . $confirmation->start_time . " und " . $confirmation->end_time . "\n\n"
+		. "im Feuerwehreinsatz tätig. \n\n"
+		. "Im Anhang finden Sie die formelle Bestätigung als PDF. \n\n\n"
+		. "Stadt Landshut\nReferat 5 Freiwillige Feuerwehr";
 	
-	$body = $bodies["event_report_approved"] . get_report_link($report_uuid);
-	
-	$file = $config["paths"]["reports"] . $report_uuid . ".pdf";
-	
-	return send_mails($administration, $subject, $body, $file);
+	return send_mail ( $user->mail_employer, $subject, $body, $file );
 }
 
 ?>

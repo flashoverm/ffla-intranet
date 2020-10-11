@@ -48,6 +48,7 @@ $config = array (
 		"maps" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/maps/",
 		"inspections" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/inspections/",
 		"reports" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/reports/",
+		"confirmations" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/confirmations/",
 		"nodejs" => "D:/runtimes/nodejs/node.exe"
 	),
 	"formats" => array (
