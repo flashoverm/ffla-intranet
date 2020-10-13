@@ -1,12 +1,13 @@
 <?php
 require_once realpath(dirname(__FILE__) . "/../../resources/config.php");
 require_once TEMPLATES_PATH . "/template.php";
+require_once LIBRARY_PATH . "/db_confirmation.php";
 
 // Pass variables (as an array) to template
 $variables = array(
 		'title' => "Arbeitgeberbestätigung",
 		'secured' => true,
-		'orientation' => 'landscape'
+		'orientation' => 'portrait'
 );
 
 if (isset($_GET['id'])) {
@@ -17,4 +18,4 @@ if (isset($_GET['id'])) {
 	
 }
 
-renderPrintContentFile($config["apps"]["employer"], "confirmations/confirmation_template.php", $variables);
+renderPrintContentFile($config["apps"]["employer"], "confirmationPrint_template.php", $variables, true);

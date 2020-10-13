@@ -8,7 +8,7 @@ require_once LIBRARY_PATH . "/ui_util.php";
 
 session_start ();
 
-function renderPrintContentFile($app, $contentFile, $variables = array()){
+function renderPrintContentFile($app, $contentFile, $variables = array(), $noHeader = false){
     global $config;
     
     $contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $contentFile;
