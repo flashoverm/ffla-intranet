@@ -62,9 +62,9 @@ function get_eventmanager_of_engine($engine_uuid) {
 	$privilege  = EVENTMANAGER;
 	
 	$statement = $db->prepare("SELECT * 
-		FROM user, user_privilege 
-		WHERE uuid = user_privilege.user 
-		AND privilege = ? 
+		FROM user, user_privilege, privilege
+		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid 
+		AND privilege.privilege = ? 
 		AND engine = ?");
 	$statement->bind_param('ss', $privilege, $engine_uuid);
 	
@@ -88,11 +88,11 @@ function get_eventmanager_except_engine_and_creator($engine_uuid, $creator_uuid)
 	$privilege = EVENTMANAGER;
 	
 	$statement = $db->prepare("SELECT *
-		FROM user
-		WHERE user.uuid = privilege_user.user
+		FROM user, user_privilege, privilege
+		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND NOT engine = ?
 		AND NOT uuid = ?
-		AND privilege_user.privilege = ?");
+		AND privilege.privilege = ?");
 	$statement->bind_param('sss', $engine_uuid, $creator_uuid, $privilege);
 	
 	if ($statement->execute()) {
@@ -115,9 +115,9 @@ function get_eventparticipent_of_engine($engine_uuid){
 	$privilege  = EVENTPARTICIPENT;
 	
 	$statement = $db->prepare("SELECT *
-		FROM user, user_privilege
-		WHERE uuid = user_privilege.user
-		AND privilege = ?
+		FROM user, user_privilege, privilege
+		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
+		AND privilege.privilege = ?
 		AND engine = ?
  		ORDER BY lastname");
 	$statement->bind_param('ss', $privilege, $engine_uuid);
@@ -141,11 +141,11 @@ function is_eventmanager_of($user_uuid, $engine_uuid){
 	$privilege = EVENTMANAGER;
 	
 	$statement = $db->prepare("SELECT *
-		FROM user, privilege_user
-		WHERE user.uuid = privilege_user.user
+		FROM user, user_privilege, privilege
+		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND user.uuid = ?
 		AND user.engine = ?
-		AND privilege_user.privilege = ?");
+		AND privilege.privilege = ?");
 	$statement->bind_param('sss', $user_uuid, $engine_uuid, $privilege);
 	
 	if ($statement->execute()) {
