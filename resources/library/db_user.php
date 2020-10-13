@@ -27,7 +27,7 @@ function insert_user($firstname, $lastname, $email, $password, $engine_uuid) {
 		return $data;
 		
 	} else {
-		 echo "Error: " . "<br>" . $db->error;
+		//echo "Error: " . "<br>" . $db->error;
 		return false;
 	}
 }

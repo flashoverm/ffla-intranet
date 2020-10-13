@@ -63,7 +63,7 @@ function get_eventmanager_of_engine($engine_uuid) {
 	
 	$statement = $db->prepare("SELECT * 
 		FROM user, user_privilege, privilege
-		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid 
+		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND privilege.privilege = ? 
 		AND engine = ?");
 	$statement->bind_param('ss', $privilege, $engine_uuid);
@@ -156,14 +156,6 @@ function is_eventmanager_of($user_uuid, $engine_uuid){
 		}
 	}
 	return false;
-}
-
-function allow_event_participation($uuid) {
-	return add_privilege_to_user_by_name($uuid, EVENTPARTICIPENT);
-}
-
-function deny_event_participation($uuid) {
-	return remove_privilege_from_user($uuid, EVENTPARTICIPENT);
 }
 
 ?>
