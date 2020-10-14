@@ -96,7 +96,9 @@ $logbookActions = array(
 	402 => "Anfrage Arbeitgebernachweis aktualsiert",
 	403 => "Anfrage Arbeitgebernachweis akzeptiert",
 	404 => "Anfrage Arbeitgebernachweis abgelehnt",
-
+	405 => "Anfrage Arbeitgebernachweis zurückgezogen",
+	406 => "Arbeitgebernachweis gelöscht",
+		
 );
 
 abstract class LogbookActions {
@@ -192,5 +194,7 @@ abstract class LogbookActions {
 	const ConfirmationUpdated = 402;
 	const ConfirmationAccepted = 403;
 	const ConfirmationDeclined = 404;
+	const ConfirmationCancel = 405;
+	const ConfirmationDeleted = 406;
 	
 }

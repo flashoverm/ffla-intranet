@@ -13,9 +13,10 @@ $variables = array(
 if (isset($_GET['id'])) {
 	
 	$confirmation = get_confirmation($_GET['id']);
+	$user = get_user($confirmation->user);
 	
 	$variables['confirmation'] = $confirmation;
-	
+	$variables['user'] = $user;
 }
 
 renderPrintContentFile($config["apps"]["employer"], "confirmationPrint_template.php", $variables, true);

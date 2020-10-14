@@ -1,9 +1,9 @@
 <?php
-//TODO implement
+if(isset($confirmation) && isset($user)){
 ?>
 
 <div class="table-responsive" style="width: 19cm">
-	<table class="table table-bordered">
+	<table class="table table-borderless">
 		<tbody>
 			<tr>
 				<td colspan="2">
@@ -14,7 +14,11 @@
 				<td>
 					<small>Postanschrift: Stadt Landshut, 84026 Landshut, Gz.: 5.697</small><br>
 					<br>
-					<?= "Testanschrift<br>Testanschrift<br>Testanschrift" ?>
+					<?php
+					if( ! empty ($user->employer_address) ){
+						echo nl2br($user->employer_address);
+					}
+					?>
 				</td>
 				<td style="width: 22%">
 					<b>Referat 5</b><br>
@@ -39,9 +43,9 @@
 				<td colspan="2">
 					Sehr geehrte Damen und Herren,<br>
 					<br>
-					der/die Feuerwehrmann/-frau <?= "test test"?><br>
+					der/die Feuerwehrmann/-frau <?= $user->firstname . " " . $user->lastname ?><br>
 					<br>
-					war am <?= "test" ?> von <?= "test" ?> Uhr bis <?= "test" ?> Uhr<br>
+					war am <?= date($config ["formats"] ["date"], strtotime($confirmation->date)) ?> von <?= date($config ["formats"] ["time"], strtotime($confirmation->start_time)) ?> Uhr bis <?= date($config ["formats"] ["time"], strtotime($confirmation->end_time)) ?> Uhr<br>
 					<br>
 					für die Freiwillige Feuerwehr der Stadt Landshut im Einsatz.<br>
 					<br>
@@ -55,4 +59,6 @@
 		</tbody>
 	</table>
 </div>
-
+<?php 
+}
+?>
