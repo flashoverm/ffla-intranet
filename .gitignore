@@ -5,6 +5,7 @@ resources/maps/*
 resources/files/*
 resources/inspections/*
 resources/reports/*
+resources/confirmations/*
 
 resources/library/puppeteer/node_modules/
 resources/library/puppeteer/package-lock.json

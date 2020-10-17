@@ -2,6 +2,19 @@
 Release Documentation
 ******************************
 
+#### V2.2
+
+Release-Notes:
+	Add config urls: "employerapp_home" => $url_prefix . "/employer",
+	Add config apps: "employer" => "employerapp",
+	Add config paths: "confirmations" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/confirmations/",
+	
+	ALTER TABLE user ADD employer_mail VARCHAR(255) NULL AFTER employer_mail; 
+	ALTER TABLE user ADD employer_address VARCHAR(255) NULL AFTER locked; 
+	
+New app:
+	employer confirmations
+
 ##### V2.1.2
 
 Release-Notes:

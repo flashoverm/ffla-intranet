@@ -2,7 +2,7 @@
 if (! count ( $hydrants )) {
 	showInfo ( "Keine Hydranten gefunden" );
 } else {
-	?>
+?>
     
 <div class="table-responsive">
 	<table class="table table-striped" data-toggle="table" data-pagination="true"  data-search="true">

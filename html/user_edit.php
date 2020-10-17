@@ -41,14 +41,16 @@ if( isset($_GET['self']) ){
 } else {
 	// new user
 	$variables['title'] = "Benutzer anlegen";
+	
+	if(current_user_has_privilege(PORTALADMIN)){
+		$variables['showRights'] = true;
+	} else {
+		$variables['showRights'] = false;
+	}
 	if( $config ["settings"] ["selfregistration"]){
 		$variables['secured'] = false;
-		
-		$variables['showRights'] = false;
 	} else {
 		$variables['privilege'] = PORTALADMIN;
-		
-		$variables['showRights'] = true;
 	}
 	
 }
@@ -61,6 +63,16 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 	$lastname = trim($_POST ['lastname']);
 	$email = strtolower(trim($_POST ['useremail']));
 	$engine = trim($_POST ['engine']);	
+	
+	$employerAddress = null;
+	if(isset($_POST['employerAddress'])){
+		$employerAddress = trim($_POST['employerAddress']);
+	}
+	
+	$employerMail = null;
+	if(isset($_POST['employerMail'])){
+		$employerMail = trim($_POST['employerMail']);
+	}
 	
 	//check if password equals (if set)
 	$exit = false;
@@ -116,11 +128,11 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 		 * else: insert new user
 		 */
 		if( isset($_GET['uuid']) ){
-			$user = update_user($_GET['uuid'], $firstname, $lastname, $email, $engine );
+			$user = update_user($_GET['uuid'], $firstname, $lastname, $email, $engine, $employerAddress, $employerMail );
 		} else if( isset($_GET['self']) ){
-			$user = update_user($_SESSION ['intranet_userid'], $firstname, $lastname, $email, $engine );
+			$user = update_user($_SESSION ['intranet_userid'], $firstname, $lastname, $email, $engine, $employerAddress, $employerMail );
 		} else {
-			$user = insert_user ( $firstname, $lastname, $email, $password, $engine );
+			$user = insert_user ( $firstname, $lastname, $email, $password, $engine, $employerAddress, $employerMail );
 			// add default privileges to new user
 			$privileges = get_all_privileges();
 			foreach($privileges as $privilege){

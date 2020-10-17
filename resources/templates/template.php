@@ -8,7 +8,7 @@ require_once LIBRARY_PATH . "/ui_util.php";
 
 session_start ();
 
-function renderPrintContentFile($app, $contentFile, $variables = array()){
+function renderPrintContentFile($app, $contentFile, $variables = array(), $noHeader = false){
     global $config;
     
     $contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $contentFile;
@@ -23,16 +23,18 @@ function renderPrintContentFile($app, $contentFile, $variables = array()){
         }
     }
     
+   
     $loggedIn = userLoggedIn();
+    $localhostRequest = localhostRequest();
     
-    if (isset($secured) && $secured && ! $loggedIn) {
+    if ( isset($secured) && $secured && ! $loggedIn && ! $localhostRequest) {
     	showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
     	return;
     }
     
     require_once (TEMPLATES_PATH . "/header_print.php");
     
-    if(isset($privilege) && ! current_user_has_privilege($privilege)){
+    if( isset($privilege) && ! current_user_has_privilege($privilege) && ! $localhostRequest ){
     	showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
     	$showFormular = false;
     }
@@ -48,7 +50,6 @@ function renderPrintContentFile($app, $contentFile, $variables = array()){
     if(isset($infoMessage)){
     	showInfo($infoMessage);
     }
-    
     
     if (file_exists ( $contentFileFullPath )) {
         if(!isset($showFormular) || $showFormular){

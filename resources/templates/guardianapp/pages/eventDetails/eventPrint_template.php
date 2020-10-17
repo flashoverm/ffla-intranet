@@ -2,8 +2,8 @@
 require_once realpath(dirname(__FILE__) . "/../../../../config.php");
 
 if(isset($event)){
-	
-				require_once 'eventTable.php'; ?>
+	$relevant = false;
+	require_once 'eventTable.php'; ?>
 			</tbody>
 		</table>
 		<table class="table table-bordered">

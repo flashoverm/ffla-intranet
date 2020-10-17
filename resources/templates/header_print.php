@@ -7,7 +7,10 @@
 		setPrintToLandscape();
 	}
 ?>
-<body class='page <?php if( isset($orientation) ) { echo $orientation; } ?>'>
+<body class='page <?php if( isset($orientation) ) { echo $orientation; } ?>' style="margin-bottom: 0px;" >
+	<?php
+	if(! $noHeader ){
+	?>
 	<div id="overlay" style="display:inline;">
  		<div class="loader"></div>
  	</div>
@@ -24,4 +27,6 @@
 			</div>
     	</div>
  	</header>
-
+	<?php 
+	}
+	?>

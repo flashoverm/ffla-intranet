@@ -8,6 +8,7 @@ $maillogStates = array(
 	3 => "Anhang-Fehler",
 	4 => "Server-Verbindungs-Fehler",
 	5 => "Mailausgang deaktiviert",
+	6 => "Ungültige E-Mail-Adresse",
 );
 
 abstract class MaillogStates {
@@ -17,4 +18,5 @@ abstract class MaillogStates {
 	const AttachmentError = 3;
 	const MailConnectError = 4;
 	const Deactivated = 5;
+	const InvalidMailAddress = 6;
 }

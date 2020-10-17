@@ -411,7 +411,7 @@ function mail_update_report($report){
 	
 	//send report to administration if event is no series
 	//if(!get_eventtype_from_name($report->type)->isseries){
-	$administration = get_users_with_privilege(FFADMINISTRATION);
+	$administration = get_users_with_privilege_by_name(FFADMINISTRATION);
 	send_mails($administration, $subject, $body, $file);
 	//}
 	
@@ -433,8 +433,84 @@ function mail_report_approved($report_uuid){
 	
 	$file = $config["paths"]["reports"] . $report_uuid . ".pdf";
 	
-	$administration = get_users_with_privilege(FFADMINISTRATION);
+	$administration = get_users_with_privilege_by_name(FFADMINISTRATION);
 	return send_mails($administration, $subject, $body, $file);
+}
+
+
+/*
+ * Confirmations
+ */
+
+function mail_send_confirmation_request($confirmation_uuid){
+	global $config;
+	global $bodies;
+	
+	$subject = "Neue Anfrage einer Arbeitgeberbestätigung";
+	$body = $bodies["confirmation_requested"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations/process";
+		
+	$administration = get_users_with_privilege_by_name(FFADMINISTRATION);
+	return send_mails($administration, $subject, $body);
+}
+
+function mail_send_confirmation_declined($confirmation_uuid){
+	global $config;
+	global $bodies;
+	
+	$confirmation = get_confirmation($confirmation_uuid);
+	$user = get_user($confirmation->user);
+	
+	$subject = "Angefragte Arbeitgeberbestätigung abgelehnt";
+	$body = $bodies["confirmation_declined"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations";
+	
+	return send_mail ( $user->email, $subject, $body );
+}
+
+function mail_send_confirmation($confirmation_uuid){
+	global $config;
+	global $bodies;
+	
+	$confirmation = get_confirmation($confirmation_uuid);
+	$user = get_user($confirmation->user);
+	
+	$employer_informed = false;
+	if( $user->employer_mail ){
+		$employer_informed = mail_send_to_employer($confirmation, $user);
+	}
+
+	$file = $config["paths"]["confirmations"] . $confirmation->uuid . ".pdf";
+	$subject = "Arbeitgebernachweis für Einsatztätigkeit";
+	$body = $bodies["confirmation_accepted"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations";
+	
+	if($user->employer_mail){
+		if( $employer_informed ){
+			$body = $body . "\n\n" . "Die Bestätigung wurde bereits an die in den Benutzerdaten hinterlegte E-Mail-Adresse des Arbeitgebers gesendet.";
+		} else {
+			$body = $body . "\n\n" . "Die Bestätigung konnte aufgrund eines Fehler nicht an den Arbeitgeber gesendet werden. \n"
+						. "Bitte leiten Sie die Bestätigung selbst weiter.";
+		}
+	} else {
+		$body = $body . "\n\n" . "Bitte leiten Sie die Bestätigung an Ihren Arbeitgeber weiter. \n"
+					. "(In den Benutzerdaten kann die E-Mail-Adresse des Arbeitgebers hinterlegt werden. Die Bestätigung wird dann direkt an diese Adresse gesendet)";
+	}
+		
+	return send_mail ( $user->email, $subject, $body, $file);
+}
+
+function mail_send_to_employer($confirmation, $user){
+	global $config;
+
+	$file = $config["paths"]["confirmations"] . $confirmation->uuid . ".pdf";
+	$subject = "Arbeitgebernachweis für Einsatztätigkeit";
+	$body = "Sehr geehrte Damen und Herren,\n\n"
+		. "der/die Feuerwehrmann/frau " . $user->firstname . " " . $user->lastname . "\n\n"
+				. "war am " . date($config ["formats"] ["date"], strtotime($confirmation->date)) . " zwischen " . date($config ["formats"] ["time"], strtotime($confirmation->start_time)) . " Uhr und " . date($config ["formats"] ["time"], strtotime($confirmation->end_time)) . " Uhr\n\n"
+		. "im Feuerwehreinsatz tätig. \n\n"
+		. "Im Anhang finden Sie die formelle Bestätigung als PDF. \n\n"
+		. "Mit freundlichen Grüßen \n"
+		. "Stadt Landshut\nReferat 5 Feuerwehr";
+	
+	return send_mail ( $user->employer_mail, $subject, $body, $file, false);
 }
 
 ?>

@@ -3,6 +3,7 @@ require_once realpath(dirname(__FILE__) . "/../../resources/config.php");
 require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/db_hydrant.php";
 require_once LIBRARY_PATH . "/db_inspection.php";
+require_once LIBRARY_PATH . "/file_create.php";
 
 require_once LIBRARY_PATH . "/class/HydrantInspection.php";
 
@@ -30,4 +31,20 @@ if(isset($_GET['inspection'])){
 
 $variables['criteria'] = $hydrant_criteria;
 
-renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionDetails/inspectionDetails_template.php", $variables);
+if(isset($_GET['print'])){
+	
+	$variables['orientation'] = 'landscape';
+	renderPrintContentFile($config["apps"]["hydrant"], "inspectionDetails/inspectionPDF_template.php", $variables);
+	
+} else if( isset($_GET['inspection']) && isset($_GET['file']) ) {
+	
+	$uuid = $_GET['inspection'];
+	$fullpath = $config["paths"]["inspections"] . basename($uuid) . ".pdf";
+	$dl_filename = "Hydrantenprüfung_" . $uuid . ".pdf";
+	getFileResponse($fullpath, "createInspectionFile", $uuid, $dl_filename);
+	
+} else {
+	
+	renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionDetails/inspectionDetails_template.php", $variables);
+}
+

@@ -34,7 +34,7 @@ if(isset($_POST['engine'])){
 				} else {
 					$firstname = trim($columns[0]);
 					$lastname = trim($columns[1]);
-					if(insert_user($firstname, $lastname, $email, $_POST['engine'])){
+					if(insert_user($firstname, $lastname, $email, $_POST['engine'], null, null)){
 						$imported++;
 					}
 				}

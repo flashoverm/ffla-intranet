@@ -15,9 +15,17 @@
 		<div class="card-body">
 			<h5 class="card-title">Hydrantenverwaltung</h5>
 			<p class="card-text">Anzeigen der Hydranten auf einer statischen
-				Karte. Suche nach einzelnen Hydranten oder ganzen Stra&szligen m&oumlglich. Außerdem Erfassung von Hydrantenprüfungen.</p>
+				Karte. Suche nach einzelnen Hydranten oder ganzen Stra&szligen m&oumlglich. Außerdem Planung und Erfassung von Hydrantenprüfungen.</p>
 			<a href="<?= $config["urls"]["hydrantapp_home"]?>/"
 				class="card-link">Weiter zur Hydrantenverwaltung</a>
+		</div>
+	</div>
+	<div class="card mx-auto mb-3"">
+		<div class="card-body">
+			<h5 class="card-title">Arbeitgeberbestätigungen</h5>
+			<p class="card-text">Beantragung von Arbeitgeberbestätigungen für Teilnahme an Einsätzen.</p>
+			<a href="<?= $config["urls"]["employerapp_home"]?>/"
+				class="card-link">Weiter zur den Arbeitgeberbestätigungen</a>
 		</div>
 	</div>
 	<div class="card mx-auto mb-3"">

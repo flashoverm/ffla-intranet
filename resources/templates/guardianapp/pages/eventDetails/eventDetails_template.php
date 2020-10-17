@@ -32,7 +32,7 @@ if ($isCreator) {
 					<b>Link:&nbsp;</b> 
 					<p id="link"><?= $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/".$event->uuid; ?></p>
 					<button id="btnCpy" onClick='copyToClipBoard()' class='btn btn-primary btn-sm'>Link kopieren</button>
-					<a target='_blank' class='btn btn-primary btn-sm' href='<?= $config["urls"]["guardianapp_home"] . "/events/file/" .  $event->uuid; ?>/render'>Wache drucken</a>
+					<a target='_blank' class='btn btn-primary btn-sm' href='<?= $config["urls"]["guardianapp_home"] . "/events/" .  $event->uuid; ?>/print'>Wache drucken</a>
 					<a href='<?= $config ["urls"] ["guardianapp_home"] . '/events/' . $event->uuid . "/calender"; ?>' target="_blank" class='btn btn-primary btn-sm'>Kalendereintrag</a>
 				</td>
 			</tr>

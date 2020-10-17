@@ -6,6 +6,7 @@ require_once LIBRARY_PATH . "/db_eventtypes.php";
 require_once LIBRARY_PATH . "/db_staffpositions.php";
 require_once LIBRARY_PATH . "/db_engines.php";
 require_once LIBRARY_PATH . "/mail_controller.php";
+require_once LIBRARY_PATH . "/file_create.php";
 
 // Pass variables (as an array) to template
 $variables = array(
@@ -28,16 +29,15 @@ if (! isset($_GET['id'])) {
 	
 	if($report){
 		
-		get_report_object($uuid);
-		
+		$variables['report'] = $report;
+		$variables['units'] = $units;
+				
 		if(userLoggedIn()){
         
 	        $user = get_user($_SESSION ['intranet_userid']);
 	        
 	        if($report->engine == $user->engine || current_user_has_privilege(FFADMINISTRATION) || current_user_has_privilege(EVENTADMIN)){
 	            
-	        	$variables['report'] = $report;
-	        	$variables['units'] = $units;
 	        	$variables['showFormular'] = true;
 	            
 	            if(isset($_POST['emsEntry'])){
@@ -108,4 +108,21 @@ if (! isset($_GET['id'])) {
 	}
 }
 
-renderLayoutWithContentFile($config["apps"]["guardian"], "reportDetails/reportDetails_template.php", $variables);
+if(isset($_GET['print'])){
+	
+	$variables['showFormular'] = true;
+	$variables['orientation'] = 'portrait';
+	renderPrintContentFile($config["apps"]["guardian"], "reportDetails/reportPDF_template.php", $variables);
+	
+} else if( isset($_GET['id']) && isset($_GET['file']) ) {
+	
+	$uuid = $_GET['id'];
+	$fullpath = $config["paths"]["reports"] . basename($uuid) . ".pdf";
+	$dl_filename = "Wachbericht_" . $uuid . ".pdf";
+	getFileResponse($fullpath, "createReportFile", $uuid, $dl_filename);
+	
+} else {
+	
+	renderLayoutWithContentFile($config["apps"]["guardian"], "reportDetails/reportDetails_template.php", $variables);
+	
+}

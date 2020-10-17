@@ -2,14 +2,14 @@
 
 @media print{
 	@page {
-		size: auto;   /* auto is the initial value */
+		/* size: auto;   /* auto is the initial value */
 		size: A4 portrait;
 		margin: 0;  /* this affects the margin in the printer settings */
 	}
 }
 
 .page{
-	padding: 10mm;
+	padding: 15mm;
 }
 
 .page .table {
@@ -17,13 +17,13 @@
 }
 
 .portrait {
-	width: 19cm;
-	height: 27.7cm; 
+	width: 21cm;
+	height: 29.7cm; 
 }
 
 .landscape {
-	width: 27.7cm;
-	height: 19cm;
+	width: 29.7cm;
+	height: 21cm;
 }
 
 

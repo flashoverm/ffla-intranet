@@ -95,6 +95,33 @@
 		</select>
 	</div>
 	
+	<br>
+	<div class="row">
+		<div class="col">
+			<div class="form-group">
+				<label>Anschrift Arbeitgeber</label>
+				<textarea rows="3" class="form-control" name="employerAddress" id="employerAddress" placeholder="Anschrift Arbeitgeber"
+				><?php if(isset($user) && $user->employer_address != null) { echo $user->employer_address; } ?></textarea>
+			</div>  
+		</div>
+		<div class="col">
+			<label>&nbsp;</label>
+			<textarea rows=3" disabled class="form-control">Arbeitgeber&#10;Straße Hausnr.&#10;Postleitzahl Ort</textarea>
+		</div>
+	</div>
+	<div class="form-group">
+		<label>E-Mail Arbeitgeber (Arbeitgeberbestätigungen werden direkt an diese Adresse übermittelt)</label> 
+		<input type="email" class="form-control" name="employerMail" id="employerMail"
+			placeholder="E-Mail des Arbeitgebers eingeben"
+			<?php
+			if(isset($user) && $user->employer_mail != null){
+				echo " value='" . $user->employer_mail . "'";
+			}
+			?>
+			>
+	</div>
+	<br>
+	
 	<?php 
 	if( $showRights ){
 	?>
@@ -136,6 +163,7 @@
 			</table>
 		</div>
 	</div>
+	<br>
 	<?php
 	}
 	if(current_user_has_privilege(PORTALADMIN)){

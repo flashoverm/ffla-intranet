@@ -4,7 +4,7 @@ require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/db_hydrant.php";
 require_once LIBRARY_PATH . "/db_inspection.php";
 require_once LIBRARY_PATH . "/mail_controller.php";
-require_once LIBRARY_PATH . "/inspection_file_create.php";
+require_once LIBRARY_PATH . "/file_create.php";
 
 require_once LIBRARY_PATH . "/class/HydrantInspection.php";
 

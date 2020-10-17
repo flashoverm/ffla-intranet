@@ -7,15 +7,15 @@ require_once LIBRARY_PATH . "/db_user_guardian.php";
 create_table_user ();
 require_once LIBRARY_PATH . "/db_privilege.php";
 
-function insert_user($firstname, $lastname, $email, $password, $engine_uuid) {
+function insert_user($firstname, $lastname, $email, $password, $engine_uuid, $employer_address, $employer_mail) {
 	global $db;
 
 	$uuid = getGUID ();
 	$emailLower = strtolower($email);
 	
-	$statement = $db->prepare("INSERT INTO user (uuid, email, firstname, lastname, password, engine, locked)
-	VALUES (?, ?, ?, ?, ?, ?, FALSE)");
-	$statement->bind_param('ssssss', $uuid, $emailLower, $firstname, $lastname, $password, $engine_uuid);
+	$statement = $db->prepare("INSERT INTO user (uuid, email, firstname, lastname, password, engine, locked, employer_address, employer_mail)
+	VALUES (?, ?, ?, ?, ?, ?, FALSE, ?, ?)");
+	$statement->bind_param('ssssssss', $uuid, $emailLower, $firstname, $lastname, $password, $engine_uuid, $employer_address, $employer_mail);
 	
 	$result = $statement->execute();
 	
@@ -56,6 +56,28 @@ function get_unlocked_user() {
 	$data = array ();
 	
 	$statement = $db->prepare("SELECT * FROM user WHERE locked = FALSE ORDER BY lastname");
+	
+	if ($statement->execute()) {
+		$result = $statement->get_result();
+		
+		if (mysqli_num_rows ( $result )) {
+			while ( $date = $result->fetch_object () ) {
+				$data [] = $date;
+			}
+			$result->free ();
+		}
+	}
+	return $data;
+}
+
+function get_users_with_privilege_by_name($privilege){
+	global $db;
+	$data = array ();
+	
+	$statement = $db->prepare("SELECT * FROM user, user_privilege, privilege
+		WHERE user.uuid = user_privilege.user AND privilege.uuid = user_privilege.privilege 
+		AND privilege.privilege = ?");
+	$statement->bind_param('s', $privilege);
 	
 	if ($statement->execute()) {
 		$result = $statement->get_result();
@@ -264,11 +286,11 @@ function is_locked($email){
 	return false;
 }
 
-function update_user($uuid, $firstname, $lastname, $email, $engine) {
+function update_user($uuid, $firstname, $lastname, $email, $engine, $employer_address, $employer_mail) {
 	global $db;
 	
-	$statement = $db->prepare("UPDATE user SET firstname = ?, lastname = ?, email = ?, engine = ? WHERE uuid= ?");
-	$statement->bind_param('sssss', $firstname, $lastname, $email, $engine, $uuid);
+	$statement = $db->prepare("UPDATE user SET firstname = ?, lastname = ?, email = ?, engine = ?, employer_address = ?, employer_mail = ? WHERE uuid= ?");
+	$statement->bind_param('sssssss', $firstname, $lastname, $email, $engine, $employer_address, $employer_mail, $uuid);
 	
 	$result = $statement->execute();
 	
@@ -352,7 +374,6 @@ function change_password($uuid, $old_password, $new_passwort) {
 				$result = $statement->execute();
 				
 				if ($result) {
-					// echo "Record ".$uuid." updated successfully";
 					return true;
 				} else {
 					// echo "Error: " . $query . "<br>" . $db->error;
@@ -377,6 +398,8 @@ function create_table_user() {
                           lastname VARCHAR(64) NOT NULL,
 						  engine CHARACTER(36) NOT NULL,
 						  locked BOOLEAN NOT NULL,
+						  employer_address VARCHAR(255),
+						  employer_mail VARCHAR(255),
                           PRIMARY KEY  (uuid),
 						  FOREIGN KEY (engine) REFERENCES engine(uuid)
                           )");
