@@ -16,6 +16,7 @@ if( isset($_POST['confirmation']) ){
 	
 	if( isset($_POST['accept']) ){
 		$confirmation_uuid = accept_confirmation($confirmation_uuid, $_SESSION ['intranet_userid']);
+		createConfirmationFile($confirmation_uuid);
 		if($confirmation_uuid){
 			if(mail_send_confirmation($confirmation_uuid)){
 				$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";

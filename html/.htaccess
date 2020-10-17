@@ -32,7 +32,8 @@ RewriteRule ^(.*)files/$ 				$1/filesapp/index.php
 RewriteRule ^(.*)employer/confirmations/new/?$			$1/employerapp/confirmation_edit.php
 RewriteRule ^(.*)employer/confirmations/process/?$ 		$1/employerapp/confirmation_process.php 
 RewriteRule ^(.*)employer/confirmations/([^/]+)/edit/?$ 	$1/employerapp/confirmation_edit.php?id=$2
-RewriteRule ^(.*)employer/confirmations/([^/]+)/?$ 		$1/employerapp/confirmation.php?id=$2
+RewriteRule ^(.*)employer/confirmations/([^/]+)/print/?$ 			$1/employerapp/confirmation.php?id=$2&print=true
+RewriteRule ^(.*)employer/confirmations/([^/]+)/file([^/]+)/?$ 		$1/employerapp/confirmation.php?id=$2&file=true$3
 RewriteRule ^(.*)employer/confirmations/?$ 				$1/employerapp/confirmation_overview.php 
 RewriteRule ^(.*)employer/$ 							$1/employerapp/index.php 
 

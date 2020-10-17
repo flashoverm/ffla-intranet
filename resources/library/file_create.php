@@ -1,20 +1,6 @@
 <?php
 require_once realpath(dirname(__FILE__) . "/../config.php");
 
-function getFileResponse($filepath, $creationCallBack, $uuid, $filename){
-	$error = false;
-	
-	if (!file_exists($filepath) || isset($_GET['force'])) {
-		$error = $creationCallBack($uuid);
-	}
-	
-	if($error){
-		echo $error;
-	} else {
-		prepareResponse($filepath, $filename);
-	}
-}
-
 function createReportFile($uuid){
 	global $config;
 	
@@ -35,10 +21,22 @@ function createInspectionFile($uuid){
 	return createFile(false, $urlpath, $outfile);
 }
 
+function createConfirmationFile($uuid){
+	global $config;
+	
+	$urlpath = $config['urls']['employerapp_home'] . "/confirmations/" . $uuid . "/print";
+	
+	$outfile = $config["paths"]["confirmations"] . "/" . $uuid . '.pdf';
+	
+	return createFile(true, $urlpath, $outfile);
+}
+
 function createFile($portrait, $urlpath, $outputfile){
 	global $config;
 		
 	$nodePath = $config["paths"]["nodejs"];
+	
+	mkdir(dirname ($outputfile), 0700);
 	
 	if($portrait){
 		$jsfile = "topdf_portrait.js";
@@ -49,12 +47,27 @@ function createFile($portrait, $urlpath, $outputfile){
 	
 	$url = $config["urls"]["base_url"] . $urlpath;
 
+	echo $nodePath . " " . $jsPath . " " . $url . " " . $outputfile;
 	$error = exec($nodePath . " " . $jsPath . " " . $url . " " . $outputfile);
 	
 	if($error == "Done"){
 		return false;
 	}
 	return $error;
+}
+
+function getFileResponse($filepath, $creationCallBack, $uuid, $filename){
+	$error = false;
+	
+	if (!file_exists($filepath) || isset($_GET['force'])) {
+		$error = $creationCallBack($uuid);
+	}
+	
+	if($error){
+		echo $error;
+	} else {
+		prepareResponse($filepath, $filename);
+	}
 }
 
 function prepareResponse($fullpath, $filename){

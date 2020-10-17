@@ -114,7 +114,7 @@ if ( ! count ( $declined ) &&  ! count ( $open ) ) {
 					<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->end_time)); ?></td>
 					<td class="text-center"><?= $row->description ?></td>
 					<td class="text-center">
-						<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->uuid ."/" ?>">Nachweis anzeigen</a>
+						<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->uuid ."/file" ?>">Nachweis anzeigen</a>
 					</td>
 				</tr>
 			<?php

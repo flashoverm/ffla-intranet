@@ -9,8 +9,8 @@ Release-Notes:
 	Add config apps: "employer" => "employerapp",
 	Add config paths: "confirmations" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/confirmations/",
 	
-	ALTER TABLE `user` ADD `employer_mail` VARCHAR(255) NULL AFTER `locked`; 
-	ALTER TABLE `user` ADD `employer_address` VARCHAR(255) NULL AFTER `employer_mail`; 
+	ALTER TABLE user ADD employer_mail VARCHAR(255) NULL AFTER employer_mail; 
+	ALTER TABLE user ADD employer_address VARCHAR(255) NULL AFTER locked; 
 	
 New app:
 	employer confirmations

@@ -27,19 +27,9 @@ function inset_participant_only($firstname, $lastname, $email, $engine_uuid){
 	}
 }
 
-function insert_eventmanager($firstname, $lastname, $email, $password, $engine_uuid) {
-	$result = insert_user($firstname, $lastname, $email, $password, $engine_uuid);
-
-	if ($result) {
-		add_privilege_to_user_by_name($result->uuid, EVENTMANAGER);
-		return $result;
-	}
-	// echo "Error: " . $query . "<br>" . $db->error;
-	return false;
-}
 
 function insert_eventadmin($firstname, $lastname, $email, $password, $engine_uuid) {
-	$result = insert_user($firstname, $lastname, $email, $password, $engine_uuid);
+	$result = insert_user($firstname, $lastname, $email, $password, $engine_uuid, null, null);
 	
 	if ($result) {
 		add_privilege_to_user_by_name($result->uuid, EVENTMANAGER);

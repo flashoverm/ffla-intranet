@@ -2,7 +2,7 @@
 if(isset($confirmation) && isset($user)){
 ?>
 
-<div class="table-responsive" style="width: 19cm">
+<div class="table-responsive">
 	<table class="table table-borderless">
 		<tbody>
 			<tr>
