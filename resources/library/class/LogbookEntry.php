@@ -150,6 +150,18 @@ class LogbookEntry {
 		return $logbookActions[$action] . ": " . $file->description;
 	}
 	
+	protected static function confirmationEntry($action, $confirmation_uuid){
+		global $logbookActions, $config;;
+		$confirmation = get_confirmation($confirmation_uuid);
+		if( ! $confirmation ){
+			return null;
+		}
+		$user = get_user($confirmation->user);
+		
+		return $logbookActions[$action] . ": <br>" . $confirmation->description . " (" . date($config ["formats"] ["date"], strtotime($confirmation->date)) . " " . date($config ["formats"] ["time"], strtotime($confirmation->start_time)) . " Uhr)<br>"
+				. "Antragsteller: " . $user->firstname . " " . $user->lastname . " (" . $user->email . ")";
+	}
+	
 	
 	
 	public static function logbookEnry($action_id, $objects){
@@ -188,6 +200,9 @@ class LogbookEntry {
 			
 		} else if ($action_id < 310){
 			$message = LogbookEntry::fileEntry($action_id, $objects);
+			
+		} else if ($action_id < 410){
+			$message = LogbookEntry::confirmationEntry($action_id, $objects);
 		}
 		
 		if($message == null){

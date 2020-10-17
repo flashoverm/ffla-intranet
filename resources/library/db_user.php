@@ -70,6 +70,28 @@ function get_unlocked_user() {
 	return $data;
 }
 
+function get_users_with_privilege_by_name($privilege){
+	global $db;
+	$data = array ();
+	
+	$statement = $db->prepare("SELECT * FROM user, user_privilege, privilege
+		WHERE user.uuid = user_privilege.user AND privilege.uuid = user_privilege.privilege 
+		AND privilege.privilege = ?");
+	$statement->bind_param('s', $privilege);
+	
+	if ($statement->execute()) {
+		$result = $statement->get_result();
+		
+		if (mysqli_num_rows ( $result )) {
+			while ( $date = $result->fetch_object () ) {
+				$data [] = $date;
+			}
+			$result->free ();
+		}
+	}
+	return $data;
+}
+
 function get_users_with_privilege($privilege_uuid){
 	global $db;
 	$data = array ();

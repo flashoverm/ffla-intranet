@@ -3,6 +3,7 @@ require_once realpath(dirname(__FILE__) . "/../../resources/config.php");
 require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/db_confirmation.php";
 require_once LIBRARY_PATH . "/mail_controller.php";
+require_once LIBRARY_PATH . "/file_create.php";
 
 // Pass variables (as an array) to template
 $variables = array(
@@ -18,7 +19,7 @@ if( isset($_POST['confirmation']) ){
 		$confirmation_uuid = accept_confirmation($confirmation_uuid, $_SESSION ['intranet_userid']);
 		createConfirmationFile($confirmation_uuid);
 		if($confirmation_uuid){
-			if(mail_send_confirmation($confirmation_uuid)){
+			if( ! mail_send_confirmation($confirmation_uuid)){
 				$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
 			}
 			$variables ['successMessage'] = "Anfrage akzeptiert";
@@ -36,7 +37,7 @@ if( isset($_POST['confirmation']) ){
 		
 		$confirmation_uuid = decline_confirmation($confirmation_uuid, $reason, $_SESSION ['intranet_userid']);
 		if($confirmation_uuid){
-			if(mail_send_confirmation_declined($confirmation_uuid)){
+			if( ! mail_send_confirmation_declined($confirmation_uuid)){
 				$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
 			}
 			$variables ['successMessage'] = "Anfrage abgelehnt";

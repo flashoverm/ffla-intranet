@@ -59,6 +59,8 @@ $bodies = array (
 	"confirmation_requested" => $util["head"] . "eine neue Anfrage einer Arbeitgeberbestätigung wurde erstellt. \n\n Bearbeitung der Anfragen unter: \n\n", 
 		
 	"confirmation_declined" => $util["head"] . "eine Anfrage einer Arbeitgeberbestätigung wurde abgelehnt. \n\n Der Grund der Ablehnung und die Möglichkeit, den Antrag zu bearbeiten sind zu finden unter: \n\n",
+		
+	"confirmation_accepted" => $util["head"] . "eine Anfrage einer Arbeitgeberbestätigung wurde akzeptiert. \n\n Die Bestätigung befindet sich im Anhang oder unter: \n\n",
 	
 	"user_add" => $util["head"] . "für Sie wurde ein Zugang angelegt:",
 	"login" => "\n\nLogin: ",

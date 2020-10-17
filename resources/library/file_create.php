@@ -36,7 +36,9 @@ function createFile($portrait, $urlpath, $outputfile){
 		
 	$nodePath = $config["paths"]["nodejs"];
 	
-	mkdir(dirname ($outputfile), 0700);
+	if ( ! file_exists( dirname ($outputfile) ) ) {
+		mkdir(dirname ($outputfile), 0755, true);
+	}
 	
 	if($portrait){
 		$jsfile = "topdf_portrait.js";
@@ -47,7 +49,7 @@ function createFile($portrait, $urlpath, $outputfile){
 	
 	$url = $config["urls"]["base_url"] . $urlpath;
 
-	echo $nodePath . " " . $jsPath . " " . $url . " " . $outputfile;
+	//echo $nodePath . " " . $jsPath . " " . $url . " " . $outputfile;
 	$error = exec($nodePath . " " . $jsPath . " " . $url . " " . $outputfile);
 	
 	if($error == "Done"){

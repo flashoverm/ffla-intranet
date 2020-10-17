@@ -32,19 +32,22 @@ function init_mail() {
     return $mail;
 }
 
-function send_mail($to, $subject, $body, $attachment = NULL) {
+function send_mail($to, $subject, $body, $attachment = NULL, $footer = true) {
 	global $util, $config;
     
+	$mailBody = $body;
+	if( $footer ){
+		$mailBody = $mailBody . $util["footer"];
+	}
+	
+	$mailState = NULL;
+	
     if (filter_var($to, FILTER_VALIDATE_EMAIL)) {
 	    try{
 	        $mail = init_mail();
 	        
-	        $mailState = NULL;
-	        
 	        $mail->addAddress ( $to );
 	        $mail->Subject = $subject;
-	        
-	        $mailBody = $body . $util["footer"];
 	       
 	        if($attachment != NULL){
 	        	if(file_exists ( $attachment ) ){
@@ -85,7 +88,7 @@ function send_mail($to, $subject, $body, $attachment = NULL) {
 	    	return false;
 	    }
     }
-    insert_maillog($to, $subject, MaillogStates::Failed, $mailBody, "Invalid Mail Adress");
+    insert_maillog($to, $subject, MaillogStates::InvalidMailAddress, $mailBody);
     return false;
 }
 

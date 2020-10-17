@@ -13,6 +13,7 @@ if ( count ( $declined ) ) {
 				<th data-sortable="true" class="text-center">Einsatz</th>
 				<th data-sortable="true" class="text-center">Grund für Ablehnung</th>
 				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -27,6 +28,12 @@ if ( count ( $declined ) ) {
 				<td><?= $row->reason ?></td>
 				<td class="text-center">
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->uuid ."/edit" ?>">Bearbeiten</a>
+				</td>
+				<td class="text-center">
+					<form method="post" action="" class="mb-0">
+						<input type="hidden" name="withdraw" value="<?= $row->uuid ?>"/>
+						<input type="submit" value="Zurückziehen" class="btn btn-primary btn-sm"/>
+					</form>
 				</td>
 			</tr>
 		<?php
@@ -51,6 +58,7 @@ if ( count ( $open ) ) {
 				<th data-sortable="true" class="text-center">Ende</th>
 				<th data-sortable="true" class="text-center">Einsatz</th>
 				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -64,6 +72,12 @@ if ( count ( $open ) ) {
 				<td class="text-center"><?= $row->description ?></td>
 				<td class="text-center">
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->uuid ."/edit" ?>">Bearbeiten</a>
+				</td>
+				<td class="text-center">
+					<form method="post" action="" class="mb-0">
+						<input type="hidden" name="withdraw" value="<?= $row->uuid ?>"/>
+						<input type="submit" value="Zurückziehen" class="btn btn-primary btn-sm"/>
+					</form>
 				</td>
 			</tr>
 		<?php

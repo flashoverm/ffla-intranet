@@ -194,7 +194,7 @@ abstract class LogbookActions {
 	const ConfirmationUpdated = 402;
 	const ConfirmationAccepted = 403;
 	const ConfirmationDeclined = 404;
-	const ConfirmationCancel = 405;
+	const ConfirmationWithdraw = 405;
 	const ConfirmationDeleted = 406;
 	
 }

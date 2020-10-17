@@ -34,7 +34,7 @@ if ( ! count ( $open ) ) {
 					<div class="dropdown">
 						<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Optionen</button>
 						<div class="dropdown-menu">
-							<form class="mb-0" method="post" action="">
+							<form class="mb-0" method="post" action="" onsubmit="showLoader()" >
 								<input type="hidden" name="confirmation" id="confirmation" value="<?= $row->uuid ?>"/>
 								<input type="submit" name="accept" value="Annehmen"  class="dropdown-item"/>
 								<div class="dropdown-divider"></div>

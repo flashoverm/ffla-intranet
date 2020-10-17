@@ -156,6 +156,22 @@ function decline_confirmation($uuid, $reason, $advisor) {
 	}
 }
 
+function delete_confirmation($uuid) {
+	global $db;
+
+	$statement = $db->prepare("DELETE FROM confirmation WHERE uuid= ?");
+	$statement->bind_param('s', $uuid);
+	
+	$result = $statement->execute();
+	
+	if ($result) {
+		return $uuid;
+	} else {
+		// echo "Error: " . $query . "<br>" . $db->error;
+		return false;
+	}
+}
+
 function create_table_confirmation() {
     global $db;
     
