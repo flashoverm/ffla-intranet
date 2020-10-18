@@ -416,6 +416,7 @@ function create_table_user() {
                           lastname VARCHAR(64) NOT NULL,
 						  engine CHARACTER(36) NOT NULL,
 						  locked BOOLEAN NOT NULL,
+						  deleted BOOLEAN NOT NULL,
 						  employer_address VARCHAR(255),
 						  employer_mail VARCHAR(255),
                           PRIMARY KEY  (uuid),
