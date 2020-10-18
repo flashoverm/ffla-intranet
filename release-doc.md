@@ -11,10 +11,12 @@ Release-Notes:
 
 	ALTER TABLE user ADD employer_address VARCHAR(255) NULL AFTER locked; 
 	ALTER TABLE user ADD employer_mail VARCHAR(255) NULL AFTER employer_address; 
+	ALTER TABLE user ADD deleted BOOLEAN NOT NULL AFTER locked; 
 	
 New app:
 	employer confirmations
 	generic pdf creation and print functionality
+	user deletion
 
 ##### V2.1.2
 

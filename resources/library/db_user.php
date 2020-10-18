@@ -36,7 +36,7 @@ function get_users(){
 	global $db;
 	$data = array ();
 	
-	$statement = $db->prepare("SELECT * FROM user ORDER BY email");
+	$statement = $db->prepare("SELECT * FROM user WHERE user.deleted = false ORDER BY email");
 	
 	if ($statement->execute()) {
 		$result = $statement->get_result();
@@ -55,7 +55,10 @@ function get_unlocked_user() {
 	global $db;
 	$data = array ();
 	
-	$statement = $db->prepare("SELECT * FROM user WHERE locked = FALSE ORDER BY lastname");
+	$statement = $db->prepare("SELECT * FROM user 
+		WHERE locked = FALSE
+		AND deleted = false
+		ORDER BY lastname");
 	
 	if ($statement->execute()) {
 		$result = $statement->get_result();
@@ -76,7 +79,8 @@ function get_users_with_privilege_by_name($privilege){
 	
 	$statement = $db->prepare("SELECT * FROM user, user_privilege, privilege
 		WHERE user.uuid = user_privilege.user AND privilege.uuid = user_privilege.privilege 
-		AND privilege.privilege = ?");
+		AND privilege.privilege = ?
+		AND user.deleted = false");
 	$statement->bind_param('s', $privilege);
 	
 	if ($statement->execute()) {
@@ -97,7 +101,8 @@ function get_users_with_privilege($privilege_uuid){
 	$data = array ();
 	
 	$statement = $db->prepare("SELECT * FROM user, user_privilege 
-		WHERE uuid = user_privilege.user AND privilege = ?");
+		WHERE uuid = user_privilege.user AND privilege = ?
+		AND user.deleted = false");
 	$statement->bind_param('s', $privilege_uuid);
 	
 	if ($statement->execute()) {
@@ -117,8 +122,31 @@ function get_users_of_engine($engine_uuid){
 	global $db;
 	$data = array ();
 	
-	$statement = $db->prepare("SELECT * FROM user WHERE engine = ? AND locked = FALSE ORDER BY lastname");
+	$statement = $db->prepare("SELECT * FROM user 
+		WHERE engine = ? 
+		AND locked = FALSE 
+		AND deleted = false 
+		ORDER BY lastname");
 	$statement->bind_param('s', $engine_uuid);
+	
+	if ($statement->execute()) {
+		$result = $statement->get_result();
+		
+		if (mysqli_num_rows ( $result )) {
+			while ( $date = $result->fetch_object () ) {
+				$data [] = $date;
+			}
+			$result->free ();
+		}
+	}
+	return $data;
+}
+
+function get_deleted_users(){
+	global $db;
+	$data = array ();
+	
+	$statement = $db->prepare("SELECT * FROM user WHERE deleted = true ORDER BY email");
 	
 	if ($statement->execute()) {
 		$result = $statement->get_result();
@@ -136,7 +164,8 @@ function get_users_of_engine($engine_uuid){
 function get_user($uuid){
 	global $db;
 	
-	$statement = $db->prepare("SELECT * FROM user WHERE uuid = ?");
+	$statement = $db->prepare("SELECT * FROM user WHERE uuid = ?
+		AND deleted = false");
 	$statement->bind_param('s', $uuid);
 	
 	if ($statement->execute()) {
@@ -174,7 +203,7 @@ function get_user_by_email($email){
 function get_user_by_data($firstname, $lastname, $email, $engine_uuid){
 	global $db;
 	
-	$statement = $db->prepare("SELECT * FROM user WHERE firstname = ? AND lastname = ? AND email = ? AND engine = ?");
+	$statement = $db->prepare("SELECT * FROM user WHERE firstname = ? AND lastname = ? AND email = ? AND engine = ? ");
 	$statement->bind_param('ssss', $firstname, $lastname, $email, $engine_uuid);
 	
 	if ($statement->execute()) {
@@ -226,30 +255,6 @@ function get_engine_obj_of_user($user_uuid){
     return false;
 }
 
-function check_password($email, $password) {
-	global $db;
-	
-	$statement = $db->prepare("SELECT * FROM user WHERE email = ?");
-	$statement->bind_param('s', $email);
-	
-	if ($statement->execute()) {
-		$result = $statement->get_result();
-		
-		if (mysqli_num_rows ( $result )) {
-			$data = $result->fetch_object ();
-			$result->free ();
-			if ($password == $data->password ) {
-				return $data->uuid;
-			}
-			if (password_verify ( $password, $data->password )) {
-				return $data->uuid;
-			}
-		}
-	}
-	return false;
-}
-
-
 function email_in_use($email) {
 	global $db;
 	$mail = strtolower($email);
@@ -262,25 +267,6 @@ function email_in_use($email) {
 		
 		if (mysqli_num_rows ( $result )) {
 			return true;
-		}
-	}
-	return false;
-}
-
-function is_locked($email){
-	global $db;
-	$mail = strtolower($email);
-	
-	$statement = $db->prepare("SELECT locked FROM user WHERE email = ?");
-	$statement->bind_param('s', $mail);
-	
-	if ($statement->execute()) {
-		$result = $statement->get_result();
-		
-		if (mysqli_num_rows ( $result )) {
-			$data = $result->fetch_row ();
-			$result->free ();
-			return $data [0];
 		}
 	}
 	return false;
@@ -385,6 +371,38 @@ function change_password($uuid, $old_password, $new_passwort) {
 		//echo "Error: " . $query . "<br>" . $db->error;
 	}
 	return false;
+}
+
+function delete_user($user_uuid){
+	global $db;
+	
+	$statement = $db->prepare("UPDATE user SET deleted = TRUE WHERE uuid= ?");
+	$statement->bind_param('s', $user_uuid);
+	
+	$result = $statement->execute();
+	
+	if ($result) {
+		return true;
+	} else {
+		// echo "Error: " . $query . "<br>" . $db->error;
+		return false;
+	}
+}
+
+function undelete_user($user_uuid){
+	global $db;
+	
+	$statement = $db->prepare("UPDATE user SET deleted = FALSE WHERE uuid= ?");
+	$statement->bind_param('s', $user_uuid);
+	
+	$result = $statement->execute();
+	
+	if ($result) {
+		return true;
+	} else {
+		// echo "Error: " . $query . "<br>" . $db->error;
+		return false;
+	}
 }
 
 function create_table_user() {

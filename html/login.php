@@ -3,6 +3,15 @@ require_once realpath(dirname(__FILE__) . "/../resources/config.php");
 require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/db_user.php";
 
+function check_password($user, $password) {
+	if ($password == $user->password ) {
+		return $user->uuid;
+	}
+	if (password_verify ( $password, $user->password )) {
+		return $user->uuid;
+	}
+	return false;
+}
 
 if (userLoggedIn()) {
 	header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects
@@ -25,8 +34,9 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 	$password = trim ( $_POST ['password'] );
 	
 	$loggedIn = false;
-	if (! is_locked ( $email )) {
-		$uuid = check_password ( $email, $password );
+	$user = get_user_by_email($email);
+	if ( $user != null && ! $user->locked && ! $user->deleted ) {
+		$uuid = check_password ( $user, $password );
 		if ($uuid) {
 			insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserLogedIn, $uuid));
 			

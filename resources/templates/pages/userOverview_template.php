@@ -56,6 +56,8 @@ if (! count ( $user )) {
 									echo "<input type=\"hidden\" name=\"enable\" id=\"enable\" value='" . $row->uuid . "'/>";
 									echo "<input type=\"submit\" value=\"Freigeben\"  class=\"dropdown-item\"/>";
 								}
+								echo "<input type=\"hidden\" name=\"delete\" id=\"delete\" value='" . $row->uuid . "'/>";
+								echo "<input type=\"submit\" value=\"Löschen\"  class=\"dropdown-item\"/>";
 							}
 							?>
 							</form>

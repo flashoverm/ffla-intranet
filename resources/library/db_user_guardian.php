@@ -55,7 +55,8 @@ function get_eventmanager_of_engine($engine_uuid) {
 		FROM user, user_privilege, privilege
 		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND privilege.privilege = ? 
-		AND engine = ?");
+		AND engine = ?
+		AND user.deleted = false");
 	$statement->bind_param('ss', $privilege, $engine_uuid);
 	
 	if ($statement->execute()) {
@@ -82,7 +83,8 @@ function get_eventmanager_except_engine_and_creator($engine_uuid, $creator_uuid)
 		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND NOT engine = ?
 		AND NOT uuid = ?
-		AND privilege.privilege = ?");
+		AND privilege.privilege = ?
+		AND user.deleted = false");
 	$statement->bind_param('sss', $engine_uuid, $creator_uuid, $privilege);
 	
 	if ($statement->execute()) {
@@ -109,6 +111,7 @@ function get_eventparticipent_of_engine($engine_uuid){
 		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND privilege.privilege = ?
 		AND engine = ?
+		AND user.deleted = false
  		ORDER BY lastname");
 	$statement->bind_param('ss', $privilege, $engine_uuid);
 	
@@ -135,6 +138,7 @@ function is_eventmanager_of($user_uuid, $engine_uuid){
 		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND user.uuid = ?
 		AND user.engine = ?
+		AND user.deleted = false
 		AND privilege.privilege = ?");
 	$statement->bind_param('sss', $user_uuid, $engine_uuid, $privilege);
 	

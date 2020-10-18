@@ -32,6 +32,17 @@ if (isset ( $_POST ['enable'] )) {
 		$variables ['alertMessage'] = "Benutzer freigeben fehlgeschlagen";
 	}
 }
+if (isset ( $_POST ['delete'] )) {
+	$uuid = trim ( $_POST ['delete'] );
+	if($uuid == $_SESSION ['intranet_userid']){
+		$variables ['alertMessage'] = "Eigenes Konto kann nicht gelöscht werden";
+	} else if(delete_user( $uuid )) {
+		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserDeleted, $uuid));
+		$variables ['successMessage'] = "Benutzer gelöscht";
+	} else {
+		$variables ['alertMessage'] = "Benutzer löschen fehlgeschlagen";
+	}
+}
 
 if (isset ( $_POST ['resetpw'] )) {
 	$resetpw_user_uuid = trim ( $_POST ['resetpw'] );
@@ -74,7 +85,7 @@ if(isset($_GET['filter'])){
 
 
 $variables ['user'] = $user;
-
+$variables ['deletedUser'] = get_deleted_users();
 
 
 renderLayoutWithContentFile ($config["apps"]["landing"], "userOverview_template.php", $variables );
