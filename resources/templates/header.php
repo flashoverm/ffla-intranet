@@ -64,7 +64,7 @@
         			<div class='dropdown-menu bg-dark'>
 						<a class='dropdown-item text-light' href='<?= $config["urls"]["guardianapp_home"] ?>/'>Wachverwaltung</a>
 						<a class='dropdown-item text-light' href='<?= $config ["urls"] ["hydrantapp_home"] ?>/'>Hydrantenverwaltung</a>
-						<a class='dropdown-item text-light' href='<?= $config ["urls"] ["employerapp_home"] ?>/'>Arbeitgeberbestätigungen</a>
+						<a class='dropdown-item text-light' style="display:none" href='<?= $config ["urls"] ["employerapp_home"] ?>/'>Arbeitgeberbestätigungen</a>
 						<a class='dropdown-item text-light' href='<?= $config ["urls"] ["filesapp_home"] ?>/'>Formulare</a>
 					</div>
 				</li>
