@@ -6,5 +6,15 @@
 </body>
 <script>
 	window.onload=hideLoader;
+
+	// Fix for dropdown overflowing table 	
+	$('.table-responsive').on('show.bs.dropdown', function (e) {
+		var heightTR = $(this).find('tr').height();
+		var heightDD = $(this).find('.dropdown-menu').height();
+		$(this).find('.fixed-table-body').css('min-height', heightTR + heightDD);
+	});
+	$('.table-responsive').on('hide.bs.dropdown', function (e) {
+		$(this).find('.fixed-table-body').css('min-height', '');
+	});
 </script>
 </html>

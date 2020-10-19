@@ -45,10 +45,12 @@ if (! count ( $user )) {
 						<div class="dropdown-menu">
 
 							<a class="dropdown-item" href="<?= $config["urls"]["intranet_home"] . "/users/" . $row->uuid . "/edit"?>">Bearbeiten</a>
-							<div class="dropdown-divider"></div>
-							<form method="post" action="">
 							<?php
 							if($row->password != null){
+								?>
+								<div class="dropdown-divider"></div>
+								<form method="post" action="">
+								<?php
 								if (! $row->locked) {
 									echo "<input type=\"hidden\" name=\"disable\" id=\"disable\" value='" . $row->uuid . "'/>";
 									echo "<input type=\"submit\" value=\"Sperren\"  class=\"dropdown-item\"/>";
@@ -58,10 +60,9 @@ if (! count ( $user )) {
 								}
 								echo "<input type=\"hidden\" name=\"delete\" id=\"delete\" value='" . $row->uuid . "'/>";
 								echo "<input type=\"submit\" value=\"Löschen\"  class=\"dropdown-item\"/>";
+								echo "</form>";
 							}
 							?>
-							</form>
-							
 							<div class="dropdown-divider"></div>
 							<?php
 							if($row->password != null){
@@ -97,3 +98,4 @@ if (! count ( $user )) {
 ?>
 <a href='<?= $config["urls"]["intranet_home"]?>/users/new' class="btn btn-primary">Benutzer anlegen</a>
 <a href='<?= $config["urls"]["intranet_home"]?>/users/import' class="btn btn-primary float-right">Benutzer importieren</a>
+

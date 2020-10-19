@@ -13,10 +13,7 @@ if (! count ( $inspections )) {
 				<th data-sortable="true" class="text-center">Name(n)</th>
 				<th data-sortable="true" class="text-center">Fahrzeug</th>
 				<th data-sortable="true" class="text-center">Hydranten</th>
-				<th class="text-center">Anzeigen</th>
-				<th class="text-center">PDF</th>
-				<th class="text-center">Bearbeiten</th>
-				<th class="text-center">Löschen</th>
+				<th class="text-center"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -30,44 +27,26 @@ if (! count ( $inspections )) {
 				<td class="text-center"><?= $row->name; ?></td>
 				<td class="text-center"><?= $row->vehicle; ?></td>
 				<td class="text-center"><?= $row->getCount(); ?></td>
-				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->uuid; ?>">Anzeigen</a>
-				</td>
-				<td class="text-center">
-					<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->uuid . "/file"; ?>">PDF</a>
-				</td>
-				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/edit/". $row->uuid; ?>">Bearbeiten</a>
-				</td>
-				<td class="text-center">
-					<form method="post" action="">
-						<input type="hidden" name="delete" id="delete" value="<?= $row->uuid ?>" />
-						<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDelete<?= $row->uuid; ?>">Löschen</button>
-						
-						<div class="modal" id="confirmDelete<?= $row->uuid; ?>">
-						  <div class="modal-dialog">
-						    <div class="modal-content">
-						
-						      <div class="modal-header">
-						        <h4 class="modal-title">Prüfbericht wirklich löschen?</h4>
-						        <button type="button" class="close" data-dismiss="modal">&times;</button>
-						      </div>
-						
-						      <div class="modal-footer">
-						      	<input type="submit" value="Löschen" class="btn btn-primary" onClick="showLoader()"/>
-						      	<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Abbrechen</button>
-						      </div>
-						
-						    </div>
-						  </div>
-						</div> 
-					</form>
+				<td>
+					<div class="dropdown">
+						<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Optionen</button>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->uuid; ?>">Anzeigen</a>
+							<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->uuid . "/file"; ?>">PDF anzeigen</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/edit/". $row->uuid; ?>">Bearbeiten</a>
+							<div class="dropdown-divider"></div>
+							<button type="button" class="dropdown-item" data-toggle="modal" data-target="#confirmDelete<?= $row->uuid; ?>">Löschen</button>
+						</div>
+					</div>
+					<?php
+						createDialog('confirmDelete' . $row->uuid, "Prüfbericht wirklich löschen?", null, "delete", $row->uuid);
+					?>
 				</td>
 			</tr>
-<?php
-	}
-
-?>
+	<?php
+		}
+	?>
 		</tbody>
 	</table>
 </div>

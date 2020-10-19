@@ -36,7 +36,7 @@ function get_users(){
 	global $db;
 	$data = array ();
 	
-	$statement = $db->prepare("SELECT * FROM user WHERE user.deleted = false ORDER BY email");
+	$statement = $db->prepare("SELECT * FROM user WHERE deleted = false ORDER BY email");
 	
 	if ($statement->execute()) {
 		$result = $statement->get_result();

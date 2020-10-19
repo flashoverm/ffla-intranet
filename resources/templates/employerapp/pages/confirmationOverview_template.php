@@ -1,5 +1,8 @@
 <?php
-
+if ( ! count ( $declined ) && ! count ( $open ) && ! count ( $accepted ) ) {
+	showInfo ( "Keine Arbeitgebernachweise offen oder angefragt" );
+}
+	
 if ( count ( $declined ) ) {
 ?>
 <h3 class="my-3">Abgelehnte Anfragen</h3>
