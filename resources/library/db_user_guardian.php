@@ -51,7 +51,7 @@ function get_eventmanager_of_engine($engine_uuid) {
 	
 	$privilege  = EVENTMANAGER;
 	
-	$statement = $db->prepare("SELECT * 
+	$statement = $db->prepare("SELECT user.* 
 		FROM user, user_privilege, privilege
 		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND privilege.privilege = ? 
@@ -78,7 +78,7 @@ function get_eventmanager_except_engine_and_creator($engine_uuid, $creator_uuid)
 	
 	$privilege = EVENTMANAGER;
 	
-	$statement = $db->prepare("SELECT *
+	$statement = $db->prepare("SELECT user.*
 		FROM user, user_privilege, privilege
 		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND NOT engine = ?
@@ -106,7 +106,7 @@ function get_eventparticipent_of_engine($engine_uuid){
 	
 	$privilege  = EVENTPARTICIPENT;
 	
-	$statement = $db->prepare("SELECT *
+	$statement = $db->prepare("SELECT user.*
 		FROM user, user_privilege, privilege
 		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND privilege.privilege = ?
@@ -133,7 +133,7 @@ function is_eventmanager_of($user_uuid, $engine_uuid){
 	
 	$privilege = EVENTMANAGER;
 	
-	$statement = $db->prepare("SELECT *
+	$statement = $db->prepare("SELECT user.*
 		FROM user, user_privilege, privilege
 		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND user.uuid = ?

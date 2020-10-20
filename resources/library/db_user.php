@@ -77,7 +77,8 @@ function get_users_with_privilege_by_name($privilege){
 	global $db;
 	$data = array ();
 	
-	$statement = $db->prepare("SELECT * FROM user, user_privilege, privilege
+	$statement = $db->prepare("SELECT user.* 
+		FROM user, user_privilege, privilege
 		WHERE user.uuid = user_privilege.user AND privilege.uuid = user_privilege.privilege 
 		AND privilege.privilege = ?
 		AND user.deleted = false");
@@ -100,7 +101,8 @@ function get_users_with_privilege($privilege_uuid){
 	global $db;
 	$data = array ();
 	
-	$statement = $db->prepare("SELECT * FROM user, user_privilege 
+	$statement = $db->prepare("SELECT user.*
+		FROM user, user_privilege 
 		WHERE uuid = user_privilege.user AND privilege = ?
 		AND user.deleted = false");
 	$statement->bind_param('s', $privilege_uuid);
