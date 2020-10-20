@@ -20,7 +20,7 @@
 				class="card-link">Weiter zur Hydrantenverwaltung</a>
 		</div>
 	</div>
-	<div class="card mx-auto mb-3" style="display:none">
+	<div class="card mx-auto mb-3">
 		<div class="card-body">
 			<h5 class="card-title">Arbeitgeberbestätigungen</h5>
 			<p class="card-text">Beantragung von Arbeitgeberbestätigungen für Teilnahme an Einsätzen.</p>
