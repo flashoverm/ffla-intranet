@@ -21,7 +21,7 @@ function userLoggedIn(){
 	return isset ( $_SESSION ['intranet_userid'] );
 }
 
-function localhostRequest(){    
+function localhostRequest(){
     return $_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1' || startsWith($_SERVER['REMOTE_ADDR'], '192.168') ;
 }
 
