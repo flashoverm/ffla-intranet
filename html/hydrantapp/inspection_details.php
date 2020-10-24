@@ -6,6 +6,7 @@ require_once LIBRARY_PATH . "/db_inspection.php";
 require_once LIBRARY_PATH . "/file_create.php";
 
 require_once LIBRARY_PATH . "/class/HydrantInspection.php";
+require_once LIBRARY_PATH . "/class/constants/HydrantCriteria.php";
 
 // Pass variables (as an array) to template
 $variables = array(
