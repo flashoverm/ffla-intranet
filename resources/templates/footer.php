@@ -10,8 +10,12 @@
 	// Fix for dropdown overflowing table 	
 	$('.table-responsive').on('show.bs.dropdown', function (e) {
 		var heightTR = $(this).find('tr').height();
-		var heightDD = $(this).find('.dropdown-menu').height();
-		$(this).find('.fixed-table-body').css('min-height', heightTR + heightDD);
+		var heightDD = 0;
+		$(this).find('.dropdown-menu').each( function() {
+			heightDD = Math.max( heightDD, $( this ).height() );
+		});
+		var tableBody = $(this).find('.fixed-table-body');
+		tableBody.css('min-height', heightTR + heightDD);
 	});
 	$('.table-responsive').on('hide.bs.dropdown', function (e) {
 		$(this).find('.fixed-table-body').css('min-height', '');
