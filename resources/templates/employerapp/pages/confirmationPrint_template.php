@@ -25,7 +25,7 @@ if(isset($confirmation) && isset($user)){
 					<b>Feuerwehr</b><br>
 					<small>
 						<br>
-						Niedermayerstarße 6<br>
+						Niedermayerstraße 6<br>
 						84028 Landshut<br>
 						<br>
 						Tel: 0871/96577-200<br>

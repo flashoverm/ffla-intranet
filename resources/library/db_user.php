@@ -220,6 +220,10 @@ function get_user_by_data($firstname, $lastname, $email, $engine_uuid){
 	return false;
 }
 
+function get_current_user_obj(){
+	return get_user($_SESSION ['intranet_userid']);
+}
+
 function get_engine_of_user($user_uuid){
 	global $db;
 	

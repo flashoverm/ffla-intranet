@@ -26,10 +26,19 @@ if (isset ( $_POST ['delete'] )) {
 
 if(userLoggedIn()){
     
-    $events = get_events ($_SESSION ['intranet_userid']);
-    $pastEvents = get_past_events($_SESSION ['intranet_userid']);
-    $variables ['events'] = $events;
-    $variables ['pastEvents'] = $pastEvents;
+	if(current_user_has_privilege(FFADMINISTRATION)){
+		$events = get_all_active_events ();
+		$pastEvents = get_all_past_events();
+	} else {
+		$publicEvents = get_public_events();
+	    $engineEvents = get_events (getCurrentUserUUID());
+	    $events = array_merge($engineEvents, $publicEvents);
+	    
+	    $pastEvents = get_past_events(getCurrentUserUUID());
+
+	}
+	$variables ['events'] = $events;
+	$variables ['pastEvents'] = $pastEvents;
 }
 
 

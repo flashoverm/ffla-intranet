@@ -9,7 +9,7 @@ if (! count ( $reports )) {
 		<thead>
 			<tr>
 				<th data-sortable="true" class="text-center">Datum</th>
-				<th data-sortable="true" class="text-center">Wachbeginn</th>
+				<th data-sortable="true" class="text-center">Beginn</th>
 				<th data-sortable="true" class="text-center">Ende</th>
 				<th data-sortable="true" class="text-center">Typ</th>
 				<th data-sortable="true" class="text-center">Titel</th>
@@ -61,13 +61,13 @@ if (! count ( $reports )) {
 					if($row->emsEntry){
 					    echo " &#10003; ";
 					} else {
-						echo "<button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#confirmEms" . $row->uuid . "'>EMS</button>";
+						echo "<button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#confirmEms" . $row->uuid . "' title='Wache als in EMS angelegt markieren'>EMS</button>";
 						createDialog("confirmEms" . $row->uuid, "Wurde die Wache in EMS angelegt?", null, "emsEntry", $row->uuid);
 					}
 					?>
 				</td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/".$row->uuid ?>">Bericht</a>
+					<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/".$row->uuid ?>" title='Zum Bericht'>Bericht</a>
 				</td>
 			</tr>
 	<?php
