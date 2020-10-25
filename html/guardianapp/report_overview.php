@@ -2,8 +2,8 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/config.php" );
 require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/db_report.php";
-require_once LIBRARY_PATH . "/db_engines.php";
 require_once LIBRARY_PATH . "/db_eventtypes.php";
+require_once LIBRARY_PATH . "/db_user.php";
 
 // Pass variables (as an array) to template
 $variables = array (
@@ -13,8 +13,6 @@ $variables = array (
 );
 
 if(userLoggedIn()){
-    $user = $_SESSION ['intranet_userid'];
-    $usersEngine = get_engine(get_engine_of_user($user));
     
     if (isset ( $_POST ['emsEntry'] )) {
         if(set_ems_entry($_POST ['emsEntry'])){
@@ -25,10 +23,10 @@ if(userLoggedIn()){
         }
     }
         
-    if($usersEngine->isadministration == true){
+    if(current_user_has_privilege(FFADMINISTRATION)){
         $variables ['reports'] = get_reports();
     } else {
-        $variables ['reports'] = get_filtered_reports($usersEngine->uuid);
+    	$variables ['reports'] = get_filtered_reports(get_current_user_obj()->engine);
         $variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die Ihrem Zug zugewiesen wurden";
     }
 }

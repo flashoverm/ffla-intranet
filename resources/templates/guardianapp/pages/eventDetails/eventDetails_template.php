@@ -41,7 +41,7 @@ if ($isCreator) {
 				<td colspan="2"><a href='<?= $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/".$event->uuid; ?>' target='_blank'><?= $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/".$event->uuid; ?></a></td>
 			</tr>
 			<?php
-			if(userLoggedIn() && (is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid']) || current_user_has_privilege(EVENTADMIN))){
+			if( is_allowed_to_edit_event($_SESSION['intranet_userid'], $event->uuid) ){
 			    $creator = get_user($event->creator);
 			?>
 			    <tr>
@@ -56,12 +56,13 @@ if ($isCreator) {
 
 	<?php
 	if($loggedIn){
-	    echo "<form action='" . $config["urls"]["guardianapp_home"] . "/events/" . $event->uuid . "' method='post'>
-                  <a href='" . $config["urls"]["guardianapp_home"] . "/events' class='btn btn-outline-primary'>Zurück</a>
-				  <div class='float-right'>";
-	    
+	?>
+	    <form action='<?= $config["urls"]["guardianapp_home"] . "/events/" . $event->uuid ?>' method='post'>
+			<a href='<?= $config["urls"]["guardianapp_home"] . "/events" ?>' class='btn btn-outline-primary'>Zurück</a>
+			<div class='float-right'>
+			<?php
 			    if(!$event->published){
-			        if(is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid']) and $relevant) {?>
+			    	if( is_allowed_to_edit_event($_SESSION['intranet_userid'], $event->uuid) and $relevant) {?>
 			          	<a class='btn btn-primary' href='<?= $config["urls"]["guardianapp_home"] ?>/events/<?= $event->uuid ?>/edit'>Bearbeiten</a>
 		                <span class='d-inline-block' data-toggle='tooltip' title='Andere Züge über Wache informieren'>
 					  		<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#confirmPublish<?= $event->uuid ?>'>Veröffentlichen</button>
@@ -74,7 +75,7 @@ if ($isCreator) {
 			            echo "<button type='button' class='btn btn-outline-primary ml-1' disabled='disabled' >Wache ist nicht öffentlich</button>";   
 			        }
 				} else {
-					if(is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid']) and $relevant) {
+					if( is_allowed_to_edit_event($_SESSION['intranet_userid'], $event->uuid) and $relevant) {
 						echo "<a class='btn btn-primary' href='" . $config["urls"]["guardianapp_home"] . "/events/" . $event->uuid . "/edit'>Bearbeiten</a>";
 					}
 				    echo "<button type='button' class='btn btn-outline-primary ml-1' disabled='disabled' >Wache ist öffentlich</button>";

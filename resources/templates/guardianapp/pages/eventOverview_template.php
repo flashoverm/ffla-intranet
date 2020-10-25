@@ -8,15 +8,16 @@ if (!isset($events) || ! count ( $events ) ) {
 		<thead>
 			<tr>
 				<th data-sortable="true" class="text-center">Datum</th>
-				<th data-sortable="true" class="text-center">Wachbeginn</th>
+				<th data-sortable="true" class="text-center">Beginn</th>
 				<th data-sortable="true" class="text-center">Ende</th>
 				<th data-sortable="true" class="text-center">Typ</th>
 				<th data-sortable="true" class="text-center">Titel</th>
+				<th data-sortable="true" class="text-center">Zuständig</th>
 				<th data-sortable="true" class="text-center">Belegung</th>
 				<th data-sortable="true" class="text-center">Öffentlich</th>
 				<th class="text-center">Details</th>
 				<?php
-				if(is_user_manager_or_creator($events[0]->uuid, $_SESSION['intranet_userid'])){
+				if( is_allowed_to_edit_events($_SESSION['intranet_userid']) ){
 					echo"<th class='text-center'>Löschen</th>";
 				}
 				?>
@@ -24,22 +25,24 @@ if (!isset($events) || ! count ( $events ) ) {
 		</thead>
 		<tbody>
 			
-	<?php
-	foreach ( $events as $row ) {
+		<?php
+		foreach ( $events as $row ) {
 		?>
 				<tr>
 				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
 				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
 				<td class="text-center">
-	<?php
-		if ($row->end_time != 0) {
-		    echo date($config ["formats"] ["time"], strtotime($row->end_time));
-		} else {
-			echo " &ndash; ";
-		}
-		?></td>
+					<?php
+					if ($row->end_time != 0) {
+					    echo date($config ["formats"] ["time"], strtotime($row->end_time));
+					} else {
+						echo " &ndash; ";
+					}
+					?>
+				</td>
 				<td class="text-center"><?= get_eventtype($row->type)->type; ?></td>
 				<td class="text-center"><?= $row->title; ?></td>
+				<td class="text-center"><?= get_engine($row->engine)->name; ?></td>
 				<td class="text-center">
 					<?php 
 					if(is_event_full($row->uuid)){
@@ -62,22 +65,21 @@ if (!isset($events) || ! count ( $events ) ) {
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->uuid ?>">Details</a>
 				</td>
 				<?php
-				if(is_user_manager_or_creator($row->uuid, $_SESSION['intranet_userid'])){
-					?>
+				if(is_allowed_to_edit_event($_SESSION['intranet_userid'], $row->uuid)){
+				?>
 					<td class="text-center">
-					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDelete<?= $row->uuid; ?>">Löschen</button>
-					<?php 
-					createDialog('confirmDelete' . $row->uuid, "Wache wirklich löschen?", null, "delete", $row->uuid);
-					?>	
-				</td>
-					<?php 
+						<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDelete<?= $row->uuid; ?>">Löschen</button>
+						<?php 
+						createDialog('confirmDelete' . $row->uuid, "Wache wirklich löschen?", null, "delete", $row->uuid);
+						?>	
+					</td>
+				<?php 
 				}
 				?>
-
 			</tr>
-<?php
-	}
-?>
+		<?php
+			}
+		?>
 		</tbody>
 	</table>
 </div>

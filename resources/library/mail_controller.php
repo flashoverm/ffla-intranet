@@ -129,7 +129,7 @@ function mail_publish_event($event_obj) {
 	
 	$body = $bodies["event_publish"] . get_event_link($event_obj->uuid);
 	
-	$recipients = get_manager_except_engine_and_creator($event_obj->engine, $event_obj->creator);
+	$recipients = get_eventmanager_except_engine_and_creator($event_obj->engine, $event_obj->creator);
 	
 	return send_mails($recipients, $subject, $body);
 }

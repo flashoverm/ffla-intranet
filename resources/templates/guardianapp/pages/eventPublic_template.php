@@ -10,10 +10,11 @@ if(!isset($events) ){
 		<thead>
 			<tr>
 				<th data-sortable="true" class="text-center">Datum</th>
-				<th data-sortable="true" class="text-center">Wachbeginn</th>
+				<th data-sortable="true" class="text-center">Beginn</th>
 				<th data-sortable="true" class="text-center">Ende</th>
 				<th data-sortable="true" class="text-center">Typ</th>
 				<th data-sortable="true" class="text-center">Titel</th>
+				<th data-sortable="true" class="text-center">Zuständig</th>
 				<th data-sortable="true" class="text-center">Belegung</th>
 				<th class="text-center">Details</th>
 			</tr>
@@ -36,6 +37,7 @@ if(!isset($events) ){
 		?></td>
 				<td class="text-center"><?= get_eventtype($row->type)->type; ?></td>
 				<td class="text-center"><?= $row->title; ?></td>
+				<td class="text-center"><?= get_engine($row->engine)->name; ?></td>
 				<td class="text-center">
 					<?php 
 					if(is_event_full($row->uuid)){

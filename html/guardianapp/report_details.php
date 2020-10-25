@@ -11,7 +11,6 @@ require_once LIBRARY_PATH . "/file_create.php";
 // Pass variables (as an array) to template
 $variables = array(
 		'title' => 'Wachbericht',
-		'privilege' => EVENTMANAGER,
 		'secured' => true,
 		'showFormular' => false,
 );
@@ -33,10 +32,8 @@ if (! isset($_GET['id'])) {
 		$variables['units'] = $units;
 				
 		if(userLoggedIn()){
-        
-	        $user = get_user($_SESSION ['intranet_userid']);
-	        
-	        if($report->engine == $user->engine || current_user_has_privilege(FFADMINISTRATION) || current_user_has_privilege(EVENTADMIN)){
+        	        
+	        if( is_user_allowed_to_edit_report(getCurrentUserUUID(), $uuid) ){
 	            
 	        	$variables['showFormular'] = true;
 	            

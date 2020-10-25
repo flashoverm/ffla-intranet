@@ -82,7 +82,7 @@ function get_eventmanager_except_engine_and_creator($engine_uuid, $creator_uuid)
 		FROM user, user_privilege, privilege
 		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND NOT engine = ?
-		AND NOT uuid = ?
+		AND NOT user.uuid = ?
 		AND privilege.privilege = ?
 		AND user.deleted = false");
 	$statement->bind_param('sss', $engine_uuid, $creator_uuid, $privilege);
@@ -146,6 +146,67 @@ function is_eventmanager_of($user_uuid, $engine_uuid){
 		$result = $statement->get_result();
 		
 		if (mysqli_num_rows ( $result )) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function is_allowed_to_edit_event($user_uuid, $event_uuid){
+	if($user_uuid != NULL){
+		
+		if(user_has_privilege($user_uuid, EVENTADMIN)){
+			return true;
+		}
+		
+		if(user_has_privilege($user_uuid, FFADMINISTRATION)){
+			return true;
+		}
+		
+		$event = get_event($event_uuid);
+		if(is_eventmanager_of($user_uuid, $event->engine)){
+			return true;
+		}
+		
+		if($event->creator == $user_uuid){
+			return true;
+		}
+	}
+	return false;
+
+}
+
+function is_user_allowed_to_edit_report($user_uuid, $report_uuid){
+	if($user_uuid != NULL){
+		
+		if(user_has_privilege($user_uuid, EVENTADMIN)){
+			return true;
+		}
+		
+		if(user_has_privilege($user_uuid, FFADMINISTRATION)){
+			return true;
+		}
+		
+		$report = get_report($report_uuid);
+		if(is_eventmanager_of($user_uuid, $report->engine)){
+			return true;
+		}
+	}
+	return false;
+}
+
+function is_allowed_to_edit_events($user_uuid){
+	if($user_uuid != NULL){
+		
+		if(user_has_privilege($user_uuid, EVENTADMIN)){
+			return true;
+		}
+		
+		if(user_has_privilege($user_uuid, FFADMINISTRATION)){
+			return true;
+		}
+		
+		if(user_has_privilege($user_uuid, EVENTMANAGER)){
 			return true;
 		}
 	}
