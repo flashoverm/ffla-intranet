@@ -141,6 +141,11 @@ function createHydrantGoogleMap($hydrants, $visable, $markerListener = true, $he
 		google.maps.event.addListener(map, 'tilesloaded', function(){
 
 			hideLoader();
+		
+			//Move label-div to higher layer
+			var labelContainerA = $('.gm-style > div:first > div:first');
+			labelContainerA.css('z-index', 100);
+				
 			html2canvas($( "#dynamic-map")[0], {
 				useCORS: true
 				}).then(canvas => {
