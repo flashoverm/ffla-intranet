@@ -33,7 +33,7 @@ if (! count ( $hydrants )) {
 				<td class="text-center"><?= $row->fid; ?></td>
 				<td class="text-center"><?= $row->street; ?></td>
 				<td class="text-center"><?= $row->district; ?></td>
-				<td class="text-center"><?= get_engine($row->engine)->name ?></td>
+				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName() ?></td>
 				<td class="text-center"><?= $row->type; ?></td>
 				<?php if(current_user_has_privilege(HYDRANTADMINISTRATOR)){
 				    echo '<td class="text-center">';

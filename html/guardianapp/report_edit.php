@@ -15,7 +15,7 @@ require_once LIBRARY_PATH . '/class/ReportUnitStaff.php';
 
 $eventtypes = get_eventtypes ();
 $staffpositions = get_staffpositions();
-$engines = get_engines();
+$engines = $engineDAO->getEngines();
 
 // Pass variables (as an array) to template
 $variables = array (

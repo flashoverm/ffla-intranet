@@ -21,7 +21,7 @@ if ( ! count ( $open ) ) {
 		<?php
 		foreach ( $open as $row ) {
 			$user = get_user($row->user);
-			$engine = get_engine($user->engine);
+			$engine = $engineDAO->getEngine($user->engine);
 		?>
 			<tr>
 				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>

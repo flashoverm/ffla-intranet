@@ -22,7 +22,7 @@ $to = date('Y-m-t');
 
 if(userLoggedIn()){
     $user = $_SESSION ['intranet_userid'];
-    $usersEngine = get_engine(get_engine_of_user($user));
+    $usersEngine = $engineDAO->getEngine(get_engine_of_user($user));
         
     if($usersEngine->isadministration == true){
         $reports = get_reports("ASC");

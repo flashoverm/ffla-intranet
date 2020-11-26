@@ -6,7 +6,7 @@ require_once LIBRARY_PATH . "/ui_util.php";
 session_start ();
 
 function renderPrintContentFile($app, $contentFile, $variables = array(), $noHeader = false){
-    global $config;
+	global $config, $engineDAO;
     
     $contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $contentFile;
     
@@ -67,7 +67,7 @@ function renderPrintContentFile($app, $contentFile, $variables = array(), $noHea
 
 function renderLayoutWithContentFile($app, $contentFile, $variables = array()) {
         
-	global $config;
+	global $config, $engineDAO;
 	
 	$contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $contentFile;
 

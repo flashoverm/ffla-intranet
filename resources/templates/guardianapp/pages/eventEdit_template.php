@@ -170,7 +170,7 @@
 							$staffId = $staffId +1;
 							if ($entry->user != NULL) {
 								$user = get_user ( $entry->user );
-								$engine = get_engine ( $user->engine );
+								$engine = $engineDAO->getEngine( $user->engine );
 								$name = $user->firstname . " " . $user->lastname . " (" . $engine->name . ")";
 							}
 							?>

@@ -7,7 +7,7 @@ require_once LIBRARY_PATH . "/db_user.php";
 
 define("DELIMITER", ";");
 
-$engines = get_engines();
+$engines = $engineDAO->getEngines();
 
 // Pass variables (as an array) to template
 $variables = array (

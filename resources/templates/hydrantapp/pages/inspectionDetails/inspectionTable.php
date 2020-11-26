@@ -39,7 +39,7 @@ function addHydrantRow($hydrant, $criteria, $idx){
 		</tr>
 		<tr>
 			<td class="th-td-padding th-td-small"><?= isset($inspection) ? date($config ["formats"] ["date"], strtotime($inspection->date)) : "&nbsp;" ?></td>
-			<td class="th-td-padding th-td-small"><?= isset($inspection) ? get_engine($inspection->engine)->name : "&nbsp;" ?></td>
+			<td class="th-td-padding th-td-small"><?= isset($inspection) ? $engineDAO->getEngine($inspection->engine)->getName() : "&nbsp;" ?></td>
 			<td class="th-td-padding th-td-small"><?= isset($inspection) ? $inspection->name : "&nbsp;" ?></td>
 			<td class="th-td-padding th-td-small">
 					<?php 

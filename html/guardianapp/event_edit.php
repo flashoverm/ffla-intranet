@@ -12,7 +12,7 @@ require_once LIBRARY_PATH . "/db_staff_template.php";
 
 $eventtypes = get_eventtypes ();
 $staffpositions = get_staffpositions();
-$engines = get_engines();
+$engines = $engineDAO->getEngines();
 
 // Pass variables (as an array) to template
 $variables = array (

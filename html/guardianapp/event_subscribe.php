@@ -17,7 +17,7 @@ $variables = array (
 if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 
 	$staffUUID = trim ( $_GET ['staffid'] );
-	$engines = get_engines ();
+	$engines = $engineDAO->getEngines();
 	$eventUUID = trim ( $_GET ['id'] );
 	
 	$event = get_event($eventUUID);

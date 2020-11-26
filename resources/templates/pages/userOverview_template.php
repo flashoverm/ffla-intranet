@@ -24,7 +24,7 @@ if (! count ( $user )) {
 			<tr>
 				<td class="text-center"><?= $row->firstname; ?></td>
 				<td class="text-center"><?= $row->lastname; ?></td>
-				<td class="text-center"><?= get_engine($row->engine)->name; ?></td>
+				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName() ?></td>
 				<td class="text-center"><?= $row->email; ?></td>
 				<td class="text-center">
 					<?php

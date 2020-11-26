@@ -9,7 +9,7 @@ if (isset($hydrant)){
 			</tr>			
 			<tr>
 				<th class="th-td-padding text-left">Löschzug</th>
-				<td class="th-td-padding"><?= get_engine($hydrant->engine)->name; ?></td>
+				<td class="th-td-padding"><?= $engineDAO->getEngine($hydrant->engine)->getName(); ?></td>
 			</tr>
 			<tr>
 				<th class="th-td-padding text-left">Typ</th>

@@ -10,7 +10,7 @@ $variables = array(
     'secured' => true
 );
 
-$variables ['engines'] = get_engines();
+$variables ['engines'] = $engineDAO->getEngines();
 
 if (isset($_POST['hy'])) {
     

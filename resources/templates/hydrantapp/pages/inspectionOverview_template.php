@@ -23,7 +23,7 @@ if (! count ( $inspections )) {
         ?>
 			<tr>
 				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
-				<td class="text-center"><?= get_engine($row->engine)->name; ?></td>
+				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName(); ?></td>
 				<td class="text-center"><?= $row->name; ?></td>
 				<td class="text-center"><?= $row->vehicle; ?></td>
 				<td class="text-center"><?= $row->getCount(); ?></td>

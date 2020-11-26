@@ -13,7 +13,7 @@ $variables = array (
     'privilege' => HYDRANTADMINISTRATOR
 );
 
-$variables ['engines'] = get_engines();
+$variables ['engines'] = $engineDAO->getEngines();
 
 if(isset($_GET ['hydrant'])) {
     $variables ['title'] = 'Hydrant bearbeiten';

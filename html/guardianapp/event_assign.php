@@ -26,7 +26,7 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 	    $variables ['showFormular'] = true;
 	    
     	$variables ['title'] = "In " . get_eventtype($event->type)->type . " einteilen";
-    	$variables ['engines'] = get_engines ();
+    	$variables ['engines'] = $engineDAO->getEngines();
     	$variables ['user'] = get_eventparticipent_of_engine(get_engine_of_user($_SESSION ['intranet_userid']));
     	$variables ['eventUUID'] = $eventUUID;
     	$variables ['staffUUID'] = $staffUUID;

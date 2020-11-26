@@ -24,7 +24,7 @@ if(isset($_POST['delete'])){
     }
 }
 
-if(get_engine($engine)->isadministration || current_user_has_privilege(FFADMINISTRATION)){
+if($engineDAO->getEngine($engine)->getIsAdministration() || current_user_has_privilege(FFADMINISTRATION)){
     $variables ['inspections'] = get_inspections();
 } else {
     $variables ['inspections'] = get_inspections_of_engine($engine);

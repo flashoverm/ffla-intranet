@@ -378,7 +378,7 @@ function inform_users_manager($event_uuid, $user){
  */
 
 function mail_insert_event_report($report){
-	global $config;
+	global $config, $engineDAO;
 	global $bodies;
 	
 	$subject = "Wachbericht";

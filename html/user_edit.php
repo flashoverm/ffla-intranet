@@ -13,7 +13,7 @@ $privileges = get_all_privileges();
 // Pass variables (as an array) to template
 $variables = array (
 	'secured' => true,
-	'engines' => get_engines(),
+		'engines' => $engineDAO->getEngines(),
 	'privileges' => $privileges,
 );
 
