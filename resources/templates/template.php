@@ -1,6 +1,5 @@
 <?php
-require_once realpath(dirname(__FILE__) . "/../config.php");
-require_once LIBRARY_PATH . "/bootstrap.php";
+require_once __DIR__ . "/../bootstrap.php";
 
 require_once LIBRARY_PATH . "/ui_util.php";
 

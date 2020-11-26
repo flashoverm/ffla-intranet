@@ -1,5 +1,6 @@
 <?php 
-require_once (realpath ( dirname ( __FILE__ ) . "/../../config.php" ));
+require_once realpath(__DIR__ . "/../../../resources/bootstrap.php");
+
 require_once LIBRARY_PATH . "/db_inspection.php";
 require_once LIBRARY_PATH . "/db_eventtypes.php";
 require_once LIBRARY_PATH . "/db_event.php";

@@ -1,5 +1,6 @@
 <?php
-require_once realpath(dirname(__FILE__) . "/../../resources/config.php");
+require_once realpath(__DIR__ . "/../../resources/bootstrap.php");
+
 require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/db_hydrant.php";
 
@@ -38,7 +39,7 @@ if (isset($_GET['engine'])) {
     
     $variables ['mapURL'] = $mapUrl;
     $variables ['title'] = "Hydranten";
-    $variables ['subtitle'] = get_engine($engine)->name;
+    $variables ['subtitle'] = $engineDAO->getEngine($engine)->getName();
 } else {
     $variables ['alertMessage'] = "Zug nicht festgelegt";
 }

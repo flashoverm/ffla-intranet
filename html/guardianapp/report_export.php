@@ -1,5 +1,6 @@
 <?php
-require_once realpath ( dirname ( __FILE__ ) . "/../../resources/config.php" );
+require_once realpath(__DIR__ . "/../../resources/bootstrap.php");
+
 require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/db_report.php";
 require_once LIBRARY_PATH . "/db_engines.php";
@@ -75,7 +76,7 @@ if((isset($_POST['csv']) || isset($_POST['invoice'])) && current_user_has_privil
 renderLayoutWithContentFile ($config["apps"]["guardian"], "reportExport_template.php", $variables );
 
 function reportsToCSV($reports, $head = ""){
-    global $config;
+	global $config, $engineDAO;
     $delimiter = ";";
     $filestring = $head;
         
@@ -113,7 +114,7 @@ function reportsToCSV($reports, $head = ""){
             $unitDuration = strtotime($entry->end) - strtotime($entry->beginn);
             foreach ( $entry->staffList as $staff ) {
                 $filestring .=  $staff->name . $delimiter .
-                    get_engine($staff->engine)->name . $delimiter . 
+                $engineDAO->getEngine($staff->engine)->getName() . $delimiter . 
                     gmdate($config ["formats"] ["time"], $unitDuration) .
                     "\n";
             }

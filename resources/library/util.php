@@ -1,5 +1,5 @@
 <?php
-require_once realpath(dirname(__FILE__) . "/../../resources/config.php");
+require_once realpath(__DIR__ . "/../bootstrap.php");
 
 function showAlert($message) {
     echo "<div class=\"alert alert-danger\" role=\"alert\">" . $message . "</div>";

@@ -1,5 +1,6 @@
 <?php
-require_once realpath(dirname(__FILE__) . "/../../resources/config.php");
+require_once realpath(__DIR__ . "/../../resources/bootstrap.php");
+
 require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/db_eventtypes.php";
 require_once LIBRARY_PATH . "/db_event.php";
@@ -27,8 +28,7 @@ if (! isset($_GET['id'])) {
     		$isCreator = (strcmp($event->creator, $_SESSION['intranet_userid']) == 0);
     		
     		if(strcmp(get_user($_SESSION['intranet_userid'])->engine, $event->engine) != 0){
-    		    $otherEngine = get_engine($event->engine);
-    		 
+    			$otherEngine = $engineDAO->getEngine($event->engine);
     		}
     	}
     	

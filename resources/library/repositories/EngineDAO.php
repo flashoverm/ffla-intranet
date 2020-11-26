@@ -30,7 +30,7 @@ class EngineDAO extends BaseDAO{
 	}
 	
 	function getEngine(String $uuid){
-		return $this->engineRepository->findByID($uuid);
+		return $this->engineRepository->findOneByUuid($uuid);
 	}
 	
 	function getEngineByName(String $name){

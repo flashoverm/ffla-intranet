@@ -57,7 +57,7 @@ class PrivilegeDAO extends BaseDAO{
 	}
 	
 	function getPrivilege(String $uuid){
-		return $this->privilegeRepository->findByID($uuid);
+		return $this->privilegeRepository->findOneByUuid($uuid);
 	}
 	
 	function getPrivilegeByName(String $name){

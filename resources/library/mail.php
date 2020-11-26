@@ -1,7 +1,8 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 
-require_once (realpath ( dirname ( __FILE__ ) . "/../config.php" ));
+require_once realpath(__DIR__ . "/../bootstrap.php");
+
 require_once LIBRARY_PATH . "/db_mailing.php";
 require_once LIBRARY_PATH . "/db_maillog.php";
 require_once LIBRARY_PATH . "/mail_body.php";

@@ -33,7 +33,7 @@ class UserDAO extends BaseDAO {
 	}
 		
 	function getUserByUUID(String $uuid){
-		return $this->userRepository->findByID($uuid);
+		return $this->userRepository->findOneByUuid($uuid);
 	}
 	
 	function getUserByEmail(String $email){
