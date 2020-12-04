@@ -96,33 +96,3 @@ UPDATE hydrant SET operating=true
 INSERT INTO user (uuid, username, password, engine, rights) VALUES ('89A402EB-C0FD-39DA-C704-699CD18932A8', 'hydrantenadmin', 'set-password', '57D2CB43-F3CE-3837-4181-2FE60FDB9277', '[\"HYDRANTADMINISTRATOR\"]')
 
 ##### V1.0.0
-
-******************************
-New installation
-******************************
-
-Clone repository in webserver folder (e.g. /var/www/)
-
-Replace and adapt htaccess and config samples
-
-Create new database and fill with the data
-(hydrants, mailings)
-
-
-apt install -y gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget php7.0-gd
-
-Install nodejs
-
- 	curl -sL https://deb.nodesource.com/setup_12.x | bash -
-	apt-get install nodejs
-	node -v
-	npm -v
-
-
-Change nodejs path in config file
-Run in folder {application}/resources/library/puppeteer/
-	npm init 
-	(set name to fflaintranet)
-	npm i --save puppeteer
-
-Create folder "reports" and check access/write rights

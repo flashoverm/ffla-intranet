@@ -16,6 +16,22 @@
 			</div>
 		</div>
 	</div>
-	<input type="submit" value="Einloggen" class="btn btn-primary">
+	<div class="form-group">
+		<input type="submit" value="Einloggen" class="btn btn-primary">
+	</div>
+	<div class="form-group">
+		<button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse" data-target="#description">Wie erhalte ich einen Zugang?</button>
+	</div>
+	
+	<div class="collapse" id="description">
+	  <div class="card card-body">
+			<p>Um Zugang zum Intranet der Feuerwehr Landshut zu erhalten, wende dich bitte per E-Mail unter Angabe des vollen Namens und des Löschzugs an die Portal-Administration 
+			(<a href="mailto:intranet.feuerwehr-landshut@thral.de?subject=Fehlerbericht%20Intranet" >intranet.feuerwehr-landshut@thral.de</a>).
+			Vorraussetzung ist, dass du aktives Mitglied der Feuerwehr der Stadt Landshut bist.</p> 
+			<p>Für erweiterte Berechtigungen im Portal (z.B. Verwaltung von Wachen und -berichten oder Hydrantenprüfungen) ist eine Bestätigung von deiner 
+			Zugführung oder der Feuerwehrverwaltung nötig. In diesem Fall muss diese die zusätzlichen Berechtigungen beim Administrator beantragen.</p>
+			<p>Die Zugangsdaten werden per E-Mail an dich übermittelt.</p>
+		</div>
+	</div>
 </form>
 
