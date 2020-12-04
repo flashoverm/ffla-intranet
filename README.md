@@ -4,6 +4,15 @@ Trello Board for collaboration with feature backlog and bug-tracking:
 
 https://trello.com/b/JHfXwwFF/intranet-feuerwehr-landshut
 
+## Stages
+
+Production:
+ 
+	https://intranet.feuerwehr-landshut.de/
+
+Test: 
+
+	https://intranet.feuerwehr-landshut.de/test/
 
 ## Branches
 
