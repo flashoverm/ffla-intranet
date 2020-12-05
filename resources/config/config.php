@@ -90,18 +90,6 @@ $config["mail"] = $mailConfig;
 
 $config = overrideConfig($config, $overrideConfig);
 
-/*
-//Override default settings if set
-if(isset($overrideSettings)){
-	foreach( $overrideSettings as $setting => $value ){
-		$config["settings"][$setting] = $value;
-	}
-}
-*/
-
-var_dump($config);
-die();
-
 $hydrant_criteria = array (
 		array(0, "Adresse in Ordnung"),
 		array(1,"Kein Mangel"),
