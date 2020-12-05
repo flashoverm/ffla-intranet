@@ -1,4 +1,6 @@
 
+resources/config/instanceConfig.php
+
 data/maps/*
 data/files/*
 data/inspections/*
