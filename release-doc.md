@@ -4,9 +4,11 @@ Release Documentation
 
 #### V2.2.2
 
-bootstraping
-separate data folder for application data 
-serparated application configuration from instance configuration
+Features: 
+	Added user to accepted confirmation requests
+	bootstraping
+	separate data folder for application data 
+	serparated application configuration from instance configuration
 
 #### V2.2.1
 

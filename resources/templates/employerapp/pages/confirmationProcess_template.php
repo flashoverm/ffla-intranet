@@ -103,18 +103,21 @@ if ( ! count ( $open ) ) {
 					<th data-sortable="true" class="text-center">Beginn</th>
 					<th data-sortable="true" class="text-center">Ende</th>
 					<th data-sortable="true" class="text-center">Einsatz</th>
+					<th data-sortable="true" class="text-center">Person</th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 			<?php
 			foreach ( $accepted as $row ) {
+				$user = get_user($row->user);
 			?>
 				<tr>
 					<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
 					<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
 					<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->end_time)); ?></td>
 					<td class="text-center"><?= $row->description ?></td>
+					<td class="text-center"><?= $user->firstname . " " . $user->lastname ?></td>
 					<td class="text-center">
 						<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->uuid ."/file" ?>">Nachweis anzeigen</a>
 					</td>
