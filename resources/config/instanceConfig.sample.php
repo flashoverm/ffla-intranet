@@ -7,25 +7,36 @@ $url_prefix = "";
 
 //required
 $dbConfig = array (
-	"dbname" => "ffintranet",
-	"username" => "ffintranet",
-	"password" => "xxxxxxxxxx",
-	"host" => "localhost"
+		"dbname" => "ffintranet",
+		"username" => "ffintranet",
+		"password" => "ffintranet",
+		"host" => "localhost"
 );
 
 //required
 $mailConfig = array (
-	"host" => "xxxxxxxxxx",
-	"username" => "xxxxxxxxxx",
-	"password" => "xxxxxxxxxx",
-	"secure" => "ssl",
-	"port" => 465,
-	"fromaddress" => "intranet@feuerwehr-landshut.de",
-	"fromname" => "Intranet Feuerwehr Landshut"
+		"host" => "127.0.0.1",
+		"username" => "",
+		"password" => "",
+		"secure" => "",
+		"port" => 25,
+		"fromaddress" => "intranet@feuerwehr-landshut.de",
+		"fromname" => "Intranet Feuerwehr Landshut"
 );
 
-//optional - overrides default settings
-$overrideSettings = array(
-	"deactivateOutgoingMails" => true,
-	"selfregistration" => false,                    //enables self registration of managers
+//partly optional - overrides default settings
+$overrideConfig = array(
+		"urls" => array(
+				"base_url" => "http://127.0.0.1"
+		),
+		"paths" => array(
+				"nodejs" => "D:/runtimes/nodejs/node.exe"
+		),
+		"mapView" => array(
+				"apiKey" => "yourapikey",
+		),
+		"settings" => array(
+				"deactivateOutgoingMails" => true,
+				"selfregistration" => false,
+		)
 );

@@ -2,6 +2,17 @@
 
 include_once 'instanceConfig.php';
 
+function overrideConfig($default, $override) {
+	foreach( $override as $setting => $value ){
+		if( is_array($value) ){
+			$default[$setting] = overrideConfig($default[$setting], $value);
+		} else {
+			$default[$setting] = $value;
+		}
+	}
+	return $default;
+}
+
 if( ! isset( $url_prefix )){
 	$url_prefix = "";
 }
@@ -23,7 +34,7 @@ $config = array (
 			
 			"files" => $url_prefix . "/files",
 			
-			"base_url" => "http://127.0.0.1",
+			"base_url" => "https://intranet.feuerwehr-landshut.de",
 	),
 	
 	"paths" => array (
@@ -32,12 +43,12 @@ $config = array (
 					"content" => $_SERVER ["DOCUMENT_ROOT"] . "/images/content",
 					"layout" => $_SERVER ["DOCUMENT_ROOT"] . "/images/layout/"
 			),
-			"files" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/files/",
-			"maps" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/maps/",
-			"inspections" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/inspections/",
-			"reports" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/reports/",
-			"confirmations" => $_SERVER ["DOCUMENT_ROOT"] . "/../resources/confirmations/",
-			"nodejs" => "D:/runtimes/nodejs/node.exe"
+			"files" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/files/",
+			"maps" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/maps/",
+			"inspections" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/inspections/",
+			"reports" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/reports/",
+			"confirmations" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/confirmations/",
+			"nodejs" => "nodejs"
 	),
 	"formats" => array (
 			"date" => "d.m.Y",
@@ -77,14 +88,19 @@ $config = array (
 $config["db"] = $dbConfig;
 $config["mail"] = $mailConfig;
 
+$config = overrideConfig($config, $overrideConfig);
+
+/*
 //Override default settings if set
 if(isset($overrideSettings)){
 	foreach( $overrideSettings as $setting => $value ){
 		$config["settings"][$setting] = $value;
 	}
 }
+*/
 
-//var_dump($config);
+var_dump($config);
+die();
 
 $hydrant_criteria = array (
 		array(0, "Adresse in Ordnung"),
