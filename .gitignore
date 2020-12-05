@@ -1,11 +1,11 @@
 
-resources/config.php
+data/maps/*
+data/files/*
+data/inspections/*
+data/reports/*
+data/confirmations/*
 
-resources/maps/*
-resources/files/*
-resources/inspections/*
-resources/reports/*
-resources/confirmations/*
+! data/*/.gitkeep
 
 resources/library/puppeteer/node_modules/
 resources/library/puppeteer/package-lock.json

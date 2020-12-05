@@ -1,5 +1,4 @@
 <?php 
-require_once realpath(dirname(__FILE__) . "/../../../../config.php");
 
 if(isset($event)){
 	$relevant = false;

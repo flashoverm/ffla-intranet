@@ -43,7 +43,7 @@ New installation
 
 Clone repository in webserver folder (e.g. /var/www/)
 
-Replace and adapt config samples
+Replace and adapt config sample
 
 Create new database and fill with the data
 (hydrants, mailings)

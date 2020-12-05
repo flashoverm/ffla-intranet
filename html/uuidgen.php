@@ -1,5 +1,5 @@
 <?php
-require_once realpath(dirname(__FILE__) . "/../resources/config.php");
+require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
 require_once LIBRARY_PATH . "/db_connect.php";
 
 if(isset($_GET["num"])){

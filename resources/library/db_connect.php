@@ -1,5 +1,4 @@
 <?php
-require_once realpath(dirname(__FILE__) . "/../../resources/config.php");
 
 $db = new mysqli ( $config ['db'] ['host'], $config ['db'] ['username'], $config ['db'] ['password'], $config ['db'] ['dbname'] );
 $db->set_charset('utf8');

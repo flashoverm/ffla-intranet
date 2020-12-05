@@ -2,6 +2,17 @@
 Release Documentation
 ******************************
 
+#### V2.2.2
+
+bootstraping
+separate data folder for application data 
+serparated application configuration from instance configuration
+
+#### V2.2.1
+
+mail-address update
+info-text to gather access
+
 #### V2.2
 
 Release-Notes:

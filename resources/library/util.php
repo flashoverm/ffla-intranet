@@ -1,5 +1,4 @@
 <?php
-require_once realpath(dirname(__FILE__) . "/../../resources/config.php");
 
 function showAlert($message) {
     echo "<div class=\"alert alert-danger\" role=\"alert\">" . $message . "</div>";
