@@ -1,5 +1,5 @@
 <?php
-require_once LIBRARY_PATH . "/db_connect.php";
+require_once REPOSITORIES_PATH . "/db_connect.php";
 require_once LIBRARY_PATH . "/class/LogbookEntry.php";
 
 create_table_logbook();

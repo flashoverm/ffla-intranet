@@ -1,7 +1,5 @@
 <?php
 require_once LIBRARY_PATH . '/util.php';
-require_once LIBRARY_PATH . "/db_user.php";
-require_once LIBRARY_PATH . "/db_logbook.php";
 require_once LIBRARY_PATH . "/class/constants/LogbookActions.php";
 require_once LIBRARY_PATH . "/ui_util.php";
 

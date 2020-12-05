@@ -1,5 +1,4 @@
 <?php
-require_once LIBRARY_PATH . '/db_engines.php';
 
 if (! count ( $user )) {
 	showInfo ( "Es ist kein Personal angelegt" );

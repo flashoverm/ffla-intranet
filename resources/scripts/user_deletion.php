@@ -1,8 +1,6 @@
 <?php
 
 require_once realpath ( dirname ( __FILE__ ) . "/../bootstrap.php" );
-require_once LIBRARY_PATH . "/db_connect.php";
-require_once LIBRARY_PATH . "/db_user.php";
 
 //TODO implement 
 

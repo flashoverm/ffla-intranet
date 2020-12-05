@@ -1,9 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_eventtypes.php";
-require_once LIBRARY_PATH . "/db_staffpositions.php";
-require_once LIBRARY_PATH . "/db_staff_template.php";
 
 $variables = array (
 		'title' => "Personalvorlagen",

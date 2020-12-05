@@ -1,8 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_privilege.php";
-require_once LIBRARY_PATH . "/db_user.php";
 
 $privileges = get_all_privileges();
 

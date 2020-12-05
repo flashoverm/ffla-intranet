@@ -1,7 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_confirmation.php";
 require_once LIBRARY_PATH . "/file_create.php";
 
 // Pass variables (as an array) to template

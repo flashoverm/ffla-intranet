@@ -1,10 +1,4 @@
 <?php 
-require_once LIBRARY_PATH . "/db_inspection.php";
-require_once LIBRARY_PATH . "/db_eventtypes.php";
-require_once LIBRARY_PATH . "/db_event.php";
-require_once LIBRARY_PATH . "/db_report.php";
-require_once LIBRARY_PATH . "/db_staffpositions.php";
-require_once LIBRARY_PATH . "/db_files.php";
 
 class LogbookEntry {
 	

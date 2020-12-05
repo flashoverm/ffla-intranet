@@ -1,8 +1,6 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 
-require_once LIBRARY_PATH . "/db_mailing.php";
-require_once LIBRARY_PATH . "/db_maillog.php";
 require_once LIBRARY_PATH . "/mail_body.php";
 require_once LIBRARY_PATH . "/class/constants/MaillogStates.php";
 

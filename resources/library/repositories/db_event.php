@@ -1,7 +1,6 @@
 <?php
-require_once LIBRARY_PATH . "/db_connect.php";
+require_once REPOSITORIES_PATH . "/db_connect.php";
 require_once LIBRARY_PATH . "/mail.php";
-require_once LIBRARY_PATH . "/db_user.php";
 
 create_table_event ();
 create_table_staff ();

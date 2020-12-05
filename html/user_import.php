@@ -1,8 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_engines.php";
-require_once LIBRARY_PATH . "/db_user.php";
 
 define("DELIMITER", ";");
 

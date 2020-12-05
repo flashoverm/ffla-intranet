@@ -1,7 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_user.php";
 
 function check_password($user, $password) {
 	if ($password == $user->password ) {

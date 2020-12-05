@@ -1,7 +1,4 @@
 <?php
-require_once LIBRARY_PATH . '/db_engines.php';
-require_once LIBRARY_PATH . '/db_user.php';
-require_once LIBRARY_PATH . '/db_staffpositions.php';
 
 $relevant = false;
 $dateNow = getdate();
