@@ -103,7 +103,7 @@ if ( ! count ( $open ) ) {
 					<th data-sortable="true" class="text-center">Beginn</th>
 					<th data-sortable="true" class="text-center">Ende</th>
 					<th data-sortable="true" class="text-center">Einsatz</th>
-					<th data-sortable="true" class="text-center">Person</th>
+					<th data-sortable="true" class="text-center">Antragsteller</th>
 					<th></th>
 				</tr>
 			</thead>
