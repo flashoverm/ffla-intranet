@@ -7,7 +7,8 @@ data/inspections/*
 data/reports/*
 data/confirmations/*
 
-! data/*/.gitkeep
+!data/*/.gitkeep
+!data/*/.gitkeep2
 
 resources/library/puppeteer/node_modules/
 resources/library/puppeteer/package-lock.json
