@@ -5,20 +5,17 @@ function left_navigation ($loggedIn){
 	
 	if ($loggedIn) {
 		
-		if(current_user_has_privilege(HYDRANTADMINISTRATOR)){
-			echo "
+		echo "
 			<li class='dropdown'>
 				<a class='nav-link dropdown-toggle text-light mx-1' data-toggle='dropdown' href='#'>Hydranten</a>
         		<div class='dropdown-menu bg-dark'>
-		        	<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/all'>Alle Hydranten</a>
-					<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/new'>Hydrant anlegen</a>
-				</div>
-			</li>";
-		} else {
-			echo "<li class='nav-item'>
-        		<a class='nav-link text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/all'>Hydranten</a>
-              </li>";
+        			<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/all'>Alle Hydranten</a>
+					<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/search'>Hydrantensuche</a>";
+		if(current_user_has_privilege(HYDRANTADMINISTRATOR)){
+			echo "<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/new'>Hydrant anlegen</a>";
 		}
+		echo "	</div>
+			</li>";
 		
 		echo "<li class='nav-item'>
         		<a class='nav-link text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/search'>Hydrantenkarten</a>
