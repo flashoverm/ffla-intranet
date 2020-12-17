@@ -28,15 +28,16 @@ if (! isset($_GET['id'])) {
 		$variables['units'] = $units;
 				
 		if(userLoggedIn()){
-        	        
-	        if( is_user_allowed_to_edit_report(getCurrentUserUUID(), $uuid) ){
+        	
+			$currentUser = $userController->getCurrentUser();
+			if( $guardianUserController->isUserAllowedToEditReport($currentUser, $uuid) ){
 	            
 	        	$variables['showFormular'] = true;
 	            
 	            if(isset($_POST['emsEntry'])){
 	            	if(set_ems_entry($uuid)){
 	                    $variables['successMessage'] = "Bericht aktualisiert";
-	                    insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ReportEMSSet, $uuid));
+	                    $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportEMSSet, $uuid));
 	                } else {
 	                    $variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
 	                }
@@ -46,7 +47,7 @@ if (! isset($_GET['id'])) {
 	            if(isset($_POST['emsEntryRemoved'])){
 	            	if(delete_ems_entry($uuid)){
 	            		$variables['successMessage'] = "Bericht aktualisiert";
-	            		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ReportEMSUnset, $uuid));
+	            		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportEMSUnset, $uuid));
 	            	} else {
 	            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
 	            	}
@@ -57,7 +58,7 @@ if (! isset($_GET['id'])) {
 	            	if(set_approval($uuid)){
 	            		mail_report_approved($uuid);
 	            		$variables['successMessage'] = "Bericht aktualisiert und an Verwaltung versandt";
-	            		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ReportApproved, $uuid));
+	            		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportApproved, $uuid));
 	            	} else {
 	            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
 	            	}
@@ -67,7 +68,7 @@ if (! isset($_GET['id'])) {
 	            if(isset($_POST['managerApproveRemove'])){
 	            	if(delete_approval($uuid)){
 	            		$variables['successMessage'] = "Bericht aktualisiert";
-	            		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ReportApprovRemoved, $uuid));
+	            		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportApprovRemoved, $uuid));
 	            	} else {
 	            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
 	            	}
@@ -78,7 +79,7 @@ if (! isset($_GET['id'])) {
 	            	$log = LogbookEntry::fromAction(LogbookActions::ReportDeleted, $uuid);
 	            	if(delete_report ( $uuid )){
 	            		$variables ['successMessage'] = "Bericht gelöscht";
-	            		insert_logbook_entry($log);
+	            		$logbookDAO->save($log);
 	            		header ( "Location: " . $config["urls"]["guardianapp_home"] . "/reports"); // redirects
 	            	} else {
 	            		$variables ['alertMessage'] = "Bericht konnte nicht gelöscht werden";

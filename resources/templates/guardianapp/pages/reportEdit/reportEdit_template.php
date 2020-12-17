@@ -1,6 +1,6 @@
 <?php include 'reportEditUnit_template.php'; ?>
 <?php include 'reportCard_template.php'; ?>
-
+	
 <form id="reportForm" onsubmit="showLoader()" method="post" >
 	<div class="row">
 		<div class="col">
@@ -73,23 +73,22 @@
 			}?>
 			placeholder="Titel eingeben">
 	</div>
-	
 	<div class="form-group">
 		<label>Zuständiger Löschzug/Verwaltung:</label> <select
 			class="form-control" name="engine" id="engine" required="required">
 			<option value="" disabled selected>Bitte auswählen</option>
 			<?php foreach ( $engines as $option ) :
-			if(isset($object) && $option->uuid == $object->engine){
+			if(isset($object) && $option->getUuid() == $object->engine){
 			?>
-			<option value="<?=  $option->uuid; ?> " selected><?= $option->name; ?></option>
+			<option value="<?=  $option->getUuid(); ?> " selected><?= $option->getName(); ?></option>
 			<?php 
-			}else if(!isset($event) && $option->uuid == $usersEngine){
+			}else if(!isset($event) && $option->getUuid() == $currentUser->getEngine()->getUuid()){
 				?>
-			   	<option selected value="<?=  $option->uuid;	?> "><?= $option->name; ?></option>
+			   	<option selected value="<?=  $option->getUuid();	?> "><?= $option->getName(); ?></option>
 			    <?php 
 			}else{
 		    ?>
-			<option value="<?=  $option->uuid; ?> "><?= $option->name; ?></option>
+			<option value="<?=  $option->getUuid(); ?> "><?= $option->getName(); ?></option>
 			<?php } endforeach; ?>
 		</select>
 	</div>
@@ -125,6 +124,7 @@
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUnitModal" onClick="initializeModal()">Ohne Fahrzeug</button>
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUnitModal" onClick="initializeModalVehicle()">Mit Fahrzeug</button>
 	<p>
+
 	<div id="unitlist">
 		<?php 
 		createUnitCard(0);

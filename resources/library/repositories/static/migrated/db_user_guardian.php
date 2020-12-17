@@ -1,5 +1,5 @@
 <?php  
-
+/*
 function inset_participant_only($firstname, $lastname, $email, $engine_uuid){
 	global $db;
 	
@@ -26,8 +26,8 @@ function inset_participant_only($firstname, $lastname, $email, $engine_uuid){
 		return false;
 	}
 }
-
-
+*/
+/*
 function insert_eventadmin($firstname, $lastname, $email, $password, $engine_uuid) {
 	$result = insert_user($firstname, $lastname, $email, $password, $engine_uuid, null, null);
 	
@@ -41,10 +41,12 @@ function insert_eventadmin($firstname, $lastname, $email, $password, $engine_uui
 	return false;
 }
 
+
 function get_all_eventmanager() {
 	return get_users_with_privilege_by_name(EVENTMANAGER);
 }
-
+*/
+/*
 function get_eventmanager_of_engine($engine_uuid) {
 	global $db;
 	$data = array ();
@@ -71,7 +73,8 @@ function get_eventmanager_of_engine($engine_uuid) {
 	}
 	return $data;
 }
-
+*/
+/*
 function get_eventmanager_except_engine_and_creator($engine_uuid, $creator_uuid){
 	global $db;
 	$data = array ();
@@ -99,7 +102,7 @@ function get_eventmanager_except_engine_and_creator($engine_uuid, $creator_uuid)
 	}
 	return $data;
 }
-
+/*
 function get_eventparticipent_of_engine($engine_uuid){
 	global $db;
 	$data = array ();
@@ -127,7 +130,8 @@ function get_eventparticipent_of_engine($engine_uuid){
 	}
 	return $data;
 }
-
+*/
+/*
 function is_eventmanager_of($user_uuid, $engine_uuid){
 	global $db;
 	
@@ -151,7 +155,8 @@ function is_eventmanager_of($user_uuid, $engine_uuid){
 	}
 	return false;
 }
-
+*/
+/*
 function is_allowed_to_edit_event($user_uuid, $event_uuid){
 	if($user_uuid != NULL){
 		
@@ -177,13 +182,16 @@ function is_allowed_to_edit_event($user_uuid, $event_uuid){
 }
 
 function is_user_allowed_to_edit_report($user_uuid, $report_uuid){
+	global $userDAO;
+	
 	if($user_uuid != NULL){
+		$user = $userDAO->getUserByUUID($user_uuid);
 		
-		if(user_has_privilege($user_uuid, EVENTADMIN)){
+		if($user->hasPrivilegeByName(Privilege::EVENTADMIN)){
 			return true;
 		}
 		
-		if(user_has_privilege($user_uuid, FFADMINISTRATION)){
+		if($user->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
 			return true;
 		}
 		
@@ -212,5 +220,5 @@ function is_allowed_to_edit_events($user_uuid){
 	}
 	return false;
 }
-
+*/
 ?>

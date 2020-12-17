@@ -3,7 +3,8 @@ require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" 
 
 session_start ();
 
-$isManager = current_user_has_privilege(EVENTMANAGER) || current_user_has_privilege ( EVENTADMIN );
+$currentUser = $userController->getCurrentUser();
+$isManager = $currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER) || $currentUser->hasPrivilegeByName(Privilege::EVENTADMIN );
 
 if(!$isManager){
 	http_response_code(401);

@@ -86,7 +86,7 @@
 			<tr>
 				<td><?= get_staffposition($staff->position)->position; ?></td>
 				<td><?= $staff->name; ?></td>
-				<td><?= get_engine($staff->engine)->name; ?></td>
+				<td><?= $engineDAO->getEngine($staff->engine)->getName(); ?></td>
 			</tr>
 			<?php } ?>
 			</tbody>
@@ -98,7 +98,7 @@
 		<tbody>
 			<tr>
 				<th>Zuständiger Löschzug</th>
-				<td><?= get_engine($report->engine)->name ?></td>
+				<td><?= $engineDAO->getEngine($report->engine)->getName(); ?></td>
 			</tr>
 			<tr>
 				<th>Ersteller</th>

@@ -15,8 +15,8 @@ if(isset($confirmation) && isset($user)){
 					<small>Postanschrift: Stadt Landshut, 84026 Landshut, Gz.: 5.697</small><br>
 					<br>
 					<?php
-					if( ! empty ($user->employer_address) ){
-						echo nl2br($user->employer_address);
+					if( ! empty ($user->getEmployerAddress()) ){
+						echo nl2br($user->getEmployerAddress());
 					}
 					?>
 				</td>
@@ -43,7 +43,7 @@ if(isset($confirmation) && isset($user)){
 				<td colspan="2">
 					Sehr geehrte Damen und Herren,<br>
 					<br>
-					der/die Feuerwehrmann/-frau <?= $user->firstname . " " . $user->lastname ?><br>
+					der/die Feuerwehrmann/-frau <?= $user->getFullName() ?><br>
 					<br>
 					war am <?= date($config ["formats"] ["date"], strtotime($confirmation->date)) ?> von <?= date($config ["formats"] ["time"], strtotime($confirmation->start_time)) ?> Uhr bis <?= date($config ["formats"] ["time"], strtotime($confirmation->end_time)) ?> Uhr<br>
 					<br>

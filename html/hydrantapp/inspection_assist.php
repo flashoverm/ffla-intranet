@@ -8,7 +8,7 @@ require_once LIBRARY_PATH . "/class/constants/HydrantCriteria.php";
 $variables = array(
     'title' => "Prüfbericht erstellen",
     'secured' => true,
-    'privilege' => ENGINEHYDRANTMANANGER
+    'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
 
 $variables['criteria'] = $hydrant_criteria;

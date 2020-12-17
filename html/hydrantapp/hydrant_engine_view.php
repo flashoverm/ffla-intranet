@@ -37,7 +37,7 @@ if (isset($_GET['engine'])) {
     
     $variables ['mapURL'] = $mapUrl;
     $variables ['title'] = "Hydranten";
-    $variables ['subtitle'] = get_engine($engine)->name;
+    $variables ['subtitle'] = $engineDAO->getEngine($engine)->getName();
 } else {
     $variables ['alertMessage'] = "Zug nicht festgelegt";
 }

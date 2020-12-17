@@ -3,14 +3,12 @@ require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/mail_controller.php";
 
-require_once LIBRARY_PATH . "/class/User.php";
-
-$privileges = get_all_privileges();
+$privileges = $privilegeDAO->getPrivileges();
 
 // Pass variables (as an array) to template
 $variables = array (
 	'secured' => true,
-	'engines' => get_engines(),
+	'engines' => $engineDAO->getEngines(),
 	'privileges' => $privileges,
 );
 
@@ -19,17 +17,17 @@ if( isset($_GET['self']) ){
 	$variables['title'] = "Benutzer bearbeiten";
 	
 	$variables['showRights'] = false;
-	$variables['user'] = get_user($_SESSION ['intranet_userid']);
-	$variables['privilege'] = EDITUSER;
+	$variables['user'] = $userController->getCurrentUser();
+	$variables['privilege'] = Privilege::EDITUSER;
 	
 	
 } else if( isset($_GET['uuid']) ){
 	// edit by admin
 	$variables['title'] = "Benutzer bearbeiten";
-	$variables['privilege'] = PORTALADMIN;
+	$variables['privilege'] = Privilege::PORTALADMIN;
 	
 	$variables['showRights'] = true;
-	$user = get_user($_GET['uuid']);
+	$user = $userDAO->getUserByUUID($_GET['uuid']);
 	if($user){
 		$variables['user'] = $user;
 	} else {
@@ -40,7 +38,7 @@ if( isset($_GET['self']) ){
 	// new user
 	$variables['title'] = "Benutzer anlegen";
 	
-	if(current_user_has_privilege(PORTALADMIN)){
+	if($userController->hasCurrentUserPrivilege(Privilege::PORTALADMIN)){
 		$variables['showRights'] = true;
 	} else {
 		$variables['showRights'] = false;
@@ -48,7 +46,7 @@ if( isset($_GET['self']) ){
 	if( $config ["settings"] ["selfregistration"]){
 		$variables['secured'] = false;
 	} else {
-		$variables['privilege'] = PORTALADMIN;
+		$variables['privilege'] = Privilege::PORTALADMIN;
 	}
 	
 }
@@ -91,13 +89,13 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 		 * else: if user is updated (uuid or self is set as parameter) skip
 		 * 		 else: print error
 		 */
-		if (email_in_use ( $email )) {
-			$user = get_user_by_data($firstname, $lastname, $email, $engine);
+		if ($userController->isEmailInUse( $email )) {
+			$user = $userDAO->getUserByData($firstname, $lastname, $email, $engine);
 			if($user){
 				if($user->password == NULL){
 					if(reset_password($user->uuid)){
 						$variables ['successMessage'] = "Das Passwort wurde gesetzt und gesendet";
-						insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserResetPassword, $user->uuid));
+						$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserResetPassword, $user->getUuid()));
 					} else {
 						$variables ['alertMessage'] = "Ein unbekannter Fehler ist aufgetreten";
 					}
@@ -125,20 +123,26 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 		 * else if: user is updated by himself (self is parameter): update
 		 * else: insert new user
 		 */
+		$engineObj = $engineDAO->getEngine($engine);
+		$user = new User();
+		$user->setUserData($firstname, $lastname, $email, $engineObj, $employerAddress, $employerMail);
+		
 		if( isset($_GET['uuid']) ){
-			$user = update_user($_GET['uuid'], $firstname, $lastname, $email, $engine, $employerAddress, $employerMail );
+			$user->setUuid($_GET['uuid']);
 		} else if( isset($_GET['self']) ){
-			$user = update_user($_SESSION ['intranet_userid'], $firstname, $lastname, $email, $engine, $employerAddress, $employerMail );
+			$user->setUuid($_SESSION ['intranet_userid']);
 		} else {
-			$user = insert_user ( $firstname, $lastname, $email, $password, $engine, $employerAddress, $employerMail );
+			$user->setPassword($password);
+			
 			// add default privileges to new user
-			$privileges = get_all_privileges();
+			$privileges = $privilegeDAO->getPrivileges();
 			foreach($privileges as $privilege){
-				if($privilege->is_default){
-					add_privilege_to_user($user->uuid, $privilege->uuid);
+				if($privilege->getIsDefault()){
+					$user->addPrivilege($privilege);
 				}
 			}
 		}
+		$user = $userDAO->save($user);
 		
 		if ($user) {
 			$variables['user'] = $user;
@@ -147,24 +151,24 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 			 * delete all from user and set all marked privileges
 			 */
 			if(isset($_POST['updateRights'])){
+				$newPrivileges = array();
 				foreach($privileges as $privilege){
 					
-					remove_privilege_from_user($user->uuid, $privilege->uuid);
-					
-					$inputName = "priv_" . $privilege->uuid;
-					
+					$inputName = "priv_" . $privilege->getUuid();
 					if(isset ( $_POST [ $inputName ] )){
-						add_privilege_to_user($user->uuid, $privilege->uuid);
+						$newPrivileges [] = $privilege;
 					}
 				}
+				$user->resetPrivileges($newPrivileges);
+				$userDAO->save($user);
 			}
 			
 			if( isset($_GET['uuid']) || isset($_GET['self']) ){
-				insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserUpdated, $user->uuid));
+				$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserUpdated, $user->getUuid()));
 				$variables ['successMessage'] = "Der Benutzer wurde aktualisiert";
 			} else {
 				$mail = mail_add_user($email, $password);
-				insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserCreated, $user->uuid));
+				$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserCreated, $user->getUuid()));
 				$variables ['successMessage'] = "Der Benutzer wurde angelegt und informiert";
 				unset($_POST);
 				unset($variables['user']);

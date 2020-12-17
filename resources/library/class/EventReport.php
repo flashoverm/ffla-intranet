@@ -78,6 +78,7 @@ class EventReport {
 	}
 	
 	static function fromEvent($event, $staff, $creator){
+		global $userDAO;
 		
 		 $report = new EventReport($event->date, $event->start_time, $event->end_time, 
 			$event->type, $event->type_other, $event->title, $event->engine, 
@@ -87,7 +88,7 @@ class EventReport {
 		 		 
 		 $unit = new ReportUnit("Stationäre Wache", $event->date, $event->start_time, $event->end_time);
 		 foreach($staff as $position){
-		 	$user = get_user($position->user);
+		 	$user = $userDAO->getUserByUUID($position->user);
 		 	if($user){
 		 		$unit->addStaff(new ReportUnitStaff($position->position, $user->firstname . " " . $user->lastname, $user->engine));
 		 	}

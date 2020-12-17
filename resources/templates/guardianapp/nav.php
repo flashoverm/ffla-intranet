@@ -1,16 +1,17 @@
 <?php
 
-function left_navigation ($loggedIn){
+
+function left_navigation ($currentUser){
 	global $config;
-		
-	if ($loggedIn) {
+
+	if ($currentUser) {
 		echo "      <li class='nav-item dropdown'>
         			<a class='nav-link dropdown-toggle text-light mx-1' data-toggle='dropdown' href='#'>
 						Wachen
 					</a>
         			<div class='dropdown-menu bg-dark'>";
 		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/events'>Wachübersicht</a>";
-		if (current_user_has_privilege (EVENTMANAGER)){
+		if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
 			echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/events/new'>Wache anlegen</a>";
 		}
 		echo "			</div>
@@ -20,11 +21,11 @@ function left_navigation ($loggedIn){
 						Wachberichte
 					</a>
         			<div class='dropdown-menu bg-dark'>";
-		if (current_user_has_privilege (EVENTMANAGER)){
+		if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
 			echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports'>Berichtsübersicht</a>";
 		}
 		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/new'>Bericht anlegen</a>";
-		if (current_user_has_privilege (EVENTMANAGER)){
+		if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
 			echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/export'>Berichte exportieren</a>";
 		}
 		echo "				</div>
@@ -43,14 +44,14 @@ function left_navigation ($loggedIn){
 	}
 }
 
-function middle_navigation ($loggedIn){
+function middle_navigation ($currentUser){
 	
 }
 
-function right_navigation ($loggedIn){
+function right_navigation ($currentUser){
 	global $config;
 	
-	if (current_user_has_privilege(EVENTADMIN)) {
+	if ($currentUser->hasPrivilegeByName(Privilege::EVENTADMIN)) {
 		echo "<li class='nav-item dropdown'>
         			<a class='nav-link dropdown-toggle text-light mx-1' data-toggle='dropdown' href='#'>Administration</a>
         			<div class='dropdown-menu bg-dark'>

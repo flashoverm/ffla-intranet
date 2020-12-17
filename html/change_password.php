@@ -6,7 +6,7 @@ require_once TEMPLATES_PATH . "/template.php";
 $variables = array(
     'title' => "Passwort ändern",
     'secured' => true,
-	'privilege' => EDITUSER,	
+	'privilege' => Privilege::EDITUSER,	
 );
 
 if (isset($_POST['password_old']) && isset($_POST['password']) && isset($_POST['password2']) && isset($_SESSION['intranet_userid'])) {

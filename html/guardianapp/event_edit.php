@@ -6,7 +6,7 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 
 $eventtypes = get_eventtypes ();
 $staffpositions = get_staffpositions();
-$engines = get_engines();
+$engines = $engineDAO->getEngines();
 
 // Pass variables (as an array) to template
 $variables = array (
@@ -15,13 +15,6 @@ $variables = array (
         'staffpositions' => $staffpositions,
         'engines' => $engines,
 );
-
-if(userLoggedIn()){
-	$user = $_SESSION ['intranet_userid'];
-	$usersEngine = get_engine_of_user($user);
-	
-	$variables ['usersEngine'] = $usersEngine;
-}
 
 //Display event if uuid is parameter
 if (isset($_GET['id'])) {
@@ -141,7 +134,7 @@ if (isset ( $_POST ['type'] ) ) {
 	
 	if(isset($_POST ['eventid'])){
 		if($updateSuccess){
-			insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::EventUpdated, $event_uuid));
+			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventUpdated, $event_uuid));
 			$variables ['successMessage'] = "Wache aktualisiert";
 			
 			if($inform){
@@ -163,7 +156,7 @@ if (isset ( $_POST ['type'] ) ) {
 			}
 			
 			if(mail_insert_event ( $event_uuid, $informMe, $publish)){
-				insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::EventCreated, $event_uuid));
+				$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventCreated, $event_uuid));
 				$variables ['successMessage'] = "Wache angelegt";
 				
 				if(isset($_POST ['forwardToEvent']) && $_POST ['forwardToEvent'] == 1){

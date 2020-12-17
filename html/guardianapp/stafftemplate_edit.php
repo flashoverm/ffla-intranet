@@ -5,7 +5,7 @@ require_once TEMPLATES_PATH . "/template.php";
 $variables = array (
 		'title' => "Personalvorlagen",
 		'secured' => true,
-		'privilege' => EVENTADMIN
+		'privilege' => Privilege::EVENTADMIN
 );
 
 

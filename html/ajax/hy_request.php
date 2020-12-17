@@ -13,7 +13,7 @@ if(! userLoggedIn()){
         if($hydrant){
         	header('Content-Type: text/plain');
         	
-        	if( $hydrant->checkbyff && $hydrant->engine == get_engine_of_user($_SESSION ['intranet_userid']) ){
+        	if( $hydrant->checkbyff && $hydrant->engine == $userController->getCurrentUser()->getEngine()->getUuid() ){
 	            echo "{ fieldid:" . $_GET['fieldid'] . ", hy:" . $hydrant->hy . ", status:'ok'}";
         	} else {
         		echo "{ fieldid:" . $_GET['fieldid'] . ", status:'forbidden'}";

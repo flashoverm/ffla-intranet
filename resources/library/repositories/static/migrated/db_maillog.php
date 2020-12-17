@@ -1,6 +1,6 @@
 <?php
-require_once REPOSITORIES_PATH . "/db_connect.php";
-
+require_once "db_connect.php";
+/*
 create_table_maillog();
 
 function insert_maillog($recipient, $subject, $state, $body, $error = NULL) {
@@ -105,3 +105,4 @@ function create_table_maillog() {
 		return false;
 	}
 }
+*/

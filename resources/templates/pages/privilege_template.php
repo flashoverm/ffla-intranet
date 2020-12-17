@@ -8,15 +8,15 @@
 		<div id="collapseOne" class="collapse show" data-parent="#accordion">
 			<div class="card-body">
 				<div class="table-responsive">
-					<table class="table table-striped" data-toggle="table">
+					<table class="table table-striped table-bordered">
 						<tbody>
 						<?php
 							foreach ( $privileges as $row ) {
 						?>
 							<tr>
-								<td><?= $row->privilege ?></td>
+								<td><?= $row->getPrivilege() ?></td>
 								<td class="text-center">
-									<a class="btn btn-primary btn-sm" href='<?= $config["urls"]["intranet_home"]?>/users/filter/<?= $row->uuid ?>'>
+									<a class="btn btn-primary btn-sm" href='<?= $config["urls"]["intranet_home"]?>/users/filter/<?= $row->getUuid() ?>'>
 									Benutzer anzeigen
 									</a>
 							</tr>
@@ -43,23 +43,23 @@
 						<select class="form-control" name="user" id="user" required="required" onchange="getUsersPrivileges()">
 							<option value="" disabled selected>Benutzer auswählen</option>
 							<?php foreach ( $user as $option ) : ?>
-							<option value="<?=  $option->uuid; ?>"><?= $option->lastname . ", " . $option->firstname . " (" . $option->email . ")" ?></option>
+							<option value="<?=  $option->getUuid(); ?>"><?= $option->getFullNameWithEmail() ?></option>
 							<?php endforeach; ?>
 						</select> 
 					</div>
 					<div class="form-group">
 						<div class="table-responsive">
-							<table class="table table-striped" data-toggle="table">
+							<table class="table table-striped table-bordered">
 								<tbody>
 								<?php
 									foreach ( $privileges as $row ) {
 								?>
 									<tr>
-										<td><?= $row->privilege ?></td>
+										<td><?= $row->getPrivilege() ?></td>
 										<td class="text-center">
 											<div class="custom-control custom-checkbox mb-1">
-											  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->uuid ?>" name="priv_<?= $row->uuid ?>" disabled>
-											  <label class="custom-control-label custom-control-label-table" for="priv_<?= $row->uuid ?>">&nbsp;</label>
+											  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->getUuid() ?>" name="priv_<?= $row->getUuid() ?>" disabled>
+											  <label class="custom-control-label custom-control-label-table" for="priv_<?= $row->getUuid() ?>">&nbsp;</label>
 											</div>
 										</td>
 									</tr>
@@ -112,18 +112,19 @@ function setUserPrivileges(){
         	var response = eval('(' + xhr.responseText + ')' );
 
     	    var save = document.getElementById("save");
-    	    save.style.disabled = false;
+    	    save.disabled = false;
         	
             var inputs =  document.getElementsByTagName("input");
             for(var i = 0; i < inputs.length; i++){
             	if(inputs[i].id.startsWith("priv_")){
-                	if(response.indexOf(inputs[i].id.substring(5, inputs[i].id.length))  == -1 ){
-                		inputs[i].checked = false;
-                	} else {
-                		inputs[i].checked = true;
-                	}
-            	}
-            	inputs[i].disabled = false;
+            		inputs[i].checked = false;
+	            	for(var j = 0; j < response.length; j++){
+	                	if( response[j].uuid == inputs[i].id.substring(5, inputs[i].id.length) ){
+	                		inputs[i].checked = true;
+	                	}
+	            	}
+	            	inputs[i].disabled = false;
+	            }
             }
     	}
     }

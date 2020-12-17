@@ -13,10 +13,11 @@
 </script>
 
 <body>
+<!-- 
 	<div id="overlay" style="display:inline;">
  		<div class="loader"></div>
  	</div>
- 	
+ -->
 	<header>
 	<div class="jumbotron py-3">
 		<!-- 
@@ -70,7 +71,7 @@
 				</li>
 			    <?php 
 				if(isset($app) && file_exists(TEMPLATES_PATH . "/" . $app . "/nav.php")){
-					left_navigation($loggedIn);
+					left_navigation($currentUser);
 				}
 				?>
 	        </ul>
@@ -78,7 +79,7 @@
 			<ul class='navbar-nav mr-auto'>
 			    <?php 
 				if(isset($app) && file_exists(TEMPLATES_PATH . "/" . $app . "/nav.php")){
-					middle_navigation($loggedIn);
+					middle_navigation($currentUser);
 				}
 				?>
 	        </ul>
@@ -86,13 +87,13 @@
 			<ul class="navbar-nav ml-auto">
 				<?php 
 				if(isset($app) && file_exists(TEMPLATES_PATH . "/" . $app . "/nav.php")){
-					right_navigation($loggedIn);
+					right_navigation($currentUser);
 				}
 				?>
 				<?php 
-				if($loggedIn){
-					
-					if(current_user_has_privilege(PORTALADMIN)){
+				if($currentUser){
+
+					if($currentUser->hasPrivilegeByName(Privilege::PORTALADMIN)){
 					?>
 						<li class='nav-item dropdown'>
 							<a class='nav-link dropdown-toggle text-light' data-toggle='dropdown' href='#'>Portaladministration</a>
@@ -111,10 +112,10 @@
 					<li class='nav-item dropdown'>
 						<a class='nav-link dropdown-toggle text-light' data-toggle='dropdown' href='#'><?= $_SESSION ['intranet_email'] ?></a>
 			        	<div class='dropdown-menu dropdown-menu-right bg-dark'>
-							<a class='dropdown-item disabled text-secondary'><?= get_engine_obj_of_user($_SESSION ['intranet_userid'])->name ?></a>
+							<a class='dropdown-item disabled text-secondary'><?= $currentUser->getEngine()->getName() ?></a>
 							<div class='dropdown-divider'></div>
 							<?php
-							if(current_user_has_privilege(EDITUSER)) {
+							if( $currentUser->hasPrivilegeByName(Privilege::EDITUSER)) {
 							?>
 								<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/users/edit'>Benutzer bearbeiten</a>
 								<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/change_password'>Passwort ändern</a>
@@ -142,3 +143,4 @@
 		</div>
 	</nav>
 </header>
+					

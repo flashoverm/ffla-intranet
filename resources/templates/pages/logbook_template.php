@@ -1,6 +1,5 @@
 <?php
-
-if (! count ( $logbook )) {
+if ( ! isset($logbook) || ! count ( $logbook )) {
 	showInfo ( "Es ist kein Eintrag vorhanden" );
 } else {
 ?>
@@ -18,19 +17,18 @@ if (! count ( $logbook )) {
 		<?php
 		foreach ( $logbook as $row ) {
 			$user = null;
-			if($row->user != null){
-				$user = get_user($row->user);
+			if($row->getUser() != null){
+				$user = $userDAO->getUserByUUID($row->getUser());
 			}
-			$entry = $row->message;
 		?>
 			<tr>
-				<td class="text-center"><span class='d-none'><?= strtotime($row->timestamp) ?></span><?= date($config ["formats"] ["datetime"], strtotime($row->timestamp)); ?></td>
-				<td class="text-center"><?= $row->action; ?></td>
-				<td class="text-center"><?= $entry ?></td>
+				<td class="text-center"><span class='d-none'><?= strtotime($row->getTimestamp()) ?></span><?= date($config ["formats"] ["datetime"], strtotime($row->getTimestamp())); ?></td>
+				<td class="text-center"><?= $row->getAction() ?></td>
+				<td class="text-center"><?= $row->getMessage() ?></td>
 				<td class="text-center">
 					<?php 
 					if ($user != null){
-						echo $user->firstname . " " . $user->lastname . " (" . $user->email . ")";
+						echo $user->getFullNameWithEmail();
 					} else {
 						echo "-";
 					}
@@ -46,7 +44,7 @@ if (! count ( $logbook )) {
 <nav>
 	<ul class="pagination justify-content-center">
   	<?php
-  	$pages = ceil (get_logbook_count()/$resultSize);
+  	$pages = ceil ($logbookDAO->getLogbookEntryCount()/$resultSize);
   	if($currentPage > 1){
   		echo '<li class="page-item"><a class="page-link" href="' . $config["urls"]["intranet_home"] . '/logbook/page/' . ($currentPage-1) . '"><</a></li>';
   	}

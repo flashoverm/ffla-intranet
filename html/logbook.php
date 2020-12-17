@@ -6,13 +6,13 @@ require_once TEMPLATES_PATH . "/template.php";
 $variables = array (
 		'title' => "Logbuch",
 		'secured' => true,
-		'privilege' => PORTALADMIN
+		'privilege' => Privilege::PORTALADMIN
 );
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if( isset($_POST['purge']) ){
-		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::LogbookDeleted, NULL));
-		clear_logbook();
+		$logbookDAO->clearLogbook();
+		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::LogbookDeleted, NULL));
 	}
 }
 
@@ -20,10 +20,10 @@ $variables ['resultSize'] = 20;
 
 if(isset($_GET['page'])){
 	$variables ['currentPage'] = $_GET['page'];
-	$variables ['logbook'] = get_logbook_page($_GET['page'], $variables ['resultSize']);
+	$variables ['logbook'] = $logbookDAO->getLogbookPage($_GET['page'], $variables ['resultSize']);
 } else {
 	$variables ['currentPage'] = 1;
-	$variables ['logbook'] = get_logbook_page(1, $variables ['resultSize']);
+	$variables ['logbook'] = $logbookDAO->getLogbookPage(1, $variables ['resultSize']);
 }
 
 renderLayoutWithContentFile ($config["apps"]["landing"], "logbook_template.php", $variables );

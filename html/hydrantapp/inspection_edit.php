@@ -11,10 +11,10 @@ require_once LIBRARY_PATH . "/class/constants/HydrantCriteria.php";
 $variables = array(
     'title' => "Prüfbericht erstellen",
     'secured' => true,
-    'privilege' => ENGINEHYDRANTMANANGER
+		'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
 
-$user_engine = get_engine_of_user($_SESSION ['intranet_userid']);
+$user_engine = $userController->getCurrentUser()->getEngine()->getUuid();
 
 if(isset($_GET['inspection'])){
     
@@ -100,7 +100,7 @@ if(isset($_POST['maxidx'])){
                         $variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
                     }
                     $variables ['successMessage'] = "Prüfbericht aktualisiert";
-                    insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::InspectionUpdated, $inspection->uuid));
+                    $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::InspectionUpdated, $inspection->uuid));
                     header ( "Location: " . $config["urls"]["hydrantapp_home"] . "/inspection/". $inspection->uuid ); // redirects
                 } else {
                     $variables ['alertMessage'] = "Prüfbericht konnte nicht aktualisiert werden";
@@ -114,7 +114,7 @@ if(isset($_POST['maxidx'])){
                         $variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
                     }
                     $variables ['successMessage'] = "Prüfbericht gespeichert";
-                    insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::InspectionCreated, $inspection->uuid));
+                    $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::InspectionCreated, $inspection->uuid));
    					header ( "Location: " . $config["urls"]["hydrantapp_home"] . "/inspection/". $inspection->uuid ); // redirects
                     
                 } else {

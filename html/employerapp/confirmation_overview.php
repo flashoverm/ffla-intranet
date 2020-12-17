@@ -14,7 +14,7 @@ if( isset( $_POST['withdraw'] ) ){
 	$confirmation_uuid = $_POST['withdraw'];
 	$log = LogbookEntry::fromAction(LogbookActions::ConfirmationWithdraw, $confirmation_uuid);
 	if( delete_confirmation( $confirmation_uuid ) ){
-		insert_logbook_entry($log);
+		$logbookDAO->save($log);
 		$variables ['successMessage'] = "Anfrage zurückgezogen";
 	} else {
 		$variables ['alertMessage'] = "Anfrage konnte nicht zurückgezogen werden";

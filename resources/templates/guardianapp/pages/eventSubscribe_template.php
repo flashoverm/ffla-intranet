@@ -7,7 +7,7 @@
 			placeholder="Vorname eingeben"
 			<?php
 			if(isset($currentUser)){
-				echo "value='" . $currentUser->firstname . "' readonly";
+				echo "value='" . $currentUser->getFirstname() . "' readonly";
 			}
 			?>
 			>
@@ -18,7 +18,7 @@
 			placeholder="Nachname eingeben"
 			<?php
 			if(isset($currentUser)){
-				echo "value='" . $currentUser->lastname . "' readonly";
+				echo "value='" . $currentUser->getLastname() . "' readonly";
 			}
 			?>
 			>
@@ -29,7 +29,7 @@
 			placeholder="E-Mail eingeben"
 			<?php
 			if(isset($currentUser)){
-				echo "value='" . $currentUser->email . "' readonly";
+				echo "value='" . $currentUser->getEmail() . "' readonly";
 			}
 			?>
 			>
@@ -45,10 +45,10 @@
 		>
 			<option value="" disabled selected>Löschzug auswählen</option>
 			<?php foreach ( $engines as $option ) : 
-				if ( isset($currentUser) && $currentUser->engine == $option->uuid) { ?>
-					<option value="<?=  $option->uuid; ?>" selected><?= $option->name; ?></option>
+				if ( isset($currentUser) && $currentUser->getEngine()->getUuid() == $option->getUuid()) { ?>
+					<option value="<?=  $option->getUuid(); ?>" selected><?= $option->getName(); ?></option>
 				<?php } else { ?>
-					<option value="<?=  $option->uuid; ?>"><?= $option->name; ?></option>
+					<option value="<?=  $option->getUuid(); ?>"><?= $option->getName(); ?></option>
 				<?php }
 			endforeach; ?>
 		</select>

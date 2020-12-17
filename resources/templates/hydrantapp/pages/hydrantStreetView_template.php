@@ -15,7 +15,7 @@ if (! count ( $hydrants )) {
 				<th data-sortable="true" class="text-center">Löschzug</th>
 				<th data-sortable="true" class="text-center">Typ</th>
 				<th class="text-center">Anzeigen</th>
-				<?php if(current_user_has_privilege(HYDRANTADMINISTRATOR)){
+				<?php if($currentUser->hasPrivilegeByName(Privilege::HYDRANTADMINISTRATOR)){
 				    echo '<th class="text-center">Bearbeiten</th>';
 				}?>
 			</tr>
@@ -30,13 +30,13 @@ if (! count ( $hydrants )) {
 				<td class="text-center"><?= $row->fid; ?></td>
 				<td class="text-center"><?= $row->street; ?></td>
 				<td class="text-center"><?= $row->district; ?></td>
-				<td class="text-center"><?= get_engine($row->engine)->name ?></td>
+				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName(); ?></td>
 				<td class="text-center"><?= $row->type; ?></td>
 
 				<td class="text-center">
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/". $row->hy; ?>">Anzeigen</a>
 				</td>
-				<?php if(current_user_has_privilege(HYDRANTADMINISTRATOR)){
+				<?php if($currentUser->hasPrivilegeByName(Privilege::HYDRANTADMINISTRATOR)){
 				    echo '<td>
                             <a class="btn btn-primary btn-sm" href="' . $config["urls"]["hydrantapp_home"] . "/". $row->hy . '/edit">Bearbeiten</a>
                          </td>';

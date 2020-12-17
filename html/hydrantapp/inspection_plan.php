@@ -21,7 +21,7 @@ if(isset($_POST['hydrants'])){
 $variables = array(
 		'title' => "Prüfbericht",
 		'secured' => true,
-		'privilege' => ENGINEHYDRANTMANANGER,
+		'privilege' => Privilege::ENGINEHYDRANTMANANGER,
 		'criteria' => $hydrant_criteria,
 		'hydrants' => $hydrants,
 		'orientation' => 'landscape'

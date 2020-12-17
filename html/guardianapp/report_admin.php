@@ -6,7 +6,7 @@ require_once TEMPLATES_PATH . "/template.php";
 $variables = array (
     'title' => "Übersicht Wachberichte",
     'secured' => true,
-	'privilege' => EVENTADMIN
+		'privilege' => Privilege::EVENTADMIN
 );
 
   
@@ -15,7 +15,7 @@ if (isset ( $_POST ['delete'] )) {
 	$log = LogbookEntry::fromAction(LogbookActions::ReportDeleted, $delete_report_uuid);
 	if(delete_report ( $delete_report_uuid )){
 		$variables ['successMessage'] = "Bericht gelöscht";
-		insert_logbook_entry($log);
+		$logbookDAO->save($log);
 	} else {
 		$variables ['alertMessage'] = "Bericht konnte nicht gelöscht werden";
 	}

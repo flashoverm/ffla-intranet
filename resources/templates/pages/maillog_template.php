@@ -1,5 +1,5 @@
 <?php
-if (!isset($mails) || ! count ( $mails ) ) {
+if ( ! isset($mails) || ! count ( $mails ) ) {
 	showInfo ( "Es sind keine Mails im Log" );
 } else {
 	global $maillogStates;
@@ -8,7 +8,6 @@ if (!isset($mails) || ! count ( $mails ) ) {
 	<table class="table table-hover table-striped table-bordered">
 		<thead>
 			<tr>
-				<!-- <th>#</th> -->
 				<th>Datum</th>
 				<th>Empfänger</th>
 				<th>Betreff</th>
@@ -21,23 +20,22 @@ if (!isset($mails) || ! count ( $mails ) ) {
 			foreach ( $mails as $row ) {
 			?>
 			<tr data-toggle="collapse" data-target="#collapseme<?= $index ?>">
-				<!-- <td><?= $row->RowNum ?></td> -->
-				<td><?= date($config ["formats"] ["datetime"] . ":s", strtotime($row->timestamp)); ?></td>
-				<td><?= $row->recipient ?></td>
-				<td><?= $row->subject ?></td>
-				<td><?= $maillogStates[$row->state] ?></td>
+				<td><?= date($config ["formats"] ["datetime"] . ":s", strtotime($row->getTimestamp())); ?></td>
+				<td><?= $row->getRecipient() ?></td>
+				<td><?= $row->getSubject() ?></td>
+				<td><?= $maillogStates[$row->getState()] ?></td>
 			</tr>
 			<tr>
 				<td class="collapse-td" colspan="5">
 					<div class="collapse" id="collapseme<?= $index ?>">
 						<div class="collapse-content">
 							<?php 
-							$body = nl2br($row->body);
+							$body = nl2br($row->getBody());
 								
-								if($row->error != NULL){
-									$body = $body . "<br><br><br><b>Fehlermeldung:</b><br>" . $row->error;
+							if($row->getError() != NULL){
+								$body = $body . "<br><br><br><b>Fehlermeldung:</b><br>" . $row->getError();
 								}
-								echo $body;
+							echo $body;
 							?>
 						</div>
 					</div>
@@ -53,7 +51,7 @@ if (!isset($mails) || ! count ( $mails ) ) {
 <nav>
   <ul class="pagination justify-content-center">
   	<?php
-  	$pages = ceil (get_maillogs_count()/$resultSize);
+  	$pages = ceil ($mailLogDAO->getMailLogCount()/$resultSize);
   	if($currentPage > 1){
   		echo '<li class="page-item"><a class="page-link" href="' . $config["urls"]["intranet_home"] . '/maillog/page/' . ($currentPage-1) . '"><</a></li>';
   	}

@@ -37,7 +37,7 @@ if( isset($_POST['date']) && isset($_POST['start']) && isset($_POST['end']) ){
 					}
 				}
 				$variables ['successMessage'] = "Anfrage aktualisiert";
-				insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ConfirmationUpdated, $confirmation_uuid));
+				$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ConfirmationUpdated, $confirmation_uuid));
 				header ( "Location: " . $config["urls"]["employerapp_home"] . "/confirmations"); // redirects
 			} else {
 				$variables ['alertMessage'] = "Anfrage konnte nicht aktualisiert werden";
@@ -50,7 +50,7 @@ if( isset($_POST['date']) && isset($_POST['start']) && isset($_POST['end']) ){
 					$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
 				}
 				$variables ['successMessage'] = "Anfrage gespeichert";
-				insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ConfirmationRequested, $confirmation_uuid));
+				$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ConfirmationRequested, $confirmation_uuid));
 				header ( "Location: " . $config["urls"]["employerapp_home"] . "/confirmations"); // redirects
 				
 			} else {

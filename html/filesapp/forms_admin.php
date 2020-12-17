@@ -19,7 +19,7 @@ if (isset($_POST['delete'])) {
     if(delete_file_fs($file)){
         
         if(delete_file($uuid)){
-        	insert_logbook_entry($log);
+        	$logbookDAO->save($log);
             $variables ['successMessage'] = "Datei " . $file->description . " wurde entfernt";
             
         } else {

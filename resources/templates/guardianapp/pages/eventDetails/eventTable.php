@@ -33,9 +33,8 @@
 			<?php
 				foreach ( $staff as $entry ) {
 					if ($entry->user != NULL) {
-						$user = get_user ( $entry->user );
-						$engine = get_engine ( $user->engine );
-						$name = $user->firstname . " " . $user->lastname . " (" . $engine->name . ")";
+						$user = $userDAO->getUserByUUID( $entry->user );
+						$name = $user->getFullNameWithEngine();
 					}
 					?>
 			<tr>

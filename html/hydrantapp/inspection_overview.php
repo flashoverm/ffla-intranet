@@ -6,25 +6,25 @@ require_once TEMPLATES_PATH . "/template.php";
 $variables = array(
     'title' => "Hydrantenprüfungen",
     'secured' => true,
-    'privilege' => ENGINEHYDRANTMANANGER
+		'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
 
-$engine = get_engine_of_user($_SESSION ['intranet_userid']);
+$engine = $userController->getCurrentUser()->getEngine();
 
 if(isset($_POST['delete'])){
 	$log = LogbookEntry::fromAction(LogbookActions::InspectionDeleted, $_POST['delete']);
     if(delete_inspection($_POST['delete'])){
         $variables ['successMessage'] = "Prüfbericht gelöscht";
-        insert_logbook_entry($log);
+        $logbookDAO->save($log);
     } else {
         $variables ['alertMessage'] = "Prüfbericht konnte nicht gelöscht werden";
     }
 }
 
-if(get_engine($engine)->isadministration || current_user_has_privilege(FFADMINISTRATION)){
+if($engine->getIsAdministration() || $userController->getCurrentUser()->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
     $variables ['inspections'] = get_inspections();
 } else {
-    $variables ['inspections'] = get_inspections_of_engine($engine);
+	$variables ['inspections'] = get_inspections_of_engine($engine->getUuid());
 }
 
 renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionOverview_template.php", $variables);

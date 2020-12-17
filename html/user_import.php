@@ -4,13 +4,13 @@ require_once TEMPLATES_PATH . "/template.php";
 
 define("DELIMITER", ";");
 
-$engines = get_engines();
+$engines = $engineDAO->getEngines();
 
 // Pass variables (as an array) to template
 $variables = array (
 		'title' => "Daten-Import",
 		'secured' => true,
-		'privilege' => EVENTADMIN,
+		'privilege' => Privilege::EVENTADMIN,
 		'engines' => $engines,
 );
 

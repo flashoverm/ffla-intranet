@@ -30,7 +30,7 @@ function init_mail() {
 }
 
 function send_mail($to, $subject, $body, $attachment = NULL, $footer = true) {
-	global $util, $config;
+	global $util, $config, $mailLogDAO;
     
 	$mailBody = $body;
 	if( $footer ){
@@ -70,22 +70,27 @@ function send_mail($to, $subject, $body, $attachment = NULL, $footer = true) {
 	        if( $mailState == NULL){
 	        	$mailState = MaillogStates::Sent;
 	        }
-	        insert_maillog($to, $subject, $mailState, $mailBody);
+	        $mailLog = MailLog::fromMail($to, $subject, $mailState, $mailBody);
+	        $mailLogDAO->save($mailLog);
 	        return true;
 	        
 	    }catch(Exception $e){
 	    	if( startsWith($e->getMessage(), "SMTP connect() failed") ){
-	    		insert_maillog($to, $subject, MaillogStates::MailConnectError, $mailBody, $e->getMessage());
+	    		$mailState = MaillogStates::MailConnectError;
 	    	} else {
-	    		insert_maillog($to, $subject, MaillogStates::Failed, $mailBody, $e->getMessage());
+	    		$mailState = MaillogStates::Failed;
 	    	}
+	    	$mailLog = MailLog::fromMail($to, $subject, $mailState, $mailBody, $e->getMessage());
+	    	$mailLogDAO->save($mailLog);
+	    	
 	        echo "<script language='javascript'>
 					alert('Eine E-Mail konnte nicht gesendet werden');
 				</script>";
 	    	return false;
 	    }
     }
-    insert_maillog($to, $subject, MaillogStates::InvalidMailAddress, $mailBody);
+    $mailLog = MailLog::fromMail($to, $subject, MaillogStates::Failed, $mailBody);
+    $mailLogDAO->save($mailLog);
     return false;
 }
 
@@ -93,7 +98,7 @@ function send_mail($to, $subject, $body, $attachment = NULL, $footer = true) {
 function send_mails($recipients, $subject, $body, $attachment = NULL) {
     $noError = true;
     foreach (removeLockedUsers($recipients) as $to) {
-        if(!send_mail($to->email, $subject, $body, $attachment)){
+        if(!send_mail($to->getEmail(), $subject, $body, $attachment)){
             $noError = false;
         }
     }
@@ -118,7 +123,9 @@ function removeLockedUsers($recipients){
 	
 	foreach ($recipients as $user) {
 		#User with password (registered) and login enabled, or unregiered user
-		if( ($user->locked == 0 && isset($user->password) ) || !isset($user->password) ) {
+		if( 
+				( ! $user->getLocked() && $user->getPassword() != null )
+				|| $user->getPassword() == null ) {
 			$filtered [] = $user;
 		}
 	}

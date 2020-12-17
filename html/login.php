@@ -3,11 +3,11 @@ require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
 
 function check_password($user, $password) {
-	if ($password == $user->password ) {
-		return $user->uuid;
+	if ($password == $user->getPassword() ) {
+		return $user->getUuid();
 	}
-	if (password_verify ( $password, $user->password )) {
-		return $user->uuid;
+	if (password_verify ( $password, $user->getPassword() )) {
+		return $user->getUuid();
 	}
 	return false;
 }
@@ -33,11 +33,11 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 	$password = trim ( $_POST ['password'] );
 	
 	$loggedIn = false;
-	$user = get_user_by_email($email);
-	if ( $user != null && ! $user->locked && ! $user->deleted ) {
+	$user = $userDAO->getUserByEmail($email);
+	if ( $user != null && ! $user->getLocked() && ! $user->getDeleted() ) {
 		$uuid = check_password ( $user, $password );
 		if ($uuid) {
-			insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserLogedIn, $uuid));
+			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserLogedIn, $uuid));
 			
 			$_SESSION ['intranet_userid'] = $uuid;
 			$_SESSION ['intranet_email'] = $email;
@@ -55,9 +55,9 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 	}
 	if( ! $loggedIn){
 		$variables ['alertMessage'] = "Zugangsdaten ungültig";
-		$user = get_user_by_email($email);
+		$user = $userDAO->getUserByEmail($email);
 		if($user){
-			insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserLoginFailed, $user->uuid));
+			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserLoginFailed, $user->getUuid()));
 		}
 	}
 

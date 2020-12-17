@@ -6,7 +6,8 @@ require_once LIBRARY_PATH . "/ui_util.php";
 session_start ();
 
 function renderPrintContentFile($app, $contentFile, $variables = array(), $noHeader = false){
-    global $config;
+	global $config, $userController, $userDAO, $engineDAO, $guardianUserController, 
+		$logbookDAO, $mailLogDAO;
     
     $contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $contentFile;
     
@@ -21,17 +22,18 @@ function renderPrintContentFile($app, $contentFile, $variables = array(), $noHea
     }
     
    
-    $loggedIn = userLoggedIn();
+    $currentUser = $userController->getCurrentUser();
     $localhostRequest = localhostRequest();
     
-    if ( isset($secured) && $secured && ! $loggedIn && ! $localhostRequest) {
+    if ( isset($secured) && $secured && ! $currentUser && ! $localhostRequest) {
     	showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
     	return;
     }
     
+        
     require_once (TEMPLATES_PATH . "/header_print.php");
     
-    if( isset($privilege) && ! current_user_has_privilege($privilege) && ! $localhostRequest ){
+    if( isset($privilege) && ! $currentUser->hasPrivilegeByName($privilege) && ! $localhostRequest ){
     	showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
     	$showFormular = false;
     }
@@ -66,9 +68,9 @@ function renderPrintContentFile($app, $contentFile, $variables = array(), $noHea
 
 
 function renderLayoutWithContentFile($app, $contentFile, $variables = array()) {
-        
-	global $config;
-	
+	global $config, $userController, $userDAO, $engineDAO, $guardianUserController, 
+		$logbookDAO, $mailLogDAO;
+
 	$contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $contentFile;
 
 	// making sure passed in variables are in scope of the template
@@ -81,21 +83,23 @@ function renderLayoutWithContentFile($app, $contentFile, $variables = array()) {
 		}
 	}
 
-	$loggedIn = userLoggedIn();
-
-	if ($secured && ! $loggedIn) {
+	$currentUser = $userController->getCurrentUser();
+	
+	if ($secured && ! $currentUser) {
         goToLogin();		
 	}
-		
+	
+	$currentUser = $userController->getCurrentUser();
+	
 	require_once (TEMPLATES_PATH . "/header.php");
-	
+
 	echo "<div class=\"container\" id=\"container\">\n" . "\t<div id=\"content\">\n";
-	
-	if(isset($privilege) && ! current_user_has_privilege($privilege)){
+
+	if(isset($privilege) && ! $currentUser->hasPrivilegeByName($privilege)){
 		showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
 		$showFormular = false;
 	}
-		
+
 	if(isset($alertMessage)){
 		showAlert($alertMessage);
 	}
@@ -107,7 +111,7 @@ function renderLayoutWithContentFile($app, $contentFile, $variables = array()) {
 	if(isset($infoMessage)){
 		showInfo($infoMessage);
 	}
-	
+
 	if (file_exists ( $contentFileFullPath )) {
 		if(!isset($showFormular) || $showFormular){
 			require_once ($contentFileFullPath);
@@ -115,7 +119,6 @@ function renderLayoutWithContentFile($app, $contentFile, $variables = array()) {
 	} else {
 		echo "Requested template  " . $contentFileFullPath . " not existing";
 	}
-
 
 	// close content div
 	echo "\t</div>\n";

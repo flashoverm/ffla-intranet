@@ -1,4 +1,6 @@
 <?php
+
+/*
 create_table_engine ();
 
 function insert_engine($uuid, $name, $isadministration) {

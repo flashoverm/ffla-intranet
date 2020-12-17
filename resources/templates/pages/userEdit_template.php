@@ -6,7 +6,7 @@
 			placeholder="Vorname eingeben"
 			<?php
 			if(isset($user)){
-				echo "value='" . $user->firstname . "'";
+				echo "value='" . $user->getFirstname() . "'";
 			} else if(isset($_POST['firstname'])){
 				echo "value='" . $_POST['firstname'] . "'";
 			}
@@ -19,7 +19,7 @@
 			placeholder="Nachname eingeben"
 			<?php
 			if(isset($user)){
-				echo "value='" . $user->lastname . "'";
+				echo "value='" . $user->getLastname() . "'";
 			} else if(isset($_POST['lastname'])){
 				echo "value='" . $_POST['lastname'] . "'";
 			}
@@ -32,7 +32,7 @@
 			placeholder="E-Mail eingeben"
 			<?php
 			if(isset($user)){
-				echo " value='" . $user->email . "'";
+				echo " value='" . $user->getEmail() . "'";
 			} else if(isset($_POST['useremail'])){
 				echo " value='" . $_POST['useremail'] . "'";
 			} else {
@@ -84,12 +84,12 @@
 			<select class="form-control" name="engine" required="required">
 			<option value="" disabled selected>Löschzug auswählen</option>
 			<?php foreach ( $engines as $option ) :
-				if(isset($_POST['engine']) && $option->uuid == $_POST['engine']){?>
-					<option value="<?php echo $option->uuid; ?>" selected><?php echo $option->name; ?></option>
-				<?php } else if ( isset($user) && $user->engine == $option->uuid) { ?>
-					<option value="<?php echo $option->uuid; ?>" selected><?php echo $option->name; ?></option>
+				if(isset($_POST['engine']) && $option->getUuid() == $_POST['engine']){?>
+					<option value="<?php echo $option->getUuid(); ?>" selected><?php echo $option->getName(); ?></option>
+				<?php } else if ( isset($user) && $user->getEngine()->getUuid() == $option->getUuid()) { ?>
+					<option value="<?php echo $option->getUuid(); ?>" selected><?php echo $option->getName(); ?></option>
 				<?php } else { ?>
-					<option value="<?php echo $option->uuid; ?>"><?php echo $option->name; ?></option>
+					<option value="<?php echo $option->getUuid(); ?>"><?php echo $option->getName(); ?></option>
 				<?php }
 			endforeach; ?>
 		</select>
@@ -101,7 +101,7 @@
 			<div class="form-group">
 				<label>Anschrift Arbeitgeber</label>
 				<textarea rows="3" class="form-control" name="employerAddress" id="employerAddress" placeholder="Anschrift Arbeitgeber"
-				><?php if(isset($user) && $user->employer_address != null) { echo $user->employer_address; } ?></textarea>
+				><?php if(isset($user) && $user->getEmployerAddress() != null) { echo $user->getEmployerAddress(); } ?></textarea>
 			</div>  
 		</div>
 		<div class="col">
@@ -114,8 +114,8 @@
 		<input type="email" class="form-control" name="employerMail" id="employerMail"
 			placeholder="E-Mail des Arbeitgebers eingeben"
 			<?php
-			if(isset($user) && $user->employer_mail != null){
-				echo " value='" . $user->employer_mail . "'";
+			if(isset($user) && $user->getEmployerMail() != null){
+				echo " value='" . $user->getEmployerMail() . "'";
 			}
 			?>
 			>
@@ -132,27 +132,23 @@
 			<table class="table table-striped table-sm" data-toggle="table" >
 				<tbody>
 				<?php
-				$users_privileges = null;
-				if(isset($user)){
-					$users_privileges = get_users_privileges($user->uuid);
-				}
 				foreach ( $privileges as $row ) {
 				?>
 					<tr>
-						<td><?= $row->privilege ?></td>
+						<td><?= $row->getPrivilege() ?></td>
 						<td class="text-center">
 							<div class="custom-control custom-checkbox mb-1">
-							  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->uuid ?>" name="priv_<?= $row->uuid ?>"
+							  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->getUuid() ?>" name="priv_<?= $row->getUuid() ?>"
 							  <?php
-							  if( 	(isset($user) && in_array($row->uuid, $users_privileges)) 
-							  		|| isset($_POST['priv_' . $row->privilege ]) 
-							  		|| (! isset($user) && $_SERVER['REQUEST_METHOD'] === 'GET' && $row->is_default )
+							  if( 	(isset($user) && $currentUser->hasPrivilegeByName($row->getPrivilege())) 
+							  		|| isset($_POST['priv_' . $row->getUuid() ]) 
+							  		|| (! isset($user) && $_SERVER['REQUEST_METHOD'] === 'GET' && $row->getIsDefault() )
 							  ){
 							  	echo "checked";
 							  }
 							  ?>
 							  >
-							  <label class="custom-control-label custom-control-label-table" for="priv_<?= $row->uuid ?>">&nbsp;</label>
+							  <label class="custom-control-label custom-control-label-table" for="priv_<?= $row->getUuid() ?>">&nbsp;</label>
 							</div>
 						</td>
 					</tr>
@@ -166,7 +162,7 @@
 	<br>
 	<?php
 	}
-	if(current_user_has_privilege(PORTALADMIN)){
+	if($currentUser->hasPrivilegeByName(Privilege::PORTALADMIN)){
 	?>
 		<a class="btn btn-outline-primary" href="<?= $config["urls"]["intranet_home"] ?>/users/">Zurück</a>
 	<?php } ?>

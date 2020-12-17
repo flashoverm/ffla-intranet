@@ -8,7 +8,7 @@ require_once LIBRARY_PATH . "/file_create.php";
 $variables = array(
 		'title' => "Arbeitgebernachweise bearbeiten",
 		'secured' => true,
-		'privilege' => FFADMINISTRATION
+		'privilege' => Privilege::FFADMINISTRATION
 );
 
 if( isset($_POST['confirmation']) ){
@@ -22,7 +22,7 @@ if( isset($_POST['confirmation']) ){
 				$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
 			}
 			$variables ['successMessage'] = "Anfrage akzeptiert";
-			insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ConfirmationAccepted, $confirmation_uuid));
+			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ConfirmationAccepted, $confirmation_uuid));
 						
 		} else {
 			$variables ['alertMessage'] = "Anfrage konnte nicht bearbeitet werden";
@@ -40,7 +40,7 @@ if( isset($_POST['confirmation']) ){
 				$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
 			}
 			$variables ['successMessage'] = "Anfrage abgelehnt";
-			insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ConfirmationDeclined, $confirmation_uuid));
+			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ConfirmationDeclined, $confirmation_uuid));
 			
 		} else {
 			$variables ['alertMessage'] = "Anfrage konnte nicht bearbeitet werden";

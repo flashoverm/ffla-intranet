@@ -85,7 +85,7 @@
 										id="positionengine">
 										<option value="" disabled selected>Löschzug auswählen</option>
 										<?php foreach ( $engines as $option ) : ?>
-										<option value="<?=  $option->uuid; ?>"><?= $option->name; ?></option>
+										<option value="<?=  $option->getUuid(); ?>"><?= $option->getName(); ?></option>
 										<?php endforeach; ?>
 									</select>
 								</div>

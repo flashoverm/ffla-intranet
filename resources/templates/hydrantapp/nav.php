@@ -1,11 +1,11 @@
 <?php
 
-function left_navigation ($loggedIn){
+function left_navigation ($currentUser){
 	global $config;
 	
-	if ($loggedIn) {
+	if ($currentUser) {
 		
-		if(current_user_has_privilege(HYDRANTADMINISTRATOR)){
+		if($currentUser->hasPrivilegeByName(Privilege::HYDRANTADMINISTRATOR)){
 			echo "
 			<li class='dropdown'>
 				<a class='nav-link dropdown-toggle text-light mx-1' data-toggle='dropdown' href='#'>Hydranten</a>
@@ -24,7 +24,7 @@ function left_navigation ($loggedIn){
         		<a class='nav-link text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/search'>Hydrantenkarten</a>
 			</li>";
 		
-		if(current_user_has_privilege(ENGINEHYDRANTMANANGER)){
+		if($currentUser->hasPrivilegeByName(Privilege::ENGINEHYDRANTMANANGER)){
 			echo "
 			<li class='dropdown'>
 				<a class='nav-link dropdown-toggle text-light mx-1' data-toggle='dropdown' href='#'>Hydrantenprüfung</a>
@@ -40,11 +40,11 @@ function left_navigation ($loggedIn){
 	}
 }
 
-function middle_navigation ($loggedIn){
+function middle_navigation ($currentUser){
 	
 }
 
-function right_navigation ($loggedIn){
+function right_navigation ($currentUser){
 	global $config;
 	
 	?>

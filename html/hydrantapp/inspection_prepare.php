@@ -7,11 +7,11 @@ require_once TEMPLATES_PATH . "/template.php";
 $variables = array(
 		'title' => "Hydrantenprüfung planen",
 		'secured' => true,
-		'privilege' => ENGINEHYDRANTMANANGER
+		'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
 
 //get hydrants by engine with last checkup not set or older than 6 years
-$hydrants = get_candidates_of_engine(get_engine_of_user($_SESSION ['intranet_userid']));
+$hydrants = get_candidates_of_engine($userController->getCurrentUser()->getEngine()->getUuid());
 
 
 $mapUrl = $config["mapView"]["apiUrl"]
