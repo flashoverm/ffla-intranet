@@ -1,6 +1,5 @@
 <?php
 require_once LIBRARY_PATH . '/util.php';
-require_once LIBRARY_PATH . "/class/constants/LogbookActions.php";
 require_once LIBRARY_PATH . "/ui_util.php";
 
 session_start ();

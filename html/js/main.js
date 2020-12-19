@@ -49,3 +49,15 @@ function tooglePassword(id){
 		}
 	}
 }
+
+function generateAndShowPassword(){
+	var password = generatePassword();
+
+	var userpassword = document.getElementById('userpassword');
+	var userpassword2 = document.getElementById('userpassword2');
+
+	userpassword.value = password;
+	userpassword.type = "text";
+	userpassword2.value = password;
+	userpassword2.type = "text";
+}

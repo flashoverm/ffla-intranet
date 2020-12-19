@@ -110,7 +110,7 @@
 					}
 					?>
 					<li class='nav-item dropdown'>
-						<a class='nav-link dropdown-toggle text-light' data-toggle='dropdown' href='#'><?= $_SESSION ['intranet_email'] ?></a>
+						<a class='nav-link dropdown-toggle text-light' data-toggle='dropdown' href='#'><?= $currentUser->getEmail() ?></a>
 			        	<div class='dropdown-menu dropdown-menu-right bg-dark'>
 							<a class='dropdown-item disabled text-secondary'><?= $currentUser->getEngine()->getName() ?></a>
 							<div class='dropdown-divider'></div>
@@ -134,7 +134,7 @@
 	            	<?php
 	                if ($config ["settings"] ["selfregistration"]) {
 	                	echo " 	<li class='nav-item'>
-	                		<a class='nav-link text-light' href='" . $config["urls"]["intranet_home"]. "/users/new'>Registrierung</a>
+	                		<a class='nav-link text-light' href='" . $config["urls"]["intranet_home"]. "/users/register'>Registrierung</a>
 	            			</li>";
 	                }
 				}

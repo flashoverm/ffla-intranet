@@ -23,7 +23,7 @@ class UserDAO extends BaseDAO {
 		if($saved != null){
 			$privilegeSaved = $this->privilegeDAO->saveUsersPrivilege($user);
 			if( $privilegeSaved){
-				return true;
+				return $this->getUserByUUID($saved->getUuid());
 			}
 		}
 		return false;

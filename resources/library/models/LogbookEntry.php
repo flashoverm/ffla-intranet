@@ -154,41 +154,40 @@ class LogbookEntry extends BaseModel {
 	 */
 	
 	protected static function userEntry($action, $user_uuid){
-		global $logbookActions, $userDAO;
+		global $userDAO;
 		$user = $userDAO->getUserByUUID($user_uuid);
 		if( ! $user ){
 			return null;
 		}
-		return $logbookActions[$action] . ": " . $user->getFullNameWithEmail();
+		return LogbookActions::getActionText($action) . ": " . $user->getFullNameWithEmail();
 	}
 	
 	protected static function loginEntry($action, $user_uuid){
-		global $logbookActions, $userDAO;
+		global $userDAO;
 		$user = $userDAO->getUserByUUID($user_uuid);
 		if( ! $user ){
 			return null;
 		}
-		return $logbookActions[$action] . ": " . $user->getFullNameWithEmail();
+		return LogbookActions::getActionText($action) . ": " . $user->getFullNameWithEmail();
 	}
 	
 	protected static function logbookEntry($action, $event_uuid){
-		global $logbookActions;
-		return $logbookActions[$action];
+		return LogbookActions::getActionText($action);
 	}
 	
 	protected static function eventEntry($action, $event_uuid){
-		global $logbookActions, $config;
+		global $config;
 		$event = get_event($event_uuid);
 		if( ! $event ){
 			return null;
 		}
-		return $logbookActions[$action] . ":<br>"
+		return LogbookActions::getActionText($action) . ":<br>"
 				. "Wache: " . get_eventtype($event->type)->type . " (" . date($config ["formats"] ["date"], strtotime($event->date)) . " " . date($config ["formats"] ["time"], strtotime($event->start_time)) . " Uhr)<br>"
 						. "Titel: " . $event->title ;
 	}
 	
 	protected static function eventStaffEntry($action, $staff_uuid){
-		global $logbookActions, $config, $userDAO;
+		global $config, $userDAO;
 		$staff = get_events_staffposition($staff_uuid);
 		if( ! $staff ){
 			return null;
@@ -197,78 +196,73 @@ class LogbookEntry extends BaseModel {
 		$event = get_event($staff->event);
 		$user = $userDAO->getUserByUUID($staff->user);
 		
-		return $logbookActions[$action] . ":<br>"
+		return LogbookActions::getActionText($action) . ":<br>"
 				. "Wache:  " . get_eventtype($event->type)->type . " (" . date($config ["formats"] ["date"], strtotime($event->date)) . " " . date($config ["formats"] ["time"], strtotime($event->start_time)) . " Uhr) " . $staffpos . "<br>"
 						. "Person: " . $user->getFullNameWithEmail();
 	}
 	
 	protected static function staffTemplateEntry($action, $eventtype_uuid){
-		global $logbookActions;
 		if( ! true ){
 			return null;
 		}
-		return $logbookActions[$action];
+		return LogbookActions::getActionText($action);
 	}
 	
 	protected static function eventReportEntry($action, $report_uuid){
-		global $logbookActions, $config;;
+		global $config;;
 		$report = get_report($report_uuid);
 		if( ! $report ){
 			return null;
 		}
-		return $logbookActions[$action] . ":<br>"
+		return LogbookActions::getActionText($action) . ":<br>"
 				. "Bericht für: " . get_eventtype($report->type)->type . " (" . date($config ["formats"] ["date"], strtotime($report->date)) . " " . date($config ["formats"] ["time"], strtotime($report->start_time)) . " Uhr)<br>"
 						. "Titel: " . $report->title ;
 	}
 	
 	protected static function eventReportExport($action){
-		global $logbookActions;
-		return $logbookActions[$action];
+		return LogbookActions::getActionText($action);
 	}
 	
 	protected static function hydrantEntry($action, $hydrant_uuid){
-		global $logbookActions;
 		$hydrant = get_hydrant_by_uuid($hydrant_uuid);
 		if( ! $hydrant ){
 			return null;
 		}
-		return $logbookActions[$action] . ": HY-Nr. " . $hydrant->hy;
+		return LogbookActions::getActionText($action) . ": HY-Nr. " . $hydrant->hy;
 	}
 	
 	protected static function hydrantInspectionEntry($action, $inspection_uuid){
-		global $logbookActions, $config;;
+		global $config;;
 		$inspection = get_inspection($inspection_uuid);
 		if( ! $inspection ){
 			return null;
 		}
-		return $logbookActions[$action] . ": " . $inspection->vehicle . " (" . date($config ["formats"] ["date"], strtotime($inspection->date)) . ")";
+		return LogbookActions::getActionText($action) . ": " . $inspection->vehicle . " (" . date($config ["formats"] ["date"], strtotime($inspection->date)) . ")";
 	}
 	
 	protected static function fileEntry($action, $file_uuid){
-		global $logbookActions;
 		$file = get_file($file_uuid);
 		if( ! $file ){
 			return null;
 		}
-		return $logbookActions[$action] . ": " . $file->description;
+		return LogbookActions::getActionText($action) . ": " . $file->description;
 	}
 	
 	protected static function confirmationEntry($action, $confirmation_uuid){
-		global $logbookActions, $config, $userDAO;
+		global $config, $userDAO;
 		$confirmation = get_confirmation($confirmation_uuid);
 		if( ! $confirmation ){
 			return null;
 		}
 		$user = $userDAO->getUserByUUID($confirmation->user);
 		
-		return $logbookActions[$action] . ": <br>" . $confirmation->description . " (" . date($config ["formats"] ["date"], strtotime($confirmation->date)) . " " . date($config ["formats"] ["time"], strtotime($confirmation->start_time)) . " Uhr)<br>"
+		return LogbookActions::getActionText($action) . ": <br>" . $confirmation->description . " (" . date($config ["formats"] ["date"], strtotime($confirmation->date)) . " " . date($config ["formats"] ["time"], strtotime($confirmation->start_time)) . " Uhr)<br>"
 				. "Antragsteller: " . $user->getFullNameWithEmail();
 	}
 	
 	
 	
 	public static function logbookEnry($action_id, $objects){
-		global $logbookActions;
 		$message = null;
 		
 		if($action_id < 20){
@@ -309,7 +303,7 @@ class LogbookEntry extends BaseModel {
 		}
 		
 		if($message == null){
-			$message = "Log-Nachricht für '" . $logbookActions[$action_id] . "' konnte nicht erzeugt werden";
+			$message = "Log-Nachricht für '" . LogbookActions::getActionText($action_id) . "' konnte nicht erzeugt werden";
 		}
 		return $message;
 	}

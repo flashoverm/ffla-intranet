@@ -108,6 +108,82 @@ class UserController extends BaseController{
 		$user->setDeleted(false);
 		$this->userDAO->save($user);
 	}
+	
+	function addDefaultPrivilegesToUser($user){
+		$privileges = $this->privilegeDAO->getPrivileges();
+		foreach($privileges as $privilege){
+			if($privilege->getIsDefault()){
+				$user->addPrivilege($privilege);
+			}
+		}
+		return $user;
+	}
+	
+	function createNewUser(User $user){
+		$userByMail = $this->userDAO->getUserByEmail($user->getEmail());
+		if( ! $userByMail){
+			//Create complete new user with default privileges
+			
+			//Hash given password
+			$user->setPassword($this->hashPassword($user->getPassword()));
+			
+			//Add default privileges
+			$this->addDefaultPrivilegesToUser($user);
+			
+			//Save and return user
+			return $this->userDAO->save($user);
+		}
+
+		if( ! $this->compareUserByData($user, $userByMail)){
+			//Data does not match with existing user of this mail
+			throw new Exception("User data mismatch", 101);
+		}
+		
+		if($userByMail->getPassword() != NULL){
+			//Already existing user including password!
+			throw new Exception("User with login existing", 102);
+		}
+		
+		//Add given password or generate new
+		if($user->getPassword() != NULL){
+			$userByMail->setPassword($this->hashPassword($user->getPassword()));
+		} else {
+			$userByMail->setPassword($this->createPassword());
+		}
+		
+		//Add default privileges
+		$this->addDefaultPrivilegesToUser($userByMail);
+		
+		//Save and return user
+		return $this->userDAO->save($userByMail);
+	}
+	
+	protected function createPassword(){
+		$password = random_password ();
+		return hashPassword($password);
+	}
+	
+	protected function hashPassword($password){
+		$pwhash = password_hash ( $password, PASSWORD_DEFAULT );
+		return $pwhash;
+	}
+	
+	protected function compareUserByData(User $user, User $otherUser){
+		if(! $user->getEmail() == $otherUser->getEmail()){
+			return false;
+		}
+		if(! $user->getFirstname() == $otherUser->getFirstname()){
+			return false;
+		}
+		if(! $user->getLastname() == $otherUser->getLastname()){
+			return false;
+		}
+		if(! $user->getEngine()->getUuid() == $otherUser->getEngine()->getUuid()){
+			return false;
+		}
+		return true;
+	}
+
 }
 	
 ?>

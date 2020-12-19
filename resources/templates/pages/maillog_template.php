@@ -2,7 +2,6 @@
 if ( ! isset($mails) || ! count ( $mails ) ) {
 	showInfo ( "Es sind keine Mails im Log" );
 } else {
-	global $maillogStates;
 ?>
 <div class="table-responsive">
 	<table class="table table-hover table-striped table-bordered">
@@ -23,7 +22,7 @@ if ( ! isset($mails) || ! count ( $mails ) ) {
 				<td><?= date($config ["formats"] ["datetime"] . ":s", strtotime($row->getTimestamp())); ?></td>
 				<td><?= $row->getRecipient() ?></td>
 				<td><?= $row->getSubject() ?></td>
-				<td><?= $maillogStates[$row->getState()] ?></td>
+				<td><?= MailLog::MAILLOG_STATES[$row->getState()] ?></td>
 			</tr>
 			<tr>
 				<td class="collapse-td" colspan="5">

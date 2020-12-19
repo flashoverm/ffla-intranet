@@ -142,6 +142,9 @@ class User extends BaseModel {
 	 * @return mixed
 	 */
 	public function getPrivileges() {
+		if($this->privileges == NULL){
+			return array();
+		}
 		return $this->privileges;
 	}
 	
@@ -229,6 +232,13 @@ class User extends BaseModel {
 	 */
 	
 	public function hasPrivilegeByName($privilegeName){
+		
+		if($privilegeName == Privilege::PORTALADMIN
+				|| $privilegeName == Privilege::EDITUSER ){
+			return true;
+			
+		}
+		
 		if($this->privileges == null){
 			return false;
 		}
@@ -241,10 +251,16 @@ class User extends BaseModel {
 	}
 	
 	public function addPrivilege($privilege){
+		if($this->hasPrivilegeByName($privilege->getPrivilege())){
+			return;
+		}
 		$this->privileges[] = $privilege;
 	}
 	
 	public function removePrivilege($privilege){
+		if( ! $this->hasPrivilegeByName($privilege->privilege())){
+			return;
+		}
 		$this->privileges->detach($privilege);
 	}
 	

@@ -28,7 +28,7 @@
 			<p>Um Zugang zum Intranet der Feuerwehr Landshut zu erhalten, wende dich bitte per E-Mail unter Angabe des vollen Namens und des Löschzugs an die Portal-Administration 
 			(<a href="mailto:intranet.feuerwehr-landshut@thral.de?subject=Fehlerbericht%20Intranet" >intranet.feuerwehr-landshut@thral.de</a>).
 			Vorraussetzung ist, dass du aktives Mitglied der Feuerwehr der Stadt Landshut bist.</p> 
-			<p>Für erweiterte Berechtigungen im Portal (z.B. Verwaltung von Wachen und -berichten oder Hydrantenprüfungen) ist eine Bestätigung von deiner 
+			<p>Für erweiterte Berechtigungen im Portal (z.B. Verwaltung von Wachen und -berichten oder Hydrantenprüfungen) ist eine Bestätigung deiner 
 			Zugführung oder der Feuerwehrverwaltung nötig. In diesem Fall muss diese die zusätzlichen Berechtigungen beim Administrator beantragen.</p>
 			<p>Die Zugangsdaten werden per E-Mail an dich übermittelt.</p>
 		</div>

@@ -74,9 +74,9 @@ if (isset ( $_POST ['setpw'] )) {
 
 if(isset($_GET['filter'])){
 	$privilege = $privilegeDAO->getPrivilege($_GET['filter']);
-	$variables ['title'] = 'Rechte-Gruppe ' . $privilege->privilege;
+	$variables ['title'] = 'Rechte-Gruppe ' . $privilege->getPrivilege();
 	$user = $userDAO->getUsersWithPrivilege($_GET['filter']);
-	$variables ['infoMessage'] = "Es werden nur Benutzer mit Recht '" . $privilege->privilege . "' angezeigt! <a href='" . $config["urls"]["intranet_home"] . "/privilege'>Zurück zur Auswahl</a>";
+	$variables ['infoMessage'] = "Es werden nur Benutzer mit Recht '" . $privilege->getPrivilege() . "' angezeigt! <a href='" . $config["urls"]["intranet_home"] . "/privilege'>Zurück zur Auswahl</a>";
 } else {
 	$user = $userDAO->getUsers();
 }

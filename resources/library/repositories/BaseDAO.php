@@ -40,6 +40,9 @@ abstract class BaseDAO {
 	abstract protected function resultToObject($result);
 	
 	protected function uuidExists($uuid, $tableName){
+		if($uuid == NULL){
+			return false;
+		}
 		$statement = $this->db->prepare("SELECT * FROM " . $tableName . " WHERE uuid = ?");
 		$statement->execute(array($uuid));   
 		

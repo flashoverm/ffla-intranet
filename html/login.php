@@ -40,7 +40,6 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserLogedIn, $uuid));
 			
 			$_SESSION ['intranet_userid'] = $uuid;
-			$_SESSION ['intranet_email'] = $email;
 			
 			$loggedIn = true;
 			

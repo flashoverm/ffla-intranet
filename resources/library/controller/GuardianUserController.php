@@ -13,7 +13,7 @@ class GuardianUserController extends UserController{
 	public function insertEventParticipant($firstname, $lastname, $email, $engine){
 		$user = new User();
 		$user->setUserData($firstname, $lastname, $email, $engine, null, null);
-		$user->addPrivilege(Privilege::EVENTPARTICIPENT);
+		$user->addPrivilege($this->privilegeDAO->getPrivilegeByName(Privilege::EVENTPARTICIPENT));
 		$this->userDAO->save($user);
 	}
 	

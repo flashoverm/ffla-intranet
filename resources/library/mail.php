@@ -2,7 +2,6 @@
 use PHPMailer\PHPMailer\PHPMailer;
 
 require_once LIBRARY_PATH . "/mail_body.php";
-require_once LIBRARY_PATH . "/class/constants/MaillogStates.php";
 
 require_once "phpmailer/src/PHPMailer.php";
 require_once "phpmailer/src/SMTP.php";
@@ -51,7 +50,7 @@ function send_mail($to, $subject, $body, $attachment = NULL, $footer = true) {
 	        		$mail->AddAttachment($attachment, $name = basename($attachment),  $encoding = 'base64', $type = 'application/pdf');
 	        	} else {
 	        		$mailBody = $mailBody . $util["attachment_error"];
-	        		$mailState = MaillogStates::AttachmentError;
+	        		$mailState = MailLog::AttachmentError;
 	        	}
 	        }
 	        
@@ -63,12 +62,12 @@ function send_mail($to, $subject, $body, $attachment = NULL, $footer = true) {
 	        	}
 	        } else {
 	        	if( $mailState == NULL){
-	        		$mailState = MaillogStates::Deactivated;
+	        		$mailState = MailLog::Deactivated;
 	        	}
 	        }
 
 	        if( $mailState == NULL){
-	        	$mailState = MaillogStates::Sent;
+	        	$mailState = MailLog::Sent;
 	        }
 	        $mailLog = MailLog::fromMail($to, $subject, $mailState, $mailBody);
 	        $mailLogDAO->save($mailLog);
@@ -76,9 +75,9 @@ function send_mail($to, $subject, $body, $attachment = NULL, $footer = true) {
 	        
 	    }catch(Exception $e){
 	    	if( startsWith($e->getMessage(), "SMTP connect() failed") ){
-	    		$mailState = MaillogStates::MailConnectError;
+	    		$mailState = MailLog::MailConnectError;
 	    	} else {
-	    		$mailState = MaillogStates::Failed;
+	    		$mailState = MailLog::Failed;
 	    	}
 	    	$mailLog = MailLog::fromMail($to, $subject, $mailState, $mailBody, $e->getMessage());
 	    	$mailLogDAO->save($mailLog);
@@ -89,7 +88,7 @@ function send_mail($to, $subject, $body, $attachment = NULL, $footer = true) {
 	    	return false;
 	    }
     }
-    $mailLog = MailLog::fromMail($to, $subject, MaillogStates::Failed, $mailBody);
+    $mailLog = MailLog::fromMail($to, $subject, MailLog::Failed, $mailBody);
     $mailLogDAO->save($mailLog);
     return false;
 }

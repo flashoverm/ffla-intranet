@@ -3,50 +3,46 @@ require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/mail_controller.php";
 
+$privileges = $privilegeDAO->getPrivileges();
+
 // Pass variables (as an array) to template
 $variables = array (
 	'secured' => true,
+	'privilege' => Privilege::PORTALADMIN,
 	'engines' => $engineDAO->getEngines(),
-	'privileges' => $privilegeDAO->getPrivileges(),
+	'privileges' => $privileges,
 );
 
-if( isset($_GET['self']) ){
-	// edit by user itself
-	//		uuid from current user
+if( isset($_GET['uuid']) ){
+	// edit by admin
+	//		uuid from get param
 	//		no password edit
-	//		no privilege edit
 	
 	$variables['title'] = "Benutzer bearbeiten";
-	$variables['userSelfEdit'] = true;
-	$variables['privilege'] = Privilege::EDITUSER;
-	$variables['user'] = $userController->getCurrentUser();
+	
+	$user = $userDAO->getUserByUUID($_GET['uuid']);
+	if($user){
+		$variables['user'] = $user;
+	} else {
+		$variables ['alertMessage'] = "Benutzer wurde nicht gefunden";
+	}
 
 } else {
-	// register
-	//		password given
-	//		default privileges assigned
+	// create new user
+	//		all data are entered in form (including privileges and password
 	
-	$variables['title'] = "Benutzer erstellen";
-
-	if( $config ["settings"] ["selfregistration"]){
-		$variables['secured'] = false;
-	}
+	$variables['title'] = "Benutzer anlegen";
 }
 
 
 
 if (isset ( $_POST ['useremail'] ) ) {
-
+	
 	$firstname = trim($_POST ['firstname']);
 	$lastname = trim($_POST ['lastname']);
 	$email = strtolower(trim($_POST ['useremail']));
-	
-	if(isset($variables['userSelfEdit'])){
-		$engine = $variables['user']->getEngine();
-	} else {
-		$engineUuid = trim($_POST ['engine']);
-		$engine = $engineDAO->getEngine($engineUuid);
-	}
+	$engineUuid = trim($_POST ['engine']);	
+	$engine = $engineDAO->getEngine($engineUuid);
 	
 	$employerAddress = null;
 	if(isset($_POST['employerAddress'])){
@@ -59,14 +55,21 @@ if (isset ( $_POST ['useremail'] ) ) {
 	}
 	
 	$uuid = null;
-	if(isset($_GET['self'])){
-		$uuid = $variables['user']->getUuid();
+	if(isset($_GET['uuid'])){
+		$uuid = trim($_GET['uuid']);
 	}
 	
-	$exit = false;
+	$newPrivileges = array();
+	foreach($privileges as $privilege){
+		
+		$inputName = "priv_" . $privilege->getUuid();
+		if(isset ( $_POST [ $inputName ] )){
+			$newPrivileges [] = $privilege;
+		}
+	}
 	
 	//check if password equals (if set)
-	$password = NULL;
+	$exit = false;
 	if(isset($_POST ['userpassword'])){
 		$password = trim($_POST ['userpassword']);
 		$password2 = trim($_POST ['userpassword2']);
@@ -77,9 +80,8 @@ if (isset ( $_POST ['useremail'] ) ) {
 		}
 	}
 	
-	
 	if (! $exit) {
-
+				
 		if($uuid == null){
 			
 			//New user is requested
@@ -89,14 +91,15 @@ if (isset ( $_POST ['useremail'] ) ) {
 			$user->setPassword($password);
 			
 			try{
-				
 				$user = $userController->createNewUser($user);
-
+				$user->resetPrivileges($newPrivileges);
+				$userDAO->save($user);
+				
 				if($user){
-					//Password and default privileges added to existing non-login-user or new user created
+					//Password and selected privileges added to existing non-login-user or new user created
 					
 					$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserCreated, $user->getUuid()));
-					$variables ['successMessage'] = "Der Benutzer wurde angelegt. Die Zugangsdaten wurden per E-Mail übermittelt. <a href='" . $config["urls"]["intranet_home"] . "/login'>Weiter zum Login</a>";
+					$variables ['successMessage'] = "Der Benutzer wurde angelegt. Die Zugangsdaten wurden per E-Mail übermittelt.";
 					
 					unset($_POST);
 					unset($variables['user']);
@@ -124,7 +127,7 @@ if (isset ( $_POST ['useremail'] ) ) {
 			
 		} else {
 			
-			//Edit own user
+			//Edit user with given uuid
 			
 			$user = $variables['user'];
 			
@@ -134,6 +137,7 @@ if (isset ( $_POST ['useremail'] ) ) {
 			} else {
 				
 				$user->setUserData($firstname, $lastname, $email, $engine, $employerAddress, $employerMail);
+				$user->resetPrivileges($newPrivileges);
 				$user = $userDAO->save($user);
 				
 				if($user){
@@ -143,11 +147,10 @@ if (isset ( $_POST ['useremail'] ) ) {
 				} else {
 					$variables ['alertMessage'] = "Der Benutzer konnte nicht aktualisiert werden";
 				}
-				
 			}
 		}
 	}
 }
 
-renderLayoutWithContentFile ($config["apps"]["landing"], "userEdit/userEdit_template.php", $variables );
+renderLayoutWithContentFile ($config["apps"]["landing"], "userEdit/userEditAdmin_template.php", $variables );
 ?>

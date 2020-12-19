@@ -27,10 +27,11 @@ class PrivilegeDAO extends BaseDAO{
 		$result = $statement->execute(array($user->getUuid()));
 		
 		if ($result) {
-			
 			foreach($user->getPrivileges() as $privilege){
 				$this->addPrivilegeToUser($privilege->getUuid(), $user->getUuid());
 			}
+			
+			return true;
 			
 		}
 		// echo "Error: " . $query . "<br>" . $db->error;
