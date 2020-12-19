@@ -1,6 +1,6 @@
 <?php
-require_once LIBRARY_PATH . "/db_connect.php";
 
+/*
 create_table_engine ();
 
 function insert_engine($uuid, $name, $isadministration) {

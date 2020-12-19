@@ -37,7 +37,7 @@ if (! count ( $reports )) {
 		?></td>
 				<td class="text-center"><?= get_eventtype($row->type)->type; ?></td>
 				<td class="text-center"><?= $row->title; ?></td>
-				<td class="text-center"><?= get_engine($row->engine)->name; ?></td>
+				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName(); ?></td>
 				<td class="text-center">
 					<?php
 					if($row->noIncidents){

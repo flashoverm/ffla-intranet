@@ -1,7 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_hydrant.php";
 
 // Pass variables (as an array) to template
 $variables = array(
@@ -9,7 +8,7 @@ $variables = array(
     'secured' => true
 );
 
-$variables ['engines'] = get_engines();
+$variables ['engines'] = $engineDAO->getEngines();
 
 if (isset($_POST['hy'])) {
     

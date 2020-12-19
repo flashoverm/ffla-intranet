@@ -1,11 +1,7 @@
 <?php
-require_once LIBRARY_PATH . "/db_engines.php";
 require_once LIBRARY_PATH . "/password.php";
 require_once LIBRARY_PATH . "/mail.php";
-require_once LIBRARY_PATH . "/db_connect.php";
-require_once LIBRARY_PATH . "/db_user_guardian.php";
 create_table_user ();
-require_once LIBRARY_PATH . "/db_privilege.php";
 
 function insert_user($firstname, $lastname, $email, $password, $engine_uuid, $employer_address, $employer_mail) {
 	global $db;

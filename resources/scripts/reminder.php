@@ -1,7 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../bootstrap.php" );
 require_once LIBRARY_PATH . "/mail_controller.php";
-require_once LIBRARY_PATH . "/db_event.php";
 
 $events = get_all_active_events();
 

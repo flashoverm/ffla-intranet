@@ -1,7 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_files.php";
 
 // Pass variables (as an array) to template
 $variables = array(
@@ -20,7 +19,7 @@ if (isset($_POST['delete'])) {
     if(delete_file_fs($file)){
         
         if(delete_file($uuid)){
-        	insert_logbook_entry($log);
+        	$logbookDAO->save($log);
             $variables ['successMessage'] = "Datei " . $file->description . " wurde entfernt";
             
         } else {

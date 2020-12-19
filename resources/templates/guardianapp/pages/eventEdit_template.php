@@ -81,17 +81,17 @@
 			class="form-control" name="engine" required="required"
 			data-toggle="tooltip" data-placement="top" title="Dieser Zug soll die Wache besetzen">
 			<?php foreach ( $engines as $option ) : 
-				if(isset($event) && $option->uuid == $event->engine){
+				if(isset($event) && $option->getUuid() == $event->engine){
 				    ?>
-				   	<option selected="selected" value="<?=  $option->uuid;	?> "><?= $option->name; ?></option>
+				   	<option selected="selected" value="<?=  $option->getUuid();	?> "><?= $option->getName(); ?></option>
 				    <?php 
-				}else if(!isset($event) && $option->uuid == $usersEngine){
+				}else if(!isset($event) && $option->getUuid() == $currentUser->getEngine()->getUuid()){
 					?>
-				   	<option selected="selected" value="<?=  $option->uuid;	?> "><?= $option->name; ?></option>
+				   	<option selected="selected" value="<?=  $option->getUuid();	?> "><?= $option->getName(); ?></option>
 				    <?php 
 				}else{
 					?>
-				   <option value="<?=  $option->uuid;	?> "><?= $option->name; ?></option>
+				   <option value="<?=  $option->getUuid();	?> "><?= $option->getName(); ?></option>
 				    <?php
 				}
 			endforeach; ?>
@@ -169,9 +169,7 @@
 						foreach ( $staff as $entry ) {
 							$staffId = $staffId +1;
 							if ($entry->user != NULL) {
-								$user = get_user ( $entry->user );
-								$engine = get_engine ( $user->engine );
-								$name = $user->firstname . " " . $user->lastname . " (" . $engine->name . ")";
+								$user = $userDAO->getUserByUUID($entry->user );
 							}
 							?>
 						<tr id="staffEntry<?= $staffId; ?>">
@@ -195,7 +193,7 @@
 							<td class='py-0 align-middle'>
 								<?php 
 									if($entry->user != NULL){
-										echo $name; 
+										echo $user->getFullNameWithEngine(); 
 										if($event->staff_confirmation && $entry->unconfirmed){
 											echo "<br><i>Bestätigung ausstehend</i>";
 										}

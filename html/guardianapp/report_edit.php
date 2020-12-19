@@ -1,10 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . '/db_engines.php';
-require_once LIBRARY_PATH . '/db_eventtypes.php';
-require_once LIBRARY_PATH . '/db_staffpositions.php';
-require_once LIBRARY_PATH . '/db_report.php';
 require_once LIBRARY_PATH . '/mail_controller.php';
 require_once LIBRARY_PATH . '/file_create.php';
 
@@ -14,7 +10,7 @@ require_once LIBRARY_PATH . '/class/ReportUnitStaff.php';
 
 $eventtypes = get_eventtypes ();
 $staffpositions = get_staffpositions();
-$engines = get_engines();
+$engines = $engineDAO->getEngines();
 
 // Pass variables (as an array) to template
 $variables = array (
@@ -24,13 +20,6 @@ $variables = array (
 		'engines' => $engines,
         'title' => "Wachbericht erstellen",
 );
-
-
-if(userLoggedIn()){
-	$user = get_user($_SESSION ['intranet_userid']);
-	$usersEngine = get_engine_of_user($_SESSION ['intranet_userid']);
-	$variables ['usersEngine'] = $usersEngine;
-}
 
 if(isset($_GET['id'])){
 	$variables['secured'] = true;
@@ -50,7 +39,7 @@ if(isset($_GET['id'])){
 	if($event != null){
 		
 		if(userLoggedIn()){
-			$creator = $user->firstname . " " . $user->lastname;
+			$creator = $userController->getCurrentUser()->getFullName();
 		} else {
 			$creator = "";
 		}
@@ -137,7 +126,7 @@ if (isset($_POST) && isset($_POST ['start'])) {
     if(isset($_GET['id'])){
         //Update        
     	if(update_report($eventReport)){
-    		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ReportUpdated, $eventReport->uuid));
+    		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportUpdated, $eventReport->uuid));
     		if(!createReportFile($uuid)){
     			if(mail_update_report ($eventReport)){
     				$variables ['successMessage'] = "Aktualisierter Bericht versendet";
@@ -156,7 +145,7 @@ if (isset($_POST) && isset($_POST ['start'])) {
     	$uuid = insert_report($eventReport);
     	if($uuid){
     		$eventReport->uuid = $uuid;
-    		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ReportCreated, $eventReport->uuid));
+    		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportCreated, $eventReport->uuid));
     		if(!createReportFile($uuid)){
     			if(mail_insert_event_report ($eventReport)){
     				$variables ['successMessage'] = "Bericht versendet";
@@ -176,7 +165,6 @@ if (isset($_POST) && isset($_POST ['start'])) {
     	header ( "Location: " . $config["urls"]["guardianapp_home"] . "/reports/" . $uuid ); // redirects
     }
 }
-
 
 renderLayoutWithContentFile ($config["apps"]["guardian"], "reportEdit/reportEdit_template.php", $variables );
 

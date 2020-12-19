@@ -1,5 +1,4 @@
 <?php
-require_once LIBRARY_PATH . '/db_engines.php';
 
 if (! count ( $user )) {
 	showInfo ( "Es ist kein Personal angelegt" );
@@ -22,14 +21,14 @@ if (! count ( $user )) {
 		foreach ( $user as $row ) {
 		?>
 			<tr>
-				<td class="text-center"><?= $row->firstname; ?></td>
-				<td class="text-center"><?= $row->lastname; ?></td>
-				<td class="text-center"><?= get_engine($row->engine)->name; ?></td>
-				<td class="text-center"><?= $row->email; ?></td>
+				<td class="text-center"><?= $row->getFirstname(); ?></td>
+				<td class="text-center"><?= $row->getLastname(); ?></td>
+				<td class="text-center"><?= $row->getEngine()->getName() ?></td>
+				<td class="text-center"><?= $row->getEmail(); ?></td>
 				<td class="text-center">
 					<?php
-					if($row->password != null){
-						if (! $row->locked) {
+					if($row->getPassword() != null){
+						if (! $row->getLocked()) {
 							echo "Freigegeben";
 						} else {
 							echo "Gesperrt";
@@ -44,24 +43,24 @@ if (! count ( $user )) {
 						<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Optionen</button>
 						<div class="dropdown-menu">
 
-							<a class="dropdown-item" href="<?= $config["urls"]["intranet_home"] . "/users/" . $row->uuid . "/edit"?>">Bearbeiten</a>
+							<a class="dropdown-item" href="<?= $config["urls"]["intranet_home"] . "/users/" . $row->getUuid() . "/edit"?>">Bearbeiten</a>
 							<?php
-							if($row->password != null){
+							if($row->getPassword() != null){
 								?>
 								<div class="dropdown-divider"></div>
 								<form method="post" action="">
 								<?php
-								if (! $row->locked) {
-									echo "<input type=\"hidden\" name=\"disable\" id=\"disable\" value='" . $row->uuid . "'/>";
+								if (! $row->getLocked()) {
+									echo "<input type=\"hidden\" name=\"disable\" id=\"disable\" value='" . $row->getUuid() . "'/>";
 									echo "<input type=\"submit\" value=\"Sperren\"  class=\"dropdown-item\"/>";
 								} else {
-									echo "<input type=\"hidden\" name=\"enable\" id=\"enable\" value='" . $row->uuid . "'/>";
+									echo "<input type=\"hidden\" name=\"enable\" id=\"enable\" value='" . $row->getUuid() . "'/>";
 									echo "<input type=\"submit\" value=\"Freigeben\"  class=\"dropdown-item\"/>";
 								}
 								?>
 								</form>
 								<form method="post" action="">
-									<input type="hidden" name="delete" id="delete" value="<?= $row->uuid ?>"/>
+									<input type="hidden" name="delete" id="delete" value="<?= $row->getUuid() ?>"/>
 									<input type="submit" value="Löschen"  class="dropdown-item"/>
 								</form>
 							<?php
@@ -69,23 +68,23 @@ if (! count ( $user )) {
 							?>
 							<div class="dropdown-divider"></div>
 							<?php
-							if($row->password != null){
+							if($row->getPassword() != null){
 							?>
-								<button type="button" class="dropdown-item" data-toggle="modal" data-target="#confirmReset<?= $row->uuid; ?>">Passwort zurücksetzen</button>
+								<button type="button" class="dropdown-item" data-toggle="modal" data-target="#confirmReset<?= $row->getUuid(); ?>">Passwort zurücksetzen</button>
 							<?php 
 							} else {
 							?>
-								<button type="button" class="dropdown-item" data-toggle="modal" data-target="#confirmSet<?= $row->uuid; ?>">Passwort hinzufügen</button>
+								<button type="button" class="dropdown-item" data-toggle="modal" data-target="#confirmSet<?= $row->getUuid(); ?>">Passwort hinzufügen</button>
 							<?php 
 							}
 							?>
 						</div>
 					</div>
 					<?php
-					if($row->password != null){
-						createDialog('confirmReset' . $row->uuid, "Passwort wirklich zurücksetzen?", null, "resetpw", $row->uuid);
+					if($row->getPassword() != null){
+						createDialog('confirmReset' . $row->getUuid(), "Passwort wirklich zurücksetzen?", null, "resetpw", $row->getUuid());
 					} else {
-						createDialog('confirmSet' . $row->uuid, "Passwort für diesen Benutzer anlegen und Anmeldung freischalten?", null, "setpw", $row->uuid);
+						createDialog('confirmSet' . $row->getUuid(), "Passwort für diesen Benutzer anlegen und Anmeldung freischalten?", null, "setpw", $row->getUuid());
 					}
 					?>
 				</td>

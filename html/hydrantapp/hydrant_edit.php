@@ -1,18 +1,15 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_engines.php";
-require_once LIBRARY_PATH . "/db_user.php";
-require_once LIBRARY_PATH . "/db_hydrant.php";
 
 // Pass variables (as an array) to template
 $variables = array (
     'secured' => true,
     'showFormular' => true,
-    'privilege' => HYDRANTADMINISTRATOR
+    'privilege' => Privilege::HYDRANTADMINISTRATOR
 );
 
-$variables ['engines'] = get_engines();
+$variables ['engines'] = $engineDAO->getEngines();
 
 if(isset($_GET ['hydrant'])) {
     $variables ['title'] = 'Hydrant bearbeiten';
@@ -56,7 +53,7 @@ if(isset($_POST ['fid'])){
             $hydrant = get_hydrant_by_uuid($uuid);
             $variables ['hydrant'] = $hydrant;
             $variables ['successMessage'] = "Hydrant aktualisiert";
-            insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::HydrantUpdated, $uuid));
+            $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::HydrantUpdated, $uuid));
         } else {
             $variables ['successMessage'] = "Hydrant konnte nicht aktualisiert werden";
         }
@@ -80,7 +77,7 @@ if(isset($_POST ['fid'])){
                 $hydrant = get_hydrant_by_uuid($uuid);
                 $variables ['hydrant'] = $hydrant;
                 $variables ['successMessage'] = "Hydrant angelegt";
-                insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::HydrantCreated, $uuid));
+                $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::HydrantCreated, $uuid));
             } else {
                 $variables ['successMessage'] = "Hydrant konnte nicht angelegt werden";
             }

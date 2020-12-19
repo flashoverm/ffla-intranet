@@ -1,7 +1,6 @@
 <?php
-require_once LIBRARY_PATH . "/db_connect.php";
+require_once "db_connect.php";
 require_once LIBRARY_PATH . "/mail.php";
-require_once LIBRARY_PATH . "/db_user.php";
 
 create_table_event ();
 create_table_staff ();
@@ -111,9 +110,10 @@ function get_all_past_events() {
 }
     
 function get_events($user_uuid) {
-	global $db;
+	global $db, $userDAO;
 	$data = array ();
-	$engine = get_engine_of_user($user_uuid);
+	$user = $userDAO->getUserByUUID($user_uuid);
+	$engine = $user->getEngine()->getUuid();
 	
 	$statement = $db->prepare("SELECT * FROM event WHERE (engine = ? OR creator = ?) AND date >= (now() - INTERVAL 1 DAY) AND deleted_by IS NULL ORDER BY date ASC");
 	$statement->bind_param('ss', $engine, $user_uuid);
@@ -132,9 +132,10 @@ function get_events($user_uuid) {
 }
 
 function get_past_events($user_uuid) {
-    global $db;
+    global $db, $userDAO;
     $data = array ();
-    $engine = get_engine_of_user($user_uuid);
+    $user = $userDAO->getUserByUUID($user_uuid);
+    $engine = $user->getEngine()->getUuid();
     
     $statement = $db->prepare("SELECT * FROM event WHERE (engine = ? OR creator = ?) AND date < (now() - INTERVAL 1 DAY) AND deleted_by IS NULL ORDER BY date DESC");
     $statement->bind_param('ss', $engine, $user_uuid);
@@ -237,13 +238,15 @@ function is_event_full($event_uuid){
 }
 
 function is_user_manager_or_creator($event_uuid, $user_uuid){
+	global $userDAO;
 	$event = get_event($event_uuid);
 	
 	if($event->creator == $user_uuid){
 		return true;
 	}
-	if(user_has_privilege($user_uuid, ENGINEHYDRANTMANANGER) 
-			&& strcmp(get_engine_of_user($user_uuid),$event->engine) == 0){
+	$user = $userDAO->getUserByUUID($user_uuid);
+	if($user->hasPrivilegeByName(Privilege::ENGINEHYDRANTMANANGER) 
+			&& strcmp($user->getEngine()->getUuid(),$event->engine) == 0){
 		return true;
 	}
 	

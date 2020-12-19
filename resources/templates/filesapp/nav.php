@@ -1,9 +1,9 @@
 <?php
 
-function left_navigation ($loggedIn){
+function left_navigation ($currentUser){
 	global $config;
 	
-	if (current_user_has_privilege(FILEADMIN)) {
+	if ($currentUser->hasPrivilegeByName(Privilege::FILEADMIN)) {
 		?>
 	        <li class='nav-item'><a class='nav-link text-light'
 				href='<?= $config["urls"]["filesapp_home"] ?>/forms/admin'>Formulare</a>
@@ -20,11 +20,11 @@ function left_navigation ($loggedIn){
 	}
 }
 
-function middle_navigation ($loggedIn){
+function middle_navigation ($currentUser){
 	
 }
 
-function right_navigation ($loggedIn){
+function right_navigation ($currentUser){
 	global $config;
 	?>
 	<li class='nav-item'>

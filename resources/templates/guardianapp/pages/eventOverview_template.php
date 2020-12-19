@@ -17,7 +17,9 @@ if (!isset($events) || ! count ( $events ) ) {
 				<th data-sortable="true" class="text-center">Öffentlich</th>
 				<th class="text-center">Details</th>
 				<?php
-				if( is_allowed_to_edit_events($_SESSION['intranet_userid']) ){
+				if( $currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)
+						|| $currentUser->hasPrivilegeByName(Privilege::EVENTADMIN)
+						|| $currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
 					echo"<th class='text-center'>Löschen</th>";
 				}
 				?>
@@ -42,7 +44,7 @@ if (!isset($events) || ! count ( $events ) ) {
 				</td>
 				<td class="text-center"><?= get_eventtype($row->type)->type; ?></td>
 				<td class="text-center"><?= $row->title; ?></td>
-				<td class="text-center"><?= get_engine($row->engine)->name; ?></td>
+				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName(); ?></td>
 				<td class="text-center">
 					<?php 
 					if(is_event_full($row->uuid)){
@@ -65,7 +67,7 @@ if (!isset($events) || ! count ( $events ) ) {
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->uuid ?>">Details</a>
 				</td>
 				<?php
-				if(is_allowed_to_edit_event($_SESSION['intranet_userid'], $row->uuid)){
+				if($guardianUserController->isUserAllowedToEditEvent($currentUser, $row->uuid)){
 				?>
 					<td class="text-center">
 						<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDelete<?= $row->uuid; ?>">Löschen</button>

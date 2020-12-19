@@ -1,9 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_report.php";
-require_once LIBRARY_PATH . "/db_engines.php";
-require_once LIBRARY_PATH . "/db_eventtypes.php";
 
 $eventtypes = get_eventtypes ();
 
@@ -12,7 +9,7 @@ $variables = array (
     'title' => "Export Wachberichte",
     'secured' => true,
     'eventtypes' => $eventtypes,
-	'privilege' => EVENTMANAGER,
+		'privilege' => Privilege::EVENTMANAGER,
 );
 
 $type = -1;
@@ -20,13 +17,12 @@ $from = date('Y-m-01');
 $to = date('Y-m-t');
 
 if(userLoggedIn()){
-    $user = $_SESSION ['intranet_userid'];
-    $usersEngine = get_engine(get_engine_of_user($user));
+    $usersEngine = $userController->getCurrentUser()->getEngine();
         
-    if($usersEngine->isadministration == true){
+    if($usersEngine->getIsAdministration() == true){
         $reports = get_reports("ASC");
     } else {
-        $reports = get_filtered_reports($usersEngine->uuid, "ASC");
+        $reports = get_filtered_reports($usersEngine->getUuid(), "ASC");
         $variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die Ihrem Zug zugewiesen wurden";
     }
     
@@ -46,7 +42,7 @@ if(userLoggedIn()){
    
 }
 
-if((isset($_POST['csv']) || isset($_POST['invoice'])) && current_user_has_privilege($variables ['privilege'])){
+if((isset($_POST['csv']) || isset($_POST['invoice'])) && $userController->getCurrentUser()->hasPrivilegeByName($variables ['privilege'])){
 	
 	header('Content-Encoding: UTF-8');
 	header('Content-type: text/csv; charset=UTF-8');
@@ -67,7 +63,7 @@ if((isset($_POST['csv']) || isset($_POST['invoice'])) && current_user_has_privil
     	reportsToInvoiceCSV($reports, $head);
     }
     
-    insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::ReportsExported, null));
+    $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportsExported, null));
 
     return;
 }
@@ -75,7 +71,7 @@ if((isset($_POST['csv']) || isset($_POST['invoice'])) && current_user_has_privil
 renderLayoutWithContentFile ($config["apps"]["guardian"], "reportExport_template.php", $variables );
 
 function reportsToCSV($reports, $head = ""){
-    global $config;
+    global $config, $engineDAO;
     $delimiter = ";";
     $filestring = $head;
         
@@ -113,7 +109,7 @@ function reportsToCSV($reports, $head = ""){
             $unitDuration = strtotime($entry->end) - strtotime($entry->beginn);
             foreach ( $entry->staffList as $staff ) {
                 $filestring .=  $staff->name . $delimiter .
-                    get_engine($staff->engine)->name . $delimiter . 
+                    $engineDAO->getEngine($staff->engine)->getName() . $delimiter . 
                     gmdate($config ["formats"] ["time"], $unitDuration) .
                     "\n";
             }

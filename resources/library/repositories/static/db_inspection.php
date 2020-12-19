@@ -1,6 +1,5 @@
 <?php
-require_once LIBRARY_PATH . "/db_connect.php";
-require_once LIBRARY_PATH . "/db_hydrant.php";
+require_once "db_connect.php";
 require_once LIBRARY_PATH . "/class/HydrantInspection.php";
 
 create_table_inspection ();

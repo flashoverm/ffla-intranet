@@ -1,20 +1,19 @@
 <?php
-require_once LIBRARY_PATH . "/db_connect.php";
-require_once LIBRARY_PATH . "/class/LogbookEntry.php";
+require_once "db_connect.php";
 
 create_table_logbook();
-
+/*
 function insert_logbook_entry(LogbookEntry $entry){
 	global $db;
 	
-	$objects = $entry->objects;
+	$objects = $entry->getObject();
 	if(is_array($objects)){
 		$objects = implode(",", $objects);
 	}
 	
 	$statement = $db->prepare("INSERT INTO logbook (uuid, timestamp, action, object, user, message)
 		VALUES(?, ?, ?, ?, ?, ?)");
-	$statement->bind_param('ssisss', $entry->uuid, $entry->timestamp, $entry->actionId, $objects, $entry->user, $entry->message);
+	$statement->bind_param('ssisss', $entry->getUuid(), $entry->getTimestamp(), $entry->getAction(), $objects, $entry->getUser(), $entry->getMessage());
 	
 	$result = $statement->execute();
 	
@@ -131,7 +130,8 @@ function clear_logbook() {
 		return false;
 	}
 }
-
+*/
+/*
 function create_table_logbook() {
 	global $db;
 	
@@ -154,3 +154,4 @@ function create_table_logbook() {
 		return false;
 	}
 }
+*/

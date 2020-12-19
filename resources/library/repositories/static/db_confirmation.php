@@ -1,5 +1,6 @@
 <?php
-require_once LIBRARY_PATH . "/db_connect.php";
+require_once "db_connect.php";
+
 require_once LIBRARY_PATH . "/class/constants/ConfirmationStates.php";
 
 create_table_confirmation();

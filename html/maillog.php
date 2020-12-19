@@ -1,19 +1,18 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_maillog.php";
 
 // Pass variables (as an array) to template
 $variables = array (
 		'title' => "Mail Log",
 		'secured' => true,
-		'privilege' => PORTALADMIN
+		'privilege' => Privilege::PORTALADMIN
 );
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if( isset($_POST['purge']) ){
-		insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::MaillogDeleted, NULL));
-		clear_maillog();		
+		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::MaillogDeleted, NULL));
+		$mailLogDAO->clearMailLog();
 	}
 	if( isset($_POST['testmail']) ){
 		for($i=0; $i<10; $i++){
@@ -26,10 +25,10 @@ $variables ['resultSize'] = 20;
 
 if(isset($_GET['page'])){
 	$variables ['currentPage'] = $_GET['page'];
-	$variables ['mails'] = get_maillogs($_GET['page'], $variables ['resultSize']);
+	$variables ['mails'] = $mailLogDAO->getMailLogs($_GET['page'], $variables ['resultSize']);
 } else {
 	$variables ['currentPage'] = 1;
-	$variables ['mails'] = get_maillogs(1, $variables ['resultSize']);
+	$variables ['mails'] = $mailLogDAO->getMailLogs(1, $variables ['resultSize']);
 }
 
 renderLayoutWithContentFile ($config["apps"]["landing"], "maillog_template.php", $variables );

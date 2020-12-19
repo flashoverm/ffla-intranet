@@ -1,9 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_eventtypes.php";
-require_once LIBRARY_PATH . "/db_event.php";
-require_once LIBRARY_PATH . "/db_user.php";
 require_once LIBRARY_PATH . "/mail_controller.php";
 
 if (! isset($_GET['id'])) {
@@ -26,8 +23,8 @@ if (! isset($_GET['id'])) {
     	if (userLoggedIn()) {
     		$isCreator = (strcmp($event->creator, $_SESSION['intranet_userid']) == 0);
     		
-    		if(strcmp(get_user($_SESSION['intranet_userid'])->engine, $event->engine) != 0){
-    		    $otherEngine = get_engine($event->engine);
+    		if(strcmp($userController->getCurrentUser()->getEngine()->getUuid(), $event->engine) != 0){
+    		    $otherEngine = $engineDAO->getEngine($event->engine);
     		 
     		}
     	}
@@ -51,7 +48,7 @@ if (! isset($_GET['id'])) {
     		$log = LogbookEntry::fromAction(LogbookActions::EventUnscribed, $staff_uuid);
     		if(remove_staff_user($staff_uuid)){
     			$staffpos = get_events_staffposition($staff_uuid);
-    			insert_logbook_entry($log);
+    			$logbookDAO->save($log);
     			$variables['successMessage'] = "Personal-Eintrag entfernt";
     		} else {
     			$variables['alertMessage'] = "Eintrag konnte nicht entfernt werden";
@@ -64,7 +61,7 @@ if (! isset($_GET['id'])) {
     		$staffpos = get_events_staffposition($staff_uuid);
     		$log = LogbookEntry::fromAction(LogbookActions::EventUnscribedByUser, $staff_uuid);
     		if(remove_staff_user($staff_uuid)){
-    			insert_logbook_entry($log);
+    			$logbookDAO->save($log);
     			$variables['successMessage'] = "Personal-Eintrag entfernt";
     		} else {
     			$variables['alertMessage'] = "Eintrag konnte nicht entfernt werden";
@@ -76,7 +73,7 @@ if (! isset($_GET['id'])) {
     		mail_confirm_staff_user($staff_uuid, $uuid);
     		if(confirm_staff_user($staff_uuid)){
     			$variables['successMessage'] = "Personal bestätigt";
-    			insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::EventStaffConfirmed, $staff_uuid));
+    			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventStaffConfirmed, $staff_uuid));
     		} else {
     			$variables['alertMessage'] = "Personal konnte nicht bestätigt werden";
     		}
@@ -87,7 +84,7 @@ if (! isset($_GET['id'])) {
     			$event = get_event($uuid);
     			mail_publish_event($event);
     			$variables['successMessage'] = "Wache veröffentlich - Wachbeauftragte informiert";
-    			insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::EventPublished, $uuid));
+    			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventPublished, $uuid));
     			$event = get_event($uuid);
     		} else {
     			$variables['alertMessage'] = "Wache konnte nicht veröffentlicht werden";

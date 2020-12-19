@@ -104,9 +104,9 @@ function createUnitStaff($unitNumber, $staffNumber, $staff = null) {
 			disabled name="unit<?= $unitNumber ?>engine<?= $staffNumber ?>" required="required" id="positionengine">
 			<option value="" selected>Löschzug auswählen</option>
 			<?php foreach ( $engines as $option ) : ?>
-			<option value="<?=  $option->uuid; ?>"
-				<?php if(isset($staff) && $staff->engine == $option->uuid){ echo "selected"; } ?>>
-				<?= $option->name; ?>
+			<option value="<?=  $option->getUuid(); ?>"
+				<?php if(isset($staff) && $staff->engine == $option->getUuid()){ echo "selected"; } ?>>
+				<?= $option->getName(); ?>
 			</option>
 			<?php endforeach; ?>
 		</select>

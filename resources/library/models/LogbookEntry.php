@@ -1,48 +1,152 @@
-<?php 
-require_once LIBRARY_PATH . "/db_inspection.php";
-require_once LIBRARY_PATH . "/db_eventtypes.php";
-require_once LIBRARY_PATH . "/db_event.php";
-require_once LIBRARY_PATH . "/db_report.php";
-require_once LIBRARY_PATH . "/db_staffpositions.php";
-require_once LIBRARY_PATH . "/db_files.php";
+<?php
 
-class LogbookEntry {
+//use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="logbook")
+ */
+class LogbookEntry extends BaseModel {
 	
-	public $uuid;
-	public $timestamp;
-	public $actionId;
-	public $user;
-	public $objects;
-	public $message;
+	/**
+	 * @ORM\Id
+	 * @ORM\Column(type="string")
+	 */
+	protected $uuid;
 	
-	protected function __construct() {
+	
+	protected $timestamp;
+	
+	/**
+	 * @ORM\Column(type="smallint")
+	 */
+	protected $action;
+	
+	/**
+	 * @ORM\Column(type="string")
+	 */
+	protected $user;
+	
+	/**
+	 * @ORM\Column(type="string")
+	 */
+	protected $object;
+	
+	/**
+	 * @ORM\Column(type="string")
+	 */
+	protected $message;
+	
+	
+	public function __construct() {
 		
 	}
+	
+	
+	/**
+	 * @return mixed
+	 */
+	public function getUuid() {
+		return $this->uuid;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTimestamp() {
+		return $this->timestamp;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAction() {
+		return $this->action;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getUser() {
+		return $this->user;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getObject() {
+		return $this->object;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMessage() {
+		return $this->message;
+	}
+
+	/**
+	 * @param mixed $uuid
+	 */
+	public function setUuid($uuid) {
+		$this->uuid = $uuid;
+	}
+
+	/**
+	 * @param mixed $timestamp
+	 */
+	public function setTimestamp($timestamp) {
+		$this->timestamp = $timestamp;
+	}
+
+	/**
+	 * @param mixed $action
+	 */
+	public function setAction($action) {
+		$this->action = $action;
+	}
+
+	/**
+	 * @param mixed $user
+	 */
+	public function setUser($user) {
+		$this->user = $user;
+	}
+
+	/**
+	 * @param mixed $object
+	 */
+	public function setObjects($object) {
+		$this->object = $object;
+	}
+
+	/**
+	 * @param mixed $message
+	 */
+	public function setMessage($message) {
+		$this->message = $message;
+	}
+	
+	
+	/*
+	 **************************************************
+	 * Custom Methods
+	 */
 	
 	public static function fromAction($actionId, $objects){
-		$instance = new LogbookEntry();
+		$entry = new LogbookEntry();
 		
-		$instance->uuid = getGUID ();
-		$instance->timestamp = date('Y-m-d H:i:s');
-		$instance->actionId = $actionId;
-		$instance->user = NULL;
+		$entry->setUuid(getGUID ());
+		$entry->setTimestamp(date('Y-m-d H:i:s'));
+		$entry->setAction($actionId);
+		$entry->setUser(NULL);
 		if(isset($_SESSION ['intranet_userid'])){
-			$instance->user = $_SESSION ['intranet_userid'];
+			$entry->setUser($_SESSION ['intranet_userid']);
 		}
-		$instance->objects = $objects;
-		$instance->message = LogbookEntry::logbookEnry($actionId, $objects);
-		return $instance;
-	}
-	
-	public static function fromDB($result){
-		$instance = new LogbookEntry();
+		$entry->setObjects($objects);
+		$entry->setMessage(LogbookEntry::logbookEnry($actionId, $objects));
 		
-		$instance->uuid = $result->uuid;
-		$instance->timestamp = $result->timestamp;
-		$instance->actionId = $result->action;
-		$instance->objects = $result->object;
-		$instance->message = $result->message;
-		return $instance;
+		return $entry;
 	}
 		
 	/*
@@ -50,121 +154,115 @@ class LogbookEntry {
 	 */
 	
 	protected static function userEntry($action, $user_uuid){
-		global $logbookActions;
-		$user = get_user($user_uuid);
+		global $userDAO;
+		$user = $userDAO->getUserByUUID($user_uuid);
 		if( ! $user ){
 			return null;
 		}
-		return $logbookActions[$action] . ": " . $user->firstname . " " . $user->lastname . " (" . $user->email . ")";
+		return LogbookActions::getActionText($action) . ": " . $user->getFullNameWithEmail();
 	}
 	
 	protected static function loginEntry($action, $user_uuid){
-		global $logbookActions;
-		$user = get_user($user_uuid);
+		global $userDAO;
+		$user = $userDAO->getUserByUUID($user_uuid);
 		if( ! $user ){
 			return null;
 		}
-		return $logbookActions[$action] . ": " . $user->firstname . " " . $user->lastname . " (" . $user->email . ")";
+		return LogbookActions::getActionText($action) . ": " . $user->getFullNameWithEmail();
 	}
 	
 	protected static function logbookEntry($action, $event_uuid){
-		global $logbookActions;
-		return $logbookActions[$action];
+		return LogbookActions::getActionText($action);
 	}
 	
 	protected static function eventEntry($action, $event_uuid){
-		global $logbookActions, $config;
+		global $config;
 		$event = get_event($event_uuid);
 		if( ! $event ){
 			return null;
 		}
-		return $logbookActions[$action] . ":<br>"
+		return LogbookActions::getActionText($action) . ":<br>"
 				. "Wache: " . get_eventtype($event->type)->type . " (" . date($config ["formats"] ["date"], strtotime($event->date)) . " " . date($config ["formats"] ["time"], strtotime($event->start_time)) . " Uhr)<br>"
 						. "Titel: " . $event->title ;
 	}
 	
 	protected static function eventStaffEntry($action, $staff_uuid){
-		global $logbookActions, $config;;
+		global $config, $userDAO;
 		$staff = get_events_staffposition($staff_uuid);
 		if( ! $staff ){
 			return null;
 		}
 		$staffpos = $staff->position;
 		$event = get_event($staff->event);
-		$user = get_user($staff->user);
+		$user = $userDAO->getUserByUUID($staff->user);
 		
-		return $logbookActions[$action] . ":<br>"
+		return LogbookActions::getActionText($action) . ":<br>"
 				. "Wache:  " . get_eventtype($event->type)->type . " (" . date($config ["formats"] ["date"], strtotime($event->date)) . " " . date($config ["formats"] ["time"], strtotime($event->start_time)) . " Uhr) " . $staffpos . "<br>"
-						. "Person: " . $user->firstname . " " . $user->lastname . " (" . $user->email . ")";
+						. "Person: " . $user->getFullNameWithEmail();
 	}
 	
 	protected static function staffTemplateEntry($action, $eventtype_uuid){
-		global $logbookActions;
 		if( ! true ){
 			return null;
 		}
-		return $logbookActions[$action];
+		return LogbookActions::getActionText($action);
 	}
 	
 	protected static function eventReportEntry($action, $report_uuid){
-		global $logbookActions, $config;;
+		global $config;;
 		$report = get_report($report_uuid);
 		if( ! $report ){
 			return null;
 		}
-		return $logbookActions[$action] . ":<br>"
+		return LogbookActions::getActionText($action) . ":<br>"
 				. "Bericht für: " . get_eventtype($report->type)->type . " (" . date($config ["formats"] ["date"], strtotime($report->date)) . " " . date($config ["formats"] ["time"], strtotime($report->start_time)) . " Uhr)<br>"
 						. "Titel: " . $report->title ;
 	}
 	
 	protected static function eventReportExport($action){
-		global $logbookActions;
-		return $logbookActions[$action];
+		return LogbookActions::getActionText($action);
 	}
 	
 	protected static function hydrantEntry($action, $hydrant_uuid){
-		global $logbookActions;
 		$hydrant = get_hydrant_by_uuid($hydrant_uuid);
 		if( ! $hydrant ){
 			return null;
 		}
-		return $logbookActions[$action] . ": HY-Nr. " . $hydrant->hy;
+		return LogbookActions::getActionText($action) . ": HY-Nr. " . $hydrant->hy;
 	}
 	
 	protected static function hydrantInspectionEntry($action, $inspection_uuid){
-		global $logbookActions, $config;;
+		global $config;;
 		$inspection = get_inspection($inspection_uuid);
 		if( ! $inspection ){
 			return null;
 		}
-		return $logbookActions[$action] . ": " . $inspection->vehicle . " (" . date($config ["formats"] ["date"], strtotime($inspection->date)) . ")";
+		return LogbookActions::getActionText($action) . ": " . $inspection->vehicle . " (" . date($config ["formats"] ["date"], strtotime($inspection->date)) . ")";
 	}
 	
 	protected static function fileEntry($action, $file_uuid){
-		global $logbookActions;
 		$file = get_file($file_uuid);
 		if( ! $file ){
 			return null;
 		}
-		return $logbookActions[$action] . ": " . $file->description;
+		return LogbookActions::getActionText($action) . ": " . $file->description;
 	}
 	
 	protected static function confirmationEntry($action, $confirmation_uuid){
-		global $logbookActions, $config;;
+		global $config, $userDAO;
 		$confirmation = get_confirmation($confirmation_uuid);
 		if( ! $confirmation ){
 			return null;
 		}
-		$user = get_user($confirmation->user);
+		$user = $userDAO->getUserByUUID($confirmation->user);
 		
-		return $logbookActions[$action] . ": <br>" . $confirmation->description . " (" . date($config ["formats"] ["date"], strtotime($confirmation->date)) . " " . date($config ["formats"] ["time"], strtotime($confirmation->start_time)) . " Uhr)<br>"
-				. "Antragsteller: " . $user->firstname . " " . $user->lastname . " (" . $user->email . ")";
+		return LogbookActions::getActionText($action) . ": <br>" . $confirmation->description . " (" . date($config ["formats"] ["date"], strtotime($confirmation->date)) . " " . date($config ["formats"] ["time"], strtotime($confirmation->start_time)) . " Uhr)<br>"
+				. "Antragsteller: " . $user->getFullNameWithEmail();
 	}
 	
 	
 	
 	public static function logbookEnry($action_id, $objects){
-		global $logbookActions;
 		$message = null;
 		
 		if($action_id < 20){
@@ -205,7 +303,7 @@ class LogbookEntry {
 		}
 		
 		if($message == null){
-			$message = "Log-Nachricht für '" . $logbookActions[$action_id] . "' konnte nicht erzeugt werden";
+			$message = "Log-Nachricht für '" . LogbookActions::getActionText($action_id) . "' konnte nicht erzeugt werden";
 		}
 		return $message;
 	}

@@ -3,11 +3,11 @@
 	method="post">
 	
 	<div class="form-group">
-		<label class="mt-1">Personalauswahl (nur Personal aus  <?= get_engine_obj_of_user($_SESSION['intranet_userid'])->name ?>):</label>
+		<label class="mt-1">Personalauswahl (nur Personal aus  <?= $currentUser->getEngine()->getName() ?>):</label>
 		<select class="form-control" name="user" id="user" required="required" onchange="getUser()">
 			<option value="new">Neuer Eintrag:</option>
 			<?php foreach ( $user as $option ) : ?>
-			<option value="<?=  $option->uuid; ?>"><?= $option->lastname . ", " . $option->firstname . " (" . $option->email . ")" ?></option>
+			<option value="<?=  $option->getUuid(); ?>"><?= $option->getFullNameWithEmail(); ?></option>
 			<?php endforeach; ?>
 		</select> 
 	</div>
@@ -39,7 +39,7 @@
 				<select class="form-control" name="engine" id="engine" required="required" onchange="setEngineHid()">
 					<option value="" disabled selected>Löschzug auswählen</option>
 					<?php foreach ( $engines as $option ) : ?>
-					<option value="<?=  $option->uuid; ?>"><?= $option->name; ?></option>
+					<option value="<?=  $option->getUuid(); ?>"><?= $option->getName(); ?></option>
 					<?php endforeach; ?>
 				</select>
 				<input type="hidden" class="form-control" name="engine_hid" id="engine_hid">
@@ -123,7 +123,7 @@ function setUser(){
         	firstname.value = response.firstname;
         	lastname.value = response.lastname;
         	email.value = response.email;
-        	engine.value = response.engine;
+        	engine.value = response.engine.uuid;
 
         	setEngineHid();
             	

@@ -20,16 +20,15 @@ if ( ! count ( $open ) ) {
 		<tbody>
 		<?php
 		foreach ( $open as $row ) {
-			$user = get_user($row->user);
-			$engine = get_engine($user->engine);
+			$user = $userDAO->getUserByUUID($row->user);
 		?>
 			<tr>
 				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
 				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
 				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->end_time)); ?></td>
 				<td class="text-center"><?= $row->description ?></td>
-				<td><?= $user->firstname . " " . $user->lastname ?></td>
-				<td><?= $engine->name ?></td>
+				<td><?= $user->getFullName() ?></td>
+				<td><?= $user->getEngine()->getName() ?></td>
 				<td class="text-center">
 					<div class="dropdown">
 						<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Optionen</button>
@@ -110,14 +109,14 @@ if ( ! count ( $open ) ) {
 			<tbody>
 			<?php
 			foreach ( $accepted as $row ) {
-				$user = get_user($row->user);
+				$user = $userDAO->getUserByUUID($row->user);
 			?>
 				<tr>
 					<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
 					<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
 					<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->end_time)); ?></td>
 					<td class="text-center"><?= $row->description ?></td>
-					<td class="text-center"><?= $user->firstname . " " . $user->lastname ?></td>
+					<td class="text-center"><?= $user->getFullName() ?></td>
 					<td class="text-center">
 						<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->uuid ."/file" ?>">Nachweis anzeigen</a>
 					</td>

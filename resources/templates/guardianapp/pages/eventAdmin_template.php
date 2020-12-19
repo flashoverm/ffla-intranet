@@ -55,7 +55,7 @@ if (!isset($events) || ! count ( $events ) ) {
 					}
 					?>
 				</td>
-				<td class="text-center"><?= get_engine($row->engine)->name; ?></td>
+				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName(); ?></td>
 				<td class="text-center">
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->uuid ?>">Details</a>
 				</td>
@@ -124,7 +124,7 @@ if ( isset($pastEvents) && count ( $pastEvents )) {
 					}
 					?>
 				</td>
-				<td class="text-center"><?= get_engine($row->engine)->name; ?></td>
+				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName();?></td>
 				<td class="text-center">
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->uuid ?>">Details</a>
 				</td>
@@ -199,8 +199,8 @@ if ( isset($deletedEvents) && count ( $deletedEvents )) {
 					}
 					?>
 				</td>
-				<td class="text-center"><?= get_engine($row->engine)->name; ?></td>
-				<td class="text-center"><?= get_user($row->deleted_by)->email; ?></td>
+				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName(); ?></td>
+				<td class="text-center"><?= $userDAO->getUserByUUID($row->deleted_by)->getEmail(); ?></td>
 				<td class="text-center">
 					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->uuid ?>">Details</a>
 				</td>

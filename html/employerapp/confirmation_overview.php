@@ -1,7 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_confirmation.php";
 require_once LIBRARY_PATH . "/mail_controller.php";
 
 // Pass variables (as an array) to template
@@ -15,7 +14,7 @@ if( isset( $_POST['withdraw'] ) ){
 	$confirmation_uuid = $_POST['withdraw'];
 	$log = LogbookEntry::fromAction(LogbookActions::ConfirmationWithdraw, $confirmation_uuid);
 	if( delete_confirmation( $confirmation_uuid ) ){
-		insert_logbook_entry($log);
+		$logbookDAO->save($log);
 		$variables ['successMessage'] = "Anfrage zurückgezogen";
 	} else {
 		$variables ['alertMessage'] = "Anfrage konnte nicht zurückgezogen werden";

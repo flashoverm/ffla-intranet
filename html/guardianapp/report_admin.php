@@ -1,15 +1,12 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_report.php";
-require_once LIBRARY_PATH . "/db_engines.php";
-require_once LIBRARY_PATH . "/db_eventtypes.php";
 
 // Pass variables (as an array) to template
 $variables = array (
     'title' => "Übersicht Wachberichte",
     'secured' => true,
-	'privilege' => EVENTADMIN
+		'privilege' => Privilege::EVENTADMIN
 );
 
   
@@ -18,7 +15,7 @@ if (isset ( $_POST ['delete'] )) {
 	$log = LogbookEntry::fromAction(LogbookActions::ReportDeleted, $delete_report_uuid);
 	if(delete_report ( $delete_report_uuid )){
 		$variables ['successMessage'] = "Bericht gelöscht";
-		insert_logbook_entry($log);
+		$logbookDAO->save($log);
 	} else {
 		$variables ['alertMessage'] = "Bericht konnte nicht gelöscht werden";
 	}

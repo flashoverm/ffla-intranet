@@ -1,9 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_event.php";
-require_once LIBRARY_PATH . "/db_engines.php";
-require_once LIBRARY_PATH . "/db_user.php";
 require_once LIBRARY_PATH . "/mail_controller.php";
 
 // Pass variables (as an array) to template
@@ -16,7 +13,7 @@ $variables = array (
 if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 
 	$staffUUID = trim ( $_GET ['staffid'] );
-	$engines = get_engines ();
+	$engines = $engineDAO->getEngines();
 	$eventUUID = trim ( $_GET ['id'] );
 	
 	$event = get_event($eventUUID);
@@ -32,7 +29,7 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     	$variables ['subtitle'] = date($config ["formats"] ["date"], strtotime($event->date)) 
     	. " - " . date($config ["formats"] ["time"], strtotime($event->start_time)) . " als " . $staffposition->position;
     	if(userLoggedIn()){
-    		$variables['currentUser'] = get_user($_SESSION ['intranet_userid']);
+    		$variables['currentUser'] = $userController->getCurrentUser();
     	}else{
     		$actual_link = "{$_SERVER['REQUEST_URI']}";
     		$_SESSION["ref"] = $actual_link;
@@ -50,27 +47,29 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     		if(isset($_POST ['informMe'])){
     			$informMe = true;
     		}
-
-    		if(!email_in_use($email) ){
-    			$user = inset_participant_only ( $firstname, $lastname, $email, $engineUUID );
+    		
+    		if(! $guardianUserController->isEmailInUse($email) ){
+    			$engine = $engineDAO->getEngine($engineUUID);
+    			$user = $guardianUserController->insertEventParticipant($firstname, $lastname, $email, $engine);
     		} else {
-    			$user = get_user_by_data($firstname, $lastname, $email, $engineUUID);
+    			$user = $userDAO->getUserByData($firstname, $lastname, $email, $engineUUID);
     		}
+
     		//if user exists with these name/engine ok - else error!
     		if($user){
     				
-    			if(user_has_privilege($user->uuid, EVENTPARTICIPENT)){
+    			if($user->hasPrivilegeByName(Privilege::EVENTPARTICIPENT)){
     				//if uuid is already in event -> error
-    				if(!is_user_already_staff($eventUUID, $user->uuid)){
+    				if(!is_user_already_staff($eventUUID, $user->getUuid())){
     						
-    					$result = subscribe_staff_user ( $staffUUID, $user->uuid );
+    					$result = subscribe_staff_user ( $staffUUID, $user->getUuid() );
     						
     					if($result == 1){
     							
-    						mail_subscribe_staff_user ( $eventUUID, $user->uuid, $informMe);
+    						mail_subscribe_staff_user ( $eventUUID, $user->getUuid(), $informMe);
     						$variables ['successMessage'] = "Als Wachteilnehmer eingetragen - <a href=\"" . $config["urls"]["guardianapp_home"] . "/events/" . $eventUUID . "\" class=\"alert-link\">Zurück</a>";
     						
-    						insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::EventSubscribed, $staffUUID));
+    						$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventSubscribed, $staffUUID));
     						$variables ['showFormular'] = false;
     						header ( "Location: " . $config["urls"]["guardianapp_home"] . "/events/".$eventUUID); // redirects
     							

@@ -1,8 +1,9 @@
 <?php 
-require_once LIBRARY_PATH . "/db_connect.php";
+require_once REPOSITORIES_PATH . "/db_connect.php";
+
 require_once LIBRARY_PATH . "/util.php";
 
-
+/*
 //Restrictions
 define("FILEADMIN", "FILEADMIN");
 
@@ -263,3 +264,4 @@ function create_table_privilege() {
 
 
 ?>
+*/

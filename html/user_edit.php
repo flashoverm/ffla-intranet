@@ -1,68 +1,52 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_user.php";
-require_once LIBRARY_PATH . "/db_engines.php";
 require_once LIBRARY_PATH . "/mail_controller.php";
-
-require_once LIBRARY_PATH . "/class/User.php";
-
-$privileges = get_all_privileges();
 
 // Pass variables (as an array) to template
 $variables = array (
 	'secured' => true,
-	'engines' => get_engines(),
-	'privileges' => $privileges,
+	'engines' => $engineDAO->getEngines(),
+	'privileges' => $privilegeDAO->getPrivileges(),
 );
 
 if( isset($_GET['self']) ){
 	// edit by user itself
+	//		uuid from current user
+	//		no password edit
+	//		no privilege edit
+	
 	$variables['title'] = "Benutzer bearbeiten";
-	
-	$variables['showRights'] = false;
-	$variables['user'] = get_user($_SESSION ['intranet_userid']);
-	$variables['privilege'] = EDITUSER;
-	
-	
-} else if( isset($_GET['uuid']) ){
-	// edit by admin
-	$variables['title'] = "Benutzer bearbeiten";
-	$variables['privilege'] = PORTALADMIN;
-	
-	$variables['showRights'] = true;
-	$user = get_user($_GET['uuid']);
-	if($user){
-		$variables['user'] = $user;
-	} else {
-		$variables ['alertMessage'] = "Benutzer wurde nicht gefunden";
-	}
-	
+	$variables['userSelfEdit'] = true;
+	$variables['privilege'] = Privilege::EDITUSER;
+	$variables['user'] = $userController->getCurrentUser();
+
 } else {
-	// new user
-	$variables['title'] = "Benutzer anlegen";
+	// register
+	//		password given
+	//		default privileges assigned
 	
-	if(current_user_has_privilege(PORTALADMIN)){
-		$variables['showRights'] = true;
-	} else {
-		$variables['showRights'] = false;
-	}
+	$variables['title'] = "Benutzer erstellen";
+
 	if( $config ["settings"] ["selfregistration"]){
 		$variables['secured'] = false;
-	} else {
-		$variables['privilege'] = PORTALADMIN;
 	}
-	
 }
 
 
 
-if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_POST ['firstname'] ) && isset ( $_POST ['lastname'] )) {
+if (isset ( $_POST ['useremail'] ) ) {
 
 	$firstname = trim($_POST ['firstname']);
 	$lastname = trim($_POST ['lastname']);
 	$email = strtolower(trim($_POST ['useremail']));
-	$engine = trim($_POST ['engine']);	
+	
+	if(isset($variables['userSelfEdit'])){
+		$engine = $variables['user']->getEngine();
+	} else {
+		$engineUuid = trim($_POST ['engine']);
+		$engine = $engineDAO->getEngine($engineUuid);
+	}
 	
 	$employerAddress = null;
 	if(isset($_POST['employerAddress'])){
@@ -74,8 +58,15 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 		$employerMail = trim($_POST['employerMail']);
 	}
 	
-	//check if password equals (if set)
+	$uuid = null;
+	if(isset($_GET['self'])){
+		$uuid = $variables['user']->getUuid();
+	}
+	
 	$exit = false;
+	
+	//check if password equals (if set)
+	$password = NULL;
 	if(isset($_POST ['userpassword'])){
 		$password = trim($_POST ['userpassword']);
 		$password2 = trim($_POST ['userpassword2']);
@@ -85,106 +76,78 @@ if (isset ( $_POST ['useremail'] ) && isset ( $_POST ['engine'] ) && isset ( $_P
 			$exit = true;
 		}
 	}
-
-	if (! $exit) {
-		/*
-		 * logic for adding login (password) to existing user
-		 * if mail is in use and entered data matches with user, create password for user
-		 * else: if user is updated (uuid or self is set as parameter) skip
-		 * 		 else: print error
-		 */
-		if (email_in_use ( $email )) {
-			$user = get_user_by_data($firstname, $lastname, $email, $engine);
-			if($user){
-				if($user->password == NULL){
-					if(reset_password($user->uuid)){
-						$variables ['successMessage'] = "Das Passwort wurde gesetzt und gesendet";
-						insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserResetPassword, $user->uuid));
-					} else {
-						$variables ['alertMessage'] = "Ein unbekannter Fehler ist aufgetreten";
-					}
-					$exit = true;
-				} else {
-					if( ! isset($_GET['uuid']) && ! isset($_GET['self']) ){
-						$variables ['alertMessage'] = "Diese E-Mail-Adresse ist bereits vergeben";
-						$exit = true;
-					}
-				}
-			} else {
-				if(! isset($_GET['uuid'])  && ! isset($_GET['self']) ){
-					$variables ['alertMessage'] = "E-Mail-Adresse bereits mit anderem Namen/Zug in Verwendung!";
-					$exit = true;
-				}
-			}
-		}
-	}
+	
 	
 	if (! $exit) {
-		/*
-		 * logic to create or update existing user (with password)
-		 * 
-		 * if: user is updated by admin (uuid is parameter): update
-		 * else if: user is updated by himself (self is parameter): update
-		 * else: insert new user
-		 */
-		if( isset($_GET['uuid']) ){
-			$user = update_user($_GET['uuid'], $firstname, $lastname, $email, $engine, $employerAddress, $employerMail );
-		} else if( isset($_GET['self']) ){
-			$user = update_user($_SESSION ['intranet_userid'], $firstname, $lastname, $email, $engine, $employerAddress, $employerMail );
-		} else {
-			$user = insert_user ( $firstname, $lastname, $email, $password, $engine, $employerAddress, $employerMail );
-			// add default privileges to new user
-			$privileges = get_all_privileges();
-			foreach($privileges as $privilege){
-				if($privilege->is_default){
-					add_privilege_to_user($user->uuid, $privilege->uuid);
-				}
-			}
-		}
-		
-		if ($user) {
-			$variables['user'] = $user;
-			/*
-			 * update privileges if privilege-list is displayed (param updateRights)
-			 * delete all from user and set all marked privileges
-			 */
-			if(isset($_POST['updateRights'])){
-				foreach($privileges as $privilege){
+
+		if($uuid == null){
+			
+			//New user is requested
+			
+			$user = new User();
+			$user->setUserData($firstname, $lastname, $email, $engine, $employerAddress, $employerMail);
+			$user->setPassword($password);
+			
+			try{
+				
+				$user = $userController->createNewUser($user);
+
+				if($user){
+					//Password and default privileges added to existing non-login-user or new user created
 					
-					remove_privilege_from_user($user->uuid, $privilege->uuid);
+					$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserCreated, $user->getUuid()));
+					$variables ['successMessage'] = "Der Benutzer wurde angelegt. Die Zugangsdaten wurden per E-Mail übermittelt. <a href='" . $config["urls"]["intranet_home"] . "/login'>Weiter zum Login</a>";
 					
-					$inputName = "priv_" . $privilege->uuid;
+					unset($_POST);
+					unset($variables['user']);
 					
-					if(isset ( $_POST [ $inputName ] )){
-						add_privilege_to_user($user->uuid, $privilege->uuid);
+					$mail = mail_add_user($email, $password);
+					if(!$mail){
+						$variables ['alertMessage'] = "E-Mail konnte nicht versendet werden";
 					}
+					
+					//header ( "Location: " . $config["urls"]["intranet_home"] . "/login" ); // redirects
+				}
+				
+			} catch(Exception $e) {
+				switch ($e->getCode()){
+					case 101:
+						$variables ['alertMessage'] = "E-Mail-Adresse bereits mit anderem Namen/Zug in Verwendung!";
+						break;
+					case 102:
+						$variables ['alertMessage'] = "Diese E-Mail-Adresse ist bereits vergeben";
+						break;
+					default:
+						$variables ['alertMessage'] = "Ein unbekannter Fehler ist aufgetreten";
 				}
 			}
 			
-			if( isset($_GET['uuid']) || isset($_GET['self']) ){
-				insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserUpdated, $user->uuid));
-				$variables ['successMessage'] = "Der Benutzer wurde aktualisiert";
-			} else {
-				$mail = mail_add_user($email, $password);
-				insert_logbook_entry(LogbookEntry::fromAction(LogbookActions::UserCreated, $user->uuid));
-				$variables ['successMessage'] = "Der Benutzer wurde angelegt und informiert";
-				unset($_POST);
-				unset($variables['user']);
-				if(!$mail){
-					$variables ['alertMessage'] = "E-Mail konnte nicht versendet werden";
-				}
-			}
-			
-			if(userLoggedIn()){
-				//header ( "Location: " . $config["urls"]["intranet_home"] . "/users" ); // redirects
-			}else{
-				//header ( "Location: " . $config["urls"]["intranet_home"] . "/login" ); // redirects
-			}
 		} else {
-			$variables ['alertMessage'] = "Ein unbekannter Fehler ist aufgetreten";
+			
+			//Edit own user
+			
+			$user = $variables['user'];
+			
+			if($user->getEmail() != $email && $userController->isEmailInUse($email)){
+				//new email address is entered but the new one is already in use
+				$variables ['alertMessage'] = "Die eingegeben E-Mail-Adresse '" . $email . "' ist bereits vergeben";
+			} else {
+				
+				$user->setUserData($firstname, $lastname, $email, $engine, $employerAddress, $employerMail);
+				$user = $userDAO->save($user);
+				
+				if($user){
+					$variables['user'] = $user;
+					$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserUpdated, $user->getUuid()));
+					$variables ['successMessage'] = "Der Benutzer wurde aktualisiert";
+				} else {
+					$variables ['alertMessage'] = "Der Benutzer konnte nicht aktualisiert werden";
+				}
+				
+			}
 		}
 	}
 }
 
-renderLayoutWithContentFile ($config["apps"]["landing"], "userEdit_template.php", $variables );
+renderLayoutWithContentFile ($config["apps"]["landing"], "userEdit/userEdit_template.php", $variables );
 ?>

@@ -1,7 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_inspection.php";
 
 require_once LIBRARY_PATH . "/class/constants/HydrantCriteria.php";
 
@@ -22,7 +21,7 @@ if(isset($_POST['hydrants'])){
 $variables = array(
 		'title' => "Prüfbericht",
 		'secured' => true,
-		'privilege' => ENGINEHYDRANTMANANGER,
+		'privilege' => Privilege::ENGINEHYDRANTMANANGER,
 		'criteria' => $hydrant_criteria,
 		'hydrants' => $hydrants,
 		'orientation' => 'landscape'

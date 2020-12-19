@@ -1,5 +1,5 @@
 <?php
-require_once LIBRARY_PATH . "/db_connect.php";
+require_once "db_connect.php";
 
 create_table_eventtype ();
 

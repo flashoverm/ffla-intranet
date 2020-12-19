@@ -1,10 +1,4 @@
 <?php 
-require_once LIBRARY_PATH . "/db_eventtypes.php";
-require_once LIBRARY_PATH . "/db_event.php";
-require_once LIBRARY_PATH . "/db_user.php";
-require_once LIBRARY_PATH . "/db_user_guardian.php";
-require_once LIBRARY_PATH . "/db_engines.php";
-require_once LIBRARY_PATH . "/db_connect.php";
 require_once LIBRARY_PATH . "/mail_body.php";
 require_once LIBRARY_PATH . "/mail.php";
 
@@ -56,13 +50,13 @@ function mail_add_user($email, $password) {
 }
 
 function mail_reset_password($user_uuid, $password) {
-	global $bodies;
+	global $bodies, $userDAO;
 	$subject = "Passwort zurückgesetzt";
 	
 	$body = $bodies["reset_password"] . $bodies["password"] . $password . $bodies["reset_password2"];
 	
-	$user = get_user($user_uuid);
-	return send_mail ($user->email, $subject, $body );
+	$user = $userDAO->getUserByUUID($user_uuid);
+	return send_mail ($user->getEmail(), $subject, $body );
 }
 
 
@@ -80,7 +74,7 @@ function mail_reset_password($user_uuid, $password) {
  *
  */
 function mail_insert_event($event_uuid, $inform_creator, $publish) {
-	global $bodies;
+	global $bodies, $userDAO;
 	
 	$event = get_event( $event_uuid );
 	
@@ -93,7 +87,7 @@ function mail_insert_event($event_uuid, $inform_creator, $publish) {
 		$sendOK = mail_to_creator ( $event, $subject, $body );
 	}
 	
-	if ($event->engine != get_user($event->creator)->engine){
+	if ($event->engine != $userDAO->getUserByUUID($event->creator)->getEngine()->getUuid()){
 		$assignedOk = mail_assigned_event($event);
 		$sendOK = $sendOK && $assignedOk;
 	}
@@ -122,13 +116,13 @@ function mail_assigned_event($event) {
  * Info an every manager except assigned engine and creator
  */
 function mail_publish_event($event_obj) {
-	global $bodies;
+	global $bodies, $guardianUserController;
 	
 	$subject = "Neue Wache veröffentlicht" . event_subject($event_obj->uuid);
 	
 	$body = $bodies["event_publish"] . get_event_link($event_obj->uuid);
 	
-	$recipients = get_eventmanager_except_engine_and_creator($event_obj->engine, $event_obj->creator);
+	$recipients = $guardianUserController->getEventManangerExeptEngineAndCreator($event_obj->engine, $event_obj->creator);
 	
 	return send_mails($recipients, $subject, $body);
 }
@@ -176,13 +170,12 @@ function mail_delete_event($event_uuid) {
 
 //by user
 function mail_subscribe_staff_user($event_uuid, $user_uuid, $informMe) {
-	global $config;
-	global $bodies;
+	global $config, $bodies, $userDAO;
 	
 	$sendOK = true;
 	
 	$event = get_event( $event_uuid );
-	$user = get_user($user_uuid);
+	$user = $userDAO->getUserByUUID($user_uuid);
 	
 	if($event->staff_confirmation){
 		//send mail to manager of the event
@@ -202,7 +195,7 @@ function mail_subscribe_staff_user($event_uuid, $user_uuid, $informMe) {
 			$subject = "In Wache eingeschrieben" . event_subject($event_uuid);
 			$body = $bodies["event_subscribe"] . get_event_link($event_uuid) . $bodies["event_report_link"] . get_report_create_link($event_uuid);
 			
-			$sendOK = $sendOK && send_mail($user->email, $subject, $body);
+			$sendOK = $sendOK && send_mail($user->getEmail(), $subject, $body);
 		}
 		
 		//send mail to manager of the event
@@ -223,8 +216,7 @@ function mail_subscribe_staff_user($event_uuid, $user_uuid, $informMe) {
 }
 
 function mail_unscribe_staff_user($staff_uuid, $event_uuid) {
-	global $config;
-	global $bodies;
+	global $config, $bodies, $guardianUserController;
 	
 	$event = get_event( $event_uuid );
 	$staffuser = get_staff_user( $staff_uuid );
@@ -236,7 +228,7 @@ function mail_unscribe_staff_user($staff_uuid, $event_uuid) {
 	if ($config ["settings"] ["enginemgrmailonsubscription"]) {
 		
 		$body = $bodies["event_unscribe_by_user_engine"] . get_event_link($event_uuid);
-		$recipients = get_eventmanager_of_engine($staffuser->engine);
+		$recipients = $guardianUserController->getEventmanagerOfEngine($staffuser->engine);
 		$sendOK = send_mails($recipients, $subject, $body);
 	}
 	
@@ -268,7 +260,7 @@ function mail_confirm_staff_user($staff_uuid, $event_uuid) {
 
 //by manager
 function mail_add_staff_user($event_uuid, $user_uuid) {
-	global $bodies;
+	global $bodies, $userDAO;
 	
 	$sendOK = true;
 	
@@ -276,8 +268,8 @@ function mail_add_staff_user($event_uuid, $user_uuid) {
 	$subject = "In Wache eingeteilt" . event_subject($event_uuid);
 	$body = $bodies["event_staff_add"] . get_event_link($event_uuid) . $bodies["event_report_link"] . get_report_create_link($event_uuid);;
 	
-	$user = get_user($user_uuid);
-	$sendOK = $sendOK && send_mail ( $user->email, $subject, $body );
+	$user = $userDAO->getUserByUUID($user_uuid);
+	$sendOK = $sendOK && send_mail ( $user->getEmail(), $subject, $body );
 	
 	//send mail to manager of the user
 	$sendOK = $sendOK && inform_users_manager($event_uuid, $user);
@@ -285,9 +277,8 @@ function mail_add_staff_user($event_uuid, $user_uuid) {
 
 //by manager
 function mail_remove_staff_user($staff_uuid, $event_uuid) {
-	global $config;
-	global $bodies;
-	
+	global $config, $bodies, $guardianUserController;
+		
 	//inform staff
 	$subject = "Aus Wache entfernt" . event_subject($event_uuid);
 	$body = $bodies["event_unscribe"] . get_event_link($event_uuid);
@@ -300,7 +291,7 @@ function mail_remove_staff_user($staff_uuid, $event_uuid) {
 		
 		$body = $bodies["event_unscribe_engine"] . get_event_link($event_uuid);
 		
-		$recipients = get_eventmanager_of_engine($user->engine);
+		$recipients = $guardianUserController->getEventmanagerOfEngine($user->engine);
 		send_mails($recipients, $subject, $body);
 	}
 }
@@ -338,15 +329,18 @@ function event_subject($event_uuid){
 }
 
 function mail_to_manager($event_obj, $subject, $body){
-	$recipients = get_eventmanager_of_engine($event_obj->engine);
+	global $guardianUserController;
+	
+	$recipients = $guardianUserController->getEventmanagerOfEngine($event_obj->engine);
 	
 	return send_mails($recipients, $subject, $body);
 }
 
 function mail_to_creator($event_obj, $subject, $body){
-	$creator = get_user( $event_obj->creator );
+	global $userDAO;
+	$creator = $userDAO->getUserByUUID( $event_obj->creator );
 	
-	return send_mail ( $creator->email, $subject, $body );
+	return send_mail ( $creator->getEmail(), $subject, $body );
 }
 
 function mail_to_staff($event_obj, $subject, $body){
@@ -357,15 +351,14 @@ function mail_to_staff($event_obj, $subject, $body){
 
 
 function inform_users_manager($event_uuid, $user){
-	global $config;
-	global $bodies;
-	
+	global $config, $bodies, $guardianUserController;
+		
 	if ($config ["settings"] ["enginemgrmailonsubscription"]) {
 		$subject = "Information über Wachteilnahme" . event_subject($event_uuid);
 		
 		$body = $bodies["event_subscribe_manager"] . get_event_link($event_uuid);
 		
-		$recipients = get_eventmanager_of_engine($user->engine);
+		$recipients = $guardianUserController->getEventmanagerOfEngine($user->engine);
 		return send_mails($recipients, $subject, $body);
 	}
 	return true;
@@ -376,8 +369,7 @@ function inform_users_manager($event_uuid, $user){
  */
 
 function mail_insert_event_report($report){
-	global $config;
-	global $bodies;
+	global $config, $bodies, $engineDAO, $userDAO, $guardianUserController;
 	
 	$subject = "Wachbericht";
 	$body = $bodies["event_report"] . get_report_link($report->uuid);
@@ -386,12 +378,13 @@ function mail_insert_event_report($report){
 	
 	//send report to administration if event is no series
 	//if(!get_eventtype_from_name($report->type)->isseries){
-	$administration = get_users_of_engine(get_administration()->uuid);
+	$userDAO->getUsersByEngine($engineDAO->getAdministration()->getUuid());
+	$administration = $userDAO->getUsersByEngine($engineDAO->getAdministration()->getUuid());
 	send_mails($administration, $subject, $body, $file);
 	//}
 	
 	//send report to manager of the assigned engine
-	$managerList = get_eventmanager_of_engine($report->engine);
+	$managerList = $guardianUserController->getEventmanagerOfEngine($report->engine);
 	if(sizeof($managerList) > 0){
 		send_mails($managerList, $subject, $body, $file);
 		return true;
@@ -400,8 +393,7 @@ function mail_insert_event_report($report){
 }
 
 function mail_update_report($report){
-	global $config;
-	global $bodies;
+	global $config, $bodies, $userDAO, $guardianUserController;
 	
 	$subject = "Wachbericht aktualisiert";
 	$body = $bodies["event_report_update"] . get_report_link($report->uuid);
@@ -410,12 +402,13 @@ function mail_update_report($report){
 	
 	//send report to administration if event is no series
 	//if(!get_eventtype_from_name($report->type)->isseries){
-	$administration = get_users_with_privilege_by_name(FFADMINISTRATION);
+	
+	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
 	send_mails($administration, $subject, $body, $file);
 	//}
 	
 	//send report to manager of the assigned engine
-	$managerList = get_eventmanager_of_engine($report->engine);
+	$managerList = $guardianUserController->getEventmanagerOfEngine($report->engine);
 	if(sizeof($managerList) > 0){
 		send_mails($managerList, $subject, $body, $file);
 		return true;
@@ -424,15 +417,14 @@ function mail_update_report($report){
 }
 
 function mail_report_approved($report_uuid){
-	global $config;
-	global $bodies;
+	global $config, $bodies, $userDAO;
 	
 	$subject = "Wachbericht freigegeben";
 	$body = $bodies["event_report_approved"] . get_report_link($report_uuid);
 	
 	$file = $config["paths"]["reports"] . $report_uuid . ".pdf";
 	
-	$administration = get_users_with_privilege_by_name(FFADMINISTRATION);
+	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
 	return send_mails($administration, $subject, $body, $file);
 }
 
@@ -442,38 +434,35 @@ function mail_report_approved($report_uuid){
  */
 
 function mail_send_confirmation_request($confirmation_uuid){
-	global $config;
-	global $bodies;
+	global $config, $bodies, $userDAO;
 	
 	$subject = "Neue Anfrage einer Arbeitgeberbestätigung";
 	$body = $bodies["confirmation_requested"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations/process";
 		
-	$administration = get_users_with_privilege_by_name(FFADMINISTRATION);
+	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
 	return send_mails($administration, $subject, $body);
 }
 
 function mail_send_confirmation_declined($confirmation_uuid){
-	global $config;
-	global $bodies;
+	global $config, $bodies, $userDAO;
 	
 	$confirmation = get_confirmation($confirmation_uuid);
-	$user = get_user($confirmation->user);
+	$user = $userDAO->getUserByUUID($confirmation->user);
 	
 	$subject = "Angefragte Arbeitgeberbestätigung abgelehnt";
 	$body = $bodies["confirmation_declined"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations";
 	
-	return send_mail ( $user->email, $subject, $body );
+	return send_mail ( $user->getEmail(), $subject, $body );
 }
 
 function mail_send_confirmation($confirmation_uuid){
-	global $config;
-	global $bodies;
-	
+	global $config, $bodies, $userDAO;
+		
 	$confirmation = get_confirmation($confirmation_uuid);
-	$user = get_user($confirmation->user);
+	$user = $userDAO->getUserByUUID($confirmation->user);
 	
 	$employer_informed = false;
-	if( $user->employer_mail ){
+	if( $user->getEmployerMail() ){
 		$employer_informed = mail_send_to_employer($confirmation, $user);
 	}
 
@@ -481,7 +470,7 @@ function mail_send_confirmation($confirmation_uuid){
 	$subject = "Arbeitgebernachweis für Einsatztätigkeit";
 	$body = $bodies["confirmation_accepted"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations";
 	
-	if($user->employer_mail){
+	if($user->getEmployerMail()){
 		if( $employer_informed ){
 			$body = $body . "\n\n" . "Die Bestätigung wurde bereits an die in den Benutzerdaten hinterlegte E-Mail-Adresse des Arbeitgebers gesendet.";
 		} else {
@@ -493,7 +482,7 @@ function mail_send_confirmation($confirmation_uuid){
 					. "(In den Benutzerdaten kann die E-Mail-Adresse des Arbeitgebers hinterlegt werden. Die Bestätigung wird dann direkt an diese Adresse gesendet)";
 	}
 		
-	return send_mail ( $user->email, $subject, $body, $file);
+	return send_mail ( $user->getEmail(), $subject, $body, $file);
 }
 
 function mail_send_to_employer($confirmation, $user){
@@ -509,7 +498,7 @@ function mail_send_to_employer($confirmation, $user){
 		. "Mit freundlichen Grüßen \n"
 		. "Stadt Landshut\nReferat 5 Feuerwehr";
 	
-	return send_mail ( $user->employer_mail, $subject, $body, $file, false);
+	return send_mail ( $user->getEmployerMail(), $subject, $body, $file, false);
 }
 
 ?>

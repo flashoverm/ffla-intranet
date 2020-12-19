@@ -87,10 +87,10 @@
 		<select class="form-control" name="engine" id="engine" required="required" onchange="setEngineHid()">
 			<option value="" disabled selected>Löschzug auswählen</option>
 			<?php foreach ( $engines as $option ) : 
-			if(isset($hydrant) && $option->uuid == $hydrant->engine){?>
-			   	<option selected="selected" value="<?=  $option->uuid;	?> "><?= $option->name; ?></option>
+			if(isset($hydrant) && $option->getUuid() == $hydrant->engine){?>
+			   	<option selected="selected" value="<?=  $option->getUuid();	?> "><?= $option->getUuid(); ?></option>
 			<?php }else{ ?>
-			   <option value="<?=  $option->uuid;	?> "><?= $option->name; ?></option>
+			   <option value="<?=  $option->getUuid();	?> "><?= $option->getName(); ?></option>
 			<?php } 
 			endforeach; ?>
 		</select>

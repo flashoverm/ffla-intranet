@@ -1,18 +1,16 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_engines.php";
-require_once LIBRARY_PATH . "/db_user.php";
 
 define("DELIMITER", ";");
 
-$engines = get_engines();
+$engines = $engineDAO->getEngines();
 
 // Pass variables (as an array) to template
 $variables = array (
 		'title' => "Daten-Import",
 		'secured' => true,
-		'privilege' => EVENTADMIN,
+		'privilege' => Privilege::EVENTADMIN,
 		'engines' => $engines,
 );
 

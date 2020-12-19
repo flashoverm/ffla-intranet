@@ -1,8 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
-require_once LIBRARY_PATH . "/db_hydrant.php";
-require_once LIBRARY_PATH . "/db_inspection.php";
 
 require_once LIBRARY_PATH . "/class/constants/HydrantCriteria.php";
 
@@ -10,7 +8,7 @@ require_once LIBRARY_PATH . "/class/constants/HydrantCriteria.php";
 $variables = array(
     'title' => "Prüfbericht erstellen",
     'secured' => true,
-    'privilege' => ENGINEHYDRANTMANANGER
+    'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
 
 $variables['criteria'] = $hydrant_criteria;
