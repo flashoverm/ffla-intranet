@@ -27,6 +27,7 @@ $engineDAO = new EngineDAO();
 $logbookDAO = new LogbookDAO();
 $mailLogDAO = new MailLogDAO();
 $confirmationDAO = new ConfirmationDAO();
+$fileDAO = new FileDAO();
 
 $userController = new UserController();
 $guardianUserController = new GuardianUserController();

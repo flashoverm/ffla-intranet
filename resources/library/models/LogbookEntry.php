@@ -241,11 +241,12 @@ class LogbookEntry extends BaseModel {
 	}
 	
 	protected static function fileEntry($action, $file_uuid){
-		$file = get_file($file_uuid);
+		global $fileDAO;
+		$file = $fileDAO->getFile($file_uuid);
 		if( ! $file ){
 			return null;
 		}
-		return LogbookActions::getActionText($action) . ": " . $file->description;
+		return LogbookActions::getActionText($action) . ": " . $file->getDescription();
 	}
 	
 	protected static function confirmationEntry($action, $confirmationUuid){

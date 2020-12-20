@@ -6,7 +6,7 @@ require_once TEMPLATES_PATH . "/template.php";
 $variables = array(
     'title' => "Formular hochladen",
     'secured' => true,
-	'privilege' => FILEADMIN
+	'privilege' => Privilege::FILEADMIN
 );
 
 if(isset($_FILES['upload']) && isset($_POST['description'])){
@@ -20,10 +20,12 @@ if(isset($_FILES['upload']) && isset($_POST['description'])){
     $result = move_uploaded_file($_FILES['upload']['tmp_name'], $config["paths"]["files"].$_FILES['upload']['name']);
     
     if($result){
+    	$file = new File();
+    	$file->setFileData($description, date('Y-m-d H:i:s', time()), $_FILES['upload']['name']);
+    	$file = $fileDAO->save($file);
       
-    	$uuid = insert_file($description, date('Y-m-d H:i:s', time()), $_FILES['upload']['name']);
-    	if($uuid){
-    		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::FileCreated, $uuid));
+    	if($file){
+    		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::FileCreated, $file->getUuid()));
             $variables ['successMessage'] = "Datei wurde hochgeladen";
             header ( "Location: " . $config["urls"]["filesapp_home"] . "/forms/admin" ); // redirects
                         

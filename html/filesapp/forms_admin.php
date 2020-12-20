@@ -14,13 +14,13 @@ if (isset($_POST['delete'])) {
     
     $uuid = trim($_POST['delete']);
     
-    $file = get_file($uuid);
+    $file = $fileDAO->getFile($uuid);
     $log = LogbookEntry::fromAction(LogbookActions::FileDeleted, $uuid);
     if(delete_file_fs($file)){
         
-        if(delete_file($uuid)){
+        if($fileDAO->deleteFile($uuid)){
         	$logbookDAO->save($log);
-            $variables ['successMessage'] = "Datei " . $file->description . " wurde entfernt";
+            $variables ['successMessage'] = "Datei " . $file->getDescription() . " wurde entfernt";
             
         } else {
             $variables ['alertMessage'] = "Entfernen fehlgeschlagen";
@@ -34,13 +34,13 @@ if (isset($_POST['delete'])) {
     }
 }
 
-$variables ['files'] = get_files();
+$variables ['files'] = $fileDAO->getFiles();
 
 renderLayoutWithContentFile($config["apps"]["files"], "formsAdmin_template.php", $variables);
 
-function delete_file_fs($file){
+function delete_file_fs(File $file){
     global $config;
     
-    return unlink($config["paths"]["files"] . $file->filename);
+    return unlink($config["paths"]["files"] . $file->getFilename());
 }
 ?>

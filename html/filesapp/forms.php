@@ -8,7 +8,7 @@ $variables = array(
     'secured' => true
 );
 
-$variables ['files'] = get_files();
+$variables ['files'] = $fileDAO->getFiles();
 
 renderLayoutWithContentFile($config["apps"]["files"], "forms_template.php", $variables);
 

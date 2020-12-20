@@ -1,6 +1,6 @@
 <?php
 require_once "db_connect.php";
-
+/*
 create_table_files();
 
 
@@ -101,5 +101,5 @@ function create_table_files() {
         return false;
     }
 }
-
+*/
 ?>

@@ -19,18 +19,18 @@ if (! count ( $files )) {
     foreach ( $files as $row ) {
         ?>
 			<tr>
-				<td class="text-center"><?= $row->description; ?></td>
-				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
+				<td class="text-center"><?= $row->getDescription(); ?></td>
+				<td class="text-center"><span class='d-none'><?= strtotime($row->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
 
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config ["urls"] ["files"] . "/" . $row->filename; ?>">Anzeigen</a>
+					<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config ["urls"] ["files"] . "/" . $row->getFilename(); ?>">Anzeigen</a>
 				</td>
 				<td class="text-center">
 					<form method="post" action="">
-						<input type="hidden" name="delete" id="delete" value="<?= $row->uuid ?>" />
-						<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDelete<?= $row->uuid; ?>">Löschen</button>
+						<input type="hidden" name="delete" id="delete" value="<?= $row->getUuid() ?>" />
+						<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDelete<?= $row->getUuid(); ?>">Löschen</button>
 						
-						<div class="modal" id="confirmDelete<?= $row->uuid; ?>">
+						<div class="modal" id="confirmDelete<?= $row->getUuid(); ?>">
 						  <div class="modal-dialog">
 						    <div class="modal-content">
 						
