@@ -221,7 +221,6 @@ class UserDAO extends BaseDAO {
 		if ($result) {
 			return true;
 		} else {
-			// echo "Error: " . $this->db->error . "<br><br>";
 			return false;
 		}
 	}

@@ -23,7 +23,7 @@ if(userLoggedIn()){
     if($userController->getCurrentUser()->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
         $variables ['reports'] = get_reports();
     } else {
-    	$variables ['reports'] = get_filtered_reports(get_current_user_obj()->engine);
+    	$variables ['reports'] = get_filtered_reports($userController->getCurrentUser()->getEngine()->getUuid());
         $variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die Ihrem Zug zugewiesen wurden";
     }
 }

@@ -24,17 +24,17 @@ if ( count ( $declined ) ) {
 		foreach ( $declined as $row ) {
 		?>
 			<tr>
-				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
-				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
-				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->end_time)); ?></td>
-				<td class="text-center"><?= $row->description ?></td>
-				<td><?= $row->reason ?></td>
+				<td class="text-center"><span class='d-none'><?= strtotime($row->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
+				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getStartTime())); ?></td>
+				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getEndTime())); ?></td>
+				<td class="text-center"><?= $row->getDescription() ?></td>
+				<td><?= $row->getReason() ?></td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->uuid ."/edit" ?>">Bearbeiten</a>
+					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->getUuid() ."/edit" ?>">Bearbeiten</a>
 				</td>
 				<td class="text-center">
 					<form method="post" action="" class="mb-0">
-						<input type="hidden" name="withdraw" value="<?= $row->uuid ?>"/>
+						<input type="hidden" name="withdraw" value="<?= $row->getUuid() ?>"/>
 						<input type="submit" value="Zurückziehen" class="btn btn-primary btn-sm"/>
 					</form>
 				</td>
@@ -69,16 +69,16 @@ if ( count ( $open ) ) {
 		foreach ( $open as $row ) {
 		?>
 			<tr>
-				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
-				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
-				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->end_time)); ?></td>
-				<td class="text-center"><?= $row->description ?></td>
+				<td class="text-center"><span class='d-none'><?= strtotime($row->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
+				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getStartTime())); ?></td>
+				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getEndTime())); ?></td>
+				<td class="text-center"><?= $row->getDescription() ?></td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->uuid ."/edit" ?>">Bearbeiten</a>
+					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->getUuid() ."/edit" ?>">Bearbeiten</a>
 				</td>
 				<td class="text-center">
 					<form method="post" action="" class="mb-0">
-						<input type="hidden" name="withdraw" value="<?= $row->uuid ?>"/>
+						<input type="hidden" name="withdraw" value="<?= $row->getUuid() ?>"/>
 						<input type="submit" value="Zurückziehen" class="btn btn-primary btn-sm"/>
 					</form>
 				</td>
@@ -126,12 +126,12 @@ if ( ! count ( $declined ) &&  ! count ( $open ) ) {
 			foreach ( $accepted as $row ) {
 			?>
 				<tr>
-					<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
-					<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
-					<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->end_time)); ?></td>
-					<td class="text-center"><?= $row->description ?></td>
+					<td class="text-center"><span class='d-none'><?= strtotime($row->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
+					<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getStartTime())); ?></td>
+					<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getEndTime())); ?></td>
+					<td class="text-center"><?= $row->getDescription() ?></td>
 					<td class="text-center">
-						<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->uuid ."/file" ?>">Nachweis anzeigen</a>
+						<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->getUuid() ."/file" ?>">Nachweis anzeigen</a>
 					</td>
 				</tr>
 			<?php

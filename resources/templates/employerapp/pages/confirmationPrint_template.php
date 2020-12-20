@@ -1,5 +1,5 @@
 <?php
-if(isset($confirmation) && isset($user)){
+if(isset($confirmation)){
 ?>
 
 <div class="table-responsive">
@@ -15,8 +15,8 @@ if(isset($confirmation) && isset($user)){
 					<small>Postanschrift: Stadt Landshut, 84026 Landshut, Gz.: 5.697</small><br>
 					<br>
 					<?php
-					if( ! empty ($user->getEmployerAddress()) ){
-						echo nl2br($user->getEmployerAddress());
+					if( ! empty ($confirmation->getUser()->getEmployerAddress()) ){
+						echo nl2br($confirmation->getUser()->getEmployerAddress());
 					}
 					?>
 				</td>
@@ -43,9 +43,9 @@ if(isset($confirmation) && isset($user)){
 				<td colspan="2">
 					Sehr geehrte Damen und Herren,<br>
 					<br>
-					der/die Feuerwehrmann/-frau <?= $user->getFullName() ?><br>
+					der/die Feuerwehrmann/-frau <?= $confirmation->getUser()->getFullName() ?><br>
 					<br>
-					war am <?= date($config ["formats"] ["date"], strtotime($confirmation->date)) ?> von <?= date($config ["formats"] ["time"], strtotime($confirmation->start_time)) ?> Uhr bis <?= date($config ["formats"] ["time"], strtotime($confirmation->end_time)) ?> Uhr<br>
+					war am <?= date($config ["formats"] ["date"], strtotime($confirmation->getDate())) ?> von <?= date($config ["formats"] ["time"], strtotime($confirmation->getStartTime())) ?> Uhr bis <?= date($config ["formats"] ["time"], strtotime($confirmation->getEndTime())) ?> Uhr<br>
 					<br>
 					für die Freiwillige Feuerwehr der Stadt Landshut im Einsatz.<br>
 					<br>

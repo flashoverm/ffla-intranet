@@ -248,16 +248,15 @@ class LogbookEntry extends BaseModel {
 		return LogbookActions::getActionText($action) . ": " . $file->description;
 	}
 	
-	protected static function confirmationEntry($action, $confirmation_uuid){
-		global $config, $userDAO;
-		$confirmation = get_confirmation($confirmation_uuid);
+	protected static function confirmationEntry($action, $confirmationUuid){
+		global $config, $confirmationDAO;
+		$confirmation = $confirmationDAO->getConfirmation($confirmationUuid);
 		if( ! $confirmation ){
 			return null;
-		}
-		$user = $userDAO->getUserByUUID($confirmation->user);
-		
-		return LogbookActions::getActionText($action) . ": <br>" . $confirmation->description . " (" . date($config ["formats"] ["date"], strtotime($confirmation->date)) . " " . date($config ["formats"] ["time"], strtotime($confirmation->start_time)) . " Uhr)<br>"
-				. "Antragsteller: " . $user->getFullNameWithEmail();
+		}		
+		return LogbookActions::getActionText($action) . ": <br>" . $confirmation->getDescription() . " (" . date($config ["formats"] ["date"], strtotime($confirmation->getDate())) 
+			. " " . date($config ["formats"] ["time"], strtotime($confirmation->getStartTime())) . " Uhr)<br>"
+			. "Antragsteller: " . $confirmation->getUser()->getFullNameWithEmail();
 	}
 	
 	

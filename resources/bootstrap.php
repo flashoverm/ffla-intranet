@@ -26,6 +26,8 @@ $privilegeDAO = new PrivilegeDAO();
 $engineDAO = new EngineDAO();
 $logbookDAO = new LogbookDAO();
 $mailLogDAO = new MailLogDAO();
+$confirmationDAO = new ConfirmationDAO();
 
 $userController = new UserController();
 $guardianUserController = new GuardianUserController();
+$confirmationController = new ConfirmationController();

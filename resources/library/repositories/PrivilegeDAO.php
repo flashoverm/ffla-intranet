@@ -140,7 +140,6 @@ class PrivilegeDAO extends BaseDAO{
 		if ($result) {
 			return true;
 		} else {
-			// echo "Error: " . $db->error . "<br><br>";
 			return false;
 		}
 	}

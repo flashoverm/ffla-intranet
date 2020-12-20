@@ -20,24 +20,23 @@ if ( ! count ( $open ) ) {
 		<tbody>
 		<?php
 		foreach ( $open as $row ) {
-			$user = $userDAO->getUserByUUID($row->user);
 		?>
 			<tr>
-				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
-				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
-				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->end_time)); ?></td>
-				<td class="text-center"><?= $row->description ?></td>
-				<td><?= $user->getFullName() ?></td>
-				<td><?= $user->getEngine()->getName() ?></td>
+				<td class="text-center"><span class='d-none'><?= strtotime($row->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
+				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getStartTime())); ?></td>
+				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getEndTime())); ?></td>
+				<td class="text-center"><?= $row->getDescription() ?></td>
+				<td><?= $row->getUser()->getFullName() ?></td>
+				<td><?= $row->getUser()->getEngine()->getName() ?></td>
 				<td class="text-center">
 					<div class="dropdown">
 						<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Optionen</button>
 						<div class="dropdown-menu">
 							<form class="mb-0" method="post" action="" onsubmit="showLoader()" >
-								<input type="hidden" name="confirmation" id="confirmation" value="<?= $row->uuid ?>"/>
+								<input type="hidden" name="confirmation" id="confirmation" value="<?= $row->getUuid() ?>"/>
 								<input type="submit" name="accept" value="Annehmen"  class="dropdown-item"/>
 								<div class="dropdown-divider"></div>
-								<button type="button" class="dropdown-item" data-toggle='modal' data-target='#confirmDeleteStaff<?= $row->uuid ?>'>Ablehnen</button>
+								<button type="button" class="dropdown-item" data-toggle='modal' data-target='#confirmDeleteStaff<?= $row->getUuid() ?>'>Ablehnen</button>
 							</form>
 						</div>
 					</div>
@@ -52,7 +51,7 @@ if ( ! count ( $open ) ) {
 <?php
 foreach ( $open as $row ) {
 ?>
-	<div class='modal' id='confirmDeleteStaff<?= $row->uuid ?>'>
+	<div class='modal' id='confirmDeleteStaff<?= $row->getUuid() ?>'>
 		<div class='modal-dialog'>
 			<div class='modal-content'>
 				<form method="post" action="">
@@ -67,7 +66,7 @@ foreach ( $open as $row ) {
 						</div>
 					</div>
 					<div class='modal-footer'>
-						<input type="hidden" name="confirmation" id="confirmation" value="<?= $row->uuid ?>"/>
+						<input type="hidden" name="confirmation" id="confirmation" value="<?= $row->getUuid() ?>"/>
 						<input type='submit' name="decline" value='Ablehnen' class='btn btn-primary'/>
 						<button type='button' class='btn btn-outline-primary' data-dismiss='modal'>Abbrechen</button>
 					</div>
@@ -109,16 +108,15 @@ if ( ! count ( $open ) ) {
 			<tbody>
 			<?php
 			foreach ( $accepted as $row ) {
-				$user = $userDAO->getUserByUUID($row->user);
 			?>
 				<tr>
-					<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
-					<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
-					<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->end_time)); ?></td>
-					<td class="text-center"><?= $row->description ?></td>
-					<td class="text-center"><?= $user->getFullName() ?></td>
+					<td class="text-center"><span class='d-none'><?= strtotime($row->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
+					<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getStartTime())); ?></td>
+					<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getEndTime())); ?></td>
+					<td class="text-center"><?= $row->getDescription() ?></td>
+					<td class="text-center"><?= $row->getUser()->getFullName() ?></td>
 					<td class="text-center">
-						<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->uuid ."/file" ?>">Nachweis anzeigen</a>
+						<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$row->getUuid() ."/file" ?>">Nachweis anzeigen</a>
 					</td>
 				</tr>
 			<?php

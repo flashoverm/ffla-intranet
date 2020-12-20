@@ -6,7 +6,7 @@ require_once TEMPLATES_PATH . "/template.php";
 $variables = array(
     'title' => "Formular-Verwaltung",
     'secured' => true,
-	'privilege' => FILEADMIN
+	'privilege' => Privilege::FILEADMIN
 );
 
 

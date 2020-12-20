@@ -11,9 +11,10 @@ $variables = array(
 
 if( isset( $_POST['withdraw'] ) ){
 	//create logentry
-	$confirmation_uuid = $_POST['withdraw'];
-	$log = LogbookEntry::fromAction(LogbookActions::ConfirmationWithdraw, $confirmation_uuid);
-	if( delete_confirmation( $confirmation_uuid ) ){
+	$confirmationUuid = $_POST['withdraw'];
+	$log = LogbookEntry::fromAction(LogbookActions::ConfirmationWithdraw, $confirmationUuid);
+	
+	if( $confirmationDAO->deleteConfirmation($confirmationUuid) ){
 		$logbookDAO->save($log);
 		$variables ['successMessage'] = "Anfrage zurückgezogen";
 	} else {
@@ -21,13 +22,13 @@ if( isset( $_POST['withdraw'] ) ){
 	}
 }
 
-$declined = get_confirmations_of_user_with_state($_SESSION ['intranet_userid'], ConfirmationState::Declined);
+$declined = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::DECLINED, $_SESSION ['intranet_userid']);
 $variables['declined'] = $declined;
 
-$open = get_confirmations_of_user_with_state($_SESSION ['intranet_userid'], ConfirmationState::Open);
+$open = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::OPEN, $_SESSION ['intranet_userid']);
 $variables['open'] = $open;
 
-$accepted = get_confirmations_of_user_with_state($_SESSION ['intranet_userid'], ConfirmationState::Accepted);
+$accepted = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::ACCEPTED, $_SESSION ['intranet_userid']);
 $variables['accepted'] = $accepted;
 
 renderLayoutWithContentFile($config["apps"]["employer"], "confirmationOverview_template.php", $variables);

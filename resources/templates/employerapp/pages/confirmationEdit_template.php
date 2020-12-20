@@ -7,7 +7,7 @@
 				name="date" id="date" 
 				<?php
 				if(isset($confirmation) ){
-					echo "value='" . $confirmation->date . "'";
+					echo "value='" . $confirmation->getDate() . "'";
 				}?>
 				required pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4}">
 			</div>
@@ -19,7 +19,7 @@
 				name="start" id="start" 
 				<?php
 				if(isset($confirmation) ){
-					echo "value='" . timeToHm ($confirmation->start_time) . "'";
+					echo "value='" . timeToHm ($confirmation->getStartTime()) . "'";
 				}?>
 				required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
 			</div>
@@ -30,7 +30,7 @@
 				placeholder="--:--" title="--:--" class="form-control" 
 				<?php
 				if(isset($confirmation) ){
-					echo "value='" . timeToHm ($confirmation->end_time) . "'";
+					echo "value='" . timeToHm ($confirmation->getEndTime()) . "'";
 				}?>
 				name="end" id="end" required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
 			</div>
@@ -41,26 +41,25 @@
 			class="form-control" name="description" id="description"
 			<?php
 			if(isset($confirmation)){
-				echo "value='" . $confirmation->description . "'";
+				echo "value='" . $confirmation->getDescription() . "'";
 			}?>
 			placeholder="Einsatz-Beschreibung eingeben">
 	</div>
 	<?php
 	if( isset($confirmation) ){
-		global $confirmationStates;
 	?>
 		<div class="form-group">
 			<label>Status:</label> <input type="text"
 				class="form-control" name="state" id="state" readonly
-				<?= "value='" . $confirmationStates[$confirmation->state] . "'" ?>
+				<?= "value='" . Confirmation::CONFIRMATION_STATES[$confirmation->getState()] . "'" ?>
 			>
 		</div>
 		<?php
-		if( $confirmation->reason != null ){
+		if( $confirmation->getReason() != null ){
 		?>
 		<div class="form-group">
 			<label>Begründung Ablehnung:</label> 
-			<textarea type="text" class="form-control" name="reason" id="reason" readonly><?= $confirmation->reason ?></textarea>
+			<textarea type="text" class="form-control" name="reason" id="reason" readonly><?= $confirmation->getReason() ?></textarea>
 		</div>
 	<?php
 		}
@@ -68,7 +67,7 @@
 	?>
 	<input type="submit" class="btn btn-primary" id="submitConfirmation" 
 	<?php
-	if(isset($confirmation) && $confirmation->state == ConfirmationState::Open){
+	if(isset($confirmation) && $confirmation->getState() == Confirmation::OPEN){
 		echo " value='Antrag aktualisieren'";
 	} else {
 		echo " value='Beantragen'";

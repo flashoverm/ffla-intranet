@@ -9,15 +9,17 @@ $variables = array(
 		'secured' => true,
 );
 
+$confirmation = new Confirmation();
 if(isset($_GET ['id'])) {
 	$variables ['title'] = 'Arbeitgebernachweis bearbeiten';
-	$variables ['confirmation'] = get_confirmation($_GET ['id']);
+	$confirmation = $confirmationDAO->getConfirmation($_GET ['id']);
+	$variables ['confirmation'] = $confirmation;
 }
 
 if( isset($_POST['date']) && isset($_POST['start']) && isset($_POST['end']) ){
 	
 	if(! isset($_GET ['id']) 
-			|| (isset($_GET ['id']) && $variables ['confirmation']->state != ConfirmationState::Accepted) ){
+			|| (isset($_GET ['id']) && $variables ['confirmation']->getState() != Confirmation::ACCEPTED) ){
 		
 		$date = trim ( $_POST ['date'] );
 		$beginn = trim ( $_POST ['start'] );
@@ -28,29 +30,35 @@ if( isset($_POST['date']) && isset($_POST['start']) && isset($_POST['end']) ){
 			$description = trim( $_POST ['description'] );
 		}
 		
+		$confirmation->setState(Confirmation::OPEN);
+		$confirmation->setReason(NULL);
+		
 		if(isset($_GET ['id'])) {
-			$confirmation_uuid = update_confirmations($_GET ['id'], $date, $beginn, $end, $description);
-			if($confirmation_uuid){
-				if($variables ['confirmation']->state == ConfirmationState::Declined){
-					if( ! mail_send_confirmation_request($confirmation_uuid)){
+			$confirmation->setConfirmationData($date, $beginn, $end, $description, $userController->getCurrentUser());
+			$confirmation = $confirmationDAO->save($confirmation);
+			
+			if($confirmation){
+				if($variables ['confirmation']->getState() == Confirmation::DECLINED){
+					if( ! mail_send_confirmation_request($confirmation)){
 						$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
 					}
 				}
 				$variables ['successMessage'] = "Anfrage aktualisiert";
-				$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ConfirmationUpdated, $confirmation_uuid));
+				$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ConfirmationUpdated, $confirmation->getUuid()));
 				header ( "Location: " . $config["urls"]["employerapp_home"] . "/confirmations"); // redirects
 			} else {
 				$variables ['alertMessage'] = "Anfrage konnte nicht aktualisiert werden";
 			}
 		} else {
-			$confirmation_uuid = create_confirmation($date, $beginn, $end, $description, $_SESSION ['intranet_userid']);
-			
-			if($confirmation_uuid){
-				if( ! mail_send_confirmation_request($confirmation_uuid)){
+			$confirmation->setConfirmationData($date, $beginn, $end, $description, $userController->getCurrentUser());
+			$confirmation = $confirmationDAO->save($confirmation);
+						
+			if($confirmation){
+				if( ! mail_send_confirmation_request($confirmation)){
 					$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
 				}
 				$variables ['successMessage'] = "Anfrage gespeichert";
-				$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ConfirmationRequested, $confirmation_uuid));
+				$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ConfirmationRequested, $confirmation->getUuid()));
 				header ( "Location: " . $config["urls"]["employerapp_home"] . "/confirmations"); // redirects
 				
 			} else {

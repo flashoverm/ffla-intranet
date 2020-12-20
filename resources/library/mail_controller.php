@@ -433,7 +433,7 @@ function mail_report_approved($report_uuid){
  * Confirmations
  */
 
-function mail_send_confirmation_request($confirmation_uuid){
+function mail_send_confirmation_request($confirmation){
 	global $config, $bodies, $userDAO;
 	
 	$subject = "Neue Anfrage einer Arbeitgeberbestätigung";
@@ -443,34 +443,28 @@ function mail_send_confirmation_request($confirmation_uuid){
 	return send_mails($administration, $subject, $body);
 }
 
-function mail_send_confirmation_declined($confirmation_uuid){
-	global $config, $bodies, $userDAO;
-	
-	$confirmation = get_confirmation($confirmation_uuid);
-	$user = $userDAO->getUserByUUID($confirmation->user);
-	
+function mail_send_confirmation_declined($confirmation){
+	global $config, $bodies;
+		
 	$subject = "Angefragte Arbeitgeberbestätigung abgelehnt";
 	$body = $bodies["confirmation_declined"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations";
 	
-	return send_mail ( $user->getEmail(), $subject, $body );
+	return send_mail ( $confirmation->getUser()->getEmail(), $subject, $body );
 }
 
-function mail_send_confirmation($confirmation_uuid){
-	global $config, $bodies, $userDAO;
+function mail_send_confirmation($confirmation){
+	global $config, $bodies;
 		
-	$confirmation = get_confirmation($confirmation_uuid);
-	$user = $userDAO->getUserByUUID($confirmation->user);
-	
 	$employer_informed = false;
-	if( $user->getEmployerMail() ){
-		$employer_informed = mail_send_to_employer($confirmation, $user);
+	if( $confirmation->getUser()->getEmployerMail() ){
+		$employer_informed = mail_send_to_employer($confirmation, $confirmation->getUser());
 	}
 
-	$file = $config["paths"]["confirmations"] . $confirmation->uuid . ".pdf";
+	$file = $config["paths"]["confirmations"] . $confirmation->getUuid() . ".pdf";
 	$subject = "Arbeitgebernachweis für Einsatztätigkeit";
 	$body = $bodies["confirmation_accepted"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations";
 	
-	if($user->getEmployerMail()){
+	if($confirmation->getUser()->getEmployerMail()){
 		if( $employer_informed ){
 			$body = $body . "\n\n" . "Die Bestätigung wurde bereits an die in den Benutzerdaten hinterlegte E-Mail-Adresse des Arbeitgebers gesendet.";
 		} else {
@@ -482,7 +476,7 @@ function mail_send_confirmation($confirmation_uuid){
 					. "(In den Benutzerdaten kann die E-Mail-Adresse des Arbeitgebers hinterlegt werden. Die Bestätigung wird dann direkt an diese Adresse gesendet)";
 	}
 		
-	return send_mail ( $user->getEmail(), $subject, $body, $file);
+	return send_mail ( $confirmation->getUser()->getEmail(), $subject, $body, $file);
 }
 
 function mail_send_to_employer($confirmation, $user){

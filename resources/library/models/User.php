@@ -232,13 +232,6 @@ class User extends BaseModel {
 	 */
 	
 	public function hasPrivilegeByName($privilegeName){
-		
-		if($privilegeName == Privilege::PORTALADMIN
-				|| $privilegeName == Privilege::EDITUSER ){
-			return true;
-			
-		}
-		
 		if($this->privileges == null){
 			return false;
 		}

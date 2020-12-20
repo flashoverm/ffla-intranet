@@ -12,11 +12,8 @@ $variables = array(
 
 if (isset($_GET['id'])) {
 	
-	$confirmation = get_confirmation($_GET['id']);
-	$user = $userDAO->getUserByUUID($confirmation->user);
-	
+	$confirmation = $confirmationDAO->getConfirmation($_GET['id']);
 	$variables['confirmation'] = $confirmation;
-	$variables['user'] = $user;
 }
 
 if(isset($_GET['print'])){

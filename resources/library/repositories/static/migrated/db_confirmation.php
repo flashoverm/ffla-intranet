@@ -2,7 +2,7 @@
 require_once "db_connect.php";
 
 require_once LIBRARY_PATH . "/class/constants/ConfirmationStates.php";
-
+/*
 create_table_confirmation();
 
 function create_confirmation($date, $start_time, $end_time, $description, $user){
@@ -83,8 +83,8 @@ function get_confirmations_of_user_with_state($user_uuid, $state){
 	}
 	return $data;
 }
-
-
+*/
+/*
 function update_confirmations($uuid, $date, $start_time, $end_time, $description) {
 	global $db;
 	
@@ -104,23 +104,7 @@ function update_confirmations($uuid, $date, $start_time, $end_time, $description
 		return false;
 	}
 }
-
-function set_confirmation_state($uuid, ConfirmationState $state) {
-	global $db;
-		
-	$statement = $db->prepare("UPDATE confirmation SET state = ? WHERE uuid= ?");
-	$statement->bind_param('is', $state, $uuid);
-	
-	$result = $statement->execute();
-	
-	if ($result) {
-		return $uuid;
-	} else {
-		// echo "Error: " . $query . "<br>" . $db->error;
-		return false;
-	}
-}
-
+/*
 function accept_confirmation($uuid, $advisor) {
 	global $db;
 	
@@ -200,3 +184,4 @@ function create_table_confirmation() {
         return false;
     }
 }
+*/
