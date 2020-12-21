@@ -21,7 +21,7 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 	if(isset($event) and isset($staffposition)) {
 	    $variables ['showFormular'] = true;
 	    
-    	$variables ['title'] = "In " . get_eventtype($event->type)->type . " einteilen";
+	    $variables ['title'] = "In " . $eventTypeDAO->getEventType($event->type)->getType() . " einteilen";
     	$variables ['engines'] = $engineDAO->getEngines();
     	$variables ['user'] = $guardianUserController->getEventParticipantOfEngine($userController->getCurrentUser()->getEngine()->getUuid());
     	$variables ['eventUUID'] = $eventUUID;

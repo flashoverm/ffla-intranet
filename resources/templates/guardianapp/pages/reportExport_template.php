@@ -77,7 +77,7 @@
     			echo " - ";
     		}
     		?></td>
-    				<td class="text-center"><?= get_eventtype($row->type)->type; ?></td>
+    				<td class="text-center"><?= $eventTypeDAO->getEventType($row->type)->getType() ?></td>
     				<td class="text-center"><?= $row->title; ?></td>
     				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName(); ?></td>
     				<td class="text-center">

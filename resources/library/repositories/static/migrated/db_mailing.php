@@ -1,6 +1,6 @@
 <?php
 require_once "db_connect.php";
-
+/*
 create_table_mailing();
 
 function insert_membership($email, $membership){
@@ -148,3 +148,4 @@ function create_table_mailing() {
         return false;
     }
 }
+*/

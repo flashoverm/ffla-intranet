@@ -1,6 +1,6 @@
 <?php
 require_once "db_connect.php";
-
+/*
 create_table_staffposition ();
 
 function insert_staffposition($uuid, $position, $list_index) {
@@ -83,3 +83,4 @@ function create_table_staffposition() {
 		return false;
 	}
 }
+*/

@@ -11,17 +11,9 @@ if(!$isManager){
 } else {
 	if (isset($_GET['uuid'])) {
 		
-		$template = get_staff_template($_GET['uuid']);
+		$template = $staffTemplateDAO->getStaffTemplate($_GET['uuid']);
 		if($template){
-			$string = "[";
-			foreach($template as $entry){
-				$string .= "\n{\n \"uuid\":\"" . $entry->uuid . "\",\n";
-				$string .= "\"position\":\"" . $entry->position . "\"\n";
-				$string .= "},";
-			}
-			$string = substr($string, 0, -1);
-			$string .= "\n]";
-			echo $string;
+			echo $template->toJson();
 			header('Content-Type: text/plain');
 			//header('Content-Type: application/json');
 			

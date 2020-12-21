@@ -86,9 +86,9 @@ function createUnitStaff($unitNumber, $staffNumber, $staff = null) {
 			disabled name="unit<?= $unitNumber ?>function<?= $staffNumber ?>" required="required" id="positionfunction">
 			<option value="" selected>Funktion auswählen</option>
 			<?php foreach ( $staffpositions as $option ) : ?>
-			<option value="<?=  $option->uuid; ?>"
-				<?php if(isset($staff) && $staff->position == $option->uuid){ echo "selected"; } ?>>
-				<?= $option->position; ?>
+			<option value="<?=  $option->getUuid(); ?>"
+				<?php if(isset($staff) && $staff->position == $option->getUuid()){ echo "selected"; } ?>>
+				<?= $option->getPosition(); ?>
 			</option>
 			<?php endforeach; ?>
 		</select>

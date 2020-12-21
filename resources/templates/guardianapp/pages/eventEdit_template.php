@@ -47,10 +47,10 @@
 	<div class="form-group">
 		<label>Typ:</label> <select class="form-control" name="type" id="type" onchange="showHideTypeOtherCreate()">
 				<?php foreach ( $eventtypes as $type ) :
-					if(isset($event) && $type->uuid == $event->type) {?>
-						<option value="<?= $type->uuid; ?>" selected><?= $type->type; ?></option>
+					if(isset($event) && $type->getUuid() == $event->type) {?>
+						<option value="<?= $type->getUuid(); ?>" selected><?= $type->getType(); ?></option>
 					<?php } else {?>
-						<option value="<?= $type->uuid; ?>"><?= $type->type; ?></option>
+						<option value="<?= $type->getUuid(); ?>"><?= $type->getType(); ?></option>
 					<?php }
 				endforeach; ?>
 			</select>
@@ -148,7 +148,7 @@
 									<option value="" disabled selected>Funktion auswählen</option>
 									<?php foreach ( $staffpositions as $option ) : 
 									?>
-										<option value="<?=  $option->uuid; ?>"><?= $option->position; ?></option>
+										<option value="<?=  $option->getUuid(); ?>"><?= $option->getPosition(); ?></option>
 									<?php
 									endforeach; 
 						            ?>
@@ -177,13 +177,13 @@
 									<select class="select-cornered" name="<?= $entry->uuid; ?>" required="required" id="<?= $entry->uuid; ?>">
 										<option value="" disabled selected>Funktion auswählen</option>
 										<?php foreach ( $staffpositions as $option ) : 
-										if($option->uuid == $entry->position){
+										if($option->getUuid() == $entry->position){
 										?>
-											<option selected value="<?=  $option->uuid; ?>"><?= $option->position; ?></option>
+											<option selected value="<?=  $option->getUuid(); ?>"><?= $option->getPosition(); ?></option>
 										<?php 
 										} else {
 										?>
-											<option value="<?=  $option->uuid; ?>"><?= $option->position; ?></option>
+											<option value="<?=  $option->getUuid(); ?>"><?= $option->getPosition(); ?></option>
 										<?php
 										}
 										endforeach; 
@@ -239,7 +239,7 @@
 									<option value="" disabled selected>Funktion auswählen</option>
 									<?php foreach ( $staffpositions as $option ) : 
 									?>
-										<option value="<?=  $option->uuid; ?>"><?= $option->position; ?></option>
+										<option value="<?=  $option->getUuid(); ?>"><?= $option->getPosition(); ?></option>
 									<?php
 									endforeach; 
 						            ?>
@@ -482,9 +482,10 @@
 
 			    clearStaff();
 			    
-	        	for(var i = 0; i < response.length; i++) {
+			    var staffpositions = response.staffPositions
+	        	for(var i = 0; i < staffpositions.length; i++) {
 	        		var select = eventAddStaff();
-	        		select.value = response[i].uuid;
+	        		select.value = staffpositions[i].uuid;
 	        	}
 	    	} else {
 		    	var button = document.getElementById("loadTemplate");

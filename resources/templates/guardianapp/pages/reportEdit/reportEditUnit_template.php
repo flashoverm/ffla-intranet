@@ -68,7 +68,7 @@
 									<select class="form-control" name="positionfunction" required="required" id="positionfunction">
 										<option value="" disabled selected>Funktion auswählen</option>
 										<?php foreach ( $staffpositions as $option ) : ?>
-										<option value="<?=  $option->uuid; ?>"><?= $option->position; ?></option>
+										<option value="<?=  $option->getUuid(); ?>"><?= $option->getPosition(); ?></option>
 										<?php endforeach; ?>
 									</select>
 								</div>

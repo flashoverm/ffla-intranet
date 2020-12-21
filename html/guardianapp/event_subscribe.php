@@ -22,7 +22,7 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 	if(isset($event) and isset($staffposition)) {
 	    $variables ['showFormular'] = true;
 	    
-    	$variables ['title'] = "In " . get_eventtype($event->type)->type . " eintragen";
+	    $variables ['title'] = "In " . $eventTypeDAO->getEventType($event->type)->getType() . " eintragen";
     	$variables ['engines'] = $engines;
     	$variables ['event'] = $event;
     	$variables ['staffUUID'] = $staffUUID;

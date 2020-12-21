@@ -43,11 +43,11 @@
 	<div class="form-group">
 		<label>Typ:</label> <select class="form-control" name="type" id="type" onchange="showHideTypeOther()">
 			<?php foreach ( $eventtypes as $type ) : 	
-			if(isset($object) && $type->uuid == $object->type) {
+			if(isset($object) && $type->getUuid() == $object->type) {
 			    ?>
-				<option value="<?= $type->uuid; ?>" selected><?= $type->type; ?></option>
+				<option value="<?= $type->getUuid(); ?>" selected><?= $type->getType(); ?></option>
 			<?php } else {?>
-				<option value="<?= $type->uuid; ?>"><?= $type->type; ?></option>
+				<option value="<?= $type->getUuid(); ?>"><?= $type->getType(); ?></option>
 			<?php }
 			endforeach; ?>
 		</select>

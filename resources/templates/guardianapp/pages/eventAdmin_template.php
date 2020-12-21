@@ -35,7 +35,7 @@ if (!isset($events) || ! count ( $events ) ) {
 			echo " - ";
 		}
 		?></td>
-				<td class="text-center"><?= get_eventtype($row->type)->type; ?></td>
+				<td class="text-center"><?= $eventTypeDAO->getEventType($row->type)->getType() ?></td>
 				<td class="text-center"><?= $row->title; ?></td>
 				<td class="text-center">
 					<?php 
@@ -113,7 +113,7 @@ if ( isset($pastEvents) && count ( $pastEvents )) {
 			echo " - ";
 		}
 		?></td>
-				<td class="text-center"><?= get_eventtype($row->type)->type; ?></td>
+				<td class="text-center"><?= $eventTypeDAO->getEventType($row->type)->getType() ?></td>
 				<td class="text-center"><?= $row->title; ?></td>
 				<td class="text-center">
 					<?php
@@ -188,7 +188,7 @@ if ( isset($deletedEvents) && count ( $deletedEvents )) {
 			echo " - ";
 		}
 		?></td>
-				<td class="text-center"><?= get_eventtype($row->type)->type; ?></td>
+				<td class="text-center"><?= $eventTypeDAO->getEventType($row->type)->getType() ?></td>
 				<td class="text-center"><?= $row->title; ?></td>
 				<td class="text-center">
 					<?php

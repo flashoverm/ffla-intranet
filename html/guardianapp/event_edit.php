@@ -4,8 +4,8 @@ require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/mail_controller.php";
 
 
-$eventtypes = get_eventtypes ();
-$staffpositions = get_staffpositions();
+$eventtypes = $eventTypeDAO->getEventTypes();
+$staffpositions = $staffPositionDAO->getStaffPositions();
 $engines = $engineDAO->getEngines();
 
 // Pass variables (as an array) to template

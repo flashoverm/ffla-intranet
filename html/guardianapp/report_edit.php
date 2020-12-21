@@ -8,8 +8,8 @@ require_once LIBRARY_PATH . '/class/EventReport.php';
 require_once LIBRARY_PATH . '/class/ReportUnit.php';
 require_once LIBRARY_PATH . '/class/ReportUnitStaff.php';
 
-$eventtypes = get_eventtypes ();
-$staffpositions = get_staffpositions();
+$eventtypes = $eventTypeDAO->getEventTypes();
+$staffpositions = $staffPositionDAO->getStaffPositions();
 $engines = $engineDAO->getEngines();
 
 // Pass variables (as an array) to template

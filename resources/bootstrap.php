@@ -28,6 +28,9 @@ $logbookDAO = new LogbookDAO();
 $mailLogDAO = new MailLogDAO();
 $confirmationDAO = new ConfirmationDAO();
 $fileDAO = new FileDAO();
+$eventTypeDAO = new EventTypeDAO();
+$staffPositionDAO = new StaffPositionDAO();
+$staffTemplateDAO = new StaffTemplateDAO();
 
 $userController = new UserController();
 $guardianUserController = new GuardianUserController();

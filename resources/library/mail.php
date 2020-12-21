@@ -105,12 +105,14 @@ function send_mails($recipients, $subject, $body, $attachment = NULL) {
 }
 
 
-function send_mail_to_mailing($mailing, $subject, $body, $attachment = NULL){
-    $recipients = get_member($mailing);
+function send_mail_to_mailinglist($mailing, $subject, $body, $attachment = NULL){
+	global $mailingList;
+	
+	$recipients = $mailingList[$mailing];
     
     $noError = true;
     foreach($recipients as $recipient){
-        if(!send_mail($recipient->email, $subject, $body, $attachment)){
+        if(!send_mail($recipient, $subject, $body, $attachment)){
             $noError = false;    
         }
     }

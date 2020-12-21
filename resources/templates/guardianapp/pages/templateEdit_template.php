@@ -3,18 +3,14 @@
 	<label>Wachtyp:</label> <select class="form-control" name="type" id="type" onchange="loadTemplate()">
 			<option value="" disabled selected>Wachtyp auswählen</option>
 			<?php foreach ( $eventtypes as $type ) :
-				if(isset($_GET ['eventtype']) && $_GET ['eventtype'] == $type->uuid){?>
-					<option value="<?= $type->uuid; ?>" selected><?= $type->type; ?></option>
+				if(isset($_GET ['eventtype']) && $_GET ['eventtype'] == $type->getUuid()){?>
+					<option value="<?= $type->getUuid(); ?>" selected><?= $type->getType(); ?></option>
 			<?php } else {?>
-					<option value="<?= $type->uuid; ?>"><?= $type->type; ?></option>
+					<option value="<?= $type->getUuid(); ?>"><?= $type->getType(); ?></option>
 			<?php }
 			endforeach; ?>
 		</select>
-	</div>    
-	<?php 
-	$staffId = 0;
-	if(isset($template)){
-	?>
+	</div>
 	<div class="form-group">
 		<label>Benötigtes Wachpersonal:</label>
 		<div class="table-responsive">
@@ -33,7 +29,7 @@
 									<option value="" disabled selected>Funktion auswählen</option>
 									<?php foreach ( $staffpositions as $option ) : 
 									?>
-										<option value="<?=  $option->uuid; ?>"><?= $option->position; ?></option>
+										<option value="<?=  $option->getUuid(); ?>"><?= $option->getPosition(); ?></option>
 									<?php
 									endforeach; 
 						            ?>
@@ -45,22 +41,23 @@
 					</tr>
 					
 					<?php
-					foreach ( $template as $entry ) {
+					$staffId = 0;
+					foreach ( $template->getStaffPositions() as $position ) {
 						$staffId = $staffId +1;
 						?>
 						<tr id="staffEntry<?= $staffId; ?>">
 							<td class="p-0">
-									<select class="select-cornered" name="<?= $entry->template ?>" required="required" id="<?= $entry->template ?>">
+									<select class="select-cornered" name="staff<?= $staffId ?>" required="required" id="staff<?= $staffId ?>">
 										<option value="" disabled selected>Funktion auswählen</option>
 										<?php foreach ( $staffpositions as $option ) : 
-											if($option->uuid == $entry->uuid){
-										?>
-												<option selected value="<?=  $option->uuid ?>"><?= $option->position ?></option>
-										<?php 
+											if($option->getUuid() == $position->getUuid()){
+											?>
+												<option selected value="<?=  $option->getUuid() ?>"><?= $option->getPosition() ?></option>
+											<?php 
 											} else {
-										?>
-												<option value="<?=  $option->uuid ?>"><?= $option->position ?></option>
-										<?php
+											?>
+												<option value="<?=  $option->getUuid() ?>"><?= $option->getPosition() ?></option>
+											<?php
 											}
 										endforeach; 
 							            ?>
@@ -79,9 +76,6 @@
 		</div>	
 	</div>
 	<input type="submit" class="btn btn-primary" value="Speichern">
-	<?php 
-	}
-	?>
 </form>
 
 <script type='text/javascript'>

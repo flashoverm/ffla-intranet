@@ -94,6 +94,13 @@ $config = overrideConfig($config, $overrideConfig);
 //Mailing Lists
 define("INSPECTIONREPORT", "INSPECTIONREPORT");
 
+$mailingList = array(
+	"INSPECTIONREPORT" => array(
+			"hydranten@feuerwehr-landshut.de",
+			"markus@thral.de",
+	),
+);
+
 
 
 defined ( "LIBRARY_PATH" ) or define ( "LIBRARY_PATH", realpath ( dirname ( __FILE__ ) . '/../library' ) );

@@ -3,9 +3,9 @@
 		<tbody>
 			<tr>
 				<th colspan="3">
-					<?= get_eventtype($report->type)->type ?>
+					<?= $eventTypeDAO->getEventType($report->type)->getType() ?>
 					<?php
-					if(get_eventtype($report->type)->type == "Sonstige Wache"){
+					if($eventTypeDAO->getEventType($report->type)->getType() == "Sonstige Wache"){
 						echo ": " . $report->type_other;
 					}
 					?>
@@ -84,9 +84,9 @@
 			foreach ( $entry->staffList as $staff ) {
 			?>
 			<tr>
-				<td><?= get_staffposition($staff->position)->position; ?></td>
-				<td><?= $staff->name; ?></td>
-				<td><?= $engineDAO->getEngine($staff->engine)->getName(); ?></td>
+				<td><?= $staffPositionDAO->getStaffPosition($staff->position)->getPosition() ?></td>
+				<td><?= $staff->name ?></td>
+				<td><?= $engineDAO->getEngine($staff->engine)->getName() ?></td>
 			</tr>
 			<?php } ?>
 			</tbody>

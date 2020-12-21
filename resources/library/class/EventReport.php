@@ -90,7 +90,7 @@ class EventReport {
 		 foreach($staff as $position){
 		 	$user = $userDAO->getUserByUUID($position->user);
 		 	if($user){
-		 		$unit->addStaff(new ReportUnitStaff($position->position, $user->firstname . " " . $user->lastname, $user->engine));
+		 		$unit->addStaff(new ReportUnitStaff($position->position, $user->getFullName(), $user->getEngine()->getUuid()));
 		 	}
 		 }
 		 $report->addUnit($unit);

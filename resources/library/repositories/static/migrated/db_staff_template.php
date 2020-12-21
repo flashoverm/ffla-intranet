@@ -1,6 +1,6 @@
 <?php
 require_once "db_connect.php";
-
+/*
 create_table_staff_template();
 
 function insert_template($eventtype, $staffposition){
@@ -50,7 +50,7 @@ function insert_template_description($eventtype, $staffposition){
         return false;
     }
     
-}
+} 
 
 function get_staff_template($eventtype_uuid){
     global $db;
@@ -150,3 +150,4 @@ function create_table_staff_template(){
         return false;
     }
 }
+*/

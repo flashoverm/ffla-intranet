@@ -15,7 +15,7 @@ function mail_send_inspection_report($report_uuid){
     $subject = "Hydranten-Prüfbericht";
     $body = $bodies["report_insert"] . get_inspection_link($report_uuid);
 
-    return send_mail_to_mailing(INSPECTIONREPORT, $subject, $body, $file);
+    return send_mail_to_mailinglist(INSPECTIONREPORT, $subject, $body, $file);
 }
 
 function mail_send_inspection_report_update($report_uuid){
@@ -27,7 +27,7 @@ function mail_send_inspection_report_update($report_uuid){
     $subject = "Hydranten-Prüfbericht aktualisiert";
     $body = $bodies["report_update"] . get_inspection_link($report_uuid);
         
-    return send_mail_to_mailing(INSPECTIONREPORT, $subject, $body, $file);
+    return send_mail_to_mailinglist(INSPECTIONREPORT, $subject, $body, $file);
 }
 
 function get_inspection_link($inspection_uuid){
@@ -317,13 +317,13 @@ function get_report_link($report_uuid){
 }
 
 function event_subject($event_uuid){
-	global $config;
+	global $config, $eventTypeDAO;
 	$event = get_event($event_uuid);
 	
 	$subject = " - "
 			. date($config ["formats"] ["date"], strtotime($event->date)) . " "
 					. date($config ["formats"] ["time"], strtotime($event->start_time)) . " Uhr "
-							. get_eventtype($event->type)->type;
+							. $eventTypeDAO->getEventType($event->type)->getType();
 							
 							return $subject;
 }
@@ -376,12 +376,10 @@ function mail_insert_event_report($report){
 	
 	$file = $config["paths"]["reports"] . $report->uuid . ".pdf";
 	
-	//send report to administration if event is no series
-	//if(!get_eventtype_from_name($report->type)->isseries){
+	//send report to administration
 	$userDAO->getUsersByEngine($engineDAO->getAdministration()->getUuid());
 	$administration = $userDAO->getUsersByEngine($engineDAO->getAdministration()->getUuid());
 	send_mails($administration, $subject, $body, $file);
-	//}
 	
 	//send report to manager of the assigned engine
 	$managerList = $guardianUserController->getEventmanagerOfEngine($report->engine);
@@ -400,12 +398,9 @@ function mail_update_report($report){
 	
 	$file = $config["paths"]["reports"] . $report->uuid . ".pdf";
 	
-	//send report to administration if event is no series
-	//if(!get_eventtype_from_name($report->type)->isseries){
-	
+	//send report to manager of the assigned engine
 	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
 	send_mails($administration, $subject, $body, $file);
-	//}
 	
 	//send report to manager of the assigned engine
 	$managerList = $guardianUserController->getEventmanagerOfEngine($report->engine);

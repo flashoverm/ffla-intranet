@@ -2,7 +2,7 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
 
-$eventtypes = get_eventtypes ();
+$eventtypes = $eventTypeDAO->getEventTypes();
 
 // Pass variables (as an array) to template
 $variables = array (
@@ -51,7 +51,7 @@ if((isset($_POST['csv']) || isset($_POST['invoice'])) && $userController->getCur
     if($type == -1 ){
         $head = "Alle Wachen";
     } else {
-        $head = "Wachen von Typ " . get_eventtype($type);
+    	$head = "Wachen von Typ " . $eventTypeDAO->getEventType($type)->getType();
     }
     $head .= " zwischen " . 
         date($config ["formats"] ["date"], strtotime($from)) . " und " . 
@@ -71,7 +71,7 @@ if((isset($_POST['csv']) || isset($_POST['invoice'])) && $userController->getCur
 renderLayoutWithContentFile ($config["apps"]["guardian"], "reportExport_template.php", $variables );
 
 function reportsToCSV($reports, $head = ""){
-    global $config, $engineDAO;
+	global $config, $engineDAO, $eventTypeDAO;
     $delimiter = ";";
     $filestring = $head;
         
@@ -101,7 +101,7 @@ function reportsToCSV($reports, $head = ""){
             date($config ["formats"] ["time"], strtotime($row->end_time)) . $delimiter . 
             gmdate($config ["formats"] ["time"], $duration) . $delimiter . 
             gmdate($config ["formats"] ["time"], $personalhours) . $delimiter . 
-            get_eventtype($row->type)->type . $delimiter .
+            $eventTypeDAO->getEventType($report->type)->getType() . $delimiter .
             $row->title . $delimiter . 
             "\n\nPersonal:\n";
         

@@ -38,7 +38,7 @@
 					}
 					?>
 			<tr>
-				<td><?= get_staffposition($entry->position)->position; ?></td>
+				<td><?= $staffPositionDAO->getStaffPosition($entry->position)->getPosition() ?></td>
 				<td><?php 
 						if($entry->user != NULL){
 							echo $name; 

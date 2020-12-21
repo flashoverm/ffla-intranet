@@ -31,7 +31,7 @@ if (! isset($_GET['id'])) {
     	
     	// Pass variables (as an array) to template
     	$variables = array(
-    			'title' => get_eventtype($event->type)->type,
+    			'title' => $eventTypeDAO->getEventType($event->type)->getType(),
     			'secured' => false,
     			'showFormular' => true,
     	        'isCreator' => $isCreator,

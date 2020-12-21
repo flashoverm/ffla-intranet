@@ -176,18 +176,18 @@ class LogbookEntry extends BaseModel {
 	}
 	
 	protected static function eventEntry($action, $event_uuid){
-		global $config;
+		global $config, $eventTypeDAO;
 		$event = get_event($event_uuid);
 		if( ! $event ){
 			return null;
 		}
 		return LogbookActions::getActionText($action) . ":<br>"
-				. "Wache: " . get_eventtype($event->type)->type . " (" . date($config ["formats"] ["date"], strtotime($event->date)) . " " . date($config ["formats"] ["time"], strtotime($event->start_time)) . " Uhr)<br>"
+				. "Wache: " . $eventTypeDAO->getEventType($event->type)->getType() . " (" . date($config ["formats"] ["date"], strtotime($event->date)) . " " . date($config ["formats"] ["time"], strtotime($event->start_time)) . " Uhr)<br>"
 						. "Titel: " . $event->title ;
 	}
 	
 	protected static function eventStaffEntry($action, $staff_uuid){
-		global $config, $userDAO;
+		global $config, $userDAO, $eventTypeDAO;
 		$staff = get_events_staffposition($staff_uuid);
 		if( ! $staff ){
 			return null;
@@ -197,7 +197,7 @@ class LogbookEntry extends BaseModel {
 		$user = $userDAO->getUserByUUID($staff->user);
 		
 		return LogbookActions::getActionText($action) . ":<br>"
-				. "Wache:  " . get_eventtype($event->type)->type . " (" . date($config ["formats"] ["date"], strtotime($event->date)) . " " . date($config ["formats"] ["time"], strtotime($event->start_time)) . " Uhr) " . $staffpos . "<br>"
+				. "Wache:  " . $eventTypeDAO->getEventType($event->type)->getType() . " (" . date($config ["formats"] ["date"], strtotime($event->date)) . " " . date($config ["formats"] ["time"], strtotime($event->start_time)) . " Uhr) " . $staffpos . "<br>"
 						. "Person: " . $user->getFullNameWithEmail();
 	}
 	
@@ -209,13 +209,13 @@ class LogbookEntry extends BaseModel {
 	}
 	
 	protected static function eventReportEntry($action, $report_uuid){
-		global $config;;
+		global $config, $eventTypeDAO;
 		$report = get_report($report_uuid);
 		if( ! $report ){
 			return null;
 		}
 		return LogbookActions::getActionText($action) . ":<br>"
-				. "Bericht für: " . get_eventtype($report->type)->type . " (" . date($config ["formats"] ["date"], strtotime($report->date)) . " " . date($config ["formats"] ["time"], strtotime($report->start_time)) . " Uhr)<br>"
+				. "Bericht für: " . $eventTypeDAO->getEventType($report->type)->getType() . " (" . date($config ["formats"] ["date"], strtotime($report->date)) . " " . date($config ["formats"] ["time"], strtotime($report->start_time)) . " Uhr)<br>"
 						. "Titel: " . $report->title ;
 	}
 	

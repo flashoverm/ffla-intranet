@@ -5,46 +5,39 @@ require_once TEMPLATES_PATH . "/template.php";
 $variables = array (
 		'title' => "Personalvorlagen",
 		'secured' => true,
-		'privilege' => Privilege::EVENTADMIN
+		'privilege' => Privilege::EVENTADMIN,
+		'eventtypes' => $eventTypeDAO->getEventTypes(),
+		'staffpositions' => $staffPositionDAO->getStaffPositions(),
 );
-
-
-$eventtypes = get_eventtypes ();
-$variables ['eventtypes'] = $eventtypes;
 
 if(isset($_GET ['eventtype'])){
 	
 	$eventtype_uuid = $_GET ['eventtype'];
+	$eventType = $eventTypeDAO->getEventType($eventtype_uuid);
 	
-	$template = get_staff_template($eventtype_uuid);
-	$variables ['template'] = $template;
-
+	$template = $staffTemplateDAO->getStaffTemplate($eventtype_uuid);
+	if( ! $template){
+		$template = new StaffTemplate();
+		$template->setEventType($eventType);
+	}
+	
 	if(isset($_POST ['positionCount'])){
-		
-		foreach($template as $entry):
-			if(!isset($_POST [$entry->template])){
-				delete_template_entry($entry->template);
-			} else {
-				update_template_entry($entry->template, $_POST [$entry->template]);
-			}
-		endforeach;
+
+		$template->clearStaffpositions();
 		
 		$count = $_POST ['positionCount'];
 		for ($i = 0; $i <= $count; $i++) {
 			if(isset($_POST ["staff" . $i])){
-				insert_template ( $eventtype_uuid, $_POST ["staff" . $i]);
+				$template->addStaffposition($staffPositionDAO->getStaffPosition($_POST ["staff" . $i]));
 			}
 		}
 		
-		$template = get_staff_template($eventtype_uuid);
-		$variables ['template'] = $template;
+		$staffTemplateDAO->save($template);
 	}
 	
-	$eventtype = get_eventtype($eventtype_uuid);
-	$variables ['subtitle'] = $eventtype->type;
+	$variables ['template'] = $template;
+	$variables ['subtitle'] = $eventType->getType();
 			
-	$staffpositions = get_staffpositions();
-	$variables ['staffpositions'] = $staffpositions;	
 }	
 
 

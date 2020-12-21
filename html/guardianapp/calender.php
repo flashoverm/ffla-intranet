@@ -30,9 +30,8 @@ if (isset($_GET['id'])) {
     }
     
     function createICS($event){
-    	global $config;
-    	global $eol;
-    	$type = get_eventtype($event->type)->type;
+    	global $config, $eol, $eventTypeDAO;
+    	$type = $eventTypeDAO->getEventType($event->type)->getType();
     	
     	header('Content-Disposition: attachment; filename=event.ics');
     	
@@ -59,9 +58,8 @@ if (isset($_GET['id'])) {
     }
     
     function createVCS($event){
-    	global $config;
-    	global $eol;
-    	$type = get_eventtype($event->type)->type;
+    	global $config, $eol, $eventTypeDAO;
+    	$type = $eventTypeDAO->getEventType($event->type)->getType();
     	
     	header('Content-Disposition: attachment; filename=event.vcs');
     	
