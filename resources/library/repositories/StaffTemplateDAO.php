@@ -70,7 +70,7 @@ class StaffTemplateDAO extends BaseDAO {
 	}
 	
 	protected function insertTemplatePosition($eventtypeUuid, $staffpositionUuid){
-		$uuid = $this->getGUID();
+		$uuid = $this->getUuid();
 		
 		$statement = $this->db->prepare("INSERT INTO stafftemplate (uuid, eventtype, staffposition)
 		VALUES (?, ?, ?)");

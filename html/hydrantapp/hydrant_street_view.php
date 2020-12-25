@@ -12,7 +12,7 @@ if (isset($_GET['street'])) {
 
 	$street = trim($_GET['street']);
     
-    $hydrants = get_hydrants_of_street($street);
+	$hydrants = $hydrantDAO->getHydrantsOfStreet($street);
     
     $variables ['hydrants'] = $hydrants;
     
@@ -24,7 +24,7 @@ if (isset($_GET['street'])) {
     . "&markers=color:red|label:H";
     
     foreach ( $hydrants as $hydrant ) {
-        $mapUrl = $mapUrl . "|" . $hydrant->lat . "," . $hydrant->lng . ""; 
+        $mapUrl = $mapUrl . "|" . $hydrant->getLat() . "," . $hydrant->getLng() . ""; 
     }
    
     if(isset($_GET['location'])) {

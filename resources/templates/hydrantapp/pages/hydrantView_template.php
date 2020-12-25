@@ -5,18 +5,18 @@ if (isset($hydrant)){
 		<tbody>
 			<tr>
 				<th class="th-td-padding text-left">Ort</th>
-				<td class="th-td-padding"><?= $hydrant->street . ", " . $hydrant->district ?></td>
+				<td class="th-td-padding"><?= $hydrant->getStreet() . ", " . $hydrant->getDistrict() ?></td>
 			</tr>			
 			<tr>
 				<th class="th-td-padding text-left">Löschzug</th>
-				<td class="th-td-padding"><?= $engineDAO->getEngine($hydrant->engine)->getName(); ?></td>
+				<td class="th-td-padding"><?= $hydrant->getEngine()->getName(); ?></td>
 			</tr>
 			<tr>
 				<th class="th-td-padding text-left">Typ</th>
-				<td class="th-td-padding"><?= $hydrant->type ?></td>
+				<td class="th-td-padding"><?= $hydrant->getType() ?></td>
 			</tr>
 			<?php
-			if(!$hydrant->checkbyff){
+			if(!$hydrant->getCheckByFF()){
 			?>
 			<tr>
 				<th class="th-td-padding text-left">Prüfung durch</th>
@@ -24,7 +24,7 @@ if (isset($hydrant)){
 			</tr>
 			<?php
 			}
-			if(!$hydrant->operating){
+			if(!$hydrant->getOperating()){
 			?>
 			<tr>
 				<th class="th-td-padding text-left">Achtung</th>

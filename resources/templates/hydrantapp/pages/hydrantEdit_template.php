@@ -133,14 +133,14 @@
 <script>
 
 $(function() {
-    var availableTags = <?php echo json_encode(get_districts()); ?>;
+    var availableTags = <?php echo json_encode($hydrantDAO->getDistrictList()); ?>;
     $("#district").autocomplete({
         source: availableTags
     });
 });
 
 $(function() {
-    var availableTags = <?php echo json_encode(get_streets()); ?>;
+    var availableTags = <?php echo json_encode($hydrantDAO->getStreetList()); ?>;
     $("#street").autocomplete({
         source: availableTags
     });

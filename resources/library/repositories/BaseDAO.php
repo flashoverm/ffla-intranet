@@ -52,7 +52,7 @@ abstract class BaseDAO {
 		return false;
 	}
 	
-	protected function getGUID() {
+	protected function getUuid() {
 		if (function_exists ( 'com_create_guid' )) {
 			return com_create_guid ();
 		} else {

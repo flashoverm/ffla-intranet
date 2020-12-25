@@ -26,12 +26,19 @@ $privilegeDAO = new PrivilegeDAO();
 $engineDAO = new EngineDAO();
 $logbookDAO = new LogbookDAO();
 $mailLogDAO = new MailLogDAO();
+
 $confirmationDAO = new ConfirmationDAO();
+
 $fileDAO = new FileDAO();
+
 $eventTypeDAO = new EventTypeDAO();
 $staffPositionDAO = new StaffPositionDAO();
 $staffTemplateDAO = new StaffTemplateDAO();
 
+$hydrantDAO = new HydrantDAO();
+$inspectionDAO = new InspectionDAO();
+
 $userController = new UserController();
 $guardianUserController = new GuardianUserController();
 $confirmationController = new ConfirmationController();
+$hydrantController = new HydrantController();

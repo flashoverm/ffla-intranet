@@ -1,22 +1,23 @@
 <?php
 
-function generateTableRow($row, $rowIdPrefix = 'candidate'){
+function generateTableRow(Hydrant $row, $rowIdPrefix = 'candidate'){
+	global $config;
 	?>
-	<tr id='<?= $rowIdPrefix . $row->hy; ?>'>
-	<td class="text-center"><?= $row->hy; ?></td>
-		<td class="text-center"><?= $row->fid; ?></td>
-		<td class="text-center"><?= $row->street; ?></td>
-		<td class="text-center"><?= $row->district; ?></td>	
-		<?php if(!isset($row->lastcheck)) {?>
+	<tr id='<?= $rowIdPrefix . $row->getHy(); ?>'>
+	<td class="text-center"><?= $row->getHy(); ?></td>
+		<td class="text-center"><?= $row->getFid(); ?></td>
+		<td class="text-center"><?= $row->getStreet(); ?></td>
+		<td class="text-center"><?= $row->getDistrict(); ?></td>	
+		<?php if( $row->getLastCheck() == NULL ) {?>
 			<td class="text-center">Nie</td>
 		<?php } else { ?>			
-			<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->lastcheck)); ?></td>
+			<td class="text-center"><span class='d-none'><?= strtotime($row->getLastCheck()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getLastCheck())); ?></td>
 		<?php } ?>
 		
-		<td class="text-center"><?= $row->cycle; ?></td>
+		<td class="text-center"><?= $row->getCycle(); ?></td>
 
 		<td class="text-center">
-			<button class="btn btn-primary btn-sm" id='btn<?= $rowIdPrefix . $row->hy; ?>' onclick="planForInspection('<?= $row->hy; ?>')">Hinzufügen</button>
+			<button class="btn btn-primary btn-sm" id='btn<?= $rowIdPrefix . $row->getHy(); ?>' onclick="planForInspection('<?= $row->getHy(); ?>')">Hinzufügen</button>
 		</td>
 	</tr>
 <?php 

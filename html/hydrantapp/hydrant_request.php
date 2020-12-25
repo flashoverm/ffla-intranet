@@ -14,7 +14,7 @@ if (isset($_POST['hy'])) {
     
     $id = trim($_POST['hy']);
         
-    if(is_hydrant_existing($id)){
+    if($hydrantController->isHyExisting($id)){
         if(isset($_POST['location']) && $_POST['location'] != ""){
             header ( "Location: " . $config["urls"]["hydrantapp_home"] . "/" . $id . "?location=" . $_POST['location']); // redirects
         } else {

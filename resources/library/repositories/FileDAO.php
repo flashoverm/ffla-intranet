@@ -9,7 +9,7 @@ class FileDAO extends BaseDAO {
 	}
 	
 	function save(File $file){
-		$uuid = $this->getGUID();
+		$uuid = $this->getUuid();
 		
 		$statement = $this->db->prepare("INSERT INTO file (uuid, description, date, filename) VALUES (?, ?, ?, ?)");
 		

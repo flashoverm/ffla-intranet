@@ -12,7 +12,7 @@
                 		placeholder="TT.MM.JJJJ" title="TT.MM.JJJJ" class="form-control" 
                 		name="date" id="date"
                 		<?php  if(isset($inspection)){
-                		    echo " value='" . $inspection->date . "'";
+                		    echo " value='" . $inspection->getDate() . "'";
                 		}?>
                 		required pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4}">
         			</div>
@@ -21,7 +21,7 @@
         				<div class="form-group" style="margin-bottom: 0 !important;">
                 		<input type="text" class="form-control" name="vehicle" id="vehicle" 
                 		<?php  if(isset($inspection)){
-        		              echo "value='" . $inspection->vehicle . "'";
+        		              echo "value='" . $inspection->getVehicle() . "'";
                	        }?>
                 		placeholder="Fahrzeugbezeichnung eingeben">
             		</div>
@@ -35,7 +35,7 @@
     				<div class="form-group" style="margin-bottom: 0 !important;">
                 		<input type="text" class="form-control" required="required" name="name" id="name" 
                 		<?php  if(isset($inspection)){
-                		    echo "value='" . $inspection->name . "'";
+                		    echo "value='" . $inspection->getName() . "'";
                        	}?>
                 		placeholder="Name(n) eingeben">
 					</div>
@@ -93,28 +93,28 @@
                     	<tbody id="table-body">
                     	<?php 
                     		if(isset($inspection)){
-                    		    foreach ($inspection->hydrants as $hydrant) {
+                    		    foreach ($inspection->getInspectedHydrants() as $inspectedHydrant) {
                     		        ?>
-                					<tr id="hydrant<?= $hydrant->idx ?>">
-                            			<td class="th-td-small align-middle text-center" id="hlfd"><?= $hydrant->idx ?></td>
+                					<tr id="hydrant<?= $inspectedHydrant->getIndex() ?>">
+                            			<td class="th-td-small align-middle text-center" id="hlfd"><?= $inspectedHydrant->getIndex() ?></td>
                             			<td class="th-td-small align-middle" style="min-width: 6rem">
-                            				<input id="h<?= $hydrant->idx ?>hy" name="h<?= $hydrant->idx ?>hy" class="form-control form-control-sm" type="number" 
-                            				value="<?= $hydrant->hy ?>" placeholder="HY Nr.">
+                            				<input id="h<?= $inspectedHydrant->getIndex() ?>hy" name="h<?= $inspectedHydrant->getIndex() ?>hy" class="form-control form-control-sm" type="number" 
+                            				value="<?= $inspectedHydrant->getHydrant()->getHy() ?>" placeholder="HY Nr.">
                             			</td>
                             			<td class="th-td-small">
                                         	<div class="custom-control custom-radio d-flex justify-content-center">
-                        						<input checked type="radio" class="custom-control-input" id="h<?= $hydrant->idx ?>typeu" name="h<?= $hydrant->idx ?>type" 
-                        						<?php  if($hydrant->type == 'overfloor') { echo "checked"; } ?>
+                        						<input checked type="radio" class="custom-control-input" id="h<?= $inspectedHydrant->getIndex() ?>typeu" name="h<?= $inspectedHydrant->getIndex() ?>type" 
+                        						<?php  if($inspectedHydrant->getType() == 'overfloor') { echo "checked"; } ?>
                         						value="overfloor">
-                        						<label class="custom-control-label custom-control-label-table" for="h<?= $hydrant->idx ?>typeu">&nbsp;</label>
+                        						<label class="custom-control-label custom-control-label-table" for="h<?= $inspectedHydrant->getIndex() ?>typeu">&nbsp;</label>
                         					</div> 
                                         </td>
                             			<td class="th-td-small">
                                            	<div class="custom-control custom-radio d-flex justify-content-center">
-                                    			<input type="radio" class="custom-control-input" id="h<?= $hydrant->idx ?>typeo" name="h<?= $hydrant->idx ?>type" 
-                          						<?php  if($hydrant->type == 'underfloor') { echo "checked"; } ?>                      			
+                                    			<input type="radio" class="custom-control-input" id="h<?= $inspectedHydrant->getIndex() ?>typeo" name="h<?= $inspectedHydrant->getIndex() ?>type" 
+                                    			<?php  if($inspectedHydrant->getType() == 'underfloor') { echo "checked"; } ?>                      			
                                     			value="underfloor">
-                                    			<label class="custom-control-label custom-control-label-table" for="h<?= $hydrant->idx ?>typeo">&nbsp;</label>
+                                    			<label class="custom-control-label custom-control-label-table" for="h<?= $inspectedHydrant->getIndex() ?>typeo">&nbsp;</label>
                         					</div>
                                         </td>
                             			<?php
@@ -124,17 +124,20 @@
                                         		<div class="custom-control custom-checkbox d-flex justify-content-center">
                                                 	<input type="checkbox" class="custom-control-input" 
                                                 	
-                                                	<?php  if($hydrant->criteria[$count]->value == true) { echo "checked"; } ?>     
+                                                	<?php  
+                                                	if($inspectedHydrant->getCriteria()[$count]['value'] == true) { 
+                                                		echo "checked"; 
+                                                	} ?>     
                                                 	                 			
-                                                	id='h<?= $hydrant->idx ?>c<?= $count ?>' name='h<?= $hydrant->idx ?>c<?= $count ?>'>
-                                                	<label for='h<?= $hydrant->idx ?>c<?= $count ?>' class="custom-control-label custom-control-label-table">&nbsp;</label>
+                                                	id='h<?= $inspectedHydrant->getIndex() ?>c<?= $count ?>' name='h<?= $inspectedHydrant->getIndex() ?>c<?= $count ?>'>
+                                                	<label for='h<?= $inspectedHydrant->getIndex() ?>c<?= $count ?>' class="custom-control-label custom-control-label-table">&nbsp;</label>
                                                 </div>
                                         	</td>
                                         <?php
                                         }
                                         ?>
                                        <td class="th-td-small">
-                                       		<button type="button" class="btn btn-primary btn-sm" id="h<?= $hydrant->idx ?>rem" onclick="removeHydrantOverview(<?= $hydrant->idx ?>)">X</button>
+                                       		<button type="button" class="btn btn-primary btn-sm" id="h<?= $inspectedHydrant->getIndex() ?>rem" onclick="removeHydrantOverview(<?= $inspectedHydrant->getIndex() ?>)">X</button>
                                         </td>
                             		</tr>
                     		        <?php 
@@ -186,21 +189,13 @@
 				<div class="form-group" style="margin-bottom: 0 !important;">
             		<textarea class="form-control" name="notes" id="notes" 
             		placeholder="Hinweise"><?php
-            		if(isset($inspection)){ echo $inspection->notes; }
+            		if(isset($inspection)){ echo $inspection->getNotes(); }
             		?></textarea>
     			</div>
 			</td>
 		</tr>
 	</tbody>
 </table>
-    
-    
-
-    <input type="hidden" id="uuid" name="uuid" 
-    <?php if(isset($inspection) && $inspection->uuid != "") {
-        echo "value='" . $inspection->uuid . "'"; 
-    } ?>
-    >
     <input type="hidden" id="maxidx" name="maxidx" 
     <?php  
     if(isset($inspection)) { 

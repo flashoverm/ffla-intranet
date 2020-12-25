@@ -148,7 +148,7 @@ class UserDAO extends BaseDAO {
 	 */
 	
 	protected function insertUser(User $user){
-		$uuid = $this->getGUID();
+		$uuid = $this->getUuid();
 		$emailLower = strtolower($user->getEmail());
 		
 		$statement = $this->db->prepare("INSERT INTO user (
@@ -160,11 +160,8 @@ class UserDAO extends BaseDAO {
 		
 		if ($result) {
 			return $this->getUserByUUID($uuid);
-			
-		} else {
-			//echo "Error: " . "<br>" . $db->error;
-			return false;
 		}
+		return false;
 	}
 	
 	protected function updateUser($user){
@@ -178,10 +175,8 @@ class UserDAO extends BaseDAO {
 		
 		if ($result) {
 			return $this->getUserByUUID($user->getUuid());
-		} else {
-			// echo "Error: " . $query . "<br>" . $db->error;
-			return false;
 		}
+		return false;
 	}
 	
 	protected function resultToObject($result){
@@ -220,9 +215,8 @@ class UserDAO extends BaseDAO {
 		
 		if ($result) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 }

@@ -1,14 +1,13 @@
 <?php
 require_once "db_connect.php";
-require_once LIBRARY_PATH . "/class/HydrantInspection.php";
-
+/*
 create_table_inspection ();
 create_table_hydrant_inspection ();
 
 
 function insert_inspection($inspection) {
 	global $db;
-	$uuid = getGUID ();
+	$uuid = getUuid ();
 	
 	$statement = $db->prepare("INSERT INTO inspection (uuid, date, vehicle, name, notes, engine) VALUES (?, ?, ?, ?, ?, ?)");
 	$statement->bind_param('ssssss', 
@@ -112,7 +111,7 @@ function get_inspections(){
 }
 
 function get_inspection_hydrants($inspection) {
-    global $db;
+	global $db, $hydrantDAO;
     
     $data = array ();
     
@@ -124,7 +123,7 @@ function get_inspection_hydrants($inspection) {
         
         if (mysqli_num_rows ( $result )) {
             while ( $date = $result->fetch_object () ) {
-                $hydrant = new Hydrant(get_hydrant_by_uuid($date->hydrant)->hy, $date->idx, $date->type);
+            	$hydrant = new Hydrant($hydrantDAO->getHydrantsByUuid($date->hydrant)->hy, $date->idx, $date->type);
                 $hydrant->setCriteria($date->criteria);
                 $hydrant->uuid = $date->hydrant;
                 $inspection->addHydrant($hydrant);
@@ -302,5 +301,5 @@ function create_table_hydrant_inspection() {
         return false;
     }
 }
-
+*/
 ?>

@@ -8,7 +8,7 @@ $variables = array(
 		'secured' => true
 );
 	
-$hydrants = get_hydrants();
+$hydrants = $hydrantDAO->getHydrants();
 
 $variables ['hydrants'] = $hydrants;
 

@@ -22,25 +22,25 @@ if (! count ( $inspections )) {
     foreach ( $inspections as $row ) {
         ?>
 			<tr>
-				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
-				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName(); ?></td>
-				<td class="text-center"><?= $row->name; ?></td>
-				<td class="text-center"><?= $row->vehicle; ?></td>
-				<td class="text-center"><?= $row->getCount(); ?></td>
+				<td class="text-center"><span class='d-none'><?= strtotime($row->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
+				<td class="text-center"><?= $row->getEngine()->getName() ?></td>
+				<td class="text-center"><?= $row->getName() ?></td>
+				<td class="text-center"><?= $row->getVehicle() ?></td>
+				<td class="text-center"><?= count ($row->getInspectedHydrants()) ?></td>
 				<td>
 					<div class="dropdown">
 						<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Optionen</button>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->uuid; ?>">Anzeigen</a>
-							<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->uuid . "/file"; ?>">PDF anzeigen</a>
+							<a class="dropdown-item" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->getUuid(); ?>">Anzeigen</a>
+							<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->getUuid() . "/file"; ?>">PDF anzeigen</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/edit/". $row->uuid; ?>">Bearbeiten</a>
+							<a class="dropdown-item" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/edit/". $row->getUuid(); ?>">Bearbeiten</a>
 							<div class="dropdown-divider"></div>
-							<button type="button" class="dropdown-item" data-toggle="modal" data-target="#confirmDelete<?= $row->uuid; ?>">Löschen</button>
+							<button type="button" class="dropdown-item" data-toggle="modal" data-target="#confirmDelete<?= $row->getUuid(); ?>">Löschen</button>
 						</div>
 					</div>
 					<?php
-						createDialog('confirmDelete' . $row->uuid, "Prüfbericht wirklich löschen?", null, "delete", $row->uuid);
+					createDialog('confirmDelete' . $row->getUuid(), "Prüfbericht wirklich löschen?", null, "delete", $row->getUuid());
 					?>
 				</td>
 			</tr>

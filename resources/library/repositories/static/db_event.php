@@ -8,7 +8,7 @@ create_table_staff ();
 function insert_event($date, $start, $end, $type_uuid, $type_other, $title, $comment, $engine, $creator, $published, $staff_confirmation) {
 	global $db;
 
-	$uuid = getGUID ();
+	$uuid = getUuid ();
 	$hash = hash ( "sha256", $uuid . $date . $start . $end . $type_uuid . $title );
 
 	if($published){
@@ -37,7 +37,7 @@ function insert_event($date, $start, $end, $type_uuid, $type_other, $title, $com
 
 function insert_staff($event_uuid, $position_uuid, $unconfirmed) {
 	global $db;
-	$uuid = getGUID ();
+	$uuid = getUuid ();
 	
 	$statement = $db->prepare("INSERT INTO staff (uuid, position, event, user, unconfirmed) VALUES (?, ?, ?, NULL, ?)");
 	$statement->bind_param('sssi', $uuid, $position_uuid, $event_uuid, $unconfirmed);

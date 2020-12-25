@@ -1,21 +1,22 @@
 <?php 
-function addHydrantRow($hydrant, $criteria, $idx){
+function addHydrantRow(InspectedHydrant $hydrant, $criteria, $idx){
 	?>
 	<tr id="hydrant<?= $idx ?>">
 		<td class="th-td-small align-middle text-center" id="hlfd"><?= $idx ?></td>
-		<td class="th-td-small align-middle text-center" ><?= $hydrant->hy ?></td>
+		<td class="th-td-small align-middle text-center" ><?= $hydrant->getHydrant()->getHy() ?></td>
 		<td class="th-td-small align-middle text-center"> 
-			<?php  if($hydrant->type == 'overfloor') { echo "<b>X</b>"; } ?>
+			<?php  if($hydrant->getType() == 'overfloor') { echo "<b>X</b>"; } ?>
 		</td>
 		<td class="th-td-small align-middle text-center">
-			<?php  if($hydrant->type == 'underfloor') { echo "<b>X</b>"; } ?>                      			
+			<?php  if($hydrant->getType() == 'underfloor') { echo "<b>X</b>"; } ?>                      			
 		</td>
 		<?php
+		$inspectionCriteria = $hydrant->getCriteria();
 		for ($count = 0; $count < sizeof($criteria); $count ++) {
 		?>
 			<td class="th-td-small align-middle text-center">
 				<?php  
-				if(isset($hydrant->criteria) && $hydrant->criteria[$count]->value == true){
+				if(count($inspectionCriteria) > 0 && $inspectionCriteria[$count]['value'] == true){
 						echo "<b>X</b>"; 
 				} else {
 					echo "&nbsp;";
@@ -38,16 +39,16 @@ function addHydrantRow($hydrant, $criteria, $idx){
 			<th class="th-td-padding text-left th-td-small">Fahrzeug</th>
 		</tr>
 		<tr>
-			<td class="th-td-padding th-td-small"><?= isset($inspection) ? date($config ["formats"] ["date"], strtotime($inspection->date)) : "&nbsp;" ?></td>
-			<td class="th-td-padding th-td-small"><?= isset($inspection) ? $engineDAO->getEngine($inspection->engine)->getName() : "&nbsp;" ?></td>
-			<td class="th-td-padding th-td-small"><?= isset($inspection) ? $inspection->name : "&nbsp;" ?></td>
+			<td class="th-td-padding th-td-small"><?= isset($inspection) ? date($config ["formats"] ["date"], strtotime($inspection->getDate())) : "&nbsp;" ?></td>
+			<td class="th-td-padding th-td-small"><?= isset($inspection) ? $inspection->getEngine()->getName() : "&nbsp;" ?></td>
+			<td class="th-td-padding th-td-small"><?= isset($inspection) ? $inspection->getName() : "&nbsp;" ?></td>
 			<td class="th-td-padding th-td-small">
 					<?php 
 					if(isset($inspection)){
-						if($inspection->vehicle == "") {
+						if($inspection->getVehicle() == "") {
 							echo " - ";
 						} else {
-							echo $inspection->vehicle;
+							echo $inspection->getVehicle();
 						}
 					}else{
 						echo "&nbsp;";
@@ -98,12 +99,14 @@ function addHydrantRow($hydrant, $criteria, $idx){
                 	<tbody id="table-body">
                 	<?php 
                 		if(isset($inspection)){
-                		    foreach ($inspection->hydrants as $hydrant) {
-                		    	addHydrantRow($hydrant, $criteria, $hydrant->idx);
+                		    foreach ($inspection->getInspectedHydrants() as $hydrant) {
+                		    	addHydrantRow($hydrant, $criteria, $hydrant->getIndex());
                 		    }
                 		} else if (isset($hydrants)){
                 			foreach ($hydrants as $key=>$hydrant) {
-                				addHydrantRow($hydrant, $criteria, $key+1);
+                				$inspectedHydrant = new InspectedHydrant();
+                				$inspectedHydrant->setHydrant($hydrant);
+                				addHydrantRow($inspectedHydrant, $criteria, $key+1);
                 			}
                 		}
                 		?> 
@@ -118,10 +121,10 @@ function addHydrantRow($hydrant, $criteria, $idx){
 			<td colspan="4" class="th-td-padding th-td-small">
 			<?php
 			if(isset($inspection)){
-				if($inspection->notes == "") {
+				if($inspection->getNotes() == "") {
 					echo "Keine";
 				} else {
-					echo nl2br($inspection->notes);
+					echo nl2br($inspection->getNotes());
 				}
 			} else {
 				echo "&nbsp;";

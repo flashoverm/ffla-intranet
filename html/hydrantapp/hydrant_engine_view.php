@@ -12,7 +12,7 @@ if (isset($_GET['engine'])) {
 
     $engine = trim($_GET['engine']);
     
-	$hydrants = get_hydrants_of_engine($engine);
+	$hydrants = $hydrantDAO->getHydrantsOfEngine($engine);
     
     $variables ['hydrants'] = $hydrants;
     
@@ -25,7 +25,7 @@ if (isset($_GET['engine'])) {
     $mapUrl = $mapUrl . "&markers=color:red|label:" . "H";
     foreach ( $hydrants as $hydrant ) {
         //$mapUrl = $mapUrl . "&markers=color:red|label:" . $hydrant->hy . "|" . $hydrant->lat . "," . $hydrant->lng . "";  //hy as label does not work!
-        $mapUrl = $mapUrl . "|" . $hydrant->lat . "," . $hydrant->lng . "";
+        $mapUrl = $mapUrl . "|" . $hydrant->getLat() . "," . $hydrant->getLng() . "";
     }
    
     if(isset($_GET['location'])) {

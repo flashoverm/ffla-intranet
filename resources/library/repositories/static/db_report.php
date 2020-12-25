@@ -15,7 +15,7 @@ function insert_report(EventReport $report_object){
     if($report_object->uuid){
         $uuid = $report_object->uuid;
     } else {
-        $uuid = getGUID ();
+    	$uuid = getUuid ();
     }
             
     $statement = $db->prepare("INSERT INTO report (uuid, event, date, start_time, end_time, type, type_other, title, engine, creator, noIncidents, ilsEntry, report, emsEntry, managerApproved)
@@ -64,7 +64,7 @@ function insert_report(EventReport $report_object){
 function insert_report_unit($date, $beginn, $end, $unit, $km, $report_uuid){
 	global $db;
 	
-	$uuid = getGUID ();
+	$uuid = getUuid ();
 		
 	$statement = $db->prepare("INSERT INTO report_unit (uuid, date, start_time, end_time, unit, km, report)
 		VALUES (?, ?, ?, ?, ?, ?, ?)");	
@@ -84,7 +84,7 @@ function insert_report_unit($date, $beginn, $end, $unit, $km, $report_uuid){
 function insert_report_staff($position, $name, $engine, $unit_uuid){
 	global $db;
 	
-	$uuid = getGUID ();
+	$uuid = getUuid ();
 	
 	$statement = $db->prepare("INSERT INTO report_staff (uuid, position, name, engine, unit)
 		VALUES (?, ?, ?, ?, ?)");

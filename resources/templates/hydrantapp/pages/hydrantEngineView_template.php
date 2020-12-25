@@ -25,18 +25,18 @@ if (! count ( $hydrants )) {
     foreach ( $hydrants as $row ) {
         ?>
 				<tr>
-				<td class="text-center"><?= $row->hy; ?></td>
-				<td class="text-center"><?= $row->fid; ?></td>
-				<td class="text-center"><?= $row->street; ?></td>
-				<td class="text-center"><?= $row->district; ?></td>
-				<td class="text-center"><?= $row->type; ?></td>
+				<td class="text-center"><?= $row->getHy(); ?></td>
+				<td class="text-center"><?= $row->getFid(); ?></td>
+				<td class="text-center"><?= $row->getStreet(); ?></td>
+				<td class="text-center"><?= $row->getDistrict(); ?></td>
+				<td class="text-center"><?= $row->getType(); ?></td>
 
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/". $row->hy; ?>">Anzeigen</a>
+					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/". $row->getHy(); ?>">Anzeigen</a>
 				</td>
 				<?php if($currentUser->hasPrivilegeByName(Privilege::HYDRANTADMINISTRATOR)){
 				    echo '<td>
-                            <a class="btn btn-primary btn-sm" href="' . $config["urls"]["hydrantapp_home"] . "/". $row->hy . '/edit">Bearbeiten</a>
+                            <a class="btn btn-primary btn-sm" href="' . $config["urls"]["hydrantapp_home"] . "/". $row->getHy() . '/edit">Bearbeiten</a>
                          </td>';
 				}?>
 			</tr>

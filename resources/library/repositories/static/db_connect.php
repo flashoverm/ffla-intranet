@@ -7,7 +7,7 @@ if ($db->connect_error) {
 	die ( 'Connect Error (' . $db->connect_errno . ') ' . $db->connect_error );
 }
 
-function getGUID() {
+function getUuid() {
 	if (function_exists ( 'com_create_guid' )) {
 		return com_create_guid ();
 	} else {

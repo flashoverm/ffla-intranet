@@ -2,8 +2,6 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
 
-require_once LIBRARY_PATH . "/class/constants/HydrantCriteria.php";
-
 // Pass variables (as an array) to template
 $variables = array(
 		'title' => "Hydrantenprüfung Karte",
@@ -14,7 +12,7 @@ $hydrants = array();
 
 if(isset($_POST['hydrants'])){
 	for( $i=0; $i<sizeof($_POST['hydrants']); $i++ ){
-		$hydrants[] = get_hydrant($_POST['hydrants'][$i]);
+		$hydrants[] = $hydrantDAO->getHydrantByHy($_POST['hydrants'][$i]);
 	}
 }
 
@@ -22,7 +20,7 @@ $variables = array(
 		'title' => "Prüfbericht",
 		'secured' => true,
 		'privilege' => Privilege::ENGINEHYDRANTMANANGER,
-		'criteria' => $hydrant_criteria,
+		'criteria' => InspectedHydrant::HYDRANTCRITERIA,
 		'hydrants' => $hydrants,
 		'orientation' => 'landscape'
 );

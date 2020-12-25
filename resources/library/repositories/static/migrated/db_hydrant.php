@@ -1,12 +1,12 @@
 <?php
 require_once "db_connect.php";
-
+/*
 create_table_hydrant();
 
 function insert_hydrant($hy, $fid, $lat, $lng, $street, $district, $type, $engine, $checkbyff, $operating) {
     global $db;
     
-    $uuid = getGUID ();
+    $uuid = getUuid ();
         
         $statement = $db->prepare("INSERT INTO hydrant 
             (uuid, fid, hy, street, type, checkbyff, district, lat, lng, engine, cycle, operating)
@@ -287,5 +287,6 @@ function create_table_hydrant() {
         return false;
     }
 }
+*/
 
 ?>

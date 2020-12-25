@@ -11,7 +11,7 @@ $variables = array(
 );
 
 //get hydrants by engine with last checkup not set or older than 6 years
-$hydrants = get_candidates_of_engine($userController->getCurrentUser()->getEngine()->getUuid());
+$hydrants = $hydrantDAO->getUncheckedHydrantsOfEngine($userController->getCurrentUser()->getEngine()->getUuid());
 
 
 $mapUrl = $config["mapView"]["apiUrl"]
@@ -22,7 +22,7 @@ $mapUrl = $config["mapView"]["apiUrl"]
 . "&markers=color:red|label:H";
 
 foreach ( $hydrants as $hydrant ) {
-    $mapUrl = $mapUrl . "|" . $hydrant->lat . "," . $hydrant->lng . "";
+    $mapUrl = $mapUrl . "|" . $hydrant->getLat() . "," . $hydrant->getLng() . "";
 }
 
 $variables ['mapURL'] = $mapUrl;

@@ -15,7 +15,7 @@ if(isset($_GET ['hydrant'])) {
     $variables ['title'] = 'Hydrant bearbeiten';
     
     $hy = $_GET ['hydrant'];
-    $hydrant = get_hydrant($hy);
+    $hydrant = $hydrantDAO->getHydrantByHy($hy);
     $variables ['hydrant'] = $hydrant;
     
 } else {
@@ -33,7 +33,8 @@ if(isset($_POST ['fid'])){
     $street = trim ( $_POST ['street'] );
     $district = trim ( $_POST ['district'] );
     $type = trim ( $_POST ['type'] );
-    $engine = trim ( $_POST ['engine'] );
+    $engineUuid = trim ( $_POST ['engine'] );
+    $engine = $engineDAO->getEngine($engineUuid);
     
     $checkbyff = false;
     $operating = false;
@@ -48,19 +49,20 @@ if(isset($_POST ['fid'])){
     
     if(isset($hydrant)){
         //update
-        $uuid = update_hydrant($hydrant->uuid, $hy, $fid, $lat, $lng, $street, $district, $type, $engine, $checkbyff, $operating);
-        if($uuid){
-            $hydrant = get_hydrant_by_uuid($uuid);
+    	$hydrant->setHydrantData($hy, $fid, $lat, $lng, $street, $district, $type, $engine, $checkbyff, $operating);
+    	$hydrant = $hydrantDAO->save($hydrant);
+    	
+    	if($hydrant){
             $variables ['hydrant'] = $hydrant;
             $variables ['successMessage'] = "Hydrant aktualisiert";
-            $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::HydrantUpdated, $uuid));
+            $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::HydrantUpdated, $hydrant->getUuid()));
         } else {
             $variables ['successMessage'] = "Hydrant konnte nicht aktualisiert werden";
         }
     } else {
         //insert
-        $fid_exists = get_hydrant_by_fid($fid);
-        $hy_exists = get_hydrant($hy);
+    	$fid_exists = $hydrantDAO->getHydrantByFid($fid);
+    	$hy_exists = $hydrantDAO->getHydrantByHy($hy);
         
         if($fid_exists){
             if($hy_exists) {
@@ -71,13 +73,15 @@ if(isset($_POST ['fid'])){
         } else if($hy_exists){
             $variables ['alertMessage'] = "HY-Nummer existiert bereits";
         } else {
-            
-            $uuid = insert_hydrant($hy, $fid, $lat, $lng, $street, $district, $type, $engine, $checkbyff, $operating);
-            if($uuid){
-                $hydrant = get_hydrant_by_uuid($uuid);
+        	//insert
+        	$hydrant = new Hydrant();
+        	$hydrant->setHydrantData($hy, $fid, $lat, $lng, $street, $district, $type, $engine, $checkbyff, $operating);
+        	$hydrant = $hydrantDAO->save($hydrant);
+        	
+            if($hydrant){
                 $variables ['hydrant'] = $hydrant;
                 $variables ['successMessage'] = "Hydrant angelegt";
-                $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::HydrantCreated, $uuid));
+                $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::HydrantCreated, $hydrant->getUuid()));
             } else {
                 $variables ['successMessage'] = "Hydrant konnte nicht angelegt werden";
             }

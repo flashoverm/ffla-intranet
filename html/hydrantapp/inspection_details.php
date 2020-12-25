@@ -3,9 +3,6 @@ require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" 
 require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/file_create.php";
 
-require_once LIBRARY_PATH . "/class/HydrantInspection.php";
-require_once LIBRARY_PATH . "/class/constants/HydrantCriteria.php";
-
 // Pass variables (as an array) to template
 $variables = array(
     'title' => "Prüfbericht",
@@ -15,7 +12,7 @@ $variables = array(
 
 if(isset($_GET['inspection'])){
     
-    $inspection = get_inspection($_GET['inspection']);
+    $inspection = $inspectionDAO->getInspection($_GET['inspection']);
     
     if($inspection) {
         $variables['inspection'] = $inspection;
@@ -28,7 +25,7 @@ if(isset($_GET['inspection'])){
     $variables ['showFormular'] = false;
 }
 
-$variables['criteria'] = $hydrant_criteria;
+$variables['criteria'] = InspectedHydrant::HYDRANTCRITERIA;
 
 if(isset($_GET['print'])){
 	

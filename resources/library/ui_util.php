@@ -79,7 +79,7 @@ function createHydrantGoogleMap($hydrants, $visable, $markerListener = true, $he
 	var locations = [
 	    <?php
 	    foreach ( $hydrants as $row ) {
-    	 	echo "['" . $row->hy . "'," . $row->lat . "," . $row->lng . "],";
+    	 	echo "['" . $row->getHy() . "'," . $row->getLat() . "," . $row->getLng() . "],";
     	}
 	    ?>
 	  ];

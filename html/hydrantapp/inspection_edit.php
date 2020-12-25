@@ -4,21 +4,17 @@ require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . "/mail_controller.php";
 require_once LIBRARY_PATH . "/file_create.php";
 
-require_once LIBRARY_PATH . "/class/HydrantInspection.php";
-require_once LIBRARY_PATH . "/class/constants/HydrantCriteria.php";
-
 // Pass variables (as an array) to template
 $variables = array(
     'title' => "Prüfbericht erstellen",
     'secured' => true,
-		'privilege' => Privilege::ENGINEHYDRANTMANANGER
+	'privilege' => Privilege::ENGINEHYDRANTMANANGER,
+	'criteria' => InspectedHydrant::HYDRANTCRITERIA,
 );
-
-$user_engine = $userController->getCurrentUser()->getEngine()->getUuid();
 
 if(isset($_GET['inspection'])){
     
-    $inspection = get_inspection($_GET['inspection']);
+    $inspection = $inspectionDAO->getInspection($_GET['inspection']);
         
     if($inspection) {
         $variables['inspection'] = $inspection;
@@ -29,100 +25,113 @@ if(isset($_GET['inspection'])){
 }
 
 if(isset($_POST['maxidx'])){
-    
-    $date = $_POST['date'];
-    $name = trim($_POST['name']);
-    $vehicle = trim($_POST['vehicle']);
-    $notes = trim($_POST['notes']);
-    
-    $max_idx = $_POST['maxidx'];
-    
-    if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1]).(0[1-9]|1[0-2]).[0-9]{4}$/", $date)) {
-        //European date format -> change to yyyy-mm-dd
-        $date = date_create_from_format('d.m.Y', $date)->format('Y-m-d');
-    }
-        
-    $inspection = new HydrantInspection($date, $name, $vehicle, $notes);
-    $inspection->engine = $user_engine;
-    if(isset($_POST['uuid'])){
-        $inspection->uuid = $_POST['uuid'];
-    }
-    
-    for ($idx = 0; $idx <= $max_idx; $idx ++) {
-                
-        if(isset($_POST['h' . $idx . 'hy'])){
-                        
-            $hy = $_POST['h' . $idx . 'hy'];
-            $type = $_POST['h' . $idx . 'type'];
-            
-            $hydrant = new Hydrant($hy, $idx, $type);
-            
-            for($c_idx = 0; $c_idx < sizeof($hydrant_criteria); $c_idx ++){
-                
-                if(isset($_POST['h' . $idx . 'c' . $c_idx])){
-                    $hydrant->addCriterion(new Criterion($c_idx, true));
-                } else {
-                    $hydrant->addCriterion(new Criterion($c_idx, false));
-                }                
-            }
-                
-            $inspection->addHydrant($hydrant);
-        }
-    }
-        
+	$date = $_POST['date'];
+	$name = trim($_POST['name']);
+	$vehicle = trim($_POST['vehicle']);
+	$notes = trim($_POST['notes']);
+	
+	$max_idx = $_POST['maxidx'];
+	
+	if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1]).(0[1-9]|1[0-2]).[0-9]{4}$/", $date)) {
+		//European date format -> change to yyyy-mm-dd
+		$date = date_create_from_format('d.m.Y', $date)->format('Y-m-d');
+	}
+	
+	if(isset($_GET['inspection'])){
+		$inspection = $variables['inspection'];
+		$inspection->clearInspectedHydrants();
+	} else {
+		$inspection = new Inspection();
+		$inspection->setEngine($userController->getCurrentUser()->getEngine());
+	}
+	$inspection->setInspectionData($date, $name, $vehicle, $notes);
+	
+	$hydrantsNotFound = "";
+	$hydrantsCheckByOther = "";
+	$hydrantDuplicates = "";
+	$hys = array();
+	
+	for ($idx = 0; $idx <= $max_idx; $idx ++) {
+		
+		if(isset($_POST['h' . $idx . 'hy'])){
+
+			$hy = $_POST['h' . $idx . 'hy'];
+			
+			//Check for duplicate hy numbers
+			if(in_array ($hy, $hys) ){
+				$hydrantDuplicates = $hydrantDuplicates . $hy . ", ";
+			}
+			$hys[] = $hy;
+			
+			$hydrant = $hydrantDAO->getHydrantByHy($hy);
+			$userEngine = $userController->getCurrentUser()->getEngine();
+			
+			//Check if hydrant is existing (first if) or hydrant is checked by others (second if)
+			if(! $hydrant){
+				$hydrant = new Hydrant();
+				$hydrant->setHy($hy);
+				$hydrantsNotFound = $hydrantsNotFound . $hydrant->getHy() . ", ";
+			} else if( (! $hydrant->getCheckByFF() ) || ( $hydrant->getEngine()->getUuid() != $userEngine->getUuid() )  ){
+				$hydrantsCheckByOther = $hydrantsCheckByOther . $hydrant->getHy() . ", ";
+			}
+				
+			$type = $_POST['h' . $idx . 'type'];
+			
+			$inspected = new InspectedHydrant();
+			$inspected->setIndex($idx);
+			$inspected->setType($type);
+			$inspected->setHydrant($hydrant);
+			
+			for($c_idx = 0; $c_idx < sizeof(InspectedHydrant::HYDRANTCRITERIA); $c_idx ++){
+				
+				if(isset($_POST['h' . $idx . 'c' . $c_idx])){
+					$inspected->addCriterion($idx, $c_idx, true);
+				} else {
+					$inspected->addCriterion($idx, $c_idx, false);
+				}
+			}
+			
+			$inspection->addInspectedHydrant($inspected);
+		}
+	}
+  
     if(isset($_POST['assistant'])){
         $variables['infoMessage'] = "Ihre Eingaben wurden noch nicht gespeichert!";
         $variables['inspection'] = $inspection;
     } else {
-        
-        $hydrantsNotFound = "";
-        $hydrantsCheckByOther = "";
-        
-        foreach($inspection->hydrants as $hydrant){
-            $hydrant_db = get_hydrant($hydrant->hy);
-            if($hydrant_db){
-                $hydrant->uuid = $hydrant_db->uuid;
-                if( (! $hydrant_db->checkbyff ) || ( $hydrant_db->engine != $user_engine ) ){
-                	$hydrantsCheckByOther = $hydrantsCheckByOther . $hydrant->hy . ", ";
-                }
-            } else {
-                $hydrantsNotFound = $hydrantsNotFound . $hydrant->hy . ", ";
-            }
-        }
-               
-        if($hydrantsNotFound == "" && $hydrantsCheckByOther == ""){
-       
-            if($inspection->uuid != ""){
-                
-                if(update_inspection($inspection)){
-                    createInspectionFile($inspection->uuid);
-                    if(mail_send_inspection_report_update($inspection->uuid)){
-                        $variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
-                    }
-                    $variables ['successMessage'] = "Prüfbericht aktualisiert";
-                    $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::InspectionUpdated, $inspection->uuid));
-                    header ( "Location: " . $config["urls"]["hydrantapp_home"] . "/inspection/". $inspection->uuid ); // redirects
-                } else {
-                    $variables ['alertMessage'] = "Prüfbericht konnte nicht aktualisiert werden";
-                    $variables['inspection'] = $inspection;
-                }
-            } else {
-                $inspection_uuid = insert_inspection($inspection);
-                if($inspection_uuid){
-                    createInspectionFile($inspection->uuid);
-                    if(mail_send_inspection_report($inspection->uuid)){
-                        $variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
-                    }
-                    $variables ['successMessage'] = "Prüfbericht gespeichert";
-                    $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::InspectionCreated, $inspection->uuid));
-   					header ( "Location: " . $config["urls"]["hydrantapp_home"] . "/inspection/". $inspection->uuid ); // redirects
-                    
-                } else {
-                    $variables ['alertMessage'] = "Prüfbericht konnte nicht gespeichert werden";
-                    $variables['inspection'] = $inspection;
-                }
-            }
-        } else {
+		if($hydrantsNotFound == "" && $hydrantsCheckByOther == "" && $hydrantDuplicates == ""){
+    		$inspection = $inspectionDAO->save($inspection);
+    		if($inspection){
+    			createInspectionFile($inspection->getUuid());
+    			
+    			if(isset($_GET['inspection'])){
+    				//updated inspection
+    				if(mail_send_inspection_report_update($inspection->getUuid())){
+    					$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
+    				}
+    				$variables ['successMessage'] = "Prüfbericht aktualisiert";
+    				$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::InspectionUpdated, $inspection->getUuid()));
+    				header ( "Location: " . $config["urls"]["hydrantapp_home"] . "/inspection/". $inspection->getUuid() );  // redirects
+    			} else {
+    				//inserted inspection
+    				if(mail_send_inspection_report($inspection->getUuid())){
+    					$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
+    				}
+    				$variables ['successMessage'] = "Prüfbericht gespeichert";
+    				$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::InspectionCreated, $inspection->getUuid()));
+    				header ( "Location: " . $config["urls"]["hydrantapp_home"] . "/inspection/". $inspection->getUuid() ); // redirects
+    			}
+    			
+    		} else {
+    			if(isset($_GET['inspection'])){
+    				$variables ['alertMessage'] = "Prüfbericht konnte nicht aktualisiert werden";
+    				$variables['inspection'] = $inspection;
+    			} else {
+    				$variables ['alertMessage'] = "Prüfbericht konnte nicht gespeichert werden";
+    				$variables['inspection'] = $inspection;
+    			}
+    		}
+    	} else {
             $alertMessage = "";
             if($hydrantsNotFound != ""){
                 $alertMessage .= "HY-Nummer(n) " . substr_replace($hydrantsNotFound , "", -2) . " existieren nicht";
@@ -133,12 +142,16 @@ if(isset($_POST['maxidx'])){
                 }
                 $alertMessage .= "HY-Nummer(n) " . substr_replace($hydrantsCheckByOther, "", -2) . " werden von den Stadtwerken Landshut oder anderen Zügen geprüft";
             }
+            if($hydrantDuplicates != ""){
+            	if($alertMessage != ""){
+            		$alertMessage .= "<br>";
+            	}
+            	$alertMessage .= "HY-Nummer(n) " . substr_replace($hydrantDuplicates, "", -2) . " sind mehrfach im Prüfbericht enthalten";
+            }
             $variables ['alertMessage'] = $alertMessage;
             $variables['inspection'] = $inspection;
         }
     }
 }
-
-$variables['criteria'] = $hydrant_criteria;
 
 renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionEdit_template.php", $variables);

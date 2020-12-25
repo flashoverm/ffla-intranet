@@ -13,7 +13,7 @@ $engine = $userController->getCurrentUser()->getEngine();
 
 if(isset($_POST['delete'])){
 	$log = LogbookEntry::fromAction(LogbookActions::InspectionDeleted, $_POST['delete']);
-    if(delete_inspection($_POST['delete'])){
+    if($inspectionDAO->deleteInspection($_POST['delete'])){
         $variables ['successMessage'] = "Prüfbericht gelöscht";
         $logbookDAO->save($log);
     } else {
@@ -22,9 +22,9 @@ if(isset($_POST['delete'])){
 }
 
 if($engine->getIsAdministration() || $userController->getCurrentUser()->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
-    $variables ['inspections'] = get_inspections();
+    $variables ['inspections'] = $inspectionDAO->getInspections();
 } else {
-	$variables ['inspections'] = get_inspections_of_engine($engine->getUuid());
+	$variables ['inspections'] =  $inspectionDAO->getInspectionsByEngine($engine->getUuid());
 }
 
 renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionOverview_template.php", $variables);

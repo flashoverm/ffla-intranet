@@ -12,7 +12,7 @@ if (isset($_GET['id'])) {
         
     $id = trim($_GET['id']);
         
-    $hydrant = get_hydrant($id);
+    $hydrant = $hydrantDAO->getHydrantByHy($id);
     if($hydrant){
         $variables ['hydrant'] = $hydrant;
         $variables ['title'] = "Hydrant " . $id;
@@ -24,13 +24,13 @@ if (isset($_GET['id'])) {
             . "&zoom=" . $config["mapView"]["zoom"]
             . "&maptype=" . $config["mapView"]["maptype"]
             . "&center="
-            . $hydrant->lat
+            . $hydrant->getLat()
             . ","
-            . $hydrant->lng
+            . $hydrant->getLng()
             . "&markers=color:red|label:H|"
-            . $hydrant->lat
+            . $hydrant->getLat()
             . ","
-            . $hydrant->lng
+            . $hydrant->getLng()
             . "";
                     
         if(isset($_GET['location'])) {
@@ -43,7 +43,7 @@ if (isset($_GET['id'])) {
             $variables ['mapURL'] = $mapUrl;
             
         } else {
-        	if(!is_map_existing($id)){
+        	if( ! $hydrantController->isMapExisting($id)){
                          
                 $imagePath = $config["paths"]["maps"];
                 $imageFile = $id . ".png";
@@ -56,13 +56,12 @@ if (isset($_GET['id'])) {
                     echo "Error saving file - Path " . $imagePath . " not existing or writable";
                 }
                 file_put_contents($imagePath . $imageFile, file_get_contents($mapUrl));
-                save_map($id, $imageFile);
-                
-                $hydrant = get_hydrant($id);
+                $hydrant->setMap($imageFile);
+                $hydrant = $hydrantDAO->save($hydrant);
                 $variables ['hydrant'] = $hydrant;
             }
 
-            $variables ['mapURL'] = $config["urls"]["hydrantapp_home"] . "/" . $hydrant->hy . "/map";
+            $variables ['mapURL'] = $config["urls"]["hydrantapp_home"] . "/" . $hydrant->getHy() . "/map";
         }
        
     } else {

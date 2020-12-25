@@ -136,7 +136,7 @@ class LogbookEntry extends BaseModel {
 	public static function fromAction($actionId, $objects){
 		$entry = new LogbookEntry();
 		
-		$entry->setUuid(getGUID ());
+		$entry->setUuid(getUuid ());
 		$entry->setTimestamp(date('Y-m-d H:i:s'));
 		$entry->setAction($actionId);
 		$entry->setUser(NULL);
@@ -232,12 +232,12 @@ class LogbookEntry extends BaseModel {
 	}
 	
 	protected static function hydrantInspectionEntry($action, $inspection_uuid){
-		global $config;;
-		$inspection = get_inspection($inspection_uuid);
+		global $config, $inspectionDAO;
+		$inspection = $inspectionDAO->getInspection($inspection_uuid);
 		if( ! $inspection ){
 			return null;
 		}
-		return LogbookActions::getActionText($action) . ": " . $inspection->vehicle . " (" . date($config ["formats"] ["date"], strtotime($inspection->date)) . ")";
+		return LogbookActions::getActionText($action) . ": " . $inspection->getVehicle() . " (" . date($config ["formats"] ["date"], strtotime($inspection->getDate())) . ")";
 	}
 	
 	protected static function fileEntry($action, $file_uuid){
