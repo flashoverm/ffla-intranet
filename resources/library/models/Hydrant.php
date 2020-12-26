@@ -12,166 +12,161 @@ class Hydrant extends BaseModel {
 	 * @ORM\Id
 	 * @ORM\Column(type="string")
 	 */
-	protected $uuid;
+	protected ?string $uuid;
 	
 	/**
 	 * @ORM\Column(type="int")
 	 */
-	protected $fid;
+	protected int $fid;
 	
 	/**
 	 * @ORM\Column(type="int")
 	 */
-	protected $hy;
+	protected int $hy;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $street;
+	protected ?string $street;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $district;
+	protected ?string $district;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $type;
+	protected ?string $type;
 	
 	/**
 	 * @ORM\Column(type="boolean")
 	 */
-	protected $checkByFF;
+	protected bool $checkByFF;
 	
 	/**
 	 * @ORM\Column(type="boolean")
 	 */
-	protected $operating;
+	protected bool $operating;
 	
 	/**
 	 * @ORM\Column(type="decimal")
 	 */
-	protected $lat;
+	protected float $lat;
 	
 	/**
 	 * @ORM\Column(type="decimal")
 	 */
-	protected $lng;
+	protected float $lng;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Engine")
 	 * @ORM\JoinColumn(name="engine", referencedColumnName="uuid")
 	 */
-	protected $engine;
+	protected ?Engine $engine;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $map;
+	protected ?string $map;
 	
 	/**
 	 * @ORM\Column(type="smallint")
 	 */
-	protected $cycle;
+	protected int $cycle;
 	
 	
 	protected $lastCheck;
 	
-	
-	
-	function __construct() {
-	}
-	
-	
+
 	/**
 	 * @return mixed
 	 */
-	public function getUuid() {
+	public function getUuid() : ?string {
 		return $this->uuid;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getFid() {
+	public function getFid() : int {
 		return $this->fid;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getHy() {
+	public function getHy() : int {
 		return $this->hy;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getStreet() {
+	public function getStreet() : ?string {
 		return $this->street;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getDistrict() {
+	public function getDistrict() : ?string {
 		return $this->district;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getType() {
+	public function getType() : ?string {
 		return $this->type;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getCheckByFF() {
+	public function getCheckByFF() : bool {
 		return $this->checkByFF;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getOperating() {
+	public function getOperating() : bool {
 		return $this->operating;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getLat() {
+	public function getLat() : float {
 		return $this->lat;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getLng() {
+	public function getLng() : float {
 		return $this->lng;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getEngine() {
+	public function getEngine() : ?Engine {
 		return $this->engine;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getMap() {
+	public function getMap() : ?string {
 		return $this->map;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getCycle() {
+	public function getCycle() : int {
 		return $this->cycle;
 	}
 	
@@ -185,91 +180,91 @@ class Hydrant extends BaseModel {
 	/**
 	 * @param mixed $uuid
 	 */
-	public function setUuid($uuid) {
+	public function setUuid(?string $uuid) {
 		$this->uuid = $uuid;
 	}
 
 	/**
 	 * @param mixed $fid
 	 */
-	public function setFid($fid) {
+	public function setFid(int $fid) {
 		$this->fid = $fid;
 	}
 
 	/**
 	 * @param mixed $hy
 	 */
-	public function setHy($hy) {
+	public function setHy(int $hy) {
 		$this->hy = $hy;
 	}
 
 	/**
 	 * @param mixed $street
 	 */
-	public function setStreet($street) {
+	public function setStreet(?string $street) {
 		$this->street = $street;
 	}
 
 	/**
 	 * @param mixed $district
 	 */
-	public function setDistrict($district) {
+	public function setDistrict(?string $district) {
 		$this->district = $district;
 	}
 
 	/**
 	 * @param mixed $type
 	 */
-	public function setType($type) {
+	public function setType(?string $type) {
 		$this->type = $type;
 	}
 
 	/**
 	 * @param mixed $checkByFF
 	 */
-	public function setCheckByFF($checkByFF) {
+	public function setCheckByFF(bool $checkByFF) {
 		$this->checkByFF = $checkByFF;
 	}
 
 	/**
 	 * @param mixed $operating
 	 */
-	public function setOperating($operating) {
+	public function setOperating(bool $operating) {
 		$this->operating = $operating;
 	}
 
 	/**
 	 * @param mixed $lat
 	 */
-	public function setLat($lat) {
+	public function setLat(float $lat) {
 		$this->lat = $lat;
 	}
 
 	/**
 	 * @param mixed $lng
 	 */
-	public function setLng($lng) {
+	public function setLng(float $lng) {
 		$this->lng = $lng;
 	}
 
 	/**
 	 * @param mixed $engine
 	 */
-	public function setEngine($engine) {
+	public function setEngine(?Engine $engine) {
 		$this->engine = $engine;
 	}
 
 	/**
 	 * @param mixed $map
 	 */
-	public function setMap($map) {
+	public function setMap(?string $map) {
 		$this->map = $map;
 	}
 
 	/**
 	 * @param mixed $cycle
 	 */
-	public function setCycle($cycle) {
+	public function setCycle(int $cycle) {
 		$this->cycle = $cycle;
 	}
 	
@@ -279,14 +274,36 @@ class Hydrant extends BaseModel {
 	public function setLastCheck($lastCheck) {
 		$this->lastCheck = $lastCheck;
 	}
-
+	
+	/*
+	 **************************************************
+	 * Constructor
+	 */
+	
+	function __construct() {
+		parent::__construct();
+		$this->checkByFF = true;
+		$this->cycle = 0;
+		$this->district = NULL;
+		$this->engine = NULL;
+		$this->fid = 0;
+		$this->hy = 0;
+		$this->lastCheck = NULL;
+		$this->lat = 0.0;
+		$this->lng = 0.0;
+		$this->map = NULL;
+		$this->operating = true;
+		$this->street = NULL;
+		$this->type = NULL;
+		$this->uuid = NULL;
+	}
 	
 	/*
 	 **************************************************
 	 * Custom Methods
 	 */
 	
-	public function setHydrantData($hy, $fid, $lat, $lng, $street, $district, $type, $engine, $checkbyff, $operating) {
+	public function setHydrantData(int $hy, int $fid, float $lat, float $lng, ?string $street, ?string $district, ?string $type, ?Engine $engine, bool $checkbyff, bool $operating) {
 		$this->setHy($hy);
 		$this->setFid($fid);
 		$this->setLat($lat);
@@ -298,5 +315,4 @@ class Hydrant extends BaseModel {
 		$this->setCheckByFF($checkbyff);
 		$this->setOperating($operating);
 	}
-	
 }

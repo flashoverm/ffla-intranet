@@ -12,66 +12,75 @@ class StaffPosition extends BaseModel {
 	 * @ORM\Id
 	 * @ORM\Column(type="string")
 	 */
-	protected $uuid;
+	protected ?string $uuid;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $position;
+	protected ?string $position;
 	
 	/**
 	 * @ORM\Column(type="smallint")
 	 */
-	protected $listIndex;
-	
-	
-	function __construct($uuid, $position, $listIndex) {
-		$this->uuid = $uuid;
-		$this->position = $position;
-		$this->listIndex = $listIndex;
-	}
+	protected int $listIndex;
 	
 	
 	/**
 	 * @return mixed
 	 */
-	public function getUuid() {
+	public function getUuid() : ?string {
 		return $this->uuid;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getPosition() {
+	public function getPosition() : ?string {
 		return $this->position;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getListIndex() {
+	public function getListIndex() : int {
 		return $this->listIndex;
 	}
 
 	/**
 	 * @param mixed $uuid
 	 */
-	public function setUuid($uuid) {
+	public function setUuid(?string $uuid) {
 		$this->uuid = $uuid;
 	}
 
 	/**
 	 * @param mixed $position
 	 */
-	public function setPosition($position) {
+	public function setPosition(?string $position) {
 		$this->position = $position;
 	}
 
 	/**
 	 * @param mixed $listIndex
 	 */
-	public function setListIndex($listIndex) {
+	public function setListIndex(int $listIndex) {
 		$this->listIndex = $listIndex;
 	}
 
+	
+	/*
+	 **************************************************
+	 * Constructor
+	 */
+	
+	function __construct(?string $uuid, ?string $position, int $listIndex) {
+		$this->uuid = $uuid;
+		$this->position = $position;
+		$this->listIndex = $listIndex;
+	}
+	
+	/*
+	 **************************************************
+	 * Custom Methods
+	 */
 }

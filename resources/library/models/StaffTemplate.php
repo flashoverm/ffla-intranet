@@ -11,44 +11,50 @@ class StaffTemplate extends BaseModel {
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $eventType;
+	protected EventType $eventType;
 	
 
-	protected $staffPositions;
+	protected array $staffPositions;
 
-
-	function __construct() {
-		$this->staffPositions = array();
-	}
 	
 	/**
 	 * @return mixed
 	 */
-	public function getEventType() {
+	public function getEventType() : ?EventType {
 		return $this->eventType;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getStaffPositions() {
+	public function getStaffPositions() : array {
 		return $this->staffPositions;
 	}
 
 	/**
 	 * @param mixed $eventType
 	 */
-	public function setEventType($eventType) {
+	public function setEventType(EventType $eventType) {
 		$this->eventType = $eventType;
 	}
 
 	/**
 	 * @param mixed $staffPositions
 	 */
-	public function setStaffPositions($staffPositions) {
+	public function setStaffPositions(array $staffPositions) {
 		$this->staffPositions = $staffPositions;
 	}
 	
+	/*
+	 **************************************************
+	 * Constructor
+	 */
+	
+	function __construct() {
+		parent::__construct();
+		$this->eventType = NULL;
+		$this->staffPositions = array();
+	}
 	
 	/*
 	 **************************************************
@@ -63,7 +69,7 @@ class StaffTemplate extends BaseModel {
 		$this->staffPositions = array();
 	}
 	
-	public function toJson(){
+	public function toJson(): string{
 		$vars = get_object_vars($this);
 		$vars['eventType'] = json_decode($this->eventType->toJson());
 		$staffpositions = array();

@@ -12,53 +12,53 @@ class User extends BaseModel {
 	 * @ORM\Id
 	 * @ORM\Column(type="string")
 	 */
-	protected $uuid;
+	protected ?string $uuid;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $email;
+	protected ?string $email;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $password;
+	protected ?string $password;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $firstname;
+	protected ?string $firstname;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $lastname;
+	protected ?string $lastname;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Engine")
 	 * @ORM\JoinColumn(name="engine", referencedColumnName="uuid")
 	 */
-	protected $engine;
+	protected ?Engine $engine;
 	
 	/**
 	 * @ORM\Column(type="boolean")
 	 */
-	protected $locked;
+	protected bool $locked;
 	
 	/**
 	 * @ORM\Column(type="boolean")
 	 */
-	protected $deleted;
+	protected bool $deleted;
 	
 	/**
 	 * @ORM\Column(name="employer_address", type="string")
 	 */
-	protected $employerAddress;
+	protected ?string $employerAddress;
 	
 	/**
 	 * @ORM\Column(name="employer_mail", type="string")
 	 */
-	protected $employerMail;
+	protected ?string $employerMail;
 	
 	/**
 	 * @ORM\ManyToMany(targetEntity="Privilege", inversedBy="users")
@@ -67,171 +67,186 @@ class User extends BaseModel {
 	 * 		inverseJoinColumns={@ORM\JoinColumn(name="privilege", referencedColumnName="uuid")}
 	 * )
 	 */
-	protected $privileges;
+	protected array $privileges;
+	
+	
 	/**
-	 * @return mixed
+	 * @return NULL
 	 */
-	public function getUuid() {
+	public function getUuid() : ?string {
 		return $this->uuid;
 	}
-	
+
 	/**
-	 * @return mixed
+	 * @return NULL
 	 */
-	public function getEmail() {
-		return strtolower( $this->email );
+	public function getEmail() : ?string {
+		return strtolower($this->email);
 	}
-	
+
 	/**
-	 * @return mixed
+	 * @return NULL
 	 */
-	public function getPassword() {
+	public function getPassword() : ?string {
 		return $this->password;
 	}
-	
+
 	/**
-	 * @return mixed
+	 * @return NULL
 	 */
-	public function getFirstname() {
+	public function getFirstname() : ?string {
 		return $this->firstname;
 	}
-	
+
 	/**
-	 * @return mixed
+	 * @return NULL
 	 */
-	public function getLastname() {
+	public function getLastname() : ?string {
 		return $this->lastname;
 	}
-	
+
 	/**
-	 * @return mixed
+	 * @return NULL
 	 */
-	public function getEngine() {
+	public function getEngine() : ?Engine {
 		return $this->engine;
 	}
-	
+
 	/**
-	 * @return mixed
+	 * @return boolean
 	 */
-	public function getLocked() {
+	public function getLocked() : bool {
 		return $this->locked;
 	}
-	
+
 	/**
-	 * @return mixed
+	 * @return boolean
 	 */
-	public function getDeleted() {
+	public function getDeleted() : bool {
 		return $this->deleted;
 	}
-	
+
 	/**
-	 * @return mixed
+	 * @return NULL
 	 */
-	public function getEmployerAddress() {
+	public function getEmployerAddress() : ?string {
 		return $this->employerAddress;
 	}
-	
+
 	/**
-	 * @return mixed
+	 * @return NULL
 	 */
-	public function getEmployerMail() {
-		return strtolower( $this->employerMail );
+	public function getEmployerMail() : ?string {
+		return strtolower($this->employerMail);
 	}
-	
+
 	/**
-	 * @return mixed
+	 * @return array
 	 */
-	public function getPrivileges() {
-		if($this->privileges == NULL){
-			return array();
-		}
+	public function getPrivileges() : array {
 		return $this->privileges;
 	}
-	
+
 	/**
-	 * @param mixed $uuid
+	 * @param NULL $uuid
 	 */
-	public function setUuid($uuid) {
+	public function setUuid(?string $uuid) {
 		$this->uuid = $uuid;
 	}
-	
+
 	/**
-	 * @param mixed $email
+	 * @param NULL $email
 	 */
-	public function setEmail($email) {
-		$this->email = strtolower( $email );
+	public function setEmail(?string $email) {
+		$this->email = strtolower($email);
 	}
-	
+
 	/**
-	 * @param mixed $password
+	 * @param NULL $password
 	 */
-	public function setPassword($password) {
+	public function setPassword(?string $password) {
 		$this->password = $password;
 	}
-	
+
 	/**
-	 * @param mixed $firstname
+	 * @param NULL $firstname
 	 */
-	public function setFirstname($firstname) {
+	public function setFirstname(?string $firstname) {
 		$this->firstname = $firstname;
 	}
-	
+
 	/**
-	 * @param mixed $lastname
+	 * @param NULL $lastname
 	 */
-	public function setLastname($lastname) {
+	public function setLastname(?string $lastname) {
 		$this->lastname = $lastname;
 	}
-	
+
 	/**
-	 * @param mixed $engine
+	 * @param NULL $engine
 	 */
-	public function setEngine($engine) {
+	public function setEngine(?Engine $engine) {
 		$this->engine = $engine;
 	}
-	
+
 	/**
-	 * @param mixed $locked
+	 * @param boolean $locked
 	 */
-	public function setLocked($locked) {
+	public function setLocked(bool $locked) {
 		$this->locked = $locked;
 	}
-	
+
 	/**
-	 * @param mixed $deleted
+	 * @param boolean $deleted
 	 */
-	public function setDeleted($deleted) {
+	public function setDeleted(bool $deleted) {
 		$this->deleted = $deleted;
 	}
-	
+
 	/**
-	 * @param mixed $employerAddress
+	 * @param NULL $employerAddress
 	 */
-	public function setEmployerAddress($employerAddress) {
+	public function setEmployerAddress(?string $employerAddress) {
 		$this->employerAddress = $employerAddress;
 	}
-	
+
 	/**
-	 * @param mixed $employerMail
+	 * @param NULL $employerMail
 	 */
-	public function setEmployerMail($employerMail) {
-		$this->employerMail = strtolower( $employerMail );
+	public function setEmployerMail(?string $employerMail) {
+		$this->employerMail = strtolower ($employerMail);
 	}
-	
+
 	/**
-	 * @param mixed $privileges
+	 * @param array $privileges
 	 */
-	public function setPrivileges($privileges) {
+	public function setPrivileges(array $privileges) {
 		$this->privileges = $privileges;
 	}
+
+	public function __construct() {
+		parent::__construct();
+		$this->uuid = NULL;
+		$this->email = NULL;
+		$this->password = NULL;
+		$this->firstname = NULL;
+		$this->lastname = NULL;
+		$this->engine = NULL;
+		$this->locked = false;
+		$this->deleted = false;
+		$this->employerAddress = NULL;
+		$this->employerMail = NULL;
+		$this->privileges = array();
+	}
 	
 	
+		
 	/*
 	 **************************************************
 	 * Custom Methods
 	 */
 	
-	public function hasPrivilegeByName($privilegeName){
+	public function hasPrivilegeByName(string $privilegeName) : bool{
 		if($this->privileges == null){
 			return false;
 		}
@@ -243,37 +258,37 @@ class User extends BaseModel {
 		return false;
 	}
 	
-	public function addPrivilege($privilege){
+	public function addPrivilege(Privilege $privilege){
 		if($this->hasPrivilegeByName($privilege->getPrivilege())){
 			return;
 		}
 		$this->privileges[] = $privilege;
 	}
 	
-	public function removePrivilege($privilege){
+	public function removePrivilege(Privilege $privilege){
 		if( ! $this->hasPrivilegeByName($privilege->privilege())){
 			return;
 		}
 		$this->privileges->detach($privilege);
 	}
 	
-	public function resetPrivileges($newPrivileges){
+	public function resetPrivileges(array $newPrivileges){
 		$this->privileges = $newPrivileges;
 	}
 	
-	public function getFullName(){
+	public function getFullName() : string {
 		return $this->firstname . " " . $this->lastname;
 	}
 	
-	public function getFullNameWithEngine(){
+	public function getFullNameWithEngine() : string {
 		return $this->getFullName() . " (" . $this->engine->getName() . ")";
 	}
 	
-	public function getFullNameWithEmail(){
+	public function getFullNameWithEmail() : string {
 		return $this->getFullName() . " (" . $this->email . ")";
 	}
 	
-	public function setUserData($firstname, $lastname, $email, $engine, $employerAddress, $employerMail){
+	public function setUserData(string $firstname, string $lastname, string $email, Engine $engine, string $employerAddress, string $employerMail){
 		$this->setFirstname($firstname);
 		$this->setLastname($lastname);
 		$this->setEmail($email);
@@ -282,7 +297,7 @@ class User extends BaseModel {
 		$this->setEngine($engine);
 	}
 	
-	public function toJson(){
+	public function toJson() : string{
 		$vars = get_object_vars($this);
 		$vars['engine'] = json_decode($this->engine->toJson());
 		return json_encode($vars, JSON_UNESCAPED_UNICODE);

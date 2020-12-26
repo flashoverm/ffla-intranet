@@ -12,7 +12,7 @@ class LogbookEntry extends BaseModel {
 	 * @ORM\Id
 	 * @ORM\Column(type="string")
 	 */
-	protected $uuid;
+	protected ?string $uuid;
 	
 	
 	protected $timestamp;
@@ -20,33 +20,28 @@ class LogbookEntry extends BaseModel {
 	/**
 	 * @ORM\Column(type="smallint")
 	 */
-	protected $action;
+	protected int $action;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $user;
+	protected ?string $user;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $object;
+	protected ?string $object;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $message;
+	protected ?string $message;
 	
-	
-	public function __construct() {
-		
-	}
-	
-	
+
 	/**
 	 * @return mixed
 	 */
-	public function getUuid() {
+	public function getUuid() : ?string {
 		return $this->uuid;
 	}
 
@@ -60,35 +55,35 @@ class LogbookEntry extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getAction() {
+	public function getAction() : int {
 		return $this->action;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getUser() {
+	public function getUser() : ?string {
 		return $this->user;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getObject() {
+	public function getObject() : ?string {
 		return $this->object;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getMessage() {
+	public function getMessage() : ?string {
 		return $this->message;
 	}
 
 	/**
 	 * @param mixed $uuid
 	 */
-	public function setUuid($uuid) {
+	public function setUuid(?string $uuid) {
 		$this->uuid = $uuid;
 	}
 
@@ -102,38 +97,53 @@ class LogbookEntry extends BaseModel {
 	/**
 	 * @param mixed $action
 	 */
-	public function setAction($action) {
+	public function setAction(int $action) {
 		$this->action = $action;
 	}
 
 	/**
 	 * @param mixed $user
 	 */
-	public function setUser($user) {
+	public function setUser(?string $user) {
 		$this->user = $user;
 	}
 
 	/**
 	 * @param mixed $object
 	 */
-	public function setObjects($object) {
+	public function setObjects(?string $object) {
 		$this->object = $object;
 	}
 
 	/**
 	 * @param mixed $message
 	 */
-	public function setMessage($message) {
+	public function setMessage(?string $message) {
 		$this->message = $message;
 	}
 	
 	
 	/*
 	 **************************************************
+	 * Constructor
+	 */
+	
+	function __construct() {
+		parent::__construct();
+		$this->action = 0;
+		$this->message = NULL;
+		$this->object = NULL;
+		$this->timestamp = NULL;
+		$this->user = NULL;
+		$this->uuid = NULL;
+	}
+	
+	/*
+	 **************************************************
 	 * Custom Methods
 	 */
 	
-	public static function fromAction($actionId, $objects){
+	public static function fromAction(int $actionId, ?string $objects){
 		$entry = new LogbookEntry();
 		
 		$entry->setUuid(getUuid ());
@@ -262,7 +272,7 @@ class LogbookEntry extends BaseModel {
 	
 	
 	
-	public static function logbookEnry($action_id, $objects){
+	public static function logbookEnry(int $action_id, ?string $objects){
 		$message = null;
 		
 		if($action_id < 20){

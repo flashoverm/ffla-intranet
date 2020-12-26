@@ -12,12 +12,12 @@ class File extends BaseModel {
 	 * @ORM\Id
 	 * @ORM\Column(type="string")
 	 */
-	protected $uuid;
+	protected ?string $uuid;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $description;
+	protected ?string $description;
 	
 	
 	protected $date;
@@ -25,20 +25,20 @@ class File extends BaseModel {
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $filename;
+	protected ?string $filename;
 	
 	
 	/**
 	 * @return mixed
 	 */
-	public function getUuid() {
+	public function getUuid() : ?string {
 		return $this->uuid;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getDescription() {
+	public function getDescription() : ?string {
 		return $this->description;
 	}
 
@@ -52,21 +52,21 @@ class File extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getFilename() {
+	public function getFilename() : ?string {
 		return $this->filename;
 	}
 
 	/**
 	 * @param mixed $uuid
 	 */
-	public function setUuid($uuid) {
+	public function setUuid(?string $uuid) {
 		$this->uuid = $uuid;
 	}
 
 	/**
 	 * @param mixed $description
 	 */
-	public function setDescription($description) {
+	public function setDescription(?string $description) {
 		$this->description = $description;
 	}
 
@@ -80,17 +80,29 @@ class File extends BaseModel {
 	/**
 	 * @param mixed $filename
 	 */
-	public function setFilename($filename) {
+	public function setFilename(?string $filename) {
 		$this->filename = $filename;
 	}
 
+	/*
+	 **************************************************
+	 * Constructor
+	 */
+	
+	function __construct() {
+		parent::__construct();
+		$this->uuid = NULL;
+		$this->date = NULL;
+		$this->description = NULL;
+		$this->filename = NULL;
+	}
 	
 	/*
 	 **************************************************
 	 * Custom Methods
 	 */
 	
-	public function setFileData($description, $date, $filename){
+	public function setFileData(?string $description, $date, ?string $filename){
 		$this->setDescription($description);
 		$this->setDate($date);
 		$this->setFilename($filename);

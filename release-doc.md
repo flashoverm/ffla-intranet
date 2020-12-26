@@ -2,6 +2,15 @@
 Release Documentation
 ******************************
 
+#### V2.3.0
+
+PHP Update to 7.4
+	apt update && apt upgrade
+	apt -y install lsb-release apt-transport-https ca-certificates 
+	wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+	echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list
+	apt update && apt upgrade
+
 #### V2.2.2
 
 Features: 

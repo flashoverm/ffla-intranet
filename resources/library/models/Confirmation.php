@@ -23,7 +23,7 @@ class Confirmation extends BaseModel {
 	 * @ORM\Id
 	 * @ORM\Column(type="string")
 	 */
-	protected $uuid;
+	protected ?string $uuid;
 	
 	protected $date;
 	
@@ -34,40 +34,32 @@ class Confirmation extends BaseModel {
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $description;
+	protected ?string $description;
 	
 	/**
 	 * @ORM\Column(type="smallint")
 	 */
-	protected $state;
+	protected int $state;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $reason;
+	protected ?string $reason;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $user;
+	protected ?User $user;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $lastAdvisor;
-
-	
-	
-	public function __construct() {
-		
-	}
-	
-	
+	protected ?User $lastAdvisor;
 	
 	/**
 	 * @return mixed
 	 */
-	public function getUuid() {
+	public function getUuid() : ?string {
 		return $this->uuid;
 	}
 
@@ -95,42 +87,42 @@ class Confirmation extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getDescription() {
+	public function getDescription() : ?string {
 		return $this->description;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getState() {
+	public function getState() : int{
 		return $this->state;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getReason() {
+	public function getReason() : ?string {
 		return $this->reason;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getUser() {
+	public function getUser() : ?User {
 		return $this->user;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getLastAdvisor() {
+	public function getLastAdvisor() : ?User {
 		return $this->lastAdvisor;
 	}
 
 	/**
 	 * @param mixed $uuid
 	 */
-	public function setUuid($uuid) {
+	public function setUuid(?string $uuid) {
 		$this->uuid = $uuid;
 	}
 
@@ -158,45 +150,62 @@ class Confirmation extends BaseModel {
 	/**
 	 * @param mixed $description
 	 */
-	public function setDescription($description) {
+	public function setDescription(?string $description) {
 		$this->description = $description;
 	}
 
 	/**
 	 * @param mixed $state
 	 */
-	public function setState($state) {
+	public function setState(int $state) {
 		$this->state = $state;
 	}
 
 	/**
 	 * @param mixed $reason
 	 */
-	public function setReason($reason) {
+	public function setReason(?string $reason) {
 		$this->reason = $reason;
 	}
 
 	/**
 	 * @param mixed $user
 	 */
-	public function setUser($user) {
+	public function setUser(?User $user) {
 		$this->user = $user;
 	}
 
 	/**
 	 * @param mixed $lastAdvisor
 	 */
-	public function setLastAdvisor($lastAdvisor) {
+	public function setLastAdvisor(?User $lastAdvisor) {
 		$this->lastAdvisor = $lastAdvisor;
 	}
 
+	/*
+	 **************************************************
+	 * Constructor
+	 */
+	
+	function __construct() {
+		parent::__construct();
+		$this->uuid = NULL;
+		$this->date = NULL;
+		$this->startTime = NULL;
+		$this->endTime = NULL;
+		$this->description = NULL;
+		$this->lastAdvisor = NULL;
+		$this->reason = NULL;
+		$this->state = 0;
+		$this->user = NULL;
+	}
 	
 	/*
 	 **************************************************
 	 * Custom Methods
 	 */
 	
-	public function setConfirmationData($date, $startTime, $endTime, $description, $user){
+	public function setConfirmationData($date, $startTime, $endTime, ?string $description, ?User $user){
 		$this->setDate($date);
 		$this->setStartTime($startTime);
 		$this->setEndTime($endTime);

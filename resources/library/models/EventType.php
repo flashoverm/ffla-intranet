@@ -12,68 +12,75 @@ class EventType extends BaseModel {
 	 * @ORM\Id
 	 * @ORM\Column(type="string")
 	 */
-	protected $uuid;
+	protected ?string $uuid;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $type;
+	protected ?string $type;
 	
 	/**
 	 * @ORM\Column(type="smallint")
 	 */
-	protected $isSeries;
-	
-	
-	function __construct($uuid, $type, $isSeries = false) {
-		$this->uuid = $uuid;
-		$this->type = $type;
-		$this->isSeries = $isSeries;
-	}
+	protected bool $isSeries;
 	
 	
 	/**
 	 * @return mixed
 	 */
-	public function getUuid() {
+	public function getUuid() : ?string {
 		return $this->uuid;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getType() {
+	public function getType() : ?string{
 		return $this->type;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
-	public function getIsSeries() {
+	public function getIsSeries() : bool{
 		return $this->isSeries;
 	}
 
 	/**
 	 * @param mixed $uuid
 	 */
-	public function setUuid($uuid) {
+	public function setUuid(?string $uuid) {
 		$this->uuid = $uuid;
 	}
 
 	/**
 	 * @param mixed $type
 	 */
-	public function setType($type) {
+	public function setType(?string $type) {
 		$this->type = $type;
 	}
 
 	/**
-	 * @param mixed $isSeries
+	 * @param string $isSeries
 	 */
-	public function setIsSeries($isSeries) {
+	public function setIsSeries(bool $isSeries) {
 		$this->isSeries = $isSeries;
 	}
-
 	
+	/*
+	 **************************************************
+	 * Constructor
+	 */
 	
+	function __construct(?string $uuid, ?string $type, bool $isSeries = false) {
+		parent::__construct();
+		$this->uuid = $uuid;
+		$this->type = $type;
+		$this->isSeries = $isSeries;
+	}
+	
+	/*
+	 **************************************************
+	 * Custom Methods
+	 */
 }

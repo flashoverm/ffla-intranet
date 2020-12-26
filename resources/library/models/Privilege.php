@@ -27,90 +27,75 @@ class Privilege extends BaseModel {
 	 * @ORM\Id
 	 * @ORM\Column(type="string")
 	 */
-	protected $uuid;
+	protected ?string $uuid;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $privilege;
+	protected ?string $privilege;
 	
 	/**
 	 * @ORM\Column(name="is_default", type="boolean")
 	 */
-	protected $isDefault;
+	protected bool $isDefault;
 	
-	/**
-	 * @ORM\ManyToMany(targetEntity="User", mappedBy="privileges")
-	 */
-	/*
-	protected $users;
-	*/
-	
-	
-	function __construct($uuid, $privilege, $isDefault) {
-		$this->uuid = $uuid;
-		$this->privilege = $privilege;
-		$this->isDefault = $isDefault;
-	}
 	
 	/**
 	 * @return mixed
 	 */
-	public function getUuid() {
+	public function getUuid() : ?string{
 		return $this->uuid;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getPrivilege() {
+	public function getPrivilege() : ?string {
 		return strtoupper($this->privilege);
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getIsDefault() {
+	public function getIsDefault() : bool{
 		return $this->isDefault;
 	}
 
 	/**
-	 * @return mixed
-	 */
-	/*
-	public function getUsers() {
-		return $this->users;
-	}
-	*/
-
-	/**
 	 * @param mixed $uuid
 	 */
-	public function setUuid($uuid) {
+	public function setUuid(?string $uuid) {
 		$this->uuid = $uuid;
 	}
 
 	/**
 	 * @param mixed $privilege
 	 */
-	public function setPrivilege($privilege) {
+	public function setPrivilege(?string $privilege) {
 		$this->privilege = strtoupper($privilege);
 	}
 
 	/**
 	 * @param mixed $isDefault
 	 */
-	public function setIsDefault($isDefault) {
+	public function setIsDefault(bool $isDefault) {
 		$this->isDefault = $isDefault;
 	}
 
-	/**
-	 * @param mixed $users
-	 */
 	/*
-	public function setUsers($users) {
-		$this->users = $users;
+	 **************************************************
+	 * Constructor
+	 */
+	
+	function __construct(?string $uuid, ?string $privilege, bool $isDefault) {
+		parent::__construct();
+		$this->uuid = $uuid;
+		$this->privilege = $privilege;
+		$this->isDefault = $isDefault;
 	}
-	*/
-
+	
+	/*
+	 **************************************************
+	 * Custom Methods
+	 */
 }

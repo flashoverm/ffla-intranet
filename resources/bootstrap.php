@@ -42,3 +42,6 @@ $userController = new UserController();
 $guardianUserController = new GuardianUserController();
 $confirmationController = new ConfirmationController();
 $hydrantController = new HydrantController();
+
+$confirmation = new Confirmation();
+echo $confirmation -> getUuid();

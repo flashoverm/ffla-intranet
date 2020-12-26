@@ -37,96 +37,98 @@ class InspectedHydrant extends BaseModel {
 	 * @ORM\ManyToOne(targetEntity="Hydrant")
 	 * @ORM\JoinColumn(name="hydrant", referencedColumnName="uuid")
 	 */
-	protected $hydrant;
+	protected ?Hydrant $hydrant;
 	
 	/**
-	 * @ORM\Column(type="idx")
+	 * @ORM\Column(type="int")
 	 */
-	protected $index;
-	
-	/**
-	 * @ORM\Column(type="string")
-	 */
-	protected $type;
+	protected int $index;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $criteria;
+	protected ?string $type;
 	
-	
-	
-	function __construct(){
-		$this->criteria = array();
-	}
-	
-	
+	/**
+	 * @ORM\Column(type="string")
+	 */
+	protected array $criteria;
 	
 	/**
 	 * @return mixed
 	 */
-	public function getHydrant() {
+	public function getHydrant() : ?Hydrant {
 		return $this->hydrant;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getIndex() {
+	public function getIndex() : int {
 		return $this->index;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getType() {
+	public function getType() : ?string {
 		return $this->type;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getCriteria() {
+	public function getCriteria() : array {
 		return $this->criteria;
 	}
 
 	/**
 	 * @param mixed $hydrant
 	 */
-	public function setHydrant($hydrant) {
+	public function setHydrant(?Hydrant $hydrant) {
 		$this->hydrant = $hydrant;
 	}
 
 	/**
 	 * @param mixed $index
 	 */
-	public function setIndex($index) {
+	public function setIndex(int $index) {
 		$this->index = $index;
 	}
 
 	/**
 	 * @param mixed $type
 	 */
-	public function setType($type) {
+	public function setType(?string $type) {
 		$this->type = $type;
 	}
 
 	/**
 	 * @param mixed $criteria
 	 */
-	public function setCriteria($criteria) {
+	public function setCriteria(array $criteria) {
 		$this->criteria = $criteria;
 	}
 	
+	/*
+	 **************************************************
+	 * Constructor
+	 */
 	
+	function __construct(){
+		parent::__construct();
+		$this->hydrant = NULL;
+		$this->index = 0;
+		$this->type = NULL;
+		$this->criteria = array();
+	}
 	
 	/*
 	 **************************************************
 	 * Custom Methods
 	 */
 	
-	
-	public function addCriterion($hydrantIndex, $criterionIndex, $value){
+	public function addCriterion(int $hydrantIndex, int $criterionIndex, bool $value){
 		$this->criteria[] = array(
 				"hy_idx" => $hydrantIndex,
 				"idx" => $criterionIndex,

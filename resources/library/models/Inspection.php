@@ -12,45 +12,37 @@ class Inspection extends BaseModel {
 	 * @ORM\Id
 	 * @ORM\Column(type="string")
 	 */
-	protected $uuid;
+	protected ?string $uuid;
 	
 	protected $date;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $vehicle;
+	protected ?string $vehicle;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $name;
+	protected ?string $name;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $notes;
+	protected ?string $notes;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Engine")
 	 * @ORM\JoinColumn(name="engine", referencedColumnName="uuid")
 	 */
-	protected $engine;
+	protected ?Engine $engine;
 	
-	protected $inspectedHydrants;
-	
-	
-	
-	function __construct(){
-		$this->inspectedHydrants = array();
-	}
-	
-	
+	protected array $inspectedHydrants;
 		
 	/**
 	 * @return mixed
 	 */
-	public function getUuid() {
+	public function getUuid() : ?string {
 		return $this->uuid;
 	}
 
@@ -64,42 +56,42 @@ class Inspection extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getVehicle() {
+	public function getVehicle() : ?string {
 		return $this->vehicle;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getName() {
+	public function getName() : ?string {
 		return $this->name;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getNotes() {
+	public function getNotes() : ?string {
 		return $this->notes;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getEngine() {
+	public function getEngine() : ?Engine {
 		return $this->engine;
 	}
 
 	/**
 	 * @return multitype:
 	 */
-	public function getInspectedHydrants() {
+	public function getInspectedHydrants() : array {
 		return $this->inspectedHydrants;
 	}
 
 	/**
 	 * @param mixed $uuid
 	 */
-	public function setUuid($uuid) {
+	public function setUuid(?string $uuid) {
 		$this->uuid = $uuid;
 	}
 
@@ -113,39 +105,53 @@ class Inspection extends BaseModel {
 	/**
 	 * @param mixed $vehicle
 	 */
-	public function setVehicle($vehicle) {
+	public function setVehicle(?string $vehicle) {
 		$this->vehicle = $vehicle;
 	}
 
 	/**
 	 * @param mixed $name
 	 */
-	public function setName($name) {
+	public function setName(?string $name) {
 		$this->name = $name;
 	}
 
 	/**
 	 * @param mixed $notes
 	 */
-	public function setNotes($notes) {
+	public function setNotes(?string $notes) {
 		$this->notes = $notes;
 	}
 
 	/**
 	 * @param mixed $engine
 	 */
-	public function setEngine($engine) {
+	public function setEngine(?Engine $engine) {
 		$this->engine = $engine;
 	}
 
 	/**
 	 * @param multitype: $inspectedHydrant
 	 */
-	public function setInspectedHydrant($inspectedHydrants) {
+	public function setInspectedHydrants(array $inspectedHydrants) {
 		$this->inspectedHydrants = $inspectedHydrants;
 	}
 	
+	/*
+	 **************************************************
+	 * Constructor
+	 */
 	
+	function __construct(){
+		parent::__construct();
+		$this->uuid = NULL;
+		$this->date = NULL;
+		$this->engine = NULL;
+		$this->name = NULL;
+		$this->notes = NULL;
+		$this->vehicle = NULL;
+		$this->inspectedHydrants = array();
+	}
 	
 	/*
 	 **************************************************
@@ -160,15 +166,15 @@ class Inspection extends BaseModel {
 		$this->inspectedHydrants = array();
 	}
 	
-	public function getMaxIdx(){
+	public function getMaxIdx() : int {
 		return end($this->inspectedHydrants)->getIndex();
 	}
 	
-	public function getCount(){
+	public function getCount() : int{
 		return count($this->inspectedHydrants);
 	}
 	
-	public function setInspectionData($date, $name, $vehicle, $notes){
+	public function setInspectionData($date, ?string $name, ?string $vehicle, ?string $notes){
 		$this->setDate($date);
 		$this->setName($name);
 		$this->setVehicle($vehicle);

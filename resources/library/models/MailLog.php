@@ -29,7 +29,7 @@ class MailLog extends BaseModel {
 	 * @ORM\Id
 	 * @ORM\Column(type="string")
 	 */
-	protected $uuid;
+	protected ?string $uuid;
 	
 	
 	protected $timestamp;
@@ -37,37 +37,32 @@ class MailLog extends BaseModel {
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $recipient;
+	protected ?string $recipient;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $subject;
+	protected ?string $subject;
 	
 	/**
 	 * @ORM\Column(type="smallint")
 	 */
-	protected $state;
+	protected int $state;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $body;
+	protected ?string $body;
 	
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected $error;
-	
-	
-	function __construct() {
-	}
-	
+	protected ?string $error;
 	
 	/**
 	 * @return mixed
 	 */
-	public function getUuid() {
+	public function getUuid() : ?string {
 		return $this->uuid;
 	}
 
@@ -81,42 +76,42 @@ class MailLog extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getRecipient() {
+	public function getRecipient() : ?string  {
 		return $this->recipient;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getSubject() {
+	public function getSubject() : ?string  {
 		return $this->subject;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getState() {
+	public function getState() : int {
 		return $this->state;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getBody() {
+	public function getBody() : ?string  {
 		return $this->body;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getError() {
+	public function getError() : ?string  {
 		return $this->error;
 	}
 
 	/**
 	 * @param mixed $uuid
 	 */
-	public function setUuid($uuid) {
+	public function setUuid(?string $uuid) {
 		$this->uuid = $uuid;
 	}
 
@@ -130,36 +125,49 @@ class MailLog extends BaseModel {
 	/**
 	 * @param mixed $recipient
 	 */
-	public function setRecipient($recipient) {
+	public function setRecipient(?string $recipient) {
 		$this->recipient = $recipient;
 	}
 
 	/**
 	 * @param mixed $subject
 	 */
-	public function setSubject($subject) {
+	public function setSubject(?string $subject) {
 		$this->subject = $subject;
 	}
 
 	/**
 	 * @param mixed $state
 	 */
-	public function setState($state) {
+	public function setState(int $state) {
 		$this->state = $state;
 	}
 
 	/**
 	 * @param mixed $body
 	 */
-	public function setBody($body) {
+	public function setBody(?string $body) {
 		$this->body = $body;
 	}
 
 	/**
 	 * @param mixed $error
 	 */
-	public function setError($error) {
+	public function setError(?string $error) {
 		$this->error = $error;
+	}
+	
+	
+	
+	function __construct() {
+		parent::__construct();
+		$this->uuid = NULL;
+		$this->timestamp = NULL;
+		$this->body = NULL;
+		$this->error = NULL;
+		$this->recipient = NULL;
+		$this->state = 0;
+		$this->subject = NULL;
 	}
 	
 	
@@ -168,7 +176,7 @@ class MailLog extends BaseModel {
 	 * Custom Methods
 	 */
 	
-	public static function fromMail($recipient, $subject, $state, $body, $error = NULL){
+	public static function fromMail(?string $recipient, ?string $subject, int $state, ?string $body, ?string $error = NULL){
 		$entry = new MailLog();
 		$entry->setUuid(getUuid ());
 		$entry->setTimestamp(date('Y-m-d H:i:s'));

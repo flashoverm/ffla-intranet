@@ -7,9 +7,9 @@ $url_prefix = "";
 
 //required
 $dbConfig = array (
-		"dbname" => "ffintranet",
-		"username" => "ffintranet",
-		"password" => "ffintranet",
+		"dbname" => "fflaintranet",
+		"username" => "fflaintranet",
+		"password" => "fflaintranet",
 		"host" => "localhost"
 );
 
