@@ -1,6 +1,8 @@
 <?php
 require_once LIBRARY_PATH . "/password.php";
 require_once LIBRARY_PATH . "/mail.php";
+
+/*
 create_table_user ();
 
 function insert_user($firstname, $lastname, $email, $password, $engine_uuid, $employer_address, $employer_mail) {
@@ -440,5 +442,5 @@ function initialize_user(){
 	$user = insert_eventadmin("Admin", "Admin", "admin@guardian.de", "admin", get_engine_from_name("Keine Zuordnung")->uuid);
 	add_privilege_to_user_by_name($user->uuid, PORTALADMIN);
 }
-
+*/
 ?>

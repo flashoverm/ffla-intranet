@@ -122,6 +122,15 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
+	function getUserByUuidIncludingDeleted(String $uuid){
+		$statement = $this->db->prepare("SELECT * FROM user WHERE uuid = ?");
+		
+		if ($statement->execute(array($uuid))) {
+			return $this->handleResult($statement);
+		}
+		return false;
+	}
+	
 	function getUserByEmail(String $email){
 		$emailLower = strtolower($email);
 		
@@ -155,8 +164,10 @@ class UserDAO extends BaseDAO {
 			uuid, email, firstname, lastname, password, engine, locked, employer_address, employer_mail
 			) VALUES (?, ?, ?, ?, ?, ?, FALSE, ?, ?)");
 		
-		$result = $statement->execute(array($uuid, $emailLower, $user->getFirstname(), $user->getLastname(), $user->getPassword(),
-				$user->getEngine()->getUuid(), $user->getEmployerAddress(), $user->getEmployerMail()));
+		$result = $statement->execute(array($uuid, $emailLower, $user->getFirstname(), $user->getLastname(), 
+				$user->getPassword(), $user->getEngine()->getUuid(), $user->getEmployerAddress(), 
+				$user->getEmployerMail()
+		));
 		
 		if ($result) {
 			return $this->getUserByUUID($uuid);
@@ -164,14 +175,16 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
-	protected function updateUser($user){
+	protected function updateUser(User $user){
 		$emailLower = strtolower($user->getEmail());
 				
 		$statement = $this->db->prepare("UPDATE user 
-			SET firstname = ?, lastname = ?, email = ?, engine = ?, employer_address = ?, employer_mail = ? WHERE uuid= ?");
+			SET firstname = ?, lastname = ?, email = ?, password = ?, engine = ?, locked = ?, deleted = ?, employer_address = ?, employer_mail = ? WHERE uuid= ?");
 		
-		$result = $statement->execute(array($user->getFirstname(), $user->getLastname(), $emailLower, $user->getEngine()->getUuid(),
-				$user->getEmployerAddress(), $user->getEmployerMail(), $user->getUuid()));
+		$result = $statement->execute(array($user->getFirstname(), $user->getLastname(), $emailLower, 
+				$user->getPassword(), $user->getEngine()->getUuid(), $user->getLocked(), $user->getDeleted(), 
+				$user->getEmployerAddress(), $user->getEmployerMail(), $user->getUuid()
+		));
 		
 		if ($result) {
 			return $this->getUserByUUID($user->getUuid());

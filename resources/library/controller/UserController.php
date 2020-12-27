@@ -39,13 +39,13 @@ class UserController extends BaseController{
 	function lockUser(String $uuid){
 		$user = $this->userDAO->getUserByUUID($uuid);
 		$user->setLocked(true);
-		$this->userDAO->save($user);
+		return $this->userDAO->save($user);
 	}
 	
 	function unlockUser(String $uuid){
 		$user = $this->userDAO->getUserByUUID($uuid);
 		$user->setLocked(false);
-		$this->userDAO->save($user);
+		return $this->userDAO->save($user);
 	}
 	
 	function resetPassword(String $uuid){
@@ -54,7 +54,7 @@ class UserController extends BaseController{
 		
 		$user = $this->userDAO->getUserByUUID($uuid);
 		$user->setPassword($pwhash);
-		$this->userDAO->save($user);
+		return $this->userDAO->save($user);
 	}
 	
 	function changePassword(String $uuid, String $oldPassword, String $newPassword){
@@ -74,39 +74,40 @@ class UserController extends BaseController{
 		$user = $this->userDAO->getUserByUUID($userUUID);
 		$privilege = $this->privilegeDAO->getPrivilege($privilegeUUID);
 		$user->addPrivilege($privilege);
-		$this->userDAO->save($user);
+		return $this->userDAO->save($user);
 	}
 	
 	function addPrivilegeToUserByName(String $userUUID, String $privilege){
 		$user = $this->userDAO->getUserByUUID($userUUID);
 		$privilege = $this->privilegeDAO->getPrivilegeByName($privilege);
 		$user->addPrivilege($privilege);
-		$this->userDAO->save($user);
+		return $this->userDAO->save($user);
 	}
 	
 	function resetPrivilegesFromUser(String $userUUID, array $newPrivileges){
 		$user = $this->userDAO->getUserByUUID($userUUID);
 		$user->resetPrivileges($newPrivileges);
-		$this->userDAO->save($user);
+		return $this->userDAO->save($user);
 	}
 	
 	function removePrivilegeFromUser(String $userUUID, String $privilegeUUID){
 		$user = $this->userDAO->getUserByUUID($userUUID);
 		$privilege = $this->privilegeDAO->getPrivilege($privilegeUUID);
 		$user->removePrivilege($privilege);
-		$this->userDAO->save($user);
+		return $this->userDAO->save($user);
 	}
 	
 	function deleteUser(String $uuid){
 		$user = $this->userDAO->getUserByUUID($uuid);
 		$user->setDeleted(true);
 		$this->userDAO->save($user);
+		return true;
 	}
 	
 	function undeleteUser(String $uuid){
 		$user = $this->userDAO->getUserByUUID($uuid);
 		$user->setDeleted(false);
-		$this->userDAO->save($user);
+		return $this->userDAO->save($user);
 	}
 	
 	function addDefaultPrivilegesToUser($user){

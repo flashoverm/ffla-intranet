@@ -14,7 +14,7 @@ if (isset ( $_POST ['disable'] )) {
 	$uuid = trim ( $_POST ['disable'] );
 	if($uuid == $_SESSION ['intranet_userid']){
 		$variables ['alertMessage'] = "Eigenes Konto kann nicht gesperrt werden";
-	} else if(lock_user ( $uuid )) {
+	} else if($userController->lockUser( $uuid )) {
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserLocked, $uuid));
 		$variables ['successMessage'] = "Benutzer gesperrt";
 	} else {
@@ -23,7 +23,7 @@ if (isset ( $_POST ['disable'] )) {
 }
 if (isset ( $_POST ['enable'] )) {
 	$uuid = trim ( $_POST ['enable'] );
-	if(unlock_user ( $uuid )){
+	if($userController->unlockUser( $uuid )){
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserUnlocked, $uuid));
 		$variables ['successMessage'] = "Benutzer freigegeben";
 	} else {
@@ -34,7 +34,7 @@ if (isset ( $_POST ['delete'] )) {
 	$uuid = trim ( $_POST ['delete'] );
 	if($uuid == $_SESSION ['intranet_userid']){
 		$variables ['alertMessage'] = "Eigenes Konto kann nicht gelöscht werden";
-	} else if(delete_user( $uuid )) {
+	} else if($userController->deleteUser( $uuid )) {
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserDeleted, $uuid));
 		$variables ['successMessage'] = "Benutzer gelöscht";
 	} else {
@@ -44,7 +44,7 @@ if (isset ( $_POST ['delete'] )) {
 
 if (isset ( $_POST ['resetpw'] )) {
 	$resetpw_user_uuid = trim ( $_POST ['resetpw'] );
-	$password = reset_password ( $resetpw_user_uuid );
+	$password = $userController->resetPassword( $resetpw_user_uuid );
 	if($password){
 		$mail = mail_reset_password ( $resetpw_user_uuid, $password );
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserResetPassword, $uuid));
@@ -59,7 +59,7 @@ if (isset ( $_POST ['resetpw'] )) {
 
 if (isset ( $_POST ['setpw'] )) {
 	$setpw_user_uuid = trim ( $_POST ['setpw'] );
-	$password = reset_password ( $setpw_user_uuid );
+	$password = $userController->resetPassword ( $setpw_user_uuid );
 	if($password){
 		$mail = mail_add_user($userDAO->getUserByUUID($setpw_user_uuid)->getEmail(), $password);
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserAddedPassword, $uuid));
