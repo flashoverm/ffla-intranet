@@ -2,6 +2,7 @@
 require_once "db_connect.php";
 require_once LIBRARY_PATH . "/mail.php";
 
+/*
 create_table_event ();
 create_table_staff ();
 
@@ -444,7 +445,7 @@ function add_staff_user($uuid, $user) {
 	if ($result) {
 		return true;
 	} else {
-		// echo "Error: " . $query . "<br>" . $db->error;
+		// echo "Error: " . $qfalseuery . "<br>" . $db->error;
 		return false;
 	}
 }
@@ -594,5 +595,5 @@ function create_table_staff() {
 		return false;
 	}
 }
-
+*/
 ?>

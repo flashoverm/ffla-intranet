@@ -51,7 +51,7 @@ function middle_navigation ($currentUser){
 function right_navigation ($currentUser){
 	global $config;
 	
-	if ($currentUser->hasPrivilegeByName(Privilege::EVENTADMIN)) {
+	if ($currentUser && $currentUser->hasPrivilegeByName(Privilege::EVENTADMIN)) {
 		echo "<li class='nav-item dropdown'>
         			<a class='nav-link dropdown-toggle text-light mx-1' data-toggle='dropdown' href='#'>Administration</a>
         			<div class='dropdown-menu bg-dark'>

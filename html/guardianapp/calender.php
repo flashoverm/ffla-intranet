@@ -9,7 +9,7 @@ if (isset($_GET['id'])) {
     );
     
     $uuid = trim($_GET['id']);
-    $event = get_event($uuid);
+    $event = $eventDAO->getEvent($uuid);
     $eol = "\r\n";
     
     // iCal date format: yyyymmddThhiissZ
@@ -29,9 +29,9 @@ if (isset($_GET['id'])) {
     	return dateToCal($date, $approx_end);
     }
     
-    function createICS($event){
-    	global $config, $eol, $eventTypeDAO;
-    	$type = $eventTypeDAO->getEventType($event->type)->getType();
+    function createICS(Event $event){
+    	global $config, $eol;
+    	$type = $event->getType()->getType();
     	
     	header('Content-Disposition: attachment; filename=event.ics');
     	
@@ -44,12 +44,12 @@ if (isset($_GET['id'])) {
     	'STATUS:CONFIRMED' . $eol .
     	'UID:wachverwaltung@feuerwehr-landshut.de' . $eol .
     	'LOCATION:' . html_entity_decode($type) . $eol .
-    	'DESCRIPTION:' . html_entity_decode("Weitere Infos unter " . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event->uuid . 
-    			" sowie der vorausgefüllte Wachbericht unter " . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/" . $event->uuid) . $eol . 
-    	'URL;VALUE=URI:' . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/".$event->uuid . $eol .
-    	'SUMMARY:' . html_entity_decode($type . " " . $event->title) . $eol .
-    	'DTSTART:' . dateToCal($event->date, $event->start_time) . $eol .
-    	'DTEND:' . getEndDateTime($event->date, $event->end_time, $event->start_time) . $eol .
+    	'DESCRIPTION:' . html_entity_decode("Weitere Infos unter " . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event->getUuid() . 
+    			" sowie der vorausgefüllte Wachbericht unter " . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/" . $event->getUuid()) . $eol . 
+    	'URL;VALUE=URI:' . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/".$event->getUuid() . $eol .
+    	'SUMMARY:' . html_entity_decode($type . " " . $event->getTitle()) . $eol .
+    	'DTSTART:' . dateToCal($event->date, $event->getStartTime()) . $eol .
+    	'DTEND:' . getEndDateTime($event->date, $event->getEndTime(), $event->getStartTime()) . $eol .
     	'DTSTAMP:' . date_format(date_create("now"), 'Ymd\This')  . 'Z' . $eol .
     	'END:VEVENT' . $eol .
     	'END:VCALENDAR';
@@ -57,20 +57,20 @@ if (isset($_GET['id'])) {
     	return $ical;    	
     }
     
-    function createVCS($event){
-    	global $config, $eol, $eventTypeDAO;
-    	$type = $eventTypeDAO->getEventType($event->type)->getType();
+    function createVCS(Event $event){
+    	global $config, $eol;
+    	$type = $event>getType()->getType();
     	
     	header('Content-Disposition: attachment; filename=event.vcs');
     	
     	$vcs='BEGIN:VCALENDAR' . $eol .
     		'BEGIN:VEVENT' . $eol .
-    		'DTSTART:' . dateToCal($event->date, $event->start_time) . $eol .
-    		'DTEND:' . getEndDateTime($event->date, $event->end_time, $event->start_time) . $eol .
+    		'DTSTART:' . dateToCal($event->getDate(), $event->getStartTime()) . $eol .
+    		'DTEND:' . getEndDateTime($event->getDate(), $event->getEndTime(), $event->getStartTime()) . $eol .
     		'LOCATION;ENCODING=QUOTED-PRINTABLE:' . html_entity_decode($type) . $eol .
-    		'DESCRIPTION:' . html_entity_decode("Weitere Infos unter " . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event->uuid
-    				. " sowie der vorausgefüllte Wachbericht unter " . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/" . $event->uuid) . $eol .
-    		'SUMMARY;ENCODING=QUOTED-PRINTABLE:' . html_entity_decode($type . " " . $event->title) . $eol .
+    		'DESCRIPTION:' . html_entity_decode("Weitere Infos unter " . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event->getUuid()
+    				. " sowie der vorausgefüllte Wachbericht unter " . $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/" . $event->getUuid()) . $eol .
+    		'SUMMARY;ENCODING=QUOTED-PRINTABLE:' . html_entity_decode($type . " " . $event->getTitle()) . $eol .
 			'PRIORITY:' . '3' . $eol . 
 			'END:VEVENT' . $eol .
 			'END:VCALENDAR';

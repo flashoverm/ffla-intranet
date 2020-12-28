@@ -42,32 +42,34 @@
 					
 					<?php
 					$staffId = 0;
-					foreach ( $template->getStaffPositions() as $position ) {
-						$staffId = $staffId +1;
-						?>
-						<tr id="staffEntry<?= $staffId; ?>">
-							<td class="p-0">
-									<select class="select-cornered" name="staff<?= $staffId ?>" required="required" id="staff<?= $staffId ?>">
-										<option value="" disabled selected>Funktion auswählen</option>
-										<?php foreach ( $staffpositions as $option ) : 
-											if($option->getUuid() == $position->getUuid()){
-											?>
-												<option selected value="<?=  $option->getUuid() ?>"><?= $option->getPosition() ?></option>
-											<?php 
-											} else {
-											?>
-												<option value="<?=  $option->getUuid() ?>"><?= $option->getPosition() ?></option>
-											<?php
-											}
-										endforeach; 
-							            ?>
-									</select>
-							</td>
-							<td class="p-0 text-center align-middle" style="width:  8%">								
-								<button type="button" class="btn btn-sm btn-primary" onClick="eventRemoveStaff(<?= $staffId ?>)">X</button>
-							</td>
-						</tr>
-					<?php
+					if( isset($template) ){
+						foreach ( $template->getStaffPositions() as $position ) {
+							$staffId = $staffId +1;
+							?>
+							<tr id="staffEntry<?= $staffId; ?>">
+								<td class="p-0">
+										<select class="select-cornered" name="staff<?= $staffId ?>" required="required" id="staff<?= $staffId ?>">
+											<option value="" disabled selected>Funktion auswählen</option>
+											<?php foreach ( $staffpositions as $option ) : 
+												if($option->getUuid() == $position->getUuid()){
+												?>
+													<option selected value="<?=  $option->getUuid() ?>"><?= $option->getPosition() ?></option>
+												<?php 
+												} else {
+												?>
+													<option value="<?=  $option->getUuid() ?>"><?= $option->getPosition() ?></option>
+												<?php
+												}
+											endforeach; 
+								            ?>
+										</select>
+								</td>
+								<td class="p-0 text-center align-middle" style="width:  8%">								
+									<button type="button" class="btn btn-sm btn-primary" onClick="eventRemoveStaff(<?= $staffId ?>)">X</button>
+								</td>
+							</tr>
+						<?php
+						}
 					}
 					?>					
 				</tbody>

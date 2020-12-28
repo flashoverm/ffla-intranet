@@ -11,7 +11,7 @@ class StaffTemplate extends BaseModel {
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	protected EventType $eventType;
+	protected ?EventType $eventType;
 	
 
 	protected array $staffPositions;

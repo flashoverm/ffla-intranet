@@ -74,9 +74,9 @@ function mail_reset_password($user_uuid, $password) {
  *
  */
 function mail_insert_event($event_uuid, $inform_creator, $publish) {
-	global $bodies, $userDAO;
+	global $bodies, $eventDAO;
 	
-	$event = get_event( $event_uuid );
+	$event = $eventDAO->getEvent( $event_uuid );
 	
 	$subject = "Neue Wache eingestellt" . event_subject($event_uuid);
 	$body =  $bodies["event_insert"] . get_event_link($event_uuid);
@@ -87,7 +87,7 @@ function mail_insert_event($event_uuid, $inform_creator, $publish) {
 		$sendOK = mail_to_creator ( $event, $subject, $body );
 	}
 	
-	if ($event->engine != $userDAO->getUserByUUID($event->creator)->getEngine()->getUuid()){
+	if ($event->getEngine()->getUuid() != $event->getCreator()->getEngine()->getUuid()){
 		$assignedOk = mail_assigned_event($event);
 		$sendOK = $sendOK && $assignedOk;
 	}
@@ -122,19 +122,19 @@ function mail_publish_event($event_obj) {
 	
 	$body = $bodies["event_publish"] . get_event_link($event_obj->uuid);
 	
-	$recipients = $guardianUserController->getEventManangerExeptEngineAndCreator($event_obj->engine, $event_obj->creator);
+	$recipients = $guardianUserController->getEventManangerExeptEngineAndCreator($event_obj->getEngine()->getUuid(), $event_obj->getCreator()->getUuid());
 	
 	return send_mails($recipients, $subject, $body);
 }
 
 function mail_not_full($event_uuid) {
-	global $bodies;
+	global $bodies, $eventDAO;
 	
 	$subject = "Erinnerung: Wache nicht voll belegt" . event_subject($event_uuid);
 	
 	$body = $bodies["event_not_full"] . get_event_link($event_uuid);
 	
-	$event = get_event( $event_uuid );
+	$event = $eventDAO->getEvent( $event_uuid );
 	
 	return mail_to_manager($event, $subject, $body);
 }
@@ -145,23 +145,23 @@ function mail_not_full($event_uuid) {
  */
 
 function mail_event_updates($event_uuid){
-	global $bodies;
+	global $bodies, $eventDAO;
 	
 	$subject = "Wache aktualisiert" . event_subject($event_uuid);
 	$body =  $bodies["event_update"] . get_event_link($event_uuid);
 	
-	$event = get_event( $event_uuid );
+	$event = $eventDAO->getEvent( $event_uuid );
 	
 	return mail_to_staff($event, $subject, $body);
 }
 
 function mail_delete_event($event_uuid) {
-	global $bodies;
+	global $bodies, $eventDAO;
 	
 	$subject = "Wache abgesagt" . event_subject($event_uuid);
 	$body = $bodies["event_delete"] . get_event_link($event_uuid);
 	
-	$event = get_event( $event_uuid );
+	$event = $eventDAO->getEvent( $event_uuid );
 	
 	return mail_to_staff($event, $subject, $body);
 	
@@ -170,14 +170,14 @@ function mail_delete_event($event_uuid) {
 
 //by user
 function mail_subscribe_staff_user($event_uuid, $user_uuid, $informMe) {
-	global $config, $bodies, $userDAO;
+	global $config, $bodies, $userDAO, $eventDAO;
 	
 	$sendOK = true;
 	
-	$event = get_event( $event_uuid );
+	$event = $eventDAO->getEvent( $event_uuid );
 	$user = $userDAO->getUserByUUID($user_uuid);
 	
-	if($event->staff_confirmation){
+	if($event->getStaffConfirmation()){
 		//send mail to manager of the event
 		$subject = "In Wache eingeschrieben (Bestätigung ausstehend)" . event_subject($event_uuid);
 		$body = $bodies["event_subscribe_engine_confirm"] . get_event_link($event_uuid);
@@ -199,7 +199,7 @@ function mail_subscribe_staff_user($event_uuid, $user_uuid, $informMe) {
 		}
 		
 		//send mail to manager of the event
-		if (is_event_full($event_uuid)) {
+		if ($event->isEventFull()) {
 			$subject = "Wache voll belegt" . event_subject($event_uuid);
 			$body = $bodies["event_full"] . get_event_link($event_uuid);
 			
@@ -216,10 +216,10 @@ function mail_subscribe_staff_user($event_uuid, $user_uuid, $informMe) {
 }
 
 function mail_unscribe_staff_user($staff_uuid, $event_uuid) {
-	global $config, $bodies, $guardianUserController;
+	global $config, $bodies, $eventDAO, $guardianUserController;
 	
-	$event = get_event( $event_uuid );
-	$staffuser = get_staff_user( $staff_uuid );
+	$event = $eventDAO->getEvent( $event_uuid );
+	$staffuser = $eventDAO->getEventStaffEntry( $staff_uuid )->getUser();
 	$sendOK = true;
 	
 	$subject = "Aus Wache ausgetragen" . event_subject($event_uuid);
@@ -228,7 +228,7 @@ function mail_unscribe_staff_user($staff_uuid, $event_uuid) {
 	if ($config ["settings"] ["enginemgrmailonsubscription"]) {
 		
 		$body = $bodies["event_unscribe_by_user_engine"] . get_event_link($event_uuid);
-		$recipients = $guardianUserController->getEventmanagerOfEngine($staffuser->engine);
+		$recipients = $guardianUserController->getEventmanagerOfEngine($staffuser->getEngine()->getUuid());
 		$sendOK = send_mails($recipients, $subject, $body);
 	}
 	
@@ -241,7 +241,7 @@ function mail_unscribe_staff_user($staff_uuid, $event_uuid) {
 
 //by manager
 function mail_confirm_staff_user($staff_uuid, $event_uuid) {
-	global $bodies;
+	global $bodies, $eventDAO;
 	
 	$sendOK = true;
 	
@@ -249,8 +249,8 @@ function mail_confirm_staff_user($staff_uuid, $event_uuid) {
 	$subject = "Wachteilnahme bestätigt" . event_subject($event_uuid);
 	$body = $bodies["event_staff_confirmed"] . get_event_link($event_uuid) . $bodies["event_report_link"] . get_report_create_link($event_uuid);;
 	
-	$user = get_staff_user($staff_uuid);
-	$sendOK = $sendOK && send_mail ( $user->email, $subject, $body );
+	$user = $eventDAO->getEventStaffEntry( $staff_uuid )->getUser();
+	$sendOK = $sendOK && send_mail ( $user->getEmail(), $subject, $body );
 	
 	//send mail to manager of the user
 	$sendOK = $sendOK && inform_users_manager($event_uuid, $user);
@@ -277,21 +277,21 @@ function mail_add_staff_user($event_uuid, $user_uuid) {
 
 //by manager
 function mail_remove_staff_user($staff_uuid, $event_uuid) {
-	global $config, $bodies, $guardianUserController;
+	global $config, $bodies, $guardianUserController, $eventDAO;
 		
 	//inform staff
 	$subject = "Aus Wache entfernt" . event_subject($event_uuid);
 	$body = $bodies["event_unscribe"] . get_event_link($event_uuid);
 	
-	$user = get_staff_user($staff_uuid);
-	send_mail ( $user->email, $subject, $body );
+	$user = $eventDAO->getEventStaffEntry($staff_uuid)->getUser();
+	send_mail ( $user->getEmail(), $subject, $body );
 	
 	//send mail to manager of the user
 	if ($config ["settings"] ["enginemgrmailonsubscription"]) {
 		
 		$body = $bodies["event_unscribe_engine"] . get_event_link($event_uuid);
 		
-		$recipients = $guardianUserController->getEventmanagerOfEngine($user->engine);
+		$recipients = $guardianUserController->getEventmanagerOfEngine($user->getEngine()->getUuid());
 		send_mails($recipients, $subject, $body);
 	}
 }
@@ -317,13 +317,13 @@ function get_report_link($report_uuid){
 }
 
 function event_subject($event_uuid){
-	global $config, $eventTypeDAO;
-	$event = get_event($event_uuid);
+	global $config, $eventDAO;
+	$event = $eventDAO->getEvent($event_uuid);
 	
 	$subject = " - "
-			. date($config ["formats"] ["date"], strtotime($event->date)) . " "
-					. date($config ["formats"] ["time"], strtotime($event->start_time)) . " Uhr "
-							. $eventTypeDAO->getEventType($event->type)->getType();
+			. date($config ["formats"] ["date"], strtotime($event->getDate())) . " "
+					. date($config ["formats"] ["time"], strtotime($event->getStartTime())) . " Uhr "
+							. $event->getType()->getType();
 							
 							return $subject;
 }
@@ -331,7 +331,7 @@ function event_subject($event_uuid){
 function mail_to_manager($event_obj, $subject, $body){
 	global $guardianUserController;
 	
-	$recipients = $guardianUserController->getEventmanagerOfEngine($event_obj->engine);
+	$recipients = $guardianUserController->getEventmanagerOfEngine($event_obj->getEngine()->getUuid());
 	
 	return send_mails($recipients, $subject, $body);
 }
@@ -344,8 +344,14 @@ function mail_to_creator($event_obj, $subject, $body){
 }
 
 function mail_to_staff($event_obj, $subject, $body){
-	$recipients = get_personal($event_obj->uuid);
-	
+	$recipients = array();
+	$staff = $event_obj->getStaff();
+	foreach($staff as $entry) {
+		if($entry->getUser() != NULL) {
+			$recipients[] = $entry->getUser();
+		}
+	}
+
 	return send_mails($recipients, $subject, $body);
 }
 
@@ -369,7 +375,7 @@ function inform_users_manager($event_uuid, $user){
  */
 
 function mail_insert_event_report($report){
-	global $config, $bodies, $engineDAO, $userDAO, $guardianUserController;
+	global $config, $bodies, $userDAO, $guardianUserController;
 	
 	$subject = "Wachbericht";
 	$body = $bodies["event_report"] . get_report_link($report->uuid);
@@ -377,8 +383,7 @@ function mail_insert_event_report($report){
 	$file = $config["paths"]["reports"] . $report->uuid . ".pdf";
 	
 	//send report to administration
-	$userDAO->getUsersByEngine($engineDAO->getAdministration()->getUuid());
-	$administration = $userDAO->getUsersByEngine($engineDAO->getAdministration()->getUuid());
+	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
 	send_mails($administration, $subject, $body, $file);
 	
 	//send report to manager of the assigned engine

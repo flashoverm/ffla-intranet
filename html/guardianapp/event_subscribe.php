@@ -13,21 +13,20 @@ $variables = array (
 if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 
 	$staffUUID = trim ( $_GET ['staffid'] );
-	$engines = $engineDAO->getEngines();
 	$eventUUID = trim ( $_GET ['id'] );
 	
-	$event = get_event($eventUUID);
-	$staffposition = get_events_staffposition($staffUUID);
+	$event = $eventDAO->getEvent($eventUUID);
+	$staffposition = $eventDAO->getEventStaffEntry($staffUUID);
 	
 	if(isset($event) and isset($staffposition)) {
 	    $variables ['showFormular'] = true;
 	    
-	    $variables ['title'] = "In " . $eventTypeDAO->getEventType($event->type)->getType() . " eintragen";
-    	$variables ['engines'] = $engines;
+	    $variables ['title'] = "In " . $event->getType()->getType() . " eintragen";
+	    $variables ['engines'] = $engineDAO->getEngines();;
     	$variables ['event'] = $event;
-    	$variables ['staffUUID'] = $staffUUID;
-    	$variables ['subtitle'] = date($config ["formats"] ["date"], strtotime($event->date)) 
-    	. " - " . date($config ["formats"] ["time"], strtotime($event->start_time)) . " als " . $staffposition->position;
+    	$variables ['subtitle'] = date($config ["formats"] ["date"], strtotime($event->getDate())) 
+    	. " - " . date($config ["formats"] ["time"], strtotime($event->getStartTime())) . " als " . $staffposition->getPosition()->getPosition();
+    	
     	if(userLoggedIn()){
     		$variables['currentUser'] = $userController->getCurrentUser();
     	}else{
@@ -48,32 +47,34 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     			$informMe = true;
     		}
     		
-    		if(! $guardianUserController->isEmailInUse($email) ){
-    			$engine = $engineDAO->getEngine($engineUUID);
-    			$user = $guardianUserController->insertEventParticipant($firstname, $lastname, $email, $engine);
+    		if(userLoggedIn()){
+    			$user = $variables['currentUser'];
     		} else {
-    			$user = $userDAO->getUserByData($firstname, $lastname, $email, $engineUUID);
+    			if(! $guardianUserController->isEmailInUse($email) ){
+    				$engine = $engineDAO->getEngine($engineUUID);
+    				$user = $guardianUserController->insertEventParticipant($firstname, $lastname, $email, $engine);
+    			} else {
+    				$user = $userDAO->getUserByData($firstname, $lastname, $email, $engineUUID);
+    			}
     		}
-
+    		
     		//if user exists with these name/engine ok - else error!
     		if($user){
     				
     			if($user->hasPrivilegeByName(Privilege::EVENTPARTICIPENT)){
     				//if uuid is already in event -> error
-    				if(!is_user_already_staff($eventUUID, $user->getUuid())){
-    						
-    					$result = subscribe_staff_user ( $staffUUID, $user->getUuid() );
-    						
-    					if($result == 1){
-    							
+    				if( ! $event->isUserAlreadyStaff($user->getUuid())){
+    					
+    					$result = $eventController->subscribeUser($staffUUID, $user);
+    						    						
+    					if($result){
     						mail_subscribe_staff_user ( $eventUUID, $user->getUuid(), $informMe);
-    						$variables ['successMessage'] = "Als Wachteilnehmer eingetragen - <a href=\"" . $config["urls"]["guardianapp_home"] . "/events/" . $eventUUID . "\" class=\"alert-link\">Zurück</a>";
-    						
+    						$variables ['successMessage'] = "Als Wachteilnehmer eingetragen - <a href=\"" . $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() . "\" class=\"alert-link\">Zurück</a>";
     						$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventSubscribed, $staffUUID));
     						$variables ['showFormular'] = false;
-    						header ( "Location: " . $config["urls"]["guardianapp_home"] . "/events/".$eventUUID); // redirects
+    						header ( "Location: " . $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid()); // redirects
     							
-    					} else if ($result == 0) {
+    					} else if ($result == -1) {
     						$variables ['alertMessage'] = "Eintragen nicht möglich - Position bereits belegt";
     					} else {
     						$variables ['alertMessage'] = "Eintragen fehlgeschlagen";

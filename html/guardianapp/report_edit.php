@@ -35,8 +35,8 @@ if(isset($_GET['id'])){
 	
 } else if(isset($_GET['event'])){
 	
-	$event = get_event($_GET['event']);
-	if($event != null){
+	$event = $eventDAO->getEvent($_GET['event']);
+	if($event){
 		
 		if(userLoggedIn()){
 			$creator = $userController->getCurrentUser()->getFullName();
@@ -44,8 +44,7 @@ if(isset($_GET['id'])){
 			$creator = "";
 		}
 		
-		$staff = get_staff($_GET['event']);
-		$eventReport = EventReport::fromEvent($event, $staff, $creator);
+		$eventReport = EventReport::fromEvent($event, $creator);
 		$variables['object'] = $eventReport;
 
 	} else {

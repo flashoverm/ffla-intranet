@@ -43,6 +43,8 @@ class GuardianUserController extends UserController{
 	}
 		
 	public function isUserAllowedToEditEvent(User $user, $eventUuid){
+		global $eventDAO;
+		
 		if($user->hasPrivilegeByName(Privilege::EVENTADMIN)){
 			return true;
 		}
@@ -51,9 +53,9 @@ class GuardianUserController extends UserController{
 			return true;
 		}
 		
-		$event = get_event($eventUuid);
+		$event = $eventDAO->getEvent($eventUuid);
 		if($user->hasPrivilegeByName(Privilege::EVENTMANAGER) 
-				&& $event->engine == $user->getEngine()->getUuid()){
+				&& $event->getEngine()->getUuid() == $user->getEngine()->getUuid()){
 			return true;
 		}
 		return false;

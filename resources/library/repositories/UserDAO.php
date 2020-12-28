@@ -113,16 +113,6 @@ class UserDAO extends BaseDAO {
 	}
 		
 	function getUserByUUID(String $uuid){
-		$statement = $this->db->prepare("SELECT * FROM user WHERE uuid = ?
-		AND deleted = false");
-		
-		if ($statement->execute(array($uuid))) {
-			return $this->handleResult($statement);
-		}
-		return false;
-	}
-	
-	function getUserByUuidIncludingDeleted(String $uuid){
 		$statement = $this->db->prepare("SELECT * FROM user WHERE uuid = ?");
 		
 		if ($statement->execute(array($uuid))) {

@@ -21,6 +21,8 @@ foreach (glob( CONTROLLER_PATH . "/*.php") as $filename) {
 	include_once $filename;
 }
 
+//DAOs
+
 $userDAO = new UserDAO();
 $privilegeDAO = new PrivilegeDAO();
 $engineDAO = new EngineDAO();
@@ -38,10 +40,12 @@ $staffTemplateDAO = new StaffTemplateDAO();
 $hydrantDAO = new HydrantDAO();
 $inspectionDAO = new InspectionDAO();
 
+$eventDAO = new EventDAO();
+
+//Controller
+
 $userController = new UserController();
 $guardianUserController = new GuardianUserController();
 $confirmationController = new ConfirmationController();
 $hydrantController = new HydrantController();
-
-$confirmation = new Confirmation();
-echo $confirmation -> getUuid();
+$eventController = new EventController();

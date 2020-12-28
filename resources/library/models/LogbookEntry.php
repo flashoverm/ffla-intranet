@@ -186,29 +186,27 @@ class LogbookEntry extends BaseModel {
 	}
 	
 	protected static function eventEntry($action, $event_uuid){
-		global $config, $eventTypeDAO;
-		$event = get_event($event_uuid);
+		global $config, $eventDAO;
+		$event = $eventDAO->getEvent($event_uuid);
 		if( ! $event ){
 			return null;
 		}
 		return LogbookActions::getActionText($action) . ":<br>"
-				. "Wache: " . $eventTypeDAO->getEventType($event->type)->getType() . " (" . date($config ["formats"] ["date"], strtotime($event->date)) . " " . date($config ["formats"] ["time"], strtotime($event->start_time)) . " Uhr)<br>"
-						. "Titel: " . $event->title ;
+				. "Wache: " . $event->getType()->getType() . " (" . date($config ["formats"] ["date"], strtotime($event->getDate())) . " " . date($config ["formats"] ["time"], strtotime($event->getStartTime())) . " Uhr)<br>"
+						. "Titel: " . $event->getTitle() ;
 	}
 	
 	protected static function eventStaffEntry($action, $staff_uuid){
-		global $config, $userDAO, $eventTypeDAO;
-		$staff = get_events_staffposition($staff_uuid);
+		global $config, $userDAO, $eventDAO;
+		$staff = $eventDAO->getEventStaffEntry($staff_uuid);
 		if( ! $staff ){
 			return null;
 		}
-		$staffpos = $staff->position;
-		$event = get_event($staff->event);
-		$user = $userDAO->getUserByUUID($staff->user);
+		$event = $eventDAO->getEvent($staff->getEventUuid());
 		
 		return LogbookActions::getActionText($action) . ":<br>"
-				. "Wache:  " . $eventTypeDAO->getEventType($event->type)->getType() . " (" . date($config ["formats"] ["date"], strtotime($event->date)) . " " . date($config ["formats"] ["time"], strtotime($event->start_time)) . " Uhr) " . $staffpos . "<br>"
-						. "Person: " . $user->getFullNameWithEmail();
+				. "Wache:  " . $event->getType()->getType() . " (" . date($config ["formats"] ["date"], strtotime($event->getDate())) . " " . date($config ["formats"] ["time"], strtotime($event->getStartTime())) . " Uhr) " . $staff->getPosition()->getPosition() . "<br>"
+						. "Person: " . $staff->getUser()->getFullNameWithEmail();
 	}
 	
 	protected static function staffTemplateEntry($action, $eventtype_uuid){

@@ -22,18 +22,16 @@ if (isset($_GET['id'])) {
 	$variables['title'] = 'Wache bearbeiten';
 	
     $uuid = trim($_GET['id']);
-    $event = get_event($uuid);
+    $event = $eventDAO->getEvent($uuid);
     
     if($event){
     	
     	$dateNow = getdate();
     	$now = strtotime( $dateNow['year']."-".$dateNow['mon']."-".($dateNow['mday']) );
-    	if(strtotime($event->date) >= $now){
+    	if(strtotime($event->getDate()) >= $now){
 
-    		if (userLoggedIn() && is_user_manager_or_creator($event->uuid, $_SESSION['intranet_userid'])){
-	            $staff = get_staff($uuid);
+    		if (userLoggedIn() && $eventController->isUserManagerOrCreator(getCurrentUserUUID(), $event->getUuid())){
 	            $variables['event'] = $event;
-	            $variables['staff'] = $staff;
 	            
 	        } else {
 	            $variables ['alertMessage'] = "Sie sind nicht berechtigt, diese Wache zu bearbeiten";
@@ -57,12 +55,14 @@ if (isset($_GET['id'])) {
     
 //Update or Insert is set
 if (isset ( $_POST ['type'] ) ) {
-	
+
 	$date = trim ( $_POST ['date'] );
 	$start = trim ( $_POST ['start'] );
 	$end = trim ( $_POST ['end'] );
-	$type = trim ( $_POST ['type'] );
-	$engine = $_POST ['engine'];
+	$typeUuid = trim ( $_POST ['type'] );
+	$type = $eventTypeDAO->getEventType($typeUuid);
+	$engineUuid = $_POST ['engine'];
+	$engine = $engineDAO->getEngine($engineUuid);
 	
 	if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1]).(0[1-9]|1[0-2]).[0-9]{4}$/", $date)) {
 	    //European date format -> change to yyyy-mm-dd
@@ -88,8 +88,8 @@ if (isset ( $_POST ['type'] ) ) {
 	$publish = false;
 	$staff_confirmation = false;
 	
-	$creator = $_SESSION ['intranet_userid'];
-	
+	$creator = $userController->getCurrentUser();
+
 	if (isset ( $_POST ['comment'] )) {
 		$comment = trim ( $_POST ['comment'] );
 	}
@@ -102,82 +102,84 @@ if (isset ( $_POST ['type'] ) ) {
 	if(isset($_POST ['confirmation'])){
 		$staff_confirmation = true;
 	}
+	$informMe = false;
+	if(isset($_POST ['informMe'])){
+		$informMe = true;
+	}
 	
-	if(isset($_POST ['eventid'])){
-		$event_uuid = $_POST ['eventid'];
-				
-		$updateSuccess = update_event ($event_uuid, $date, $start, $end, $type, $typeOther, $title, $comment, $engine, $staff_confirmation);
-		
-		foreach($staff as $entry):
-			if(!isset($_POST [$entry->uuid])){
-				//Remove entry from db!
-				if($entry->user != null){
-					mail_remove_staff_user($entry->uuid, $event_uuid);
-				}
-				delete_staff_entry($entry->uuid);
-		} else {
-		    update_staff($entry->uuid, $_POST [$entry->uuid]);
-		}
-		endforeach;
+	$staffDeleted = array();
+	if(isset($_POST ['staffDeleted'])){
+		$staffDeleted = $_POST ['staffDeleted'];
+	}
+	
+	if (isset($_GET['id'])) {
+		//update 
+		$event = $variables['event'];
 	} else {
-		$event_uuid = insert_event ( $date, $start, $end, $type, $typeOther, $title, $comment, $engine, $creator, $publish, $staff_confirmation);
+		//insert
+		$event = new Event();
+		$event->setCreator($creator);
 	}
+			
+	$event->setEventData($date, $start, $end, $type, $typeOther, $title, $comment, $engine, $staff_confirmation);
 	
-	if($event_uuid){
-		$count = $_POST ['positionCount'];
-		for ($i = 0; $i <= $count; $i++) {
-			if(isset($_POST ["staff" . $i])){
-				insert_staff ( $event_uuid, $_POST ["staff" . $i], $staff_confirmation);
+	//get staff list
+	$staff = array();
+	for ($i = 0; $i <= $_POST['positionCount']; $i++) {
+		if(isset($_POST['staff'][$i])){
+			$object = new Staff();
+			if(isset($_POST['staff'][$i]['uuid'])){
+				$object->setUnconfirmed($_POST['staff'][$i]['unconfirmed']);
 			}
+			if(isset($_POST['staff'][$i]['uuid'])){
+				$object->setUuid($_POST['staff'][$i]['uuid']);
+			}
+			if(isset($_POST['staff'][$i]['user'])){
+				$object->setUser($userDAO->getUserByUUID($_POST['staff'][$i]['uuid']));
+			}
+			$object->setPosition($staffPositionDAO->getStaffPosition($_POST['staff'][$i]['position']));
+			$staff[] = $object;
 		}
 	}
+	$event->setStaff($staff);
 	
-	if(isset($_POST ['eventid'])){
-		if($updateSuccess){
-			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventUpdated, $event_uuid));
+	//insert or update event and staff
+	$event = $eventController->saveEvent($event, $staffDeleted);
+	
+	//result handling
+	if (isset($_GET['id'])) {
+		//update 
+		if($event){
+			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventUpdated, $event->getUuid()));
 			$variables ['successMessage'] = "Wache aktualisiert";
 			
 			if($inform){
-				if(!mail_event_updates($event_uuid)){
+				if(!mail_event_updates($event->getUuid())){
 					$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
-				} else{
-				    header ( "Location: " . $config["urls"]["guardianapp_home"] . "/events/" . $event_uuid ); // redirects
 				}
-			} else {
-			    header ( "Location: " . $config["urls"]["guardianapp_home"] . "/events/" . $event_uuid ); // redirects
 			}
+		} else {
+			$variables ['alertMessage'] = "Wache konnte nicht aktualisiert werden";
 		}
-	} else{
-		
-		if($event_uuid){
-			$informMe = false;
-			if(isset($_POST ['informMe'])){
-				$informMe = true;
+		$variables['event'] = $eventDAO->getEvent($_GET['id']);
+	} else {
+		//insert
+		if($event){
+			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventCreated, $event->getUuid()));
+			$variables ['successMessage'] = "Wache angelegt";
+			$variables['event'] = $eventDAO->getEvent($event->getUuid());
+			
+			if(!mail_insert_event ( $event->getUuid(), $informMe, $publish)){
+				$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
+			} else {
+				if( ! isset($_POST ['forwardToEvent']) || $_POST ['forwardToEvent'] != 1){
+					unset($variables['event']);
+				}
 			}
 			
-			if(mail_insert_event ( $event_uuid, $informMe, $publish)){
-				$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventCreated, $event_uuid));
-				$variables ['successMessage'] = "Wache angelegt";
-				
-				if(isset($_POST ['forwardToEvent']) && $_POST ['forwardToEvent'] == 1){
-				    header ( "Location: " . $config["urls"]["guardianapp_home"] . "/events/" . $event_uuid ); // redirects
-				} else {
-				    $event_uuid = null;
-				}
-				
-				
-			} else {
-				$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
-			}
 		} else {
 			$variables ['alertMessage'] = "Wache konnte nicht angelegt werden";
 		}
-	}
-	if($event_uuid != null){
-	    $event = get_event($event_uuid);
-	    $staff = get_staff($event_uuid);
-	    $variables['event'] = $event;
-	    $variables['staff'] = $staff;
 	}
 }
 

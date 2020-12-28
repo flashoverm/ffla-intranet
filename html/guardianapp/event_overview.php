@@ -12,7 +12,7 @@ $variables = array (
 if (isset ( $_POST ['delete'] )) {
 	$delete_event_uuid = trim ( $_POST ['delete'] );
 	mail_delete_event ( $delete_event_uuid );
-	if(mark_event_as_deleted ( $delete_event_uuid, $_SESSION ['intranet_userid'])){
+	if( $eventController->markAsDeleted( $delete_event_uuid ) ){
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventDeleted, $delete_event_uuid));
 		$variables ['successMessage'] = "Wache gelöscht";
 	} else {
@@ -21,16 +21,17 @@ if (isset ( $_POST ['delete'] )) {
 }
 
 if(userLoggedIn()){
+	$currentUser = $userController->getCurrentUser();
     
-	if($userController->getCurrentUser()->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
-		$events = get_all_active_events ();
-		$pastEvents = get_all_past_events();
+	if($currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
+		$events = $eventDAO->getActiveEvents();
+		$pastEvents = $eventDAO->getPastEvents();
 	} else {
-		$publicEvents = get_public_events();
-	    $engineEvents = get_events (getCurrentUserUUID());
+		$publicEvents = $eventDAO->getPublicEvents();
+		$engineEvents = $eventDAO->getUsersActiveEvents($currentUser);
 	    $events = array_merge($engineEvents, $publicEvents);
 	    
-	    $pastEvents = get_past_events(getCurrentUserUUID());
+	    $pastEvents = $eventDAO->getUsersPastEvents($currentUser);
 
 	}
 	$variables ['events'] = $events;

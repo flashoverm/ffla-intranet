@@ -10,9 +10,7 @@ $variables = array (
 );
 
 if($config["settings"]["publicevents"]){
-	
-	$events = get_public_events();
-	$variables ['events'] = $events;
+	$variables ['events'] =  $eventDAO->getPublicEvents();
 } else {
 	$variables ['alertMessage'] = "Öffentliche Wachen deaktiviert - <a href=\"" . $config["urls"]["intranet_home"] . "/login\" class=\"alert-link\">Zum Login</a>";
 }

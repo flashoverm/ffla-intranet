@@ -16,7 +16,7 @@ class Event extends BaseModel {
 	
 	protected $date;
 	
-	protected $starTime;
+	protected $startTime;
 	
 	protected $endTime;
 	
@@ -58,6 +58,8 @@ class Event extends BaseModel {
 	 */
 	protected ?string $hash;
 	
+	protected array $staff;
+	
 
 	/**
 	 * @return NULL
@@ -76,8 +78,8 @@ class Event extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getStarTime() {
-		return $this->starTime;
+	public function getStartTime() {
+		return $this->startTime;
 	}
 
 	/**
@@ -156,6 +158,13 @@ class Event extends BaseModel {
 	public function getHash() : ?string {
 		return $this->hash;
 	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getStaff() : array {
+		return $this->staff;
+	}
 
 	/**
 	 * @param NULL $uuid
@@ -172,10 +181,10 @@ class Event extends BaseModel {
 	}
 
 	/**
-	 * @param mixed $starTime
+	 * @param mixed $startTime
 	 */
-	public function setStarTime($starTime) {
-		$this->starTime = $starTime;
+	public function setStartTime($startTime) {
+		$this->startTime = $startTime;
 	}
 
 	/**
@@ -255,6 +264,13 @@ class Event extends BaseModel {
 		$this->hash = $hash;
 	}
 	
+	/**
+	 * @param mixed $staff
+	 */
+	public function setStaff(array $staff) {
+		$this->staff = $staff;
+	}
+	
 	
 	/*
 	 **************************************************
@@ -277,11 +293,54 @@ class Event extends BaseModel {
 		$this->street = NULL;
 		$this->type = NULL;
 		$this->uuid = NULL;
+		$this->deletedBy = NULL;
+		$this->staff = array();
 	}
 	
 	/*
 	 **************************************************
 	 * Custom Methods
 	 */
+	
+	function setEventData($date, $startTime, $endTime, $type, $typeOther, $title, $comment, $engine, $staffConfirmation){
+		$this->setDate($date);
+		$this->setStartTime($startTime);
+		$this->setEndTime($endTime);
+		$this->setType($type);
+		$this->setTypeOther($typeOther);
+		$this->setTitle($title);
+		$this->setComment($comment);
+		$this->setEngine($engine);
+		$this->setStaffConfirmation($staffConfirmation);
+	}
+	
+	function getOccupancy(){
+		$occupancy = 0;
+		foreach ($this->staff as $staff){
+			if($staff->getUser() != NULL){
+				$occupancy ++;
+			}
+		}
+		return $occupancy . "/" . sizeof($this->staff);
+	}
+	
+	function isEventFull(){
+		foreach ($this->staff as $staff){
+			if($staff->getUser() == NULL){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	function isUserAlreadyStaff($userUuid){
+		foreach ($this->staff as $staff){
+
+			if($staff->getUser() != NULL && $staff->getUser()->getUuid() == $userUuid){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }

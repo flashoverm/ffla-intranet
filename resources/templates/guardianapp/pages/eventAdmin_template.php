@@ -25,44 +25,44 @@ if (!isset($events) || ! count ( $events ) ) {
 	foreach ( $events as $row ) {
 		?>
 				<tr>
-				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
-				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
+				<td class="text-center"><span class='d-none'><?= strtotime($row->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
+				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getStartTime())); ?></td>
 				<td class="text-center">
 	<?php
-		if ($row->end_time != 0) {
-		    echo date($config ["formats"] ["time"], strtotime($row->end_time));
+		if ($row->getEndTime() != 0) {
+		    echo date($config ["formats"] ["time"], strtotime($row->getEndTime()));
 		} else {
 			echo " - ";
 		}
 		?></td>
-				<td class="text-center"><?= $eventTypeDAO->getEventType($row->type)->getType() ?></td>
-				<td class="text-center"><?= $row->title; ?></td>
+				<td class="text-center"><?= $row->getType()->getType() ?></td>
+				<td class="text-center"><?= $row->getTitle(); ?></td>
 				<td class="text-center">
 					<?php 
-					if(is_event_full($row->uuid)){
-					    echo '<font color="green">' . get_occupancy($row->uuid) . '</font>';
+					if($row->isEventFull()){
+					    echo '<font color="green">' . $row->getOccupancy() . '</font>';
 					} else {
-					    echo '<font color="red">' . get_occupancy($row->uuid) . '</font>';
+						echo '<font color="red">' . $row->getOccupancy() . '</font>';
 					}
 				    ?>
 				</td>
 				<td class="text-center">
 					<?php
-					if($row->published){
+					if($row->getPublished()){
 					    echo " &#10003; ";
 					} else {
 					    echo " - ";
 					}
 					?>
 				</td>
-				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName(); ?></td>
+				<td class="text-center"><?= $row->getEngine()->getName() ?></td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->uuid ?>">Details</a>
+					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->getUuid() ?>">Details</a>
 				</td>
 				<td class="text-center">
-					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDeleteDB<?= $row->uuid; ?>">Löschen (DB)</button>
+					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDeleteDB<?= $row->getUuid(); ?>">Löschen (DB)</button>
 					<?php 
-					createDialog('confirmDeleteDB' . $row->uuid, "Wache wirklich entgültig löschen?", null, "deletedb", $row->uuid);
+					createDialog('confirmDeleteDB' . $row->getUuid(), "Wache wirklich entgültig löschen?", null, "deletedb", $row->getUuid());
 					?>					
 				</td>
 			</tr>
@@ -103,41 +103,41 @@ if ( isset($pastEvents) && count ( $pastEvents )) {
 	foreach ( $pastEvents as $row ) {
 		?>
 				<tr>
-				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
-				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
+				<td class="text-center"><span class='d-none'><?= strtotime($row->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
+				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getStartTime())); ?></td>
 				<td class="text-center">
 	<?php
-		if ($row->end_time != 0) {
-		    echo date($config ["formats"] ["time"], strtotime($row->end_time));
+		if ($row->getEndTime() != 0) {
+		    echo date($config ["formats"] ["time"], strtotime($row->getEndTime()));
 		} else {
 			echo " - ";
 		}
 		?></td>
-				<td class="text-center"><?= $eventTypeDAO->getEventType($row->type)->getType() ?></td>
-				<td class="text-center"><?= $row->title; ?></td>
+				<td class="text-center"><?= $row->getType()->getType() ?></td>
+				<td class="text-center"><?= $row->getTitle(); ?></td>
 				<td class="text-center">
 					<?php
-					if($row->published){
+					if($row->getPublished()){
 					    echo " &#10003; ";
 					} else {
 					    echo " - ";
 					}
 					?>
 				</td>
-				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName();?></td>
+				<td class="text-center"><?= $row->getEngine()->getName();?></td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->uuid ?>">Details</a>
+					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->getUuid() ?>">Details</a>
 				</td>
 				<td class="text-center">
-					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDelete<?= $row->uuid; ?>">Löschen</button>
+					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDelete<?= $row->getUuid(); ?>">Löschen</button>
 					<?php 
-					createDialog('confirmDelete' . $row->uuid, "Wache wirklich löschen?", null, "delete", $row->uuid);
+					createDialog('confirmDelete' . $row->getUuid(), "Wache wirklich löschen?", null, "delete", $row->getUuid());
 					?>	
 				</td>
 				<td class="text-center">
-					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDeleteDB<?= $row->uuid; ?>">Löschen (DB)</button>
+					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDeleteDB<?= $row->getUuid(); ?>">Löschen (DB)</button>
 					<?php 
-					createDialog('confirmDeleteDB' . $row->uuid, "Wache wirklich entgültig löschen?", null, "deletedb", $row->uuid);
+					createDialog('confirmDeleteDB' . $row->getUuid(), "Wache wirklich entgültig löschen?", null, "deletedb", $row->getUuid());
 					?>
 				</td>
 			</tr>
@@ -178,37 +178,37 @@ if ( isset($deletedEvents) && count ( $deletedEvents )) {
 	foreach ( $deletedEvents as $row ) {
 		?>
 				<tr>
-				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
-				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
+				<td class="text-center"><span class='d-none'><?= strtotime($row->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
+				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getStartTime())); ?></td>
 				<td class="text-center">
 	<?php
-		if ($row->end_time != 0) {
-		    echo date($config ["formats"] ["time"], strtotime($row->end_time));
+		if ($row->getEndTime() != 0) {
+		    echo date($config ["formats"] ["time"], strtotime($row->getEndTime()));
 		} else {
 			echo " - ";
 		}
 		?></td>
-				<td class="text-center"><?= $eventTypeDAO->getEventType($row->type)->getType() ?></td>
-				<td class="text-center"><?= $row->title; ?></td>
+				<td class="text-center"><?= $row->getType()->getType() ?></td>
+				<td class="text-center"><?= $row->getTitle(); ?></td>
 				<td class="text-center">
 					<?php
-					if($row->published){
+					if($row->getPublished()){
 					    echo " &#10003; ";
 					} else {
 					    echo " - ";
 					}
 					?>
 				</td>
-				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName(); ?></td>
-				<td class="text-center"><?= $userDAO->getUserByUUID($row->deleted_by)->getEmail(); ?></td>
+				<td class="text-center"><?= $row->getEngine()->getName(); ?></td>
+				<td class="text-center"><?= $row->getDeletedBy()->getEmail(); ?></td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->uuid ?>">Details</a>
+					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/" . $row->getUuid() ?>">Details</a>
 				</td>
 
 				<td class="text-center">
-					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDeleteDB<?= $row->uuid; ?>">Löschen (DB)</button>
+					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDeleteDB<?= $row->getUuid(); ?>">Löschen (DB)</button>
 					<?php 
-					createDialog('confirmDeleteDB' . $row->uuid, "Wache wirklich entgültig löschen?", null, "deletedb", $row->uuid);
+					createDialog('confirmDeleteDB' . $row->getUuid(), "Wache wirklich entgültig löschen?", null, "deletedb", $row->getUuid());
 					?>
 				</td>
 			</tr>

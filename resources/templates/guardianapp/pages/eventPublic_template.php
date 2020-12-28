@@ -25,30 +25,30 @@ if(!isset($events) ){
 	foreach ( $events as $row ) {
 		?>
 				<tr>
-				<td class="text-center"><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
-				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
+				<td class="text-center"><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
+				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getStartTime())); ?></td>
 				<td class="text-center">
 	<?php
-		if ($row->end_time != 0) {
-		    echo date($config ["formats"] ["time"], strtotime($row->end_time));
+		if ($row->getEndTime() != 0) {
+		    echo date($config ["formats"] ["time"], strtotime($row->getEndTime()));
 		} else {
 			echo " - ";
 		}
 		?></td>
-				<td class="text-center"><?= $eventTypeDAO->getEventType($row->type)->getType() ?></td>
-				<td class="text-center"><?= $row->title; ?></td>
-				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName(); ?></td>
+				<td class="text-center"><?= $row->getType()->getType() ?></td>
+				<td class="text-center"><?= $row->getTitle(); ?></td>
+				<td class="text-center"><?= $row->getEngine()->getName(); ?></td>
 				<td class="text-center">
 					<?php 
-					if(is_event_full($row->uuid)){
-					    echo '<font color="green">' . get_occupancy($row->uuid) . '</font>';
+					if($row->isEventFull()){
+					    echo '<font color="green">' . $row->getOccupancy() . '</font>';
 					} else {
-					    echo '<font color="red">' . get_occupancy($row->uuid) . '</font>';
+						echo '<font color="red">' . $row->getOccupancy() . '</font>';
 					}
 				    ?>
 				</td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->uuid ?>">Details</a>
+					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/" . $row->getUuid() ?>">Details</a>
 				</td>
 			</tr>
 <?php

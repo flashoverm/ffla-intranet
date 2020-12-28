@@ -3,7 +3,7 @@
 	<?php
 	$staffId = 0;
 	if(isset($event) ){
-		echo "<input type='hidden' name='eventid' id='eventid' value='" . $event->uuid . "'/>";
+		echo "<input type='hidden' name='eventid' id='eventid' value='" . $event->getUuid() . "'/>";
 	}
 	?>
 	<input type='hidden' name='forwardToEvent' id='forwardToEvent' value=1/>
@@ -16,7 +16,7 @@
 				name="date" id="date" 
 				<?php
 				if(isset($event) ){
-					echo "value='" . $event->date . "'";
+					echo "value='" . $event->getDate() . "'";
 				}?>
 				required pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4}">
 			</div>
@@ -27,7 +27,7 @@
 				placeholder="--:--" title="--:--" class="form-control" 
 				<?php
 				if(isset($event) ){
-					echo "value='" . substr($event->start_time, 0, strlen($event->start_time)-3) . "'";
+					echo "value='" . substr($event->getStartTime(), 0, strlen($event->getStartTime())-3) . "'";
 				}?>
 				name="start" id="start" required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
 			</div>
@@ -37,8 +37,8 @@
 				<label>Ende (optional):</label> <input type="time"
 				placeholder="--:--" title="--:--" class="form-control" 
 				<?php
-				if(isset($event) && $event->end_time != null){
-					echo "value='" . substr($event->end_time, 0, strlen($event->end_time)-3) . "'";
+				if(isset($event) && $event->getEndTime() != null){
+					echo "value='" . substr($event->getEndTime(), 0, strlen($event->getEndTime())-3) . "'";
 				}?>
 				name="end" id="end" pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
 			</div>
@@ -47,7 +47,7 @@
 	<div class="form-group">
 		<label>Typ:</label> <select class="form-control" name="type" id="type" onchange="showHideTypeOtherCreate()">
 				<?php foreach ( $eventtypes as $type ) :
-					if(isset($event) && $type->getUuid() == $event->type) {?>
+					if(isset($event) && $type->getUuid() == $event->getType()->getUuid()) {?>
 						<option value="<?= $type->getUuid(); ?>" selected><?= $type->getType(); ?></option>
 					<?php } else {?>
 						<option value="<?= $type->getUuid(); ?>"><?= $type->getType(); ?></option>
@@ -59,8 +59,8 @@
 		<label>Sonstiger Wachtyp:</label> <input type="text" required="required"
 			class="form-control" name="typeOther" id="typeOther"
 			<?php
-			if(isset($event) && $event->type_other != null){
-			    echo "value='" . $event->type_other . "'";
+			if(isset($event) && $event->getTypeOther() != null){
+			    echo "value='" . $event->getTypeOther() . "'";
 			}?>
 			placeholder="Wachtyp eingeben">
 	</div>
@@ -69,8 +69,8 @@
 		<label>Titel (optional):</label> <input type="text"
 			class="form-control" name="title" id="title"
 			<?php
-			if(isset($event) && $event->title != null){
-				echo "value='" . $event->title . "'";
+			if(isset($event) && $event->getTitle() != null){
+				echo "value='" . $event->getTitle() . "'";
 			}?>
 			placeholder="Titel eingeben">
 	</div>
@@ -81,7 +81,7 @@
 			class="form-control" name="engine" required="required"
 			data-toggle="tooltip" data-placement="top" title="Dieser Zug soll die Wache besetzen">
 			<?php foreach ( $engines as $option ) : 
-				if(isset($event) && $option->getUuid() == $event->engine){
+				if(isset($event) && $option->getUuid() == $event->getEngine()->getUuid()){
 				    ?>
 				   	<option selected="selected" value="<?=  $option->getUuid();	?> "><?= $option->getName(); ?></option>
 				    <?php 
@@ -102,8 +102,8 @@
 		<label>Anmerkungen:</label>
 		<textarea class="form-control" name="comment" id="comment"
 			placeholder="Anmerkungen"><?php
-			if(isset($event) && $event->comment != null){
-				echo $event->comment;
+			if(isset($event) && $event->getComment() != null){
+				echo $event->getComment();
 			}?></textarea>
 	</div>
 
@@ -114,7 +114,7 @@
 			if($config["settings"]["staffconfirmation"]){
 			?>
 			<div class="custom-control custom-checkbox custom-checkbox-big">
-				<?php if(isset($event) && $event->staff_confirmation) { ?>
+				<?php if(isset($event) && $event->getStaffConfirmation()) { ?>
 					<input type="checkbox" class="custom-control-input" id="confirmation" name="confirmation" checked> 
 				<?php } else { ?>
 					<input type="checkbox" class="custom-control-input" id="confirmation" name="confirmation">
@@ -165,47 +165,45 @@
 					
 					<?php
 					$staffId = 0;
-					if(isset($staff)){
-						foreach ( $staff as $entry ) {
+					if(isset($event)){
+						foreach ( $event->getStaff() as $entry ) {
 							$staffId = $staffId +1;
-							if ($entry->user != NULL) {
-								$user = $userDAO->getUserByUUID($entry->user );
-							}
 							?>
 						<tr id="staffEntry<?= $staffId; ?>">
+							<input type='hidden' id="staffEntry<?= $staffId; ?>Uuid" name="staff[<?= $staffId ?>][uuid]" value="<?= $entry->getUuid() ?>"/>
+							<input type='hidden' name="staff[<?= $staffId ?>][unconfirmed]" value="<?= $entry->getUnconfirmed() ?>"/>
 							<td class="p-0">
-									<select class="select-cornered" name="<?= $entry->uuid; ?>" required="required" id="<?= $entry->uuid; ?>">
+									<select class="select-cornered" name="staff[<?= $staffId ?>][position]" required="required">
 										<option value="" disabled selected>Funktion auswählen</option>
-										<?php foreach ( $staffpositions as $option ) : 
-										if($option->getUuid() == $entry->position){
-										?>
+										<?php foreach ( $staffpositions as $option ) {
+										if($option->getUuid() == $entry->getPosition()->getUuid()){?>
 											<option selected value="<?=  $option->getUuid(); ?>"><?= $option->getPosition(); ?></option>
-										<?php 
-										} else {
-										?>
+										<?php } else { ?>
 											<option value="<?=  $option->getUuid(); ?>"><?= $option->getPosition(); ?></option>
 										<?php
 										}
-										endforeach; 
-							            ?>
+									} 
+							        ?>
 									</select>
 							</td>
 							<td class='py-0 align-middle'>
 								<?php 
-									if($entry->user != NULL){
-										echo $user->getFullNameWithEngine(); 
-										if($event->staff_confirmation && $entry->unconfirmed){
-											echo "<br><i>Bestätigung ausstehend</i>";
-										}
+								if($entry->getUser() != NULL){ ?>
+									<input type='hidden' name="staff[<?= $staffId ?>][user]" value="<?= $entry->getUser()->getUuid() ?>" />
+									<?= $entry->getUser()->getFullNameWithEngine() ?>
+									<?php 
+									if($event->getStaffConfirmation() && $entry->getUnconfirmed()){ 
+										echo "<br><i>Bestätigung ausstehend</i>";
 									}
+								}
 								?>
 							</td>
 							<td class="p-0 text-center align-middle" style="width:  8%">								
 								<?php
-								if($entry->user != NULL){
+								if($entry->getUser() != NULL){
                                 ?>								 
-									<button type="button" class="btn btn-sm btn-primary" data-toggle='modal' data-target='#confirmDeleteStaff<?= $entry->uuid ?>'>X</button>
-									<div class='modal' id='confirmDeleteStaff<?= $entry->uuid ?>'>
+									<button type="button" class="btn btn-sm btn-primary" data-toggle='modal' data-target='#confirmDeleteStaff<?= $entry->getUuid() ?>'>X</button>
+									<div class='modal' id='confirmDeleteStaff<?= $entry->getUuid() ?>'>
     								  <div class='modal-dialog'>
     								    <div class='modal-content'>
     				    
@@ -282,7 +280,7 @@
 					</div>";
 		}
 		if(isset($event)){
-			echo '<a class="btn btn-outline-primary" href=' . $config["urls"]["guardianapp_home"] . '/events/' . $event->uuid . ">Zurück</a>";
+			echo '<a class="btn btn-outline-primary" href=' . $config["urls"]["guardianapp_home"] . '/events/' . $event->getUuid() . ">Zurück</a>";
 		}
 		?>
 				
@@ -381,8 +379,8 @@
 		newPosition.style.display = null;
 		
 		var select = newPosition.getElementsByTagName("select");
-		select[0].id = "staff" + positionCount;
-		select[0].name = "staff" + positionCount;
+		select[0].id = "staff[" + positionCount + "][position]";
+		select[0].name = "staff[" + positionCount + "][position]";
 		select[0].required = true;
 		
 		var removeButton = newPosition.getElementsByTagName("button");
@@ -405,6 +403,17 @@
 	function eventRemoveStaff(id){			
 		var staffElement = document.getElementById("staffEntry"+id);
 		if(staffElement != null){
+		
+			//add uuid to deleted list
+			var uuidElement = document.getElementById("staffEntry"+id+"Uuid");
+			if(uuidElement != null){
+				var input = document.createElement("input");
+				input.setAttribute("type", "hidden");
+				input.setAttribute("name", "staffDeleted[]");
+				input.setAttribute("value", uuidElement.value);
+				staffElement.parentNode.appendChild(input);
+			}
+			
 			staffElement.parentNode.removeChild(staffElement);
 			absolutCount = absolutCount -1;
 			
@@ -471,18 +480,15 @@
 	}
 
 	function setTemplate(){
-	    if(xhr.readyState == 4) 
-	    {
-	    	if(xhr.status == 200){
+	    if(xhr.readyState == 4) {
+	    	if(xhr.status == 200) {
 		    	
 	        	var response = eval('(' + xhr.responseText + ')' );
-			    console.log(response.length);
-
 			    var count = absolutCount;
 
 			    clearStaff();
 			    
-			    var staffpositions = response.staffPositions
+			    var staffpositions = response.staffPositions;
 	        	for(var i = 0; i < staffpositions.length; i++) {
 	        		var select = eventAddStaff();
 	        		select.value = staffpositions[i].uuid;

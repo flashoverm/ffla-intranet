@@ -1,6 +1,4 @@
-<form onsubmit="showLoader()"
-	action="<?= $config["urls"]["guardianapp_home"] . "/events/".$eventUUID."/assign/".$staffUUID ?>"
-	method="post">
+<form onsubmit="showLoader()" action="" method="post">
 	
 	<div class="form-group">
 		<label class="mt-1">Personalauswahl (nur Personal aus  <?= $currentUser->getEngine()->getName() ?>):</label>
@@ -50,8 +48,8 @@
 	</div>
 	
 	<?php
-	if (isset ( $eventUUID )) {
-		echo "<a href='" . $config["urls"]["guardianapp_home"] . "/events/" . $eventUUID . "' class=\"btn btn-outline-primary\">Zurück</a>";
+	if (isset ( $event )) {
+		echo "<a href='" . $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() . "' class=\"btn btn-outline-primary\">Zurück</a>";
 	}
 	?>
 	<input type="submit" value="Einteilen" class="btn btn-primary">
@@ -61,13 +59,12 @@
 <script>
 var xhr = getXmlHttpRequestObject();
 
+//set engine uuid to hidden field because actual engine select is disabled
 function setEngineHid(){
     var engine_hid = document.getElementById("engine_hid");
     var engine = document.getElementById("engine");
 
 	engine_hid.value = engine.value;
-
-    console.log(engine_hid.value);
 }
 
 function clearUser(){

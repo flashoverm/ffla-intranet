@@ -6,7 +6,7 @@ session_start ();
 
 function renderPrintContentFile($app, $contentFile, $variables = array(), $noHeader = false){
 	global $config, $userController, $userDAO, $engineDAO, $guardianUserController, 
-	$eventTypeDAO, $logbookDAO, $mailLogDAO, $staffPositionDAO, $hydrantDAO;
+	$eventTypeDAO, $logbookDAO, $mailLogDAO, $staffPositionDAO, $hydrantDAO, $eventController;
     
     $contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $contentFile;
     
@@ -68,7 +68,7 @@ function renderPrintContentFile($app, $contentFile, $variables = array(), $noHea
 
 function renderLayoutWithContentFile($app, $contentFile, $variables = array()) {
 	global $config, $userController, $userDAO, $engineDAO, $guardianUserController, 
-	$eventTypeDAO, $logbookDAO, $mailLogDAO, $staffPositionDAO, $hydrantDAO;
+	$eventTypeDAO, $logbookDAO, $mailLogDAO, $staffPositionDAO, $hydrantDAO, $eventController;
 
 	$contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $contentFile;
 

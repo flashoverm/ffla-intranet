@@ -1,6 +1,4 @@
-<form onsubmit="showLoader()"
-	action="<?= $config["urls"]["guardianapp_home"] . "/events/".$event->uuid."/subscribe/".$staffUUID ?>"
-	method="post">
+<form onsubmit="showLoader()" action="" method="post">
 	<div class="form-group">
 		<label>Vorname:</label> <input type="text" class="form-control"
 			required="required" name="firstname" id="firstname"
@@ -54,7 +52,7 @@
 		</select>
 	</div>
 	<?php
-	if($event->staff_confirmation){
+	if($event->getStaffConfirmation()){
 		echo "<p>Sie werden per E-Mail informiert, sobald der Wachbeauftragte ihre Teilnahme bestätigt hat.</p>";
 	} else {
 		?>
@@ -68,8 +66,8 @@
 
 	
 	<?php
-	if (isset ( $event->uuid )) {
-		echo "<a href='" . $config["urls"]["guardianapp_home"] . "/events/" . $event->uuid . "' class=\"btn btn-outline-primary\">Zurück</a>";
+	if ($event->getUuid()) {
+		echo "<a href='" . $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() . "' class=\"btn btn-outline-primary\">Zurück</a>";
 	}
 	?>
 	<input type="submit" value="Eintragen" class="btn btn-primary">

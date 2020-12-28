@@ -14,40 +14,40 @@ if (! isset($_GET['id'])) {
     );
 } else {
     $uuid = trim($_GET['id']);
-    $event = get_event($uuid);
+    $event = $eventDAO->getEvent($uuid);
     
     if($event){
     	
         $isCreator = false;
         $otherEngine = null;
     	if (userLoggedIn()) {
-    		$isCreator = (strcmp($event->creator, $_SESSION['intranet_userid']) == 0);
+    		$isCreator = (strcmp($event->getCreator()->getUuid(), $_SESSION['intranet_userid']) == 0);
     		
-    		if(strcmp($userController->getCurrentUser()->getEngine()->getUuid(), $event->engine) != 0){
-    		    $otherEngine = $engineDAO->getEngine($event->engine);
+    		if(strcmp($userController->getCurrentUser()->getEngine()->getUuid(), $event->getEngine()->getUuid()) != 0){
+    			$otherEngine = $event->getEngine();
     		 
     		}
     	}
     	
     	// Pass variables (as an array) to template
     	$variables = array(
-    			'title' => $eventTypeDAO->getEventType($event->type)->getType(),
+    			'title' => $event->getType()->getType(),
     			'secured' => false,
     			'showFormular' => true,
     	        'isCreator' => $isCreator,
     	        'otherEngine' => $otherEngine
     	);
     	
-    	if($event->type_other != null){
-    		$variables['subtitle'] = $event->type_other;
+    	if($event->getTypeOther() != null){
+    		$variables['subtitle'] = $event->getTypeOther();
     	}
     	
     	if (isset($_POST['removestaffid'])) {
+    		// Remove by manager
     		$staff_uuid = trim($_POST['removestaffid']);
     		mail_remove_staff_user($staff_uuid, $uuid);
     		$log = LogbookEntry::fromAction(LogbookActions::EventUnscribed, $staff_uuid);
-    		if(remove_staff_user($staff_uuid)){
-    			$staffpos = get_events_staffposition($staff_uuid);
+    		if($eventController->removeUser($staff_uuid)){
     			$logbookDAO->save($log);
     			$variables['successMessage'] = "Personal-Eintrag entfernt";
     		} else {
@@ -56,11 +56,11 @@ if (! isset($_GET['id'])) {
     	}
     	
     	if (isset($_POST['removestaffbyuserid'])) {
+    		// Remove by user itself
     		$staff_uuid = trim($_POST['removestaffbyuserid']);
     		mail_unscribe_staff_user($staff_uuid, $uuid);
-    		$staffpos = get_events_staffposition($staff_uuid);
     		$log = LogbookEntry::fromAction(LogbookActions::EventUnscribedByUser, $staff_uuid);
-    		if(remove_staff_user($staff_uuid)){
+    		if($eventController->removeUser($staff_uuid)){
     			$logbookDAO->save($log);
     			$variables['successMessage'] = "Personal-Eintrag entfernt";
     		} else {
@@ -71,7 +71,7 @@ if (! isset($_GET['id'])) {
     	if (isset($_POST['confirmstaffid'])) {
     		$staff_uuid = trim($_POST['confirmstaffid']);
     		mail_confirm_staff_user($staff_uuid, $uuid);
-    		if(confirm_staff_user($staff_uuid)){
+    		if($eventController->confirmStaffUser($staff_uuid)){
     			$variables['successMessage'] = "Personal bestätigt";
     			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventStaffConfirmed, $staff_uuid));
     		} else {
@@ -79,21 +79,18 @@ if (! isset($_GET['id'])) {
     		}
     	}
     	
-    	if (isset($_POST['publish']) && $event->engine != NULL) {
-    		if(publish_event($uuid) ){
-    			$event = get_event($uuid);
+    	if (isset($_POST['publish']) && $event->getEngine() != NULL) {
+    		$event = $eventController->publishEvent($uuid);
+    		if($event){
     			mail_publish_event($event);
     			$variables['successMessage'] = "Wache veröffentlich - Wachbeauftragte informiert";
     			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventPublished, $uuid));
-    			$event = get_event($uuid);
     		} else {
     			$variables['alertMessage'] = "Wache konnte nicht veröffentlicht werden";
     		}
     	}
     	
-    	$staff = get_staff($uuid);
-    	$variables['event'] = $event;
-    	$variables['staff'] = $staff;
+    	$variables['event'] = $eventDAO->getEvent($event->getUuid());
     } else {
     	// Pass variables (as an array) to template
     	$variables = array(

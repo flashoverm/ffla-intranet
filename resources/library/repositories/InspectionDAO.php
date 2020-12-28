@@ -15,7 +15,7 @@ class InspectionDAO extends BaseDAO{
 	
 	function save(Inspection $inspection){
 		$saved = null;
-		if($this->uuidExists($inspection->getUuid(), "user")){
+		if($this->uuidExists($inspection->getUuid(), "inspection")){
 			$saved = $this->updateInspection($inspection);
 		} else {
 			$saved = $this->insertInspection($inspection);
