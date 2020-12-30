@@ -28,7 +28,7 @@ class ConfirmationDAO extends BaseDAO {
 		$statement = $this->db->prepare("SELECT * FROM confirmation WHERE uuid = ?");
 		
 		if ($statement->execute(array($uuid))) {
-			return $this->handleResult($statement);
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}

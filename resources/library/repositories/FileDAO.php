@@ -27,7 +27,7 @@ class FileDAO extends BaseDAO {
 		$statement = $this->db->prepare("SELECT * FROM file WHERE uuid = ?");
 		
 		if ($statement->execute(array($uuid))) {
-			return $this->handleResult($statement);
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}

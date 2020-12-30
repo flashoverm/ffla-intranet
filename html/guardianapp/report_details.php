@@ -19,13 +19,11 @@ if (! isset($_GET['id'])) {
 } else {
 	
 	$uuid = trim($_GET['id']);
-	$report = get_report($uuid);
-	$units = get_report_units($uuid);
+	$report = $reportDAO->getReport($uuid);
 	
 	if($report){
 		
 		$variables['report'] = $report;
-		$variables['units'] = $units;
 				
 		if(userLoggedIn()){
         	
@@ -35,7 +33,7 @@ if (! isset($_GET['id'])) {
 	        	$variables['showFormular'] = true;
 	            
 	            if(isset($_POST['emsEntry'])){
-	            	if(set_ems_entry($uuid)){
+	            	if($reportController->setEmsEntry($uuid)){
 	                    $variables['successMessage'] = "Bericht aktualisiert";
 	                    $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportEMSSet, $uuid));
 	                } else {
@@ -45,7 +43,7 @@ if (! isset($_GET['id'])) {
 	            }
 	            
 	            if(isset($_POST['emsEntryRemoved'])){
-	            	if(delete_ems_entry($uuid)){
+	            	if($reportController->unsetEmsEntry($uuid)){
 	            		$variables['successMessage'] = "Bericht aktualisiert";
 	            		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportEMSUnset, $uuid));
 	            	} else {
@@ -55,7 +53,7 @@ if (! isset($_GET['id'])) {
 	            }
 	            
 	            if(isset($_POST['managerApprove'])){
-	            	if(set_approval($uuid)){
+	            	if($reportController->setApproval($uuid)){
 	            		mail_report_approved($uuid);
 	            		$variables['successMessage'] = "Bericht aktualisiert und an Verwaltung versandt";
 	            		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportApproved, $uuid));
@@ -66,7 +64,7 @@ if (! isset($_GET['id'])) {
 	            }
 	            
 	            if(isset($_POST['managerApproveRemove'])){
-	            	if(delete_approval($uuid)){
+	            	if($reportController->unsetApproval($uuid)){
 	            		$variables['successMessage'] = "Bericht aktualisiert";
 	            		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportApprovRemoved, $uuid));
 	            	} else {
@@ -77,7 +75,7 @@ if (! isset($_GET['id'])) {
 	            
 	            if (isset ( $_POST ['delete'] )) {
 	            	$log = LogbookEntry::fromAction(LogbookActions::ReportDeleted, $uuid);
-	            	if(delete_report ( $uuid )){
+	            	if($reportDAO->deleteReport( $uuid )){
 	            		$variables ['successMessage'] = "Bericht gelöscht";
 	            		$logbookDAO->save($log);
 	            		header ( "Location: " . $config["urls"]["guardianapp_home"] . "/reports"); // redirects

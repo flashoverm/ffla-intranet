@@ -12,7 +12,7 @@ $variables = array (
 if(userLoggedIn()){
     
     if (isset ( $_POST ['emsEntry'] )) {
-        if(set_ems_entry($_POST ['emsEntry'])){
+        if($reportController->setEmsEntry($_POST ['emsEntry'])){
         	$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportEMSSet, $_POST ['emsEntry']));
             $variables['successMessage'] = "Bericht aktualisiert";
         } else {
@@ -21,9 +21,9 @@ if(userLoggedIn()){
     }
         
     if($userController->getCurrentUser()->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
-        $variables ['reports'] = get_reports();
+        $variables ['reports'] = $reportDAO->getReports();
     } else {
-    	$variables ['reports'] = get_filtered_reports($userController->getCurrentUser()->getEngine()->getUuid());
+    	$variables ['reports'] = $reportDAO->getReportsByEngine($userController->getCurrentUser()->getEngine()->getUuid());
         $variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die Ihrem Zug zugewiesen wurden";
     }
 }

@@ -25,22 +25,22 @@ if (! count ( $reports )) {
 		foreach ( $reports as $row ) {
 		    ?>
 				<tr>
-				<td class="text-center"><span class='d-none'><?= strtotime($row->date) ?></span><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
-				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
+				<td class="text-center"><span class='d-none'><?= strtotime($row->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
+				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getStartTime())); ?></td>
 				<td class="text-center">
 	<?php
-		if ($row->end_time != 0) {
-		    echo date($config ["formats"] ["time"], strtotime($row->end_time));
+		if ($row->getEndTime() != 0) {
+			echo date($config ["formats"] ["time"], strtotime($row->getEndTime()));
 		} else {
 			echo " - ";
 		}
 		?></td>
-				<td class="text-center"><?= $eventTypeDAO->getEventType($row->type)->getType() ?></td>
-				<td class="text-center"><?= $row->title; ?></td>
-				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName(); ?></td>
+				<td class="text-center"><?= $row->getType()->getType() ?></td>
+				<td class="text-center"><?= $row->getTitle() ?></td>
+				<td class="text-center"><?= $row->getEngine()->getName() ?></td>
 				<td class="text-center">
 					<?php
-					if($row->noIncidents){
+					if($row->getNoIncidents()){
 					    echo " keine ";
 					} else {
 					    echo " siehe Bericht ";
@@ -49,7 +49,7 @@ if (! count ( $reports )) {
 				</td>
 				<td class="text-center">
 					<?php
-					if($row->managerApproved){
+					if($row->getManagerApproved()){
 					    echo " &#10003; ";
 					} else {
 						echo " &ndash; ";
@@ -58,16 +58,16 @@ if (! count ( $reports )) {
 				</td>
 				<td class="text-center">
 					<?php
-					if($row->emsEntry){
+					if($row->getEmsEntry()){
 					    echo " &#10003; ";
 					} else {
-						echo "<button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#confirmEms" . $row->uuid . "' title='Wache als in EMS angelegt markieren'>EMS</button>";
-						createDialog("confirmEms" . $row->uuid, "Wurde die Wache in EMS angelegt?", null, "emsEntry", $row->uuid);
+						echo "<button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#confirmEms" . $row->getUuid() . "' title='Wache als in EMS angelegt markieren'>EMS</button>";
+						createDialog("confirmEms" . $row->getUuid(), "Wurde die Wache in EMS angelegt?", null, "emsEntry", $row->getUuid());
 					}
 					?>
 				</td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/".$row->uuid ?>" title='Zum Bericht'>Bericht</a>
+					<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/" . $row->getUuid() ?>" title='Zum Bericht'>Bericht</a>
 				</td>
 			</tr>
 	<?php

@@ -24,7 +24,7 @@ class StaffPositionDAO extends BaseDAO{
 		$statement = $this->db->prepare("SELECT * FROM staffposition WHERE uuid = ?");
 		
 		if ($statement->execute(array($uuid))) {
-			return $this->handleResult($statement);
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}

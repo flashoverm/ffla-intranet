@@ -4,10 +4,6 @@ require_once TEMPLATES_PATH . "/template.php";
 require_once LIBRARY_PATH . '/mail_controller.php';
 require_once LIBRARY_PATH . '/file_create.php';
 
-require_once LIBRARY_PATH . '/class/EventReport.php';
-require_once LIBRARY_PATH . '/class/ReportUnit.php';
-require_once LIBRARY_PATH . '/class/ReportUnitStaff.php';
-
 $eventtypes = $eventTypeDAO->getEventTypes();
 $staffpositions = $staffPositionDAO->getStaffPositions();
 $engines = $engineDAO->getEngines();
@@ -21,13 +17,15 @@ $variables = array (
         'title' => "Wachbericht erstellen",
 );
 
+$eventReport = NULL;
+
 if(isset($_GET['id'])){
 	$variables['secured'] = true;
 	
 	$uuid = trim($_GET['id']);
-	$eventReport = get_report_object($uuid);
+	$eventReport = $reportDAO->getReport($uuid);
 	if($eventReport){
-		$variables['object'] = $eventReport;
+		$variables['report'] = $eventReport;
 		$variables['title'] = 'Wachbericht bearbeiten';
 	} else {
 		$variables ['alertMessage'] = "Wachbericht nicht gefunden";
@@ -44,8 +42,10 @@ if(isset($_GET['id'])){
 			$creator = "";
 		}
 		
-		$eventReport = EventReport::fromEvent($event, $creator);
-		$variables['object'] = $eventReport;
+		$eventReport = new Report();
+		$eventReport->setDataOfEvent($event);
+		$eventReport->setCreator($creator);
+		$variables['report'] = $eventReport;
 
 	} else {
 		$variables ['alertMessage'] = "Wache nicht gefunden";
@@ -57,7 +57,8 @@ if (isset($_POST) && isset($_POST ['start'])) {
     $date = trim ( $_POST ['date'] );
     $beginn = trim ( $_POST ['start'] );
     $end = trim ( $_POST ['end'] );
-    $type = trim ( $_POST ['type'] );
+    $typeUuid = trim ( $_POST ['type'] );
+    $type = $eventTypeDAO->getEventType($typeUuid);
     
     $typeOther = null;
     if(isset( $_POST ['typeOther'] ) && !empty( $_POST ['typeOther'] ) ){
@@ -67,7 +68,9 @@ if (isset($_POST) && isset($_POST ['start'])) {
     if(empty ($title)){
         $title = null;
     }
-    $engine = trim ($_POST ['engine']);
+    $engineUuid = trim ($_POST ['engine']);
+    $engine = $engineDAO->getEngine($engineUuid);
+    
     $noIncidents = false;
     if(isset($_POST ['noIncidents'])){
         $noIncidents = true;
@@ -82,16 +85,16 @@ if (isset($_POST) && isset($_POST ['start'])) {
     }
     $creator = trim ($_POST ['creator']);
         
-    if(isset($_GET['id'])){
-    	$eventReport->updateReport($date, $beginn, $end, $type, $typeOther,
-    			$title, $engine, $noIncidents, $reportText, $creator, $ilsEntry);
-    } else {
-    	$eventReport = new EventReport($date, $beginn, $end, $type, $typeOther,
-    			$title, $engine, $noIncidents, $reportText, $creator, $ilsEntry);
+    if( $eventReport == NULL ){
+    	$eventReport = new Report();
     	if(isset($_GET['event'])){
-    	    $eventReport->event = $_GET['event'];
+    		$eventReport->setEventUuid($_GET['event']);
     	}
     }
+    
+    $eventReport->setReportData($date, $beginn, $end, $type, $typeOther,
+    		$title, $engine, $noIncidents, $reportText, $creator, $ilsEntry);
+    $eventReport->clearReportUnits();
 
     $unitCount = 1;
     while ( isset ( $_POST ["unit" . $unitCount . "unit"] ) ) {
@@ -103,30 +106,35 @@ if (isset($_POST) && isset($_POST ['start'])) {
         $unit = new ReportUnit($unitname, $unitdate, $unitbeginn, $unitend);
         if(isset ( $_POST ['unit' . $unitCount . 'km'] ) && $_POST ['unit' . $unitCount . 'km'] != ""){
             $unitkm = trim ( $_POST ['unit' . $unitCount . 'km'] );
-            $unit->setKM($unitkm);
+            $unit->setKm($unitkm);
         }
         
         $position = 1;
         while ( isset ( $_POST ["unit" . $unitCount . "function" . $position . "field"] ) ) {
-            $function = trim ( $_POST ["unit" . $unitCount . "function" . $position . "field"] );
+            $staffPositionUuid = trim ( $_POST ["unit" . $unitCount . "function" . $position . "field"] );
+            $staffPosition = $staffPositionDAO->getStaffPosition($staffPositionUuid);
             $name = trim ( $_POST ["unit" . $unitCount . "name" . $position . "field"] );
-            $engineUnit = trim ( $_POST ["unit" . $unitCount . "engine" . $position . "field"] );
+            $unitEngineUuid = trim ( $_POST ["unit" . $unitCount . "engine" . $position . "field"] );
+            $engineUnit = $engineDAO->getEngine($unitEngineUuid);
 
-            $unit->addStaff(new ReportUnitStaff($function, $name, $engineUnit));
+            $unit->addStaff(new ReportStaff($staffPosition, $name, $engineUnit));
             
             $position += 1;
         }
         
-        $eventReport->addUnit($unit);
+        $eventReport->addReportUnit($unit);
         $unitCount += 1;
     }
+    
+    $eventReport = $reportDAO->save($eventReport);
        
     $ok = false;
     if(isset($_GET['id'])){
         //Update        
-    	if(update_report($eventReport)){
-    		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportUpdated, $eventReport->uuid));
-    		if(!createReportFile($uuid)){
+    	if($eventReport){
+    		$variables['report'] = $eventReport;
+    		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportUpdated, $eventReport->getUuid()));
+    		if(!createReportFile($eventReport->getUuid())){
     			if(mail_update_report ($eventReport)){
     				$variables ['successMessage'] = "Aktualisierter Bericht versendet";
     				$ok = true;
@@ -141,11 +149,10 @@ if (isset($_POST) && isset($_POST ['start'])) {
     	}
     } else {
     	//Insert
-    	$uuid = insert_report($eventReport);
-    	if($uuid){
-    		$eventReport->uuid = $uuid;
-    		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportCreated, $eventReport->uuid));
-    		if(!createReportFile($uuid)){
+    	if($eventReport){
+    		$variables['report'] = $eventReport;
+    		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportCreated, $eventReport->getUuid()));
+    		if(!createReportFile($eventReport->getUuid())){
     			if(mail_insert_event_report ($eventReport)){
     				$variables ['successMessage'] = "Bericht versendet";
     				$ok = true;
@@ -161,7 +168,7 @@ if (isset($_POST) && isset($_POST ['start'])) {
     }
     
     if($ok){
-    	header ( "Location: " . $config["urls"]["guardianapp_home"] . "/reports/" . $uuid ); // redirects
+    	//header ( "Location: " . $config["urls"]["guardianapp_home"] . "/reports/" . $eventReport->getUuid() ); // redirects
     }
 }
 

@@ -2,10 +2,6 @@
 require_once LIBRARY_PATH . "/mail_body.php";
 require_once LIBRARY_PATH . "/mail.php";
 
-require_once LIBRARY_PATH . '/class/EventReport.php';
-require_once LIBRARY_PATH . '/class/ReportUnit.php';
-require_once LIBRARY_PATH . '/class/ReportUnitStaff.php';
-
 function mail_send_inspection_report($report_uuid){
     global $config;
     global $bodies;
@@ -216,10 +212,10 @@ function mail_subscribe_staff_user($event_uuid, $user_uuid, $informMe) {
 }
 
 function mail_unscribe_staff_user($staff_uuid, $event_uuid) {
-	global $config, $bodies, $eventDAO, $guardianUserController;
+	global $config, $bodies, $eventDAO, $staffDAO, $guardianUserController;
 	
 	$event = $eventDAO->getEvent( $event_uuid );
-	$staffuser = $eventDAO->getEventStaffEntry( $staff_uuid )->getUser();
+	$staffuser = $staffDAO->getEventStaffEntry( $staff_uuid )->getUser();
 	$sendOK = true;
 	
 	$subject = "Aus Wache ausgetragen" . event_subject($event_uuid);
@@ -241,7 +237,7 @@ function mail_unscribe_staff_user($staff_uuid, $event_uuid) {
 
 //by manager
 function mail_confirm_staff_user($staff_uuid, $event_uuid) {
-	global $bodies, $eventDAO;
+	global $bodies, $staffDAO;
 	
 	$sendOK = true;
 	
@@ -249,7 +245,7 @@ function mail_confirm_staff_user($staff_uuid, $event_uuid) {
 	$subject = "Wachteilnahme bestätigt" . event_subject($event_uuid);
 	$body = $bodies["event_staff_confirmed"] . get_event_link($event_uuid) . $bodies["event_report_link"] . get_report_create_link($event_uuid);;
 	
-	$user = $eventDAO->getEventStaffEntry( $staff_uuid )->getUser();
+	$user = $staffDAO->getEventStaffEntry( $staff_uuid )->getUser();
 	$sendOK = $sendOK && send_mail ( $user->getEmail(), $subject, $body );
 	
 	//send mail to manager of the user
@@ -277,13 +273,13 @@ function mail_add_staff_user($event_uuid, $user_uuid) {
 
 //by manager
 function mail_remove_staff_user($staff_uuid, $event_uuid) {
-	global $config, $bodies, $guardianUserController, $eventDAO;
+	global $config, $bodies, $guardianUserController, $staffDAO;
 		
 	//inform staff
 	$subject = "Aus Wache entfernt" . event_subject($event_uuid);
 	$body = $bodies["event_unscribe"] . get_event_link($event_uuid);
 	
-	$user = $eventDAO->getEventStaffEntry($staff_uuid)->getUser();
+	$user = $staffDAO->getEventStaffEntry($staff_uuid)->getUser();
 	send_mail ( $user->getEmail(), $subject, $body );
 	
 	//send mail to manager of the user
@@ -374,20 +370,20 @@ function inform_users_manager($event_uuid, $user){
  * Reports
  */
 
-function mail_insert_event_report($report){
+function mail_insert_event_report(Report $report){
 	global $config, $bodies, $userDAO, $guardianUserController;
 	
 	$subject = "Wachbericht";
-	$body = $bodies["event_report"] . get_report_link($report->uuid);
+	$body = $bodies["event_report"] . get_report_link($report->getUuid());
 	
-	$file = $config["paths"]["reports"] . $report->uuid . ".pdf";
+	$file = $config["paths"]["reports"] . $report->getUuid() . ".pdf";
 	
 	//send report to administration
 	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
 	send_mails($administration, $subject, $body, $file);
 	
 	//send report to manager of the assigned engine
-	$managerList = $guardianUserController->getEventmanagerOfEngine($report->engine);
+	$managerList = $guardianUserController->getEventmanagerOfEngine($report->getEngine()->getUuid());
 	if(sizeof($managerList) > 0){
 		send_mails($managerList, $subject, $body, $file);
 		return true;
@@ -395,20 +391,20 @@ function mail_insert_event_report($report){
 	return false;
 }
 
-function mail_update_report($report){
+function mail_update_report(Report $report){
 	global $config, $bodies, $userDAO, $guardianUserController;
 	
 	$subject = "Wachbericht aktualisiert";
-	$body = $bodies["event_report_update"] . get_report_link($report->uuid);
+	$body = $bodies["event_report_update"] . get_report_link($report->getUuid());
 	
-	$file = $config["paths"]["reports"] . $report->uuid . ".pdf";
+	$file = $config["paths"]["reports"] . $report->getUuid() . ".pdf";
 	
 	//send report to manager of the assigned engine
 	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
 	send_mails($administration, $subject, $body, $file);
 	
 	//send report to manager of the assigned engine
-	$managerList = $guardianUserController->getEventmanagerOfEngine($report->engine);
+	$managerList = $guardianUserController->getEventmanagerOfEngine($report->getEngine()->getUuid());
 	if(sizeof($managerList) > 0){
 		send_mails($managerList, $subject, $body, $file);
 		return true;

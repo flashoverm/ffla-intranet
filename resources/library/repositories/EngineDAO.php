@@ -25,7 +25,7 @@ class EngineDAO extends BaseDAO{
 		$statement = $this->db->prepare("SELECT * FROM engine WHERE uuid = ?");
 		
 		if ($statement->execute(array($uuid))) {
-			return $this->handleResult($statement);
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}
@@ -34,7 +34,7 @@ class EngineDAO extends BaseDAO{
 		$statement = $this->db->prepare("SELECT * FROM engine WHERE name = ?");
 		
 		if ($statement->execute(array($name))) {
-			return $this->handleResult($statement);
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}
@@ -42,8 +42,8 @@ class EngineDAO extends BaseDAO{
 	function getAdministration(){
 		$statement = $this->db->prepare("SELECT * FROM engine WHERE isadministration =  TRUE");
 		
-		if ($statement->execute(array($name))) {
-			return $this->handleResult($statement);
+		if ($statement->execute()) {
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}

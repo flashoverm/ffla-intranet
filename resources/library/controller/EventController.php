@@ -7,11 +7,13 @@ require_once 'BaseController.php';
 class EventController extends BaseController{
 	
 	protected $eventDAO;
+	protected $staffDAO;
 	protected $userDAO;
 	protected $userController;
 	
 	function __construct() {
 		$this->eventDAO = new EventDAO();
+		$this->staffDAO = new StaffDAO();
 		$this->userDAO = new UserDAO();
 		$this->userController = new UserController();
 	}
@@ -25,11 +27,11 @@ class EventController extends BaseController{
 		//inform deleted user and delete entries
 		foreach($deletedStaffUuids as $deletedStaffUuid){
 			echo $deletedStaffUuid . "<br>";
-			$staff = $this->eventDAO->getEventStaffEntry($deletedStaffUuid);
+			$staff = $this->staffDAO->getEventStaffEntry($deletedStaffUuid);
 			if($staff->getUser() != NULL){
 				mail_remove_staff_user($staff->getUuid(), $event->getUuid());
 			}
-			if( ! $this->eventDAO->deleteEventStaffEntry($staff->getUuid())){
+			if( ! $this->staffDAO->deleteEventStaffEntry($staff->getUuid())){
 				return false;
 			}
 		}
@@ -70,31 +72,31 @@ class EventController extends BaseController{
 	}
 	
 	function confirmStaffUser($staffUuid){
-		$staff = $this->eventDAO->getEventStaffEntry($staffUuid);
+		$staff = $this->staffDAO->getEventStaffEntry($staffUuid);
 		$staff->setUnconfirmed(false);
-		return $this->eventDAO->updateEventStaffEntry($staff);
+		return $this->staffDAO->save($staff);
 	}
 	
 	function subscribeUser($staffUuid, User $user){
-		$staff = $this->eventDAO->getEventStaffEntry($staffUuid);
+		$staff = $this->staffDAO->getEventStaffEntry($staffUuid);
 		if($staff->getUser() == NULL){
 			$staff->setUser($user);
-			return $this->eventDAO->updateEventStaffEntry($staff);
+			return $this->staffDAO->save($staff);
 		}
 		return -1;
 	}
 	
 	function assignUser($staffUuid, User $user){
-		$staff = $this->eventDAO->getEventStaffEntry($staffUuid);
+		$staff = $this->staffDAO->getEventStaffEntry($staffUuid);
 		$staff->setUnconfirmed(false);
 		$staff->setUser($user);
-		return $this->eventDAO->updateEventStaffEntry($staff);
+		return $this->staffDAO->save($staff);
 	}
 	
 	function removeUser($staffUuid){
-		$staff = $this->eventDAO->getEventStaffEntry($staffUuid);
+		$staff = $this->staffDAO->getEventStaffEntry($staffUuid);
 		$staff->setUnconfirmed(true);
 		$staff->setUser(NULL);
-		return $this->eventDAO->updateEventStaffEntry($staff);
+		return $this->staffDAO->save($staff);
 	}
 }

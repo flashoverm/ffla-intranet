@@ -19,10 +19,10 @@ $to = date('Y-m-t');
 if(userLoggedIn()){
     $usersEngine = $userController->getCurrentUser()->getEngine();
         
-    if($usersEngine->getIsAdministration() == true){
-        $reports = get_reports("ASC");
+    if( $usersEngine->getIsAdministration() ){
+    	$reports = $reportDAO->getReports("ASC");
     } else {
-        $reports = get_filtered_reports($usersEngine->getUuid(), "ASC");
+        $reports = $reportDAO->getReportsByEngine($usersEngine->getUuid(), "ASC");
         $variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die Ihrem Zug zugewiesen wurden";
     }
     
@@ -33,7 +33,7 @@ if(userLoggedIn()){
 
     }
     
-    $reports = filter_reports($reports, $type, $from, $to);
+    $reports = $reportDAO->filterReports($reports, $type, $from, $to);
     
     $variables ['type'] = $type;
     $variables ['from'] = $from;
@@ -71,12 +71,11 @@ if((isset($_POST['csv']) || isset($_POST['invoice'])) && $userController->getCur
 renderLayoutWithContentFile ($config["apps"]["guardian"], "reportExport_template.php", $variables );
 
 function reportsToCSV($reports, $head = ""){
-	global $config, $engineDAO, $eventTypeDAO;
+	global $config;
     $delimiter = ";";
     $filestring = $head;
         
     foreach ( $reports as $report ) {
-        $row = get_report_object($report->uuid);
         
         $filestring .= "Datum" . $delimiter .
         "Beginn" . $delimiter .
@@ -87,29 +86,27 @@ function reportsToCSV($reports, $head = ""){
         "Titel" . $delimiter .
         "\n";
 
-        $duration = strtotime($row->end_time) - strtotime($row->start_time);
+        $duration = strtotime($report->getEndTime()) - strtotime($report->getStartTime());
         $personalhours = 0;
-        foreach ( $row->units as $entry ) {
-            $unitDuration = strtotime($entry->end) - strtotime($entry->beginn);
-            foreach ( $entry->staffList as $staff ) {
-                $personalhours += $unitDuration;
-            }
+        foreach ( $report->getUnits() as $unit ) {
+        	$unitDuration = strtotime($unit->getEndTime()) - strtotime($unit->getStartTime());
+       		$personalhours += ($unitDuration * count($unit->getStaff()));
         }
         
-        $filestring .= date($config ["formats"] ["date"], strtotime($row->date)) . $delimiter . 
-            date($config ["formats"] ["time"], strtotime($row->start_time)) . $delimiter . 
-            date($config ["formats"] ["time"], strtotime($row->end_time)) . $delimiter . 
+        $filestring .= date($config ["formats"] ["date"], strtotime($report->getDate())) . $delimiter . 
+        date($config ["formats"] ["time"], strtotime($report->getStartTime())) . $delimiter . 
+            date($config ["formats"] ["time"], strtotime($report->getEndTime())) . $delimiter . 
             gmdate($config ["formats"] ["time"], $duration) . $delimiter . 
             gmdate($config ["formats"] ["time"], $personalhours) . $delimiter . 
-            $eventTypeDAO->getEventType($report->type)->getType() . $delimiter .
-            $row->title . $delimiter . 
+            $report->getType()->getType() . $delimiter .
+            $report->getTitle() . $delimiter . 
             "\n\nPersonal:\n";
-        
-        foreach ( $row->units as $entry ) {
-            $unitDuration = strtotime($entry->end) - strtotime($entry->beginn);
-            foreach ( $entry->staffList as $staff ) {
-                $filestring .=  $staff->name . $delimiter .
-                    $engineDAO->getEngine($staff->engine)->getName() . $delimiter . 
+                    
+		foreach ( $report->getUnits() as $unit ) {
+			$unitDuration = strtotime($unit->getEndTime()) - strtotime($unit->getStartTime());
+			foreach ( $unit->getStaff() as $staff ) {
+                $filestring .=  $staff->getName() . $delimiter .
+                    $staff->getEngine()->getName() . $delimiter . 
                     gmdate($config ["formats"] ["time"], $unitDuration) .
                     "\n";
             }
@@ -135,23 +132,20 @@ function reportsToInvoiceCSV($reports, $head = ""){
 	"\n";
 	
 	foreach ( $reports as $report ) {
-		$row = get_report_object($report->uuid);
 		
-		$duration = strtotime($row->end_time) - strtotime($row->start_time);
+		$duration = strtotime($report->getEndTime()) - strtotime($report->getStartTime());
 		$personalhours = 0;
 		$personalcount = 0;
-		foreach ( $row->units as $entry ) {
-			$unitDuration = strtotime($entry->end) - strtotime($entry->beginn);
-			foreach ( $entry->staffList as $staff ) {
-				$personalhours += $unitDuration;
-				$personalcount += 1;
-			}
+		foreach ( $report->getUnits() as $unit ) {
+			$unitDuration = strtotime($unit->getEndTime()) - strtotime($unit->getStartTime());
+			$personalhours += ($unitDuration * count($unit->getStaff()));
+			$personalcount += count($unit->getStaff());
 		}
 		
-		$filestring .= date($config ["formats"] ["date"], strtotime($row->date)) . $delimiter .
-		date($config ["formats"] ["time"], strtotime($row->start_time)) . $delimiter .
-		date($config ["formats"] ["time"], strtotime($row->end_time)) . $delimiter .
-		$row->title . $delimiter .
+		$filestring .= date($config ["formats"] ["date"], strtotime($report->getDate())) . $delimiter .
+		date($config ["formats"] ["time"], strtotime($report->getStartTime())) . $delimiter .
+		date($config ["formats"] ["time"], strtotime($report->getEndTime())) . $delimiter .
+		$report->getTitle() . $delimiter .
 		$personalcount . $delimiter .
 		gmdate($config ["formats"] ["time"], $duration) . $delimiter .
 		gmdate($config ["formats"] ["time"], $personalhours) . 

@@ -24,7 +24,7 @@ class EventTypeDAO extends BaseDAO{
 		$statement = $this->db->prepare("SELECT * FROM eventtype WHERE uuid = ?");
 		
 		if ($statement->execute(array($uuid))) {
-			return $this->handleResult($statement);
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}

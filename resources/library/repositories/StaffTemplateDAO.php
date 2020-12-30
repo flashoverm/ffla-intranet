@@ -33,7 +33,7 @@ class StaffTemplateDAO extends BaseDAO {
 				ORDER BY staffposition.list_index");
 		
 		if ($statement->execute(array($eventTypeUuid))) {
-			return $this->handleResult($statement);
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}
@@ -56,7 +56,7 @@ class StaffTemplateDAO extends BaseDAO {
 		
 	}
 	
-	protected function handleResult($statement, $returnAlwaysArray = false){
+	protected function handleResult($statement, $returnAlwaysArray = false, $callback = NULL){
 		$object = NULL;
 		
 		while($row = $statement->fetch()) {

@@ -6,15 +6,15 @@ class EventDAO extends BaseDAO{
 	
 	protected $userDAO;
 	protected $engineDAO;
-	protected $staffPositionDAO;
 	protected $eventTypeDAO;
+	protected $staffDAO;
 	
 	function __construct() {
 		parent::__construct();
 		$this->userDAO = new UserDAO();
 		$this->engineDAO = new EngineDAO();
-		$this->staffPositionDAO = new StaffPositionDAO();
 		$this->eventTypeDAO = new EventTypeDAO();
+		$this->staffDAO = new StaffDAO();
 	}
 	
 	function save(Event $event){
@@ -30,25 +30,6 @@ class EventDAO extends BaseDAO{
 		return false;
 	}
 	
-	function updateEventStaffEntry(Staff $staff){
-		$user = $staff->getUser();
-		if($user != NULL){
-			$user = $user->getUuid();
-		}
-		
-		$statement = $this->db->prepare("UPDATE staff
-		SET position = ?, user = ?, unconfirmed = ?
-		WHERE uuid = ?");
-		
-		$result = $statement->execute(array($staff->getPosition()->getUuid(),
-				$user, $staff->getUnconfirmed(), $staff->getUuid()
-		));
-		if($result){
-			return true;
-		}
-		return false;
-	}
-	
 	function getEvent($eventUuid){
 		$statement = $this->db->prepare("SELECT * FROM event WHERE uuid = ?");
 		
@@ -57,29 +38,7 @@ class EventDAO extends BaseDAO{
 		}
 		return false;	
 	}
-	
-	function getEventStaff($eventUuid){
-		$statement = $this->db->prepare("SELECT * FROM staff WHERE event = ?");
-		
-		if ($statement->execute(array($eventUuid))) {
-			$objects = array();
-			while($row = $statement->fetch()) {
-				$objects [] = $this->resultToStaffObject($row);
-			}
-			return $objects;
-		}
-		return false;
-	}
-	
-	function getEventStaffEntry($staffUuid){
-		$statement = $this->db->prepare("SELECT * FROM staff WHERE uuid = ?");
-		
-		if ($statement->execute(array($staffUuid))) {
-			return $this->resultToStaffObject($statement->fetch());
-		}
-		return false;
-	}
-	
+
 	function getPublicEvents(){
 		$statement = $this->db->prepare("SELECT * FROM event WHERE date >= (now() - INTERVAL 1 DAY) AND published = TRUE AND deleted_by IS NULL ORDER BY date DESC");
 		
@@ -133,15 +92,6 @@ class EventDAO extends BaseDAO{
 		}
 		return false;
 	}
-	
-	function isUserAlreadyStaff($eventUuid, $userUuid){
-		$statement = $this->db->prepare("SELECT * FROM staff WHERE event = ? AND user = ?");
-		
-		if ($statement->execute(array($eventUuid, $userUuid))) {
-			return $statement->num_rows;
-		}
-		return false;
-	}
 
 	function deleteEvent($eventUuid){
 		$statement = $this->db->prepare("DELETE FROM staff WHERE event = ?");
@@ -156,20 +106,11 @@ class EventDAO extends BaseDAO{
 		}
 		return false;
 	}
-	
-	function deleteEventStaffEntry($staffEntryUuid){
-		$statement = $this->db->prepare("DELETE FROM staff WHERE uuid= ?");
-		
-		if ($statement->execute(array($staffEntryUuid))) {
-			return true;
-		}
-		return false;
-	}
+
 	
 	/*
 	 * Init and helper methods
 	 */
-	
 	
 	protected function resultToObject($result){
 		$object = new Event();
@@ -189,19 +130,7 @@ class EventDAO extends BaseDAO{
 		if($result['deleted_by']){
 			$object->setDeletedBy($this->userDAO->getUserByUUID($result['deleted_by']));
 		}
-		$object->setStaff($this->getEventStaff($result['uuid']));
-		return $object;
-	}
-	
-	protected function resultToStaffObject($result){
-		$object = new Staff();
-		$object->setUuid($result['uuid']);
-		$object->setPosition($this->staffPositionDAO->getStaffPosition($result['position']));
-		if($result['user']){
-			$object->setUser($this->userDAO->getUserByUUID($result['user']));
-		}
-		$object->setUnconfirmed($result['unconfirmed']);
-		$object->setEventUuid($result['event']);
+		$object->setStaff($this->staffDAO->getEventStaff($result['uuid']));
 		return $object;
 	}
 	
@@ -223,7 +152,10 @@ class EventDAO extends BaseDAO{
 		
 		if ($result) {
 			foreach($event->getStaff() as $staff){
-				$this->insertEventStaffEntry($uuid, $staff);
+				if( $staff->getEventUuid() == NULL ){
+					$staff->setEventUuid($event->getUuid());
+				}
+				$this->staffDAO->save($staff);
 			}
 			return $this->getInspection($uuid);
 		}
@@ -248,43 +180,16 @@ class EventDAO extends BaseDAO{
 		
 		if ($result) {
 			foreach($event->getStaff() as $staff){
-				if($this->eventStaffEntryExists($staff)){
-					$this->updateEventStaffEntry($staff);
-				} else {
-					$this->insertEventStaffEntry($event->getUuid(), $staff);
+				if( $staff->getEventUuid() == NULL ){
+					$staff->setEventUuid($event->getUuid());
 				}
+				$this->staffDAO->save($staff);
 			}
 			return $this->getEvent($event->getUuid());
 		}
 		return false;
 	}
-	
-	protected function insertEventStaffEntry($eventUuid, Staff $staff){
-		$uuid = getUuid ();
-		
-		$statement = $this->db->prepare("INSERT INTO staff (uuid, position, event, user, unconfirmed) VALUES (?, ?, ?, NULL, ?)");
-		
-		$result = $statement->execute(array($uuid, $staff->getPosition()->getUuid(),
-				$eventUuid, $staff->getUnconfirmed()
-		));
-		
-		if($result){
-			return true;
-		}
-		return false;
-	}
 
-	protected function eventStaffEntryExists(Staff $staff){
-		if($staff->getUuid() == NULL){
-			return false;
-		}
-		if( $this->getEventStaffEntry($staff->getUuid()) ){
-			return true;
-		}
-		return false;
-	}
-	
-	
 	protected function createTable(){
 		$statement = $this->db->prepare("CREATE TABLE event (
                           uuid CHARACTER(36) NOT NULL,
@@ -309,22 +214,7 @@ class EventDAO extends BaseDAO{
 		$result = $statement->execute();
 		
 		if ($result) {
-			$statement = $this->db->prepare("CREATE TABLE staff (
-						  uuid CHARACTER(36) NOT NULL,
-                          position CHARACTER(36) NOT NULL,
-                          event CHARACTER(36) NOT NULL,
-						  user CHARACTER(36),
-						  unconfirmed BOOLEAN NOT NULL,
-                          PRIMARY KEY  (uuid),
-						  FOREIGN KEY (user) REFERENCES user(uuid),
-						  FOREIGN KEY (event) REFERENCES event(uuid),
-                          FOREIGN KEY (position) REFERENCES staffposition(uuid)
-                          )");
-			$result = $statement->execute();
-			
-			if($result){
-				return true;
-			}
+			return true;
 		}
 		return false;
 	}

@@ -146,7 +146,6 @@ class LogbookEntry extends BaseModel {
 	public static function fromAction(int $actionId, ?string $objects){
 		$entry = new LogbookEntry();
 		
-		$entry->setUuid(getUuid ());
 		$entry->setTimestamp(date('Y-m-d H:i:s'));
 		$entry->setAction($actionId);
 		$entry->setUser(NULL);
@@ -197,8 +196,8 @@ class LogbookEntry extends BaseModel {
 	}
 	
 	protected static function eventStaffEntry($action, $staff_uuid){
-		global $config, $userDAO, $eventDAO;
-		$staff = $eventDAO->getEventStaffEntry($staff_uuid);
+		global $config, $staffDAO, $eventDAO;
+		$staff = $staffDAO->getEventStaffEntry($staff_uuid);
 		if( ! $staff ){
 			return null;
 		}
@@ -217,14 +216,14 @@ class LogbookEntry extends BaseModel {
 	}
 	
 	protected static function eventReportEntry($action, $report_uuid){
-		global $config, $eventTypeDAO;
-		$report = get_report($report_uuid);
+		global $config, $reportDAO;
+		$report = $reportDAO->getReport($report_uuid);
 		if( ! $report ){
 			return null;
 		}
 		return LogbookActions::getActionText($action) . ":<br>"
-				. "Bericht für: " . $eventTypeDAO->getEventType($report->type)->getType() . " (" . date($config ["formats"] ["date"], strtotime($report->date)) . " " . date($config ["formats"] ["time"], strtotime($report->start_time)) . " Uhr)<br>"
-						. "Titel: " . $report->title ;
+				. "Bericht für: " . $report->getType()->getType() . " (" . date($config ["formats"] ["date"], strtotime($report->getDate())) . " " . date($config ["formats"] ["time"], strtotime($report->getStartTime())) . " Uhr)<br>"
+						. "Titel: " . $report->getTitle() ;
 	}
 	
 	protected static function eventReportExport($action){

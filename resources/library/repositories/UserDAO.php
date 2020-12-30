@@ -116,7 +116,7 @@ class UserDAO extends BaseDAO {
 		$statement = $this->db->prepare("SELECT * FROM user WHERE uuid = ?");
 		
 		if ($statement->execute(array($uuid))) {
-			return $this->handleResult($statement);
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}
@@ -127,7 +127,7 @@ class UserDAO extends BaseDAO {
 		$statement = $this->db->prepare("SELECT * FROM user WHERE email = ?");
 		
 		if ($statement->execute(array($emailLower))) {
-			return $this->handleResult($statement);
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}
@@ -136,7 +136,7 @@ class UserDAO extends BaseDAO {
 		$statement = $this->db->prepare("SELECT * FROM user WHERE firstname = ? AND lastname = ? AND email = ? AND engine = ? ");
 		
 		if ($statement->execute(array($firstname, $lastname, $email, $engineUUID))) {
-			return $this->handleResult($statement);
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}

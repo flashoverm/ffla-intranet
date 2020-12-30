@@ -9,15 +9,13 @@ class LogbookDAO extends BaseDAO{
 	}
 	
 	function save(LogbookEntry $entry){
-		$objects = $entry->getObject();
-		if(is_array($objects)){
-			$objects = implode(",", $objects);
-		}
+		$uuid = $this->getUuid();
+		$entry->setUuid($uuid);
 		
 		$statement = $this->db->prepare("INSERT INTO logbook (uuid, timestamp, action, object, user, message)
 			VALUES(?, ?, ?, ?, ?, ?)");
 		
-		$result = $statement->execute(array($entry->getUuid(), $entry->getTimestamp(), $entry->getAction(), $objects, $entry->getUser(), $entry->getMessage()));
+		$result = $statement->execute(array($uuid, $entry->getTimestamp(), $entry->getAction(), $entry->getObject(), $entry->getUser(), $entry->getMessage()));
 
 		if ($result) {
 

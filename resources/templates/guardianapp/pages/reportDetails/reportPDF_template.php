@@ -1,5 +1,5 @@
 <?php 
 
-if(isset($report)){
+if($report){
 	require_once 'reportTable.php';
 }?>

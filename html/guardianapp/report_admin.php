@@ -13,7 +13,7 @@ $variables = array (
 if (isset ( $_POST ['delete'] )) {
 	$delete_report_uuid = trim ( $_POST ['delete'] );
 	$log = LogbookEntry::fromAction(LogbookActions::ReportDeleted, $delete_report_uuid);
-	if(delete_report ( $delete_report_uuid )){
+	if($reportDAO->deleteReport( $delete_report_uuid )){
 		$variables ['successMessage'] = "Bericht gelöscht";
 		$logbookDAO->save($log);
 	} else {
@@ -21,7 +21,7 @@ if (isset ( $_POST ['delete'] )) {
 	}
 }
 
-$variables ['reports'] = get_reports();
+$variables ['reports'] = $reportDAO->getReports();
 
 renderLayoutWithContentFile ($config["apps"]["guardian"], "reportOverview_template.php", $variables );
 

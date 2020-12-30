@@ -57,7 +57,7 @@ class InspectionDAO extends BaseDAO{
 		$statement = $this->db->prepare("SELECT * FROM hydrant_inspection WHERE inspection = ? AND hydrant = ?");
 		
 		if ($statement->execute(array($inspectionUuid, $hydrantUuid))) {
-			return $this->resultToInspectedHydrantObject($statement->fetch());
+			return $this->handleResult($statement, false, "resultToInspectedHydrantObject");
 		}
 		return false;
 	}
@@ -78,11 +78,7 @@ class InspectionDAO extends BaseDAO{
 		$statement = $this->db->prepare("SELECT * FROM hydrant_inspection WHERE inspection = ? ORDER BY idx");
 		
 		if ($statement->execute(array($inspectionUuid))) {
-			$objects = array();
-			while($row = $statement->fetch()) {
-				$objects [] = $this->resultToInspectedHydrantObject($row);
-			}
-			return $objects;
+			return $this->handleResult($statement, true, "resultToInspectedHydrantObject");
 		}
 		return false;
 	}
@@ -100,7 +96,7 @@ class InspectionDAO extends BaseDAO{
 		$object->setName($result['name']);
 		$object->setNotes($result['notes']);
 		$object->setEngine($this->engineDAO->getEngine($result['engine']));
-		$object->setInspectedHydrant($this->getInspectedHydrants($result['uuid']));
+		$object->setInspectedHydrants($this->getInspectedHydrants($result['uuid']));
 		return $object;
 	}
 	

@@ -27,7 +27,7 @@
 				placeholder="--:--" title="--:--" class="form-control" 
 				<?php
 				if(isset($event) ){
-					echo "value='" . substr($event->getStartTime(), 0, strlen($event->getStartTime())-3) . "'";
+					echo "value='" . timeToHm ($event->getStartTime()) . "'";
 				}?>
 				name="start" id="start" required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
 			</div>
@@ -38,7 +38,7 @@
 				placeholder="--:--" title="--:--" class="form-control" 
 				<?php
 				if(isset($event) && $event->getEndTime() != null){
-					echo "value='" . substr($event->getEndTime(), 0, strlen($event->getEndTime())-3) . "'";
+					echo "value='" . timeToHm ($event->getEndTime()) . "'";
 				}?>
 				name="end" id="end" pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
 			</div>

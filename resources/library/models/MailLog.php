@@ -178,7 +178,6 @@ class MailLog extends BaseModel {
 	
 	public static function fromMail(?string $recipient, ?string $subject, int $state, ?string $body, ?string $error = NULL){
 		$entry = new MailLog();
-		$entry->setUuid(getUuid ());
 		$entry->setTimestamp(date('Y-m-d H:i:s'));
 		$entry->setRecipient($recipient);
 		$entry->setSubject($subject);

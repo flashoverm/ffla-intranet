@@ -1,6 +1,6 @@
 <?php include 'reportEditUnit_template.php'; ?>
 <?php include 'reportCard_template.php'; ?>
-	
+
 <form id="reportForm" onsubmit="showLoader()" method="post" >
 	<div class="row">
 		<div class="col">
@@ -9,8 +9,8 @@
 				placeholder="TT.MM.JJJJ" title="TT.MM.JJJJ"	class="form-control" 
 				name="date" id="date" 
 				<?php
-				if(isset($object) ){
-					echo "value='" . $object->date . "'";
+				if(isset($report) ){
+					echo "value='" . $report->getDate() . "'";
 				}?>
 				required pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4}">
 			</div>
@@ -21,8 +21,8 @@
 				placeholder="--:--" title="--:--" class="form-control" 
 				name="start" id="start" 
 				<?php
-				if(isset($object) ){
-				    echo "value='" . timeToHm ($object->start_time) . "'";
+				if(isset($report) ){
+					echo "value='" . timeToHm ($report->getStartTime()) . "'";
 				}?>
 				required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
 			</div>
@@ -32,8 +32,8 @@
 				<label>Wachende:</label> <input type="time" required
 				placeholder="--:--" title="--:--" class="form-control" 
 				<?php
-				if(isset($object) && $object->end_time != null ){
-				    echo "value='" . timeToHm ($object->end_time) . "'";
+				if(isset($report) && $report->getEndTime() != null ){
+					echo "value='" . timeToHm ($report->getEndTime()) . "'";
 				}?>
 				name="end" id="end" required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
 			</div>
@@ -43,7 +43,7 @@
 	<div class="form-group">
 		<label>Typ:</label> <select class="form-control" name="type" id="type" onchange="showHideTypeOther()">
 			<?php foreach ( $eventtypes as $type ) : 	
-			if(isset($object) && $type->getUuid() == $object->type) {
+			if(isset($report) && $type->getUuid() == $report->getType()->getUuid()) {
 			    ?>
 				<option value="<?= $type->getUuid(); ?>" selected><?= $type->getType(); ?></option>
 			<?php } else {?>
@@ -54,12 +54,12 @@
 	</div>
 	
 	<div class="form-group" id="groupTypeOther" 
-	<?php if(isset($object) && $object->type_other == null){ echo 'style="display:none;"'; }?>>
+	<?php if(isset($report) && $report->getTypeOther() == null){ echo 'style="display:none;"'; }?>>
 		<label>Sonstiger Wachtyp:</label> <input type="text" required="required"
 			class="form-control" name="typeOther" id="typeOther"
 			<?php
-			if(isset($object) && $object->type_other != null){
-				echo "value='" . $object->type_other . "'";
+			if(isset($report) && $report->getTypeOther() != null){
+				echo "value='" . $report->getTypeOther() . "'";
 			}?>
 			placeholder="Wachtyp eingeben">
 	</div>
@@ -68,8 +68,8 @@
 		<label>Titel (optional):</label> <input type="text"
 			class="form-control" name="title" id="title"
 		    <?php
-		    if(isset($object) && $object->title != null){
-		    	echo "value='" . $object->title . "'";
+		    if(isset($report) && $report->getTitle() != null){
+		    	echo "value='" . $report->getTitle() . "'";
 			}?>
 			placeholder="Titel eingeben">
 	</div>
@@ -78,7 +78,7 @@
 			class="form-control" name="engine" id="engine" required="required">
 			<option value="" disabled selected>Bitte auswählen</option>
 			<?php foreach ( $engines as $option ) :
-			if(isset($object) && $option->getUuid() == $object->engine){
+			if(isset($report) && $option->getUuid() == $report->getEngine()->getUuid()){
 			?>
 			<option value="<?=  $option->getUuid(); ?> " selected><?= $option->getName(); ?></option>
 			<?php 
@@ -95,28 +95,28 @@
 		
 	<div class="custom-control custom-checkbox custom-checkbox-big">
 		<input type="checkbox" class="custom-control-input" name="ilsEntry" id="ilsEntry" 
-		<?php if(isset($object) && $object->ilsEntry) { echo "checked"; } ?>
+		<?php if(isset($report) && $report->getIlsEntry()) { echo "checked"; } ?>
 		> <label class="custom-control-label custom-control-label-big" for="ilsEntry">Wache durch ILS angelegt</label>
 	</div>
 	
 	<div class="custom-control custom-checkbox custom-checkbox-big">
 		<input type="checkbox" class="custom-control-input" name="noIncidents" id="noIncidents"
-		<?php if(isset($object) && $object->noIncidents) { echo "checked"; } ?>
+		<?php if(isset($report) && $report->getNoIncidents()) { echo "checked"; } ?>
 		> <label class="custom-control-label custom-control-label-big" for="noIncidents">Keine Vorkomnisse</label>
 	</div>
 	
 	<div class="form-group">
 		<label>Bericht:</label>
 		<textarea class="form-control" name="report" id="report" placeholder="Bericht"
-		><?php if(isset($object)) { echo $object->report; } ?></textarea>
+		><?php if(isset($report)) { echo $report->getReportText(); } ?></textarea>
 	</div>
 	
 	<div class="form-group">
 		<label>Ersteller:</label> <input type="text" required="required"
 			class="form-control" name="creator" id="creator"
 			<?php
-			if(isset($object)){
-				echo "value='" . $object->creator . "'";
+			if(isset($report)){
+				echo "value='" . $report->getCreator() . "'";
 			}?>
 			placeholder="Namen eintragen">
 	</div>
@@ -129,8 +129,8 @@
 		<?php 
 		createUnitCard(0);
 		$i = 0;
-		if(isset ($object)){
-		    foreach($object->units as $unit){
+		if(isset ($report)){
+			foreach($report->getUnits() as $unit){
 		        $i++;
 		        createUnitCard($i, $unit);
 		    }
@@ -140,11 +140,11 @@
 	
 	<p>
 	<div>
-	    <?php if(isset($object) && $object->uuid != null){
-    	    echo '<a class="btn btn-outline-primary" href=' . $config["urls"]["guardianapp_home"] . '/reports/' . $object->uuid . ">Zurück</a>";
+	    <?php if(isset($report) && $report->getUuid() != null){
+	    	echo '<a class="btn btn-outline-primary" href=' . $config["urls"]["guardianapp_home"] . '/reports/' . $report->getUuid() . ">Zurück</a>";
     	}
     	
-    	if(isset($object) && $object->uuid != null){
+    	if(isset($report) && $report->getUuid() != null){
             ?>
     	    <input type="submit" class="btn btn-primary" id="submitReport" <?php if(!isset($i) || $i == 0){ echo 'style="display:none;"'; } ?> value='Aktualisieren'>
     	    <?php 

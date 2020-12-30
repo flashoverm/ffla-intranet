@@ -61,7 +61,7 @@ class PrivilegeDAO extends BaseDAO{
 		$statement = $this->db->prepare("SELECT * FROM privilege WHERE uuid = ? ");
 		
 		if ($statement->execute(array($uuid))) {
-			return $this->handleResult($statement);
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}
@@ -70,7 +70,7 @@ class PrivilegeDAO extends BaseDAO{
 		$statement = $this->db->prepare("SELECT * FROM privilege WHERE privilege = ? ");
 		
 		if ($statement->execute(array($name))) {
-			return $this->handleResult($statement);
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}

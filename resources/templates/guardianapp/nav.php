@@ -29,7 +29,7 @@ function left_navigation ($currentUser){
 			echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/export'>Berichte exportieren</a>";
 		}
 		echo "				</div>
-				</li>>";
+				</li>";
 	} else {
 		if($config ["settings"] ["publicevents"]){
 			echo "	<li class='nav-item mx-1'>

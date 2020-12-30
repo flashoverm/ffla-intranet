@@ -8,7 +8,7 @@ require_once 'reportTable.php';
 			<tr>
 				<th>Freigabe durch Wachbeauftragten</th>
 				<td>
-					<?php if(!$report->managerApproved){ 
+					<?php if(!$report->getManagerApproved()){ 
 						echo "Bericht wurde nicht vom zuständigen Wachbeauftragten überprüft";
 					} else {
 						echo "Bericht wurde vom Wachbeauftragten überprüft und freigegeben";
@@ -18,17 +18,17 @@ require_once 'reportTable.php';
 			<tr>
 				<th>EMS-Eintrag</th>
 				<td>
-					<?php if(!$report->emsEntry){ 
+					<?php if(!$report->getEmsEntry()){ 
 						echo "Bericht ist nicht in EMS angelegt";
 					} else {
 						echo "Bericht ist in EMS angelegt";
 					} ?>
 				</td>
 			</tr>
-			<?php if(isset($report->event)){ ?>
+			<?php if($report->getEventUuid() != NULL){ ?>
 			<tr>
 				<th>Aus Wache generiert</th>
-				<td><a href="<?= $config["urls"]["guardianapp_home"] . "/events/".$report->event ?>">Zur Wache</a></td>
+				<td><a href="<?= $config["urls"]["guardianapp_home"] . "/events/".$report->getEventUuid() ?>">Zur Wache</a></td>
 			</tr>	
 			<?php } ?>
 		</tbody>
@@ -39,23 +39,23 @@ require_once 'reportTable.php';
 <div class="dropdown float-right">
 	<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Berichts-Optionen</button>
 	<div class="dropdown-menu">
-		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/". $report->uuid . "/file"; ?>">PDF anzeigen</a>
-		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/". $report->uuid . "/file&force=true"; ?>">PDF neu erzeugen</a>
+		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/". $report->getUuid() . "/file"; ?>">PDF anzeigen</a>
+		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/". $report->getUuid() . "/file&force=true"; ?>">PDF neu erzeugen</a>
 		<div class="dropdown-divider"></div>
 	
-	<?php if(!$report->emsEntry){ ?>
+	<?php if(!$report->getEmsEntry()){ ?>
 		<a href="#" class="dropdown-item" data-toggle='modal' data-target='#confirmEms'>Bericht in EMS angelegt</a>
 	<?php } else { ?>
 		<a href="#" class="dropdown-item" data-toggle='modal' data-target='#removeEms'>Bericht in EMS entfernt</a>
 	<?php } ?>
 		<div class="dropdown-divider"></div>
-	<?php if(!$report->managerApproved){ ?>
+	<?php if(!$report->getManagerApproved()){ ?>
 		<a href="#" class="dropdown-item" data-toggle='modal' data-target='#managerApprove'>Bericht freigeben</a>
 	<?php } else { ?>
 		<a href="#" class="dropdown-item" data-toggle='modal' data-target='#managerApproveRemove'>Freigabe entfernen</a>
 	<?php } ?>
 		<div class="dropdown-divider"></div>
-		<a class="dropdown-item" href="<?= $config["urls"]["guardianapp_home"] . "/reports/". $report->uuid . "/edit"; ?>">Bearbeiten</a>
+		<a class="dropdown-item" href="<?= $config["urls"]["guardianapp_home"] . "/reports/". $report->getUuid() . "/edit"; ?>">Bearbeiten</a>
 		<a href="#" class="dropdown-item" data-toggle='modal' data-target='#confirmDelete'>Löschen</a>
 	</div>
 </div>

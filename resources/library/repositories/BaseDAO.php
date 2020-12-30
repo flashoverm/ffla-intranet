@@ -16,14 +16,18 @@ abstract class BaseDAO {
 		$this->db = new PDO('mysql:host=' . $config ['db'] ['host'] . ';dbname=' . $config ['db'] ['dbname'] . ";charset=utf8", $config ['db'] ['username'], $config ['db'] ['password']);
 	}
 	
-	protected function handleResult($statement, $returnAlwaysArray = false){
+	protected function handleResult($statement, $returnAlwaysArray, $callback = NULL){
+		if($callback == NULL){
+			$callback = "resultToObject";
+		}
+		
 		$count = $statement->rowCount();
 		
 		if($returnAlwaysArray || $count > 1){
 			
 			$objects = array();
 			while($row = $statement->fetch()) {
-				$objects [] = $this->resultToObject($row);
+				$objects [] = call_user_func_array(array($this, $callback), array($row));
 			}
 			return $objects;
 			
@@ -33,7 +37,7 @@ abstract class BaseDAO {
 			
 		} else {
 			
-			return $this->resultToObject($statement->fetch());
+			return call_user_func_array(array($this, $callback), array($statement->fetch()));
 		}
 	}
 	
@@ -47,7 +51,7 @@ abstract class BaseDAO {
 		$statement->execute(array($uuid));   
 		
 		if ($statement->execute()) {
-			return $this->handleResult($statement);
+			return $this->handleResult($statement, false);
 		}
 		return false;
 	}

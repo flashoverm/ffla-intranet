@@ -1,5 +1,5 @@
 <?php 
-function createUnitCard($number, $unit = null) {
+function createUnitCard($number, ReportUnit $unit = null) {
 ?>
 
 <div id="unit<?= $number ?>" class="card" <?php if(!isset($unit)) { echo 'style="display:none;"'; } ?>>
@@ -8,7 +8,7 @@ function createUnitCard($number, $unit = null) {
 			<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse<?= $number ?>">
 			<?php if(isset($unit)){ 
 			    
-			    echo  $unit->unit; 
+			    echo  $unit->getUnitName(); 
 			} ?>
 			</button>
 		</h5>
@@ -20,38 +20,38 @@ function createUnitCard($number, $unit = null) {
     				<label>Datum:</label>
         			<input class="form-control bg-white" id="unit<?= $number ?>date" name="unit<?= $number ?>date" 
         				disabled type="date" required pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4}"
-        				<?php if(isset($unit)){ echo "value='" . $unit->date . "'"; } ?>
+        				<?php if(isset($unit)){ echo "value='" . $unit->getDate() . "'"; } ?>
         				>
         		</div>
         		<div class="col-sm">
         			<label>Wachbeginn:</label>
         			<input class="form-control  bg-white" id="unit<?= $number ?>start" name="unit<?= $number ?>start" 
         				disabled type="time" required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])"
-        				<?php if(isset($unit)){ echo "value='" . timeToHm ($unit->beginn) . "'"; } ?>
+        				<?php if(isset($unit)){ echo "value='" . timeToHm ($unit->getStartTime()) . "'"; } ?>
         				>
         		</div>
         		<div class="col-sm">
         			<label>Ende:</label>
         			<input class="form-control bg-white" id="unit<?= $number ?>end" name="unit<?= $number ?>end" 
         				disabled type="time" required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])"
-        				<?php if(isset($unit)){ echo "value='" . timeToHm ($unit->end) . "'"; } ?>
+        				<?php if(isset($unit)){ echo "value='" . timeToHm ($unit->getEndTime()) . "'"; } ?>
         				>
         		</div>
         	</div>
         	<input id="unit<?= $number ?>unit" name="unit<?= $number ?>unit" type="hidden" 
-        	<?php if(isset($unit)){ echo "value='" . $unit->unit . "'"; } ?>
+        	<?php if(isset($unit)){ echo "value='" . $unit->getUnitName() . "'"; } ?>
         		>
         	<input id="unit<?= $number ?>km" name="unit<?= $number ?>km" type="hidden"
-        	<?php if(isset($unit)){ echo "value='" . $unit->km . "'"; } ?>
+        	<?php if(isset($unit)){ echo "value='" . $unit->getKm() . "'"; } ?>
         		>
         	<input id="unit<?= $number ?>datefield" name="unit<?= $number ?>datefield" type="hidden" 
-        	<?php if(isset($unit)){ echo "value='" . $unit->date . "'"; } ?>
+        	<?php if(isset($unit)){ echo "value='" . $unit->getDate() . "'"; } ?>
         		>
         	<input id="unit<?= $number ?>startfield" name="unit<?= $number ?>startfield" type="hidden" 
-        	<?php if(isset($unit)){ echo "value='" . timeToHm ($unit->beginn) . "'"; } ?>
+        	<?php if(isset($unit)){ echo "value='" . timeToHm ($unit->getStartTime()) . "'"; } ?>
         		>
         	<input id="unit<?= $number ?>endfield" name="unit<?= $number ?>endfield" type="hidden" 
-        	<?php if(isset($unit)){ echo "value='" . timeToHm ($unit->end) . "'"; } ?>
+        	<?php if(isset($unit)){ echo "value='" . timeToHm ($unit->getEndTime()) . "'"; } ?>
         		>
         		
         	<label>Personal:</label>
@@ -60,7 +60,7 @@ function createUnitCard($number, $unit = null) {
         		createUnitStaff($number,0);
         		if(isset ($unit)){
         		    $j = 0;
-            		foreach($unit->staffList as $staff){
+            		foreach($unit->getStaff() as $staff){
             		    $j++;
             		    createUnitStaff($number, $j, $staff);
             		}
@@ -77,7 +77,7 @@ function createUnitCard($number, $unit = null) {
 <?php 
 }
 
-function createUnitStaff($unitNumber, $staffNumber, $staff = null) {
+function createUnitStaff($unitNumber, $staffNumber, ReportStaff $staff = null) {
     global $staffpositions, $engines;
 ?>
 <div class="row form-group unitpersonaltemplate" <?php if(!isset($staff)) { echo 'style="display:none;"'; } ?>>
@@ -87,7 +87,7 @@ function createUnitStaff($unitNumber, $staffNumber, $staff = null) {
 			<option value="" selected>Funktion auswählen</option>
 			<?php foreach ( $staffpositions as $option ) : ?>
 			<option value="<?=  $option->getUuid(); ?>"
-				<?php if(isset($staff) && $staff->position == $option->getUuid()){ echo "selected"; } ?>>
+				<?php if(isset($staff) && $staff->getPosition()->getUuid() == $option->getUuid()){ echo "selected"; } ?>>
 				<?= $option->getPosition(); ?>
 			</option>
 			<?php endforeach; ?>
@@ -96,7 +96,7 @@ function createUnitStaff($unitNumber, $staffNumber, $staff = null) {
 	<div class="col-sm">
 		<input class="form-control bg-white" id="unit<?= $unitNumber ?>name<?= $staffNumber ?>" 
 			disabled name="unit<?= $unitNumber ?>name<?= $staffNumber ?>" type="text"" 
-			<?php if(isset($staff)){ echo "value='" . $staff->name . "'"; } ?>
+			<?php if(isset($staff)){ echo "value='" . $staff->getName() . "'"; } ?>
         	>
 	</div>
 	<div class="col-sm">
@@ -105,7 +105,7 @@ function createUnitStaff($unitNumber, $staffNumber, $staff = null) {
 			<option value="" selected>Löschzug auswählen</option>
 			<?php foreach ( $engines as $option ) : ?>
 			<option value="<?=  $option->getUuid(); ?>"
-				<?php if(isset($staff) && $staff->engine == $option->getUuid()){ echo "selected"; } ?>>
+				<?php if(isset($staff) && $staff->getEngine()->getUuid() == $option->getUuid()){ echo "selected"; } ?>>
 				<?= $option->getName(); ?>
 			</option>
 			<?php endforeach; ?>
@@ -113,13 +113,13 @@ function createUnitStaff($unitNumber, $staffNumber, $staff = null) {
 	</div>
 	
 	<input id="unit<?= $unitNumber ?>function<?= $staffNumber ?>field" name="unit<?= $unitNumber ?>function<?= $staffNumber ?>field" type="hidden" 
-	<?php if(isset($staff)){ echo "value='" . $staff->position . "'"; } ?>
+	<?php if(isset($staff)){ echo "value='" . $staff->getPosition()->getUuid() . "'"; } ?>
         >
     <input id="unit<?= $unitNumber ?>name<?= $staffNumber ?>field" name="unit<?= $unitNumber ?>name<?= $staffNumber ?>field" type="hidden" 
-    <?php if(isset($staff)){ echo "value='" . $staff->name . "'"; } ?>
+    <?php if(isset($staff)){ echo "value='" . $staff->getName() . "'"; } ?>
         >
     <input id="unit<?= $unitNumber ?>engine<?= $staffNumber ?>field" name="unit<?= $unitNumber ?>engine<?= $staffNumber ?>field" type="hidden" 
-    <?php if(isset($staff)){ echo "value='" . $staff->engine . "'"; } ?>
+    <?php if(isset($staff)){ echo "value='" . $staff->getEngine()->getUuid() . "'"; } ?>
         >
 </div>
 <?php

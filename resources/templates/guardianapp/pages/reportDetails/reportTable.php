@@ -3,17 +3,17 @@
 		<tbody>
 			<tr>
 				<th colspan="3">
-					<?= $eventTypeDAO->getEventType($report->type)->getType() ?>
+					<?= $report->getType()->getType() ?>
 					<?php
-					if($eventTypeDAO->getEventType($report->type)->getType() == "Sonstige Wache"){
-						echo ": " . $report->type_other;
+					if($report->getType()->getType() == "Sonstige Wache"){
+						echo ": " . $report->getTypeOther();
 					}
 					?>
 				</th>
 			</tr>
 			<tr>
 				<th colspan="1">Titel</th>
-				<td colspan="2"><?= $report->title ?></td>
+				<td colspan="2"><?= $report->getTitle() ?></td>
 			</tr>
 			<tr>
 				<th colspan="1">Datum</td>
@@ -21,17 +21,17 @@
 				<th colspan="1">Ende</td>
 			</tr>
 			<tr>
-				<td colspan="1"><?= date($config ["formats"] ["date"], strtotime($report->date)); ?></td>
-				<td colspan="1"><?= date($config ["formats"] ["time"], strtotime($report->start_time)); ?></td>
-				<td colspan="1"><?= date($config ["formats"] ["time"], strtotime($report->end_time)); ?></td>
+				<td colspan="1"><?= date($config ["formats"] ["date"], strtotime($report->getDate())); ?></td>
+				<td colspan="1"><?= date($config ["formats"] ["time"], strtotime($report->getStartTime())); ?></td>
+				<td colspan="1"><?= date($config ["formats"] ["time"], strtotime($report->getEndTime())); ?></td>
 			</tr>
-			<?php if($report->ilsEntry){
+			<?php if($report->getIlsEntry()){
 				echo '<tr><td colspan="3">Wache durch ILS angelegt</td></tr>';
 			}
 			?>
 			<tr>
 				<th colspan="1">Vorkommnisse</td>
-				<?php if($report->noIncidents){
+				<?php if($report->getNoIncidents()){
 					echo '<td colspan="2">Keine</td>';
 				} else {
 					echo '<td colspan="2">Siehe Bericht</td>';
@@ -42,27 +42,27 @@
 				<th colspan="3">Bericht</td>
 			</tr>
 			<tr>
-				<td colspan="3"><?= $report->report; ?></td>
+				<td colspan="3"><?= $report->getReportText() ?></td>
 			</tr>
 		</tbody>
 	</table>
 </div>
 	<?php 
-	foreach ( $units as $entry ) {
+	foreach ( $report->getUnits() as $unit ) {
 	?>
 	<div class="table-responsive">
 		<table class="table table-bordered">
 			<tr>
 			<?php 
-			if($entry->unit != null && ! $entry->unit == "Stationäre Wache"){
+			if($unit->getUnitName() != null && ! $unit->getUnitName() == "Stationäre Wache"){
 			?>	
-				<th colspan="2"><?= $entry->unit ?></th>
-				<td><?= $entry->km ?> km</th>
+				<th colspan="2"><?= $unit->getUnitName() ?></th>
+				<td><?= $unit->getKm() ?> km</th>
 			</tr>
 			<?php 
 			} else {
 			?>
-				<th colspan="3"><?= $entry->unit ?></th>
+				<th colspan="3"><?= $unit->getUnitName() ?></th>
 			<?php 
 			}?>
 			<tr>
@@ -71,9 +71,9 @@
 				<th>Ende (Einheit)</td>
 			</tr>
 			<tr>
-				<td><?= date($config ["formats"] ["date"], strtotime($entry->date)); ?></td>
-				<td><?= date($config ["formats"] ["time"], strtotime($entry->beginn)); ?></td>
-				<td><?= date($config ["formats"] ["time"], strtotime($entry->end)); ?></td>
+				<td><?= date($config ["formats"] ["date"], strtotime($unit->getDate())); ?></td>
+				<td><?= date($config ["formats"] ["time"], strtotime($unit->getStartTime())); ?></td>
+				<td><?= date($config ["formats"] ["time"], strtotime($unit->getEndTime())); ?></td>
 			</tr>
 			<tr>
 				<th>Funktion</th>
@@ -81,12 +81,12 @@
 				<th>Löschzug</th>
 			</tr>
 			<?php 
-			foreach ( $entry->staffList as $staff ) {
+			foreach ( $unit->getStaff() as $staff ) {
 			?>
 			<tr>
-				<td><?= $staffPositionDAO->getStaffPosition($staff->position)->getPosition() ?></td>
-				<td><?= $staff->name ?></td>
-				<td><?= $engineDAO->getEngine($staff->engine)->getName() ?></td>
+				<td><?= $staff->getPosition()->getPosition() ?></td>
+				<td><?= $staff->getName() ?></td>
+				<td><?= $staff->getEngine()->getName() ?></td>
 			</tr>
 			<?php } ?>
 			</tbody>
@@ -98,11 +98,11 @@
 		<tbody>
 			<tr>
 				<th>Zuständiger Löschzug</th>
-				<td><?= $engineDAO->getEngine($report->engine)->getName(); ?></td>
+				<td><?= $report->getEngine()->getName() ?></td>
 			</tr>
 			<tr>
 				<th>Ersteller</th>
-				<td><?= $report->creator ?></td>
+				<td><?= $report->getCreator() ?></td>
 			</tr>
 		</tbody>
 	</table>

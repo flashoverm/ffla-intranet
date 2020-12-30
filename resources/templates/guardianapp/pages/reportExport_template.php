@@ -4,11 +4,11 @@
         	<div class="form-group">
         		<label>Typ:</label> <select class="form-control" name="type" id="type">
         		    	<option value="-1" selected>Alle Wachen</option>
-        		    <?php foreach ( $eventtypes as $type ) :
-        				if(isset($type) && $type->uuid == $type) {?>
-        					<option value="<?= $type->uuid; ?>" selected><?= $type->type; ?></option>
+        		    <?php foreach ( $eventtypes as $eventtype ) :
+        		    if(isset($type) && $eventtype->getUuid() == $type) {?>
+        					<option value="<?= $eventtype->getUuid(); ?>" selected><?= $eventtype->getType(); ?></option>
         				<?php } else {?>
-        					<option value="<?= $type->uuid; ?>"><?= $type->type; ?></option>
+        					<option value="<?= $eventtype->getUuid(); ?>"><?= $eventtype->getType(); ?></option>
         				<?php }
 				    endforeach; ?>
         			</select>
@@ -67,22 +67,22 @@
     		foreach ( $reports as $row ) {
     		    ?>
     				<tr>
-    				<td class="text-center"><?= date($config ["formats"] ["date"], strtotime($row->date)); ?></td>
-    				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->start_time)); ?></td>
+    				<td class="text-center"><?= date($config ["formats"] ["date"], strtotime($row->getDate())) ?></td>
+    				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getStartTime())) ?></td>
     				<td class="text-center">
     	<?php
-    		if ($row->end_time != 0) {
-    		    echo date($config ["formats"] ["time"], strtotime($row->end_time));
+    		if ($row->getEndTime() != 0) {
+    		    echo date($config ["formats"] ["time"], strtotime($row->getEndTime()));
     		} else {
     			echo " - ";
     		}
     		?></td>
-    				<td class="text-center"><?= $eventTypeDAO->getEventType($row->type)->getType() ?></td>
-    				<td class="text-center"><?= $row->title; ?></td>
-    				<td class="text-center"><?= $engineDAO->getEngine($row->engine)->getName(); ?></td>
+    				<td class="text-center"><?= $row->getType()->getType() ?></td>
+    				<td class="text-center"><?= $row->getTitle() ?></td>
+    				<td class="text-center"><?= $row->getEngine()->getName() ?></td>
     				<td class="text-center">
     					<?php
-    					if($row->managerApproved){
+    					if($row->getManagerApproved()){
     					    echo " &#10003; ";
     					} else {
     						echo " &ndash; ";
@@ -90,13 +90,13 @@
     					?>
     				</td>
     				<td class="text-center">
-    					<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/".$row->uuid ?>">Bericht</a>
+    					<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/" . $row->getUuid() ?>">Bericht</a>
     				</td>
     			</tr>
-    	<?php
+    		<?php
     		}
     		?>
-    			</tbody>
+    		</tbody>
     	</table>
     </div>
     <p>

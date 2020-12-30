@@ -5,10 +5,6 @@ foreach (glob( MODELS_PATH . "/*.php") as $filename) {
 	include_once $filename;
 }
 
-foreach (glob( REPOSITORIES_PATH . "/static/*.php") as $filename) {
-	include_once $filename;
-}
-
 foreach (glob( LIBRARY_PATH . "/*.php") as $filename) {
 	include_once $filename;
 }
@@ -41,6 +37,8 @@ $hydrantDAO = new HydrantDAO();
 $inspectionDAO = new InspectionDAO();
 
 $eventDAO = new EventDAO();
+$staffDAO = new StaffDAO();
+$reportDAO = new ReportDAO();
 
 //Controller
 
@@ -49,3 +47,4 @@ $guardianUserController = new GuardianUserController();
 $confirmationController = new ConfirmationController();
 $hydrantController = new HydrantController();
 $eventController = new EventController();
+$reportController = new ReportController();
