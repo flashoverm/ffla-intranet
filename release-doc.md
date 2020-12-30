@@ -13,6 +13,10 @@ PHP Update to 7.4
 	wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 	echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list
 	apt update && apt upgrade
+	
+	a2dismod php7.0
+	a2enmod php7.4
+	systemctl restart apache2
 
 #### V2.2.2
 
