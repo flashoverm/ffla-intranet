@@ -4,6 +4,9 @@ Release Documentation
 
 #### V2.3.0
 
+Changes: 
+	Applied MVC pattern to business objects
+
 PHP Update to 7.4
 	apt update && apt upgrade
 	apt -y install lsb-release apt-transport-https ca-certificates 

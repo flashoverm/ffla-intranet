@@ -168,7 +168,7 @@ if (isset($_POST) && isset($_POST ['start'])) {
     }
     
     if($ok){
-    	//header ( "Location: " . $config["urls"]["guardianapp_home"] . "/reports/" . $eventReport->getUuid() ); // redirects
+    	header ( "Location: " . $config["urls"]["guardianapp_home"] . "/reports/" . $eventReport->getUuid() ); // redirects
     }
 }
 

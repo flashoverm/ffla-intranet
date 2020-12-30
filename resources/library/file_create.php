@@ -34,6 +34,10 @@ function createFile($portrait, $urlpath, $outputfile){
 	global $config;
 		
 	$nodePath = $config["paths"]["nodejs"];
+		
+	if( ! file_exists ($nodePath) ){
+		return "Error: Node installation not found";
+	}
 	
 	if ( ! file_exists( dirname ($outputfile) ) ) {
 		mkdir(dirname ($outputfile), 0755, true);
@@ -47,7 +51,7 @@ function createFile($portrait, $urlpath, $outputfile){
 	$jsPath = LIBRARY_PATH . "/puppeteer/" . $jsfile;
 	
 	$url = $config["urls"]["base_url"] . $urlpath;
-
+	
 	//echo $nodePath . " " . $jsPath . " " . $url . " " . $outputfile;
 	$error = exec($nodePath . " " . $jsPath . " " . $url . " " . $outputfile);
 	

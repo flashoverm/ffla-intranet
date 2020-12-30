@@ -10,10 +10,12 @@ abstract class BaseDAO {
 	
 	function __construct() {
 		global $config;
-		$this->db = new mysqli ( $config ['db'] ['host'], $config ['db'] ['username'], $config ['db'] ['password'], $config ['db'] ['dbname'] );
-		$this->db->set_charset('utf8');
-		
-		$this->db = new PDO('mysql:host=' . $config ['db'] ['host'] . ';dbname=' . $config ['db'] ['dbname'] . ";charset=utf8", $config ['db'] ['username'], $config ['db'] ['password']);
+
+		$this->db = new PDO(
+				'mysql:host=' . $config ['db'] ['host'] . ';dbname=' . $config ['db'] ['dbname'] . ";charset=utf8", 
+				$config ['db'] ['username'], 
+				$config ['db'] ['password']);
+		$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 	}
 	
 	protected function handleResult($statement, $returnAlwaysArray, $callback = NULL){

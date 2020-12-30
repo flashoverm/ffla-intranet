@@ -160,13 +160,20 @@ class UserController extends BaseController{
 	}
 	
 	protected function createPassword(){
-		$password = random_password ();
+		$password = randomPassword ();
 		return hashPassword($password);
 	}
 	
 	protected function hashPassword($password){
 		$pwhash = password_hash ( $password, PASSWORD_DEFAULT );
 		return $pwhash;
+	}
+	
+	protected function randomPassword($length = 8) {
+		// $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		$password = substr ( str_shuffle ( $chars ), 0, $length );
+		return $password;
 	}
 	
 	protected function compareUserByData(User $user, User $otherUser){

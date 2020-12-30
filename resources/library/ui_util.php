@@ -1,4 +1,17 @@
-<?php 
+<?php
+
+function showAlert($message) {
+	echo "<div class=\"alert alert-danger\" role=\"alert\">" . $message . "</div>";
+}
+
+function showSuccess($message) {
+	echo "<div class=\"alert alert-success\" role=\"alert\">" . $message . "</div>";
+}
+
+function showInfo($message) {
+	echo "<div class=\"alert alert-secondary\" role=\"alert\">" . $message . "</div>";
+}
+
 function setPrintToLandscape(){ ?>
 	<style>
 		@media print{
