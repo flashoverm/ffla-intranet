@@ -6,8 +6,8 @@ require_once 'UserController.php';
 
 class GuardianUserController extends UserController{
 	
-	function __construct() {
-		parent::__construct();
+	function __construct(PrivilegeDAO $privilegeDAO, UserDAO $userDAO) {
+		parent::__construct($privilegeDAO, $userDAO);
 	}
 	
 	public function insertEventParticipant($firstname, $lastname, $email, $engine){

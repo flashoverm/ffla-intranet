@@ -7,10 +7,10 @@ class StaffTemplateDAO extends BaseDAO {
 	protected $staffPositionDAO;
 	protected $eventTypeDAO;
 	
-	function __construct() {
+	function __construct(StaffPositionDAO $staffPositionDAO, EventTypeDAO $eventTypeDAO) {
 		parent::__construct();
-		$this->staffPositionDAO = new StaffPositionDAO();
-		$this->eventTypeDAO = new EventTypeDAO();
+		$this->staffPositionDAO = $staffPositionDAO;
+		$this->eventTypeDAO = $eventTypeDAO;
 	}
 	
 	function save(StaffTemplate $staffTemplate){

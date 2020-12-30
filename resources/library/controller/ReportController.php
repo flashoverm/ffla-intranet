@@ -8,8 +8,9 @@ class ReportController extends BaseController{
 	
 	protected $reportDAO;
 	
-	function __construct() {
-		$this->reportDAO = new ReportDAO();
+	function __construct(ReportDAO $reportDAO) {
+		parent::__construct();
+		$this->reportDAO = $reportDAO;
 	}
 
 	function setEmsEntry($reportUuid){

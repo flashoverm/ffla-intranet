@@ -6,9 +6,9 @@ class ConfirmationDAO extends BaseDAO {
 	
 	protected $userDAO;
 	
-	function __construct() {
+	function __construct(UserDAO $userDAO) {
 		parent::__construct();
-		$this->userDAO = new UserDAO();
+		$this->userDAO = $userDAO;
 	}
 	
 	function save(Confirmation $confirmation){

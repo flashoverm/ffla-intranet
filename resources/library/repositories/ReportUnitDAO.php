@@ -4,13 +4,13 @@ require_once "BaseDAO.php";
 
 class ReportUnitDAO extends BaseDAO{
 	
-	protected $staffPostionDAO;
 	protected $engineDAO;
+	protected $staffPositionDAO;
 	
-	function __construct() {
+	function __construct(EngineDAO $engineDAO, StaffPositionDAO $staffPositionDAO) {
 		parent::__construct();
-		$this->staffPostionDAO = new StaffPositionDAO();
-		$this->engineDAO = new EngineDAO();
+		$this->engineDAO = $engineDAO;
+		$this->staffPositionDAO = $staffPositionDAO;
 	}
 	
 	function save(ReportUnit $reportUnit){
@@ -66,7 +66,7 @@ class ReportUnitDAO extends BaseDAO{
 	
 	protected function resultToReportStaffObject($result){
 		$object = new ReportStaff(
-				$this->staffPostionDAO->getStaffPosition($result['position']),
+				$this->staffPositionDAO->getStaffPosition($result['position']),
 				$result['name'],
 				$this->engineDAO->getEngine($result['engine'])
 			);

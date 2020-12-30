@@ -7,10 +7,10 @@ class InspectionDAO extends BaseDAO{
 	protected $hydrantDAO;
 	protected $engineDAO;
 	
-	function __construct() {
+	function __construct(HydrantDAO $hydrantDAO, EngineDAO $engineDAO) {
 		parent::__construct();
-		$this->hydrantDAO = new HydrantDAO();
-		$this->engineDAO = new EngineDAO();
+		$this->hydrantDAO = $hydrantDAO;
+		$this->engineDAO = $engineDAO;
 	}
 	
 	function save(Inspection $inspection){

@@ -8,8 +8,9 @@ class ConfirmationController extends BaseController{
 	
 	protected $confirmationDAO;
 	
-	function __construct() {
-		$this->confirmationDAO = new ConfirmationDAO();
+	function __construct(ConfirmationDAO $confirmationDAO) {
+		parent::__construct();
+		$this->confirmationDAO = $confirmationDAO;
 	}
 	
 	function acceptConfirmation($uuid, $advisor){

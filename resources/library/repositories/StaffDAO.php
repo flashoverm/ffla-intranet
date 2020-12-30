@@ -4,10 +4,13 @@ require_once "BaseDAO.php";
 
 class StaffDAO extends BaseDAO{
 	
-	function __construct() {
+	protected $userDAO;
+	protected $staffPositionDAO;
+	
+	function __construct(UserDAO $userDAO, StaffPositionDAO $staffPositionDAO) {
 		parent::__construct();
-		$this->userDAO = new UserDAO();
-		$this->staffPositionDAO = new StaffPositionDAO();
+		$this->userDAO = $userDAO;
+		$this->staffPositionDAO = $staffPositionDAO;
 	}
 	
 	function save(Staff $staff){

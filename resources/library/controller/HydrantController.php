@@ -8,8 +8,9 @@ class HydrantController extends BaseController{
 	
 	protected $hydrantDAO;
 	
-	function __construct() {
-		$this->hydrantDAO = new HydrantDAO();
+	function __construct(HydrantDAO $hydrantDAO) {
+		parent::__construct();
+		$this->hydrantDAO = $hydrantDAO;
 	}
 	
 	function isHyExisting(int $hy){

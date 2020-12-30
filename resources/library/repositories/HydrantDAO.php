@@ -6,9 +6,9 @@ class HydrantDAO extends BaseDAO{
 	
 	protected $engineDAO;
 	
-	function __construct() {
+	function __construct(EngineDAO $engineDAO) {
 		parent::__construct();
-		$this->engineDAO = new EngineDAO();
+		$this->engineDAO = $engineDAO;
 	}
 	
 	function save(Hydrant $hydrant){

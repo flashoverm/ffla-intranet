@@ -9,9 +9,10 @@ class UserController extends BaseController{
 	protected $userDAO;
 	protected $privilegeDAO;
 	
-	function __construct() {
-		$this->userDAO = new UserDAO();
-		$this->privilegeDAO = new PrivilegeDAO();
+	function __construct(PrivilegeDAO $privilegeDAO, UserDAO $userDAO) {
+		parent::__construct();
+		$this->userDAO = $userDAO;
+		$this->privilegeDAO = $privilegeDAO;
 	}
 	
 	function getUserDAO(){

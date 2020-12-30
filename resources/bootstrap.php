@@ -19,32 +19,34 @@ foreach (glob( CONTROLLER_PATH . "/*.php") as $filename) {
 
 //DAOs
 
-$userDAO = new UserDAO();
 $privilegeDAO = new PrivilegeDAO();
 $engineDAO = new EngineDAO();
 $logbookDAO = new LogbookDAO();
 $mailLogDAO = new MailLogDAO();
 
-$confirmationDAO = new ConfirmationDAO();
+$userDAO = new UserDAO($privilegeDAO, $engineDAO);
+
+$confirmationDAO = new ConfirmationDAO($userDAO);
 
 $fileDAO = new FileDAO();
 
+$hydrantDAO = new HydrantDAO($engineDAO);
+$inspectionDAO = new InspectionDAO($hydrantDAO, $engineDAO);
+
 $eventTypeDAO = new EventTypeDAO();
 $staffPositionDAO = new StaffPositionDAO();
-$staffTemplateDAO = new StaffTemplateDAO();
+$staffTemplateDAO = new StaffTemplateDAO($staffPositionDAO, $eventTypeDAO);
 
-$hydrantDAO = new HydrantDAO();
-$inspectionDAO = new InspectionDAO();
-
-$eventDAO = new EventDAO();
-$staffDAO = new StaffDAO();
-$reportDAO = new ReportDAO();
+$staffDAO = new StaffDAO($userDAO, $staffPositionDAO);
+$eventDAO = new EventDAO($userDAO, $engineDAO, $eventTypeDAO, $staffDAO);
+$reportUnitDAO = new ReportUnitDAO($engineDAO, $staffPositionDAO);
+$reportDAO = new ReportDAO($engineDAO, $eventTypeDAO, $reportUnitDAO);
 
 //Controller
 
-$userController = new UserController();
-$guardianUserController = new GuardianUserController();
-$confirmationController = new ConfirmationController();
-$hydrantController = new HydrantController();
-$eventController = new EventController();
-$reportController = new ReportController();
+$userController = new UserController($privilegeDAO, $userDAO);
+$guardianUserController = new GuardianUserController($privilegeDAO, $userDAO);
+$confirmationController = new ConfirmationController($confirmationDAO);
+$hydrantController = new HydrantController($hydrantDAO);
+$eventController = new EventController($eventDAO, $staffDAO, $userDAO, $userController);
+$reportController = new ReportController($reportDAO);

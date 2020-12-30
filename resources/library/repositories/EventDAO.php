@@ -9,12 +9,12 @@ class EventDAO extends BaseDAO{
 	protected $eventTypeDAO;
 	protected $staffDAO;
 	
-	function __construct() {
+	function __construct(UserDAO $userDAO, EngineDAO $engineDAO, EventTypeDAO $eventTypeDAO, StaffDAO $staffDAO) {
 		parent::__construct();
-		$this->userDAO = new UserDAO();
-		$this->engineDAO = new EngineDAO();
-		$this->eventTypeDAO = new EventTypeDAO();
-		$this->staffDAO = new StaffDAO();
+		$this->userDAO = $userDAO;
+		$this->engineDAO = $engineDAO;
+		$this->eventTypeDAO = $eventTypeDAO;
+		$this->staffDAO = $staffDAO;
 	}
 	
 	function save(Event $event){

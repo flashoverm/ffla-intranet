@@ -11,11 +11,12 @@ class EventController extends BaseController{
 	protected $userDAO;
 	protected $userController;
 	
-	function __construct() {
-		$this->eventDAO = new EventDAO();
-		$this->staffDAO = new StaffDAO();
-		$this->userDAO = new UserDAO();
-		$this->userController = new UserController();
+	function __construct(EventDAO $eventDAO, StaffDAO $staffDAO, UserDAO $userDAO, UserController $userController) {
+		parent::__construct();
+		$this->eventDAO = $eventDAO;
+		$this->staffDAO = $staffDAO;
+		$this->userDAO = $userDAO;
+		$this->userController = $userController;
 	}
 	
 	function saveEvent(Event $event, $deletedStaffUuids){

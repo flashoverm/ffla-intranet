@@ -8,11 +8,11 @@ class ReportDAO extends BaseDAO{
 	protected $eventTypeDAO;
 	protected $reportUnitDAO;
 	
-	function __construct() {
+	function __construct(EngineDAO $engineDAO, EventTypeDAO $eventTypeDAO, ReportUnitDAO $reportUnitDAO) {
 		parent::__construct();
-		$this->engineDAO = new EngineDAO();
-		$this->eventTypeDAO = new EventTypeDAO();
-		$this->reportUnitDAO = new ReportUnitDAO();
+		$this->engineDAO = $engineDAO;
+		$this->eventTypeDAO = $eventTypeDAO;
+		$this->reportUnitDAO = $reportUnitDAO;
 	}
 	
 	function save(Report $report){
