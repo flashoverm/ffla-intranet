@@ -8,14 +8,19 @@ abstract class BaseDAO {
 	
 	protected $db;
 	
-	function __construct() {
+	function __construct(PDO $pdo) {
+		$this->db = $pdo;
+	}
+	
+	static function getPDO() : PDO {
 		global $config;
-
-		$this->db = new PDO(
-				'mysql:host=' . $config ['db'] ['host'] . ';dbname=' . $config ['db'] ['dbname'] . ";charset=utf8", 
-				$config ['db'] ['username'], 
+		
+		$db = new PDO(
+				'mysql:host=' . $config ['db'] ['host'] . ';dbname=' . $config ['db'] ['dbname'] . ";charset=utf8",
+				$config ['db'] ['username'],
 				$config ['db'] ['password']);
-		$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+		$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+		return $db;
 	}
 	
 	protected function handleResult($statement, $returnAlwaysArray, $callback = NULL){

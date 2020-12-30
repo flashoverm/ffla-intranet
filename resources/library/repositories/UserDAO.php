@@ -7,8 +7,8 @@ class UserDAO extends BaseDAO {
 	protected $privilegeDAO;
 	protected $engineDAO;
 	
-	function __construct(PrivilegeDAO $privilegeDAO, EngineDAO $engineDAO) {
-		parent::__construct();
+	function __construct(PDO $pdo, PrivilegeDAO $privilegeDAO, EngineDAO $engineDAO) {
+		parent::__construct($pdo);
 		$this->privilegeDAO = $privilegeDAO;
 		$this->engineDAO = $engineDAO;
 	}

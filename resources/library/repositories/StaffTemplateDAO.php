@@ -7,8 +7,8 @@ class StaffTemplateDAO extends BaseDAO {
 	protected $staffPositionDAO;
 	protected $eventTypeDAO;
 	
-	function __construct(StaffPositionDAO $staffPositionDAO, EventTypeDAO $eventTypeDAO) {
-		parent::__construct();
+	function __construct(PDO $pdo, StaffPositionDAO $staffPositionDAO, EventTypeDAO $eventTypeDAO) {
+		parent::__construct($pdo);
 		$this->staffPositionDAO = $staffPositionDAO;
 		$this->eventTypeDAO = $eventTypeDAO;
 	}

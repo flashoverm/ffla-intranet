@@ -4,8 +4,8 @@ require_once "BaseDAO.php";
 
 class PrivilegeDAO extends BaseDAO{
 	
-	function __construct() {
-		parent::__construct();
+	function __construct(PDO $pdo) {
+		parent::__construct($pdo);
 	}
 
 	function save(Privilege $privilege){

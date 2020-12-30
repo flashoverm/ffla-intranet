@@ -9,8 +9,8 @@ class EventDAO extends BaseDAO{
 	protected $eventTypeDAO;
 	protected $staffDAO;
 	
-	function __construct(UserDAO $userDAO, EngineDAO $engineDAO, EventTypeDAO $eventTypeDAO, StaffDAO $staffDAO) {
-		parent::__construct();
+	function __construct(PDO $pdo, UserDAO $userDAO, EngineDAO $engineDAO, EventTypeDAO $eventTypeDAO, StaffDAO $staffDAO) {
+		parent::__construct($pdo);
 		$this->userDAO = $userDAO;
 		$this->engineDAO = $engineDAO;
 		$this->eventTypeDAO = $eventTypeDAO;

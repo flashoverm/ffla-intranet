@@ -7,8 +7,8 @@ class StaffDAO extends BaseDAO{
 	protected $userDAO;
 	protected $staffPositionDAO;
 	
-	function __construct(UserDAO $userDAO, StaffPositionDAO $staffPositionDAO) {
-		parent::__construct();
+	function __construct(PDO $pdo, UserDAO $userDAO, StaffPositionDAO $staffPositionDAO) {
+		parent::__construct($pdo);
 		$this->userDAO = $userDAO;
 		$this->staffPositionDAO = $staffPositionDAO;
 	}

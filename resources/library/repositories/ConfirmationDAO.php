@@ -6,8 +6,8 @@ class ConfirmationDAO extends BaseDAO {
 	
 	protected $userDAO;
 	
-	function __construct(UserDAO $userDAO) {
-		parent::__construct();
+	function __construct(PDO $pdo, UserDAO $userDAO) {
+		parent::__construct($pdo);
 		$this->userDAO = $userDAO;
 	}
 	

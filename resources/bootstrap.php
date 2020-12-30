@@ -17,30 +17,34 @@ foreach (glob( CONTROLLER_PATH . "/*.php") as $filename) {
 	include_once $filename;
 }
 
+//PDO 
+
+$db = BaseDAO::getPDO();
+
 //DAOs
 
-$privilegeDAO = new PrivilegeDAO();
-$engineDAO = new EngineDAO();
-$logbookDAO = new LogbookDAO();
-$mailLogDAO = new MailLogDAO();
+$privilegeDAO = new PrivilegeDAO($db);
+$engineDAO = new EngineDAO($db);
+$logbookDAO = new LogbookDAO($db);
+$mailLogDAO = new MailLogDAO($db);
 
-$userDAO = new UserDAO($privilegeDAO, $engineDAO);
+$userDAO = new UserDAO($db, $privilegeDAO, $engineDAO);
 
-$confirmationDAO = new ConfirmationDAO($userDAO);
+$confirmationDAO = new ConfirmationDAO($db, $userDAO);
 
-$fileDAO = new FileDAO();
+$fileDAO = new FileDAO($db);
 
-$hydrantDAO = new HydrantDAO($engineDAO);
-$inspectionDAO = new InspectionDAO($hydrantDAO, $engineDAO);
+$hydrantDAO = new HydrantDAO($db, $engineDAO);
+$inspectionDAO = new InspectionDAO($db, $hydrantDAO, $engineDAO);
 
-$eventTypeDAO = new EventTypeDAO();
-$staffPositionDAO = new StaffPositionDAO();
-$staffTemplateDAO = new StaffTemplateDAO($staffPositionDAO, $eventTypeDAO);
+$eventTypeDAO = new EventTypeDAO($db);
+$staffPositionDAO = new StaffPositionDAO($db);
+$staffTemplateDAO = new StaffTemplateDAO($db, $staffPositionDAO, $eventTypeDAO);
 
-$staffDAO = new StaffDAO($userDAO, $staffPositionDAO);
-$eventDAO = new EventDAO($userDAO, $engineDAO, $eventTypeDAO, $staffDAO);
-$reportUnitDAO = new ReportUnitDAO($engineDAO, $staffPositionDAO);
-$reportDAO = new ReportDAO($engineDAO, $eventTypeDAO, $reportUnitDAO);
+$staffDAO = new StaffDAO($db, $userDAO, $staffPositionDAO);
+$eventDAO = new EventDAO($db, $userDAO, $engineDAO, $eventTypeDAO, $staffDAO);
+$reportUnitDAO = new ReportUnitDAO($db, $engineDAO, $staffPositionDAO);
+$reportDAO = new ReportDAO($db, $engineDAO, $eventTypeDAO, $reportUnitDAO);
 
 //Controller
 

@@ -7,8 +7,8 @@ class ReportUnitDAO extends BaseDAO{
 	protected $engineDAO;
 	protected $staffPositionDAO;
 	
-	function __construct(EngineDAO $engineDAO, StaffPositionDAO $staffPositionDAO) {
-		parent::__construct();
+	function __construct(PDO $pdo, EngineDAO $engineDAO, StaffPositionDAO $staffPositionDAO) {
+		parent::__construct($pdo);
 		$this->engineDAO = $engineDAO;
 		$this->staffPositionDAO = $staffPositionDAO;
 	}
