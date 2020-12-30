@@ -34,11 +34,7 @@ function createFile($portrait, $urlpath, $outputfile){
 	global $config;
 		
 	$nodePath = $config["paths"]["nodejs"];
-		
-	if( ! is_executable ($nodePath) ){
-		return "Error: Node installation not found";
-	}
-	
+
 	if ( ! file_exists( dirname ($outputfile) ) ) {
 		mkdir(dirname ($outputfile), 0755, true);
 	}
