@@ -31,6 +31,7 @@ $mailLogDAO = new MailLogDAO($db);
 $userDAO = new UserDAO($db, $privilegeDAO, $engineDAO);
 
 $confirmationDAO = new ConfirmationDAO($db, $userDAO);
+$dataChangeRequestDAO = new DataChangeRequestDAO($db);
 
 $fileDAO = new FileDAO($db);
 
@@ -49,8 +50,12 @@ $reportDAO = new ReportDAO($db, $engineDAO, $eventTypeDAO, $reportUnitDAO);
 //Controller
 
 $userController = new UserController($privilegeDAO, $userDAO);
+
 $guardianUserController = new GuardianUserController($privilegeDAO, $userDAO);
-$confirmationController = new ConfirmationController($confirmationDAO);
-$hydrantController = new HydrantController($hydrantDAO);
 $eventController = new EventController($eventDAO, $staffDAO, $userDAO, $userController);
 $reportController = new ReportController($reportDAO);
+
+$hydrantController = new HydrantController($hydrantDAO);
+
+$confirmationController = new ConfirmationController($confirmationDAO);
+

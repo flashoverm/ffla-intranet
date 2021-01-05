@@ -5,7 +5,7 @@ require_once "BaseDAO.php";
 class LogbookDAO extends BaseDAO{
 	
 	function __construct(PDO $pdo) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "logbook");
 	}
 	
 	function save(LogbookEntry $entry){
@@ -86,7 +86,7 @@ class LogbookDAO extends BaseDAO{
 		return $object;
 	}
 	
-	protected function createTableLogbook() {
+	protected function createTable() {
 		$statement = $this->db->prepare("CREATE TABLE logbook (
                           uuid CHARACTER(36) NOT NULL,
 						  timestamp DATETIME NOT NULL,
@@ -102,8 +102,7 @@ class LogbookDAO extends BaseDAO{
 		
 		if ($result) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 }

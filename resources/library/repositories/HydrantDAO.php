@@ -7,13 +7,13 @@ class HydrantDAO extends BaseDAO{
 	protected $engineDAO;
 	
 	function __construct(PDO $pdo, EngineDAO $engineDAO) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "hydrant");
 		$this->engineDAO = $engineDAO;
 	}
 	
 	function save(Hydrant $hydrant){
 		$saved = null;
-		if($this->uuidExists($hydrant->getUuid(), "hydrant")){
+		if($this->uuidExists($hydrant->getUuid(), $this->tableName)){
 			$saved = $this->updateHydrant($hydrant);
 		} else {
 			$saved = $this->insertHydrant($hydrant);
@@ -204,8 +204,7 @@ class HydrantDAO extends BaseDAO{
 		
 		if ($result) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 }

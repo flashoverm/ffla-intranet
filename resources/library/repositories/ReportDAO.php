@@ -9,7 +9,7 @@ class ReportDAO extends BaseDAO{
 	protected $reportUnitDAO;
 	
 	function __construct(PDO $pdo, EngineDAO $engineDAO, EventTypeDAO $eventTypeDAO, ReportUnitDAO $reportUnitDAO) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "report");
 		$this->engineDAO = $engineDAO;
 		$this->eventTypeDAO = $eventTypeDAO;
 		$this->reportUnitDAO = $reportUnitDAO;
@@ -17,7 +17,7 @@ class ReportDAO extends BaseDAO{
 	
 	function save(Report $report){
 		$saved = null;
-		if($this->uuidExists($report->getUuid(), "report")){
+		if($this->uuidExists($report->getUuid(), $this->tableName)){
 			$saved = $this->updateReport($report);
 		} else {
 			$saved = $this->insertReport($report);

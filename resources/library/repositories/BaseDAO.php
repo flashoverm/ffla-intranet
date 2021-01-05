@@ -7,9 +7,12 @@ require_once __DIR__ . "/../../bootstrap.php";
 abstract class BaseDAO {
 	
 	protected $db;
+	protected $tableName;
 	
-	function __construct(PDO $pdo) {
+	function __construct(PDO $pdo, $tableName) {
 		$this->db = $pdo;
+		$this->tableName = $tableName;
+		$this->createTableIfNotPresent();
 	}
 	
 	static function getPDO() : PDO {
@@ -23,6 +26,15 @@ abstract class BaseDAO {
 		return $db;
 	}
 	
+	protected function createTableIfNotPresent(){
+		$exists = $this->db->query("SELECT 1 FROM " . $this->tableName . " LIMIT 1");
+		if(! $exists){
+			$this->createTable();
+		}
+	}
+	
+	abstract protected function createTable();
+		
 	protected function handleResult($statement, $returnAlwaysArray, $callback = NULL){
 		if($callback == NULL){
 			$callback = "resultToObject";
@@ -47,7 +59,7 @@ abstract class BaseDAO {
 			return call_user_func_array(array($this, $callback), array($statement->fetch()));
 		}
 	}
-	
+
 	abstract protected function resultToObject($result);
 	
 	protected function uuidExists($uuid, $tableName){

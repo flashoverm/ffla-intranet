@@ -10,7 +10,7 @@ class EventDAO extends BaseDAO{
 	protected $staffDAO;
 	
 	function __construct(PDO $pdo, UserDAO $userDAO, EngineDAO $engineDAO, EventTypeDAO $eventTypeDAO, StaffDAO $staffDAO) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "event");
 		$this->userDAO = $userDAO;
 		$this->engineDAO = $engineDAO;
 		$this->eventTypeDAO = $eventTypeDAO;
@@ -19,7 +19,7 @@ class EventDAO extends BaseDAO{
 	
 	function save(Event $event){
 		$saved = null;
-		if($this->uuidExists($event->getUuid(), "event")){
+		if($this->uuidExists($event->getUuid(), $this->tableName)){
 			$saved = $this->updateEvent($event);
 		} else {
 			$saved = $this->insertEvent($event);

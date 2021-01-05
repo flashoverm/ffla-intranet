@@ -5,7 +5,7 @@ require_once "BaseDAO.php";
 class EventTypeDAO extends BaseDAO{
 	
 	function __construct(PDO $pdo) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "eventtype");
 	}
 	
 	function save(EventType $eventType){
@@ -59,7 +59,7 @@ class EventTypeDAO extends BaseDAO{
 		$result = $statement->execute();
 		
 		if ($result) {
-			$this->initializeEngines();
+			$this->initializeEventTypes();
 			return true;
 		} else {
 			return false;

@@ -4,6 +4,9 @@ Release Documentation
 
 #### V2.3.0
 
+Feature:
+	Masterdata app to request change of master data of users in "MP Feuer"
+
 Changes: 
 	Applied MVC pattern to business objects
 

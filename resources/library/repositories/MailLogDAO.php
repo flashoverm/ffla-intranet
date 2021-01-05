@@ -5,7 +5,7 @@ require_once "BaseDAO.php";
 class MailLogDAO extends BaseDAO{
 	
 	function __construct(PDO $pdo) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "maillog");
 	}
 	
 	function save(MailLog $log){
@@ -79,7 +79,7 @@ class MailLogDAO extends BaseDAO{
 		return $object;
 	}
 	
-	protected function createTableMailLog() {
+	protected function createTable() {
 		$statement = $this->db->prepare("CREATE TABLE maillog (
 						  uuid CHARACTER(36) NOT NULL,
                           timestamp datetime NOT NULL,
@@ -95,9 +95,8 @@ class MailLogDAO extends BaseDAO{
 		
 		if ($result) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 	
 }

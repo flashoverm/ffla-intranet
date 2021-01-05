@@ -7,13 +7,13 @@ class ConfirmationDAO extends BaseDAO {
 	protected $userDAO;
 	
 	function __construct(PDO $pdo, UserDAO $userDAO) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "confirmation");
 		$this->userDAO = $userDAO;
 	}
 	
 	function save(Confirmation $confirmation){
 		$saved = null;
-		if($this->uuidExists($confirmation->getUuid(), "confirmation")){
+		if($this->uuidExists($confirmation->getUuid(), $this->tableName)){
 			$saved = $this->updateConfirmation($confirmation);
 		} else {
 			$saved = $this->insertConfirmation($confirmation);
@@ -120,7 +120,7 @@ class ConfirmationDAO extends BaseDAO {
 		return $object;
 	}
 	
-	protected function createTableConfirmation() {
+	protected function createTable() {
 		$statement = $this->db->prepare("CREATE TABLE confirmation (
 						  uuid CHARACTER(36) NOT NULL,
                           date DATE  NOT NULL,

@@ -5,7 +5,7 @@ require_once "BaseDAO.php";
 class PrivilegeDAO extends BaseDAO{
 	
 	function __construct(PDO $pdo) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "privilege");
 	}
 
 	function save(Privilege $privilege){
@@ -106,7 +106,7 @@ class PrivilegeDAO extends BaseDAO{
 		return $user->deleted;
 	}
 	
-	protected function createTablePrivilege() {
+	protected function createTable() {
 		$statement = $this->db->prepare("CREATE TABLE privilege (
 						  uuid CHAR(36) NOT NULL,
 						  privilege VARCHAR(32) NOT NULL,
@@ -117,31 +117,23 @@ class PrivilegeDAO extends BaseDAO{
 		$result = $statement->execute();
 		
 		if ($result) {
-			$this->createTableUserPrivilege();
-			$this->initializePrivileges();
-			return true;
-		} else {
-			// echo "Error: " . $this->db->error . "<br><br>";
-			return false;
-		}
-	}
-	
-	protected function createTableUserPrivilege(){
-		$statement = $this->db->prepare("CREATE TABLE user_privilege (
+			
+			$statement = $this->db->prepare("CREATE TABLE user_privilege (
 						  privilege CHARACTER(36) NOT NULL,
 						  user CHARACTER(36) NOT NULL,
                           PRIMARY KEY (privilege, user),
 						  FOREIGN KEY (privilege) REFERENCES privilege(uuid),
 						  FOREIGN KEY (user) REFERENCES user(uuid)
                           )");
-		
-		$result = $statement->execute();
-		
-		if ($result) {
-			return true;
-		} else {
-			return false;
+			
+			$result = $statement->execute();
+			
+			if ($result) {
+				$this->initializePrivileges();
+				return true;
+			}
 		}
+		return false;
 	}
 	
 	protected function initializePrivileges(){

@@ -8,14 +8,14 @@ class InspectionDAO extends BaseDAO{
 	protected $engineDAO;
 	
 	function __construct(PDO $pdo, HydrantDAO $hydrantDAO, EngineDAO $engineDAO) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "inspection");
 		$this->hydrantDAO = $hydrantDAO;
 		$this->engineDAO = $engineDAO;
 	}
 	
 	function save(Inspection $inspection){
 		$saved = null;
-		if($this->uuidExists($inspection->getUuid(), "inspection")){
+		if($this->uuidExists($inspection->getUuid(), $this->tableName)){
 			$saved = $this->updateInspection($inspection);
 		} else {
 			$saved = $this->insertInspection($inspection);

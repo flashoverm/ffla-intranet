@@ -5,7 +5,7 @@ require_once "BaseDAO.php";
 class EngineDAO extends BaseDAO{
 	
 	function __construct(PDO $pdo) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "engine");
 	}
 	
 	function save(Engine $engine){
@@ -75,7 +75,7 @@ class EngineDAO extends BaseDAO{
 		return $object;
 	}
 
-	protected function createTableEngine() {
+	protected function createTable() {
 		$statement = $this->db->prepare("CREATE TABLE engine (
                           uuid CHARACTER(36) NOT NULL,
 						  name VARCHAR(32) NOT NULL,

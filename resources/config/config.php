@@ -24,6 +24,7 @@ $config = array (
 			"hydrant" => "hydrantapp",
 			"guardian" => "guardianapp",
 			"employer" => "employerapp",
+			"masterdata" => "masterdataapp"
 	),
 	"urls" => array (
 			"intranet_home" => $url_prefix . "",
@@ -31,6 +32,7 @@ $config = array (
 			"hydrantapp_home" => $url_prefix . "/hydrant",
 			"guardianapp_home" => $url_prefix . "/guardian",
 			"employerapp_home" => $url_prefix . "/employer",
+			"masterdataapp_home" => $url_prefix . "/masterdata",
 			
 			"files" => $url_prefix . "/files",
 			

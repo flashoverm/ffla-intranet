@@ -5,7 +5,7 @@ require_once "BaseDAO.php";
 class StaffPositionDAO extends BaseDAO{
 	
 	function __construct(PDO $pdo) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "staffposition");
 	}
 	
 	function save(StaffPosition $staffPosition){
@@ -59,14 +59,13 @@ class StaffPositionDAO extends BaseDAO{
 		$result = $statement->execute();
 		
 		if ($result) {
-			$this->initializeEngines();
+			$this->initializeStaffPositions();
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 	
-	protected function initializeEventTypes(){
+	protected function initializeStaffPositions(){
 		$this->save(new StaffPosition("BE8BA2F1-11B0-F8DB-292D-8F054A797214", "Dienstgrad (LM)", 0 ));
 		$this->save(new StaffPosition("28F8486C-1F14-4293-6BB6-59A959281FE3", "Dienstgrad (HFM)", 1 ));
 		$this->save(new StaffPosition("C6C83E5B-660D-33A5-3B45-B4B2E4F13F23", "Maschinist", 2 ));

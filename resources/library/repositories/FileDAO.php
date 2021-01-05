@@ -5,7 +5,7 @@ require_once "BaseDAO.php";
 class FileDAO extends BaseDAO {
 	
 	function __construct(PDO $pdo) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "file");
 	}
 	
 	function save(File $file){
@@ -63,7 +63,7 @@ class FileDAO extends BaseDAO {
 		return $object;
 	}
 	
-	protected function createTableFile() {
+	protected function createTable() {
 		$statement = $this->db->prepare("CREATE TABLE file (
 						  uuid CHARACTER(36) NOT NULL,
                           description VARCHAR(255) NOT NULL,
@@ -76,9 +76,8 @@ class FileDAO extends BaseDAO {
 		
 		if ($result) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 	
 }

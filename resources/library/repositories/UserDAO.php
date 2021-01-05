@@ -8,14 +8,14 @@ class UserDAO extends BaseDAO {
 	protected $engineDAO;
 	
 	function __construct(PDO $pdo, PrivilegeDAO $privilegeDAO, EngineDAO $engineDAO) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "user");
 		$this->privilegeDAO = $privilegeDAO;
 		$this->engineDAO = $engineDAO;
 	}
 	
 	function save(User $user){
 		$saved = null;
-		if($this->uuidExists($user->getUuid(), "user")){
+		if($this->uuidExists($user->getUuid(), $this->tableName)){
 			$saved = $this->updateUser($user);
 		} else {
 			$saved = $this->insertUser($user);
@@ -198,7 +198,7 @@ class UserDAO extends BaseDAO {
 		return $object;
 	}
 	
-	protected function createTableUser() {
+	protected function createTable() {
 		$statement = $this->db->prepare("CREATE TABLE user (
                           uuid CHARACTER(36) NOT NULL,
                           email VARCHAR(128) NOT NULL UNIQUE,

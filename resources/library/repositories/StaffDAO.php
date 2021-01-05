@@ -8,14 +8,14 @@ class StaffDAO extends BaseDAO{
 	protected $staffPositionDAO;
 	
 	function __construct(PDO $pdo, UserDAO $userDAO, StaffPositionDAO $staffPositionDAO) {
-		parent::__construct($pdo);
+		parent::__construct($pdo, "staff");
 		$this->userDAO = $userDAO;
 		$this->staffPositionDAO = $staffPositionDAO;
 	}
 	
 	function save(Staff $staff){
 		$saved = null;
-		if($this->uuidExists($staff->getUuid(), "staff")){
+		if($this->uuidExists($staff->getUuid(), $this->tableName)){
 			$saved = $this->updateEventStaffEntry($staff);
 		} else {
 			$saved = $this->insertEvent($staff);
