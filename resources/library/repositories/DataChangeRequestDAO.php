@@ -65,7 +65,7 @@ class DataChangeRequestDAO extends BaseDAO {
 	 */
 	
 	protected function insert(DataChangeRequest $dataChangeRequest){
-		$uuid = $this->getUuid();
+		$uuid = $this->generateUuid();
 		
 		$statement = $this->db->prepare("INSERT INTO datachangerequest 
 		(uuid, createdate, datatype, newvalue, comment, state, user, last_advisor)

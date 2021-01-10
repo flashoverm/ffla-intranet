@@ -103,7 +103,7 @@ class ReportDAO extends BaseDAO{
 	}
 	
 	protected function insertReport(Report $report){
-		$uuid = $this->getUuid();
+		$uuid = $this->generateUuid();
 		
 		$statement = $this->db->prepare("INSERT INTO report (uuid, event, date, start_time, 
 			end_time, type, type_other, title, engine, creator, noIncidents, ilsEntry, 

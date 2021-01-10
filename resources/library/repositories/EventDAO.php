@@ -135,7 +135,7 @@ class EventDAO extends BaseDAO{
 	}
 	
 	protected function insertEvent(Event $event){
-		$uuid = getUuid ();
+		$uuid = $this->generateUuid();
 		$hash = hash ( "sha256", $uuid . $event->getDate() . $event->getStarTime() 
 				. $event->getEndTime() . $event->getType()->getUuid() . $event->getTitle() );
 		

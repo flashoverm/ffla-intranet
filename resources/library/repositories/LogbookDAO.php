@@ -9,7 +9,7 @@ class LogbookDAO extends BaseDAO{
 	}
 	
 	function save(LogbookEntry $entry){
-		$uuid = $this->getUuid();
+		$uuid = $this->generateUuid();
 		$entry->setUuid($uuid);
 		
 		$statement = $this->db->prepare("INSERT INTO logbook (uuid, timestamp, action, object, user, message)

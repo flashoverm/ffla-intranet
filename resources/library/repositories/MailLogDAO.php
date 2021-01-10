@@ -9,7 +9,7 @@ class MailLogDAO extends BaseDAO{
 	}
 	
 	function save(MailLog $log){
-		$uuid = $this->getUuid();
+		$uuid = $this->generateUuid();
 		$log->setUuid($uuid);
 		
 		$statement = $this->db->prepare("INSERT INTO maillog (uuid, timestamp, recipient, subject, state, body, error)

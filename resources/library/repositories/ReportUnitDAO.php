@@ -77,7 +77,7 @@ class ReportUnitDAO extends BaseDAO{
 	
 	protected function insertReportUnit(ReportUnit $reportUnit){
 		
-		$uuid = $this->getUuid();
+		$uuid = $this->generateUuid();
 		$reportUnit->setUuid($uuid);
 		
 		$statement = $this->db->prepare("INSERT INTO report_unit (uuid, date, start_time, 
@@ -103,7 +103,7 @@ class ReportUnitDAO extends BaseDAO{
 	}
 	
 	protected function insertReportStaff(ReportStaff $staff){
-		$uuid = $this->getUuid();
+		$uuid = $this->generateUuid();
 		$staff->setUuid($uuid);
 		
 		$statement = $this->db->prepare("INSERT INTO report_staff (uuid, position, name, engine, unit)

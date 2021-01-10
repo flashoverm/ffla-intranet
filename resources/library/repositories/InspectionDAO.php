@@ -119,7 +119,7 @@ class InspectionDAO extends BaseDAO{
 	}
 
 	protected function insertInspection(Inspection $inspection){
-		$uuid = getUuid ();
+		$uuid = $this->generateUuid();
 		
 		$statement = $this->db->prepare("INSERT INTO inspection (uuid, date, vehicle, name, notes, engine) VALUES (?, ?, ?, ?, ?, ?)");
 		

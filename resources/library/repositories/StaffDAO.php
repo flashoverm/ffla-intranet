@@ -73,7 +73,7 @@ class StaffDAO extends BaseDAO{
 	}
 	
 	protected function insertEventStaffEntry(Staff $staff){
-		$uuid = getUuid ();
+		$uuid = $this->generateUuid();
 		
 		$statement = $this->db->prepare("INSERT INTO staff (uuid, position, event, user, unconfirmed) VALUES (?, ?, ?, NULL, ?)");
 		
