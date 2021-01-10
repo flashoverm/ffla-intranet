@@ -293,7 +293,7 @@
 		}?>
 		>
 	<?php if(!isset($event)){
-	    echo "<button type='button' class='btn btn-primary float-right' onClick='submitMutible()'>Speicher und nächste Wache anlegen</button>";
+	    echo "<button type='button' class='btn btn-primary float-right' onClick='submitMutible()'>Speichern und nächste Wache anlegen</button>";
 	}?>
 	
 </form>
