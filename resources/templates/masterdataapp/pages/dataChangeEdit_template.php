@@ -11,13 +11,13 @@
 			</select>
 	</div>
 	<div class="form-group">
-		<label>Neuer Wert:</label> <input type="text" required
+		<label>Neuer Wert (z.B. neue Adresse):</label> <input type="text" required
 			class="form-control" name="newvalue" id="newvalue"
 			<?php
 			if(isset($dataChangeRequest)){
 				echo "value='" . $dataChangeRequest->getNewValue() . "'";
 			}?>
-			placeholder="Neuen Wert eingeben">
+			placeholder="Neuen Wert (z.B. neue Adresse) eingeben">
 	</div>
 	<div class="form-group">
 		<label>Anmerkungen:</label>
