@@ -4,8 +4,11 @@ require_once "BaseDAO.php";
 
 class DataChangeRequestDAO extends BaseDAO {
 	
-	function __construct(PDO $pdo) {
+	protected $userDAO;
+	
+	function __construct(PDO $pdo, UserDAO $userDAO) {
 		parent::__construct($pdo, "datachangerequest");
+		$this->userDAO = $userDAO;
 	}
 	
 	function save(DataChangeRequest $dataChangeRequest){
@@ -64,14 +67,14 @@ class DataChangeRequestDAO extends BaseDAO {
 	protected function insert(DataChangeRequest $dataChangeRequest){
 		$uuid = $this->getUuid();
 		
-		$statement = $this->db->prepare("INSERT INTO confirmation 
-		(uuid, datatype, newvalue, comment, state, user, last_advisor)
-		VALUES (?, ?, ?, ?, ?, ?, ?)");
+		$statement = $this->db->prepare("INSERT INTO datachangerequest 
+		(uuid, createdate, datatype, newvalue, comment, state, user, last_advisor)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		
-		$result = $statement->execute(array($uuid, $dataChangeRequest->getDatatype(), 
-				$dataChangeRequest->getNewValue(), $dataChangeRequest->getComment(), 
-				$dataChangeRequest->getState(), $dataChangeRequest->getUser()->getUuid(), 
-				null
+		$result = $statement->execute(array($uuid, $dataChangeRequest->getCreateDate(),
+				$dataChangeRequest->getDatatype(), $dataChangeRequest->getNewValue(), 
+				$dataChangeRequest->getComment(), $dataChangeRequest->getState(), 
+				$dataChangeRequest->getUser()->getUuid(), null
 		));
 		
 		if ($result) {
@@ -88,12 +91,12 @@ class DataChangeRequestDAO extends BaseDAO {
 			$lastAdvisorUuid = $dataChangeRequest->getLastAdvisor()->getUuid();
 		}
 		
-		$statement = $this->db->prepare("UPDATE confirmation
-		SET datatype = ?, newvalue = ?, comment = ?, state = ?, user = ?, last_advisor = ?
+		$statement = $this->db->prepare("UPDATE datachangerequest
+		SET createdate = ?, datatype = ?, newvalue = ?, comment = ?, state = ?, user = ?, last_advisor = ?
 		WHERE uuid= ?");
 		
-		$result = $statement->execute(array($dataChangeRequest->getDatatype(), $dataChangeRequest->getNewValue(), 
-				$dataChangeRequest->getComment(), $dataChangeRequest->getState(), 
+		$result = $statement->execute(array( $dataChangeRequest->getCreateDate(),$dataChangeRequest->getDatatype(), 
+				$dataChangeRequest->getNewValue(), $dataChangeRequest->getComment(), $dataChangeRequest->getState(), 
 				$dataChangeRequest->getUser()->getUuid(), $lastAdvisorUuid, $dataChangeRequest->getUuid()
 		));
 		
@@ -107,6 +110,7 @@ class DataChangeRequestDAO extends BaseDAO {
 	protected function resultToObject($result){
 		$object = new DataChangeRequest();
 		$object->setUuid($result['uuid']);
+		$object->setCreateDate($result['createdate']);
 		$object->setDatatype($result['datatype']);
 		$object->setNewValue($result['newvalue']);
 		$object->setState($result['state']);
@@ -122,6 +126,7 @@ class DataChangeRequestDAO extends BaseDAO {
 	protected function createTable() {
 		$statement = $this->db->prepare("CREATE TABLE datachangerequest (
 						  uuid CHARACTER(36) NOT NULL,
+						  createdate DATETIME NOT NULL,
 						  datatype TINYINT NOT NULL,
                           newvalue VARCHAR(255) NOT NULL,
 						  comment VARCHAR(255),

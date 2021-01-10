@@ -34,6 +34,9 @@ class UserController extends BaseController{
 	}
 	
 	function hasCurrentUserPrivilege($privilegeName){
+		if( ! $this->getCurrentUser()){
+			return false;
+		}
 		return $this->getCurrentUser()->hasPrivilegeByName($privilegeName);
 	}
 	

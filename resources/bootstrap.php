@@ -25,13 +25,14 @@ $db = BaseDAO::getPDO();
 
 $privilegeDAO = new PrivilegeDAO($db);
 $engineDAO = new EngineDAO($db);
-$logbookDAO = new LogbookDAO($db);
-$mailLogDAO = new MailLogDAO($db);
 
 $userDAO = new UserDAO($db, $privilegeDAO, $engineDAO);
 
+$mailLogDAO = new MailLogDAO($db);
+$logbookDAO = new LogbookDAO($db);
+
 $confirmationDAO = new ConfirmationDAO($db, $userDAO);
-$dataChangeRequestDAO = new DataChangeRequestDAO($db);
+$dataChangeRequestDAO = new DataChangeRequestDAO($db, $userDAO);
 
 $fileDAO = new FileDAO($db);
 
@@ -58,4 +59,5 @@ $reportController = new ReportController($reportDAO);
 $hydrantController = new HydrantController($hydrantDAO);
 
 $confirmationController = new ConfirmationController($confirmationDAO);
+$dataChangeRequestController = new DataChangeRequestController($dataChangeRequestDAO);
 

@@ -3,7 +3,7 @@ require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" 
 
 session_start ();
 
-$isAdmin = $userController->getCurrentUser()->hasPrivilegeByName(Privilege::PORTALADMIN ) ;
+$isAdmin = $userController->hasCurrentUserPrivilege(Privilege::PORTALADMIN ) ;
 
 if(!$isAdmin){
 	http_response_code(401);

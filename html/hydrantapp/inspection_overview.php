@@ -21,7 +21,7 @@ if(isset($_POST['delete'])){
     }
 }
 
-if($engine->getIsAdministration() || $userController->getCurrentUser()->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
+if($engine->getIsAdministration() || $userController->hasCurrentUserPrivilege(Privilege::FFADMINISTRATION)){
     $variables ['inspections'] = $inspectionDAO->getInspections();
 } else {
 	$variables ['inspections'] =  $inspectionDAO->getInspectionsByEngine($engine->getUuid());

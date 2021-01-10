@@ -267,6 +267,18 @@ class LogbookEntry extends BaseModel {
 			. "Antragsteller: " . $confirmation->getUser()->getFullNameWithEmail();
 	}
 	
+	protected static function dataChangeRequestEntry($action, $dataChangeRequestUuid){
+		global $dataChangeRequestDAO;
+		$dataChangeRequest = $dataChangeRequestDAO->getDataChangeRequest($dataChangeRequestUuid);
+		
+		if( ! $dataChangeRequest ){
+			return null;
+		}
+		return LogbookActions::getActionText($action) . ": <br>" 
+				. DataChangeRequest::DATATYPE_TEXT[$dataChangeRequest->getDatatype()] . " - Neuer Wert: " . $dataChangeRequest->getNewValue()
+				. "Antragsteller: " . $dataChangeRequest->getUser()->getFullNameWithEmail();
+	}
+	
 	
 	
 	public static function logbookEnry(int $action_id, ?string $objects){
@@ -307,6 +319,9 @@ class LogbookEntry extends BaseModel {
 			
 		} else if ($action_id < 410){
 			$message = LogbookEntry::confirmationEntry($action_id, $objects);
+			
+		} else if ($action_id < 510){
+			$message = LogbookEntry::dataChangeRequestEntry($action_id, $objects);
 		}
 		
 		if($message == null){

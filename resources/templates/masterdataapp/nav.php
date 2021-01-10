@@ -4,16 +4,16 @@ function left_navigation ($currentUser){
 	global $config;
 	?>
         <li class='nav-item'><a class='nav-link text-light'
-			href='<?= $config["urls"]["masterdataapp_home"] ?>/confirmations/'>Offene Änderungen</a>
+			href='<?= $config["urls"]["masterdataapp_home"] ?>/datachangerequests/'>Antragsübersicht</a>
 		</li>
 		<li class='nav-item'><a class='nav-link text-light'
-			href='<?= $config["urls"]["masterdataapp_home"] ?>/confirmations/new'>Änderung beantragen</a>
+			href='<?= $config["urls"]["masterdataapp_home"] ?>/datachangerequests/new'>Änderungsantrag erstellen</a>
 		</li>
 	<?php
 	if ($currentUser->hasPrivilegeByName(Privilege::MASTERDATAADMIN)) {
 	?>
         <li class='nav-item'><a class='nav-link text-light'
-			href='<?= $config["urls"]["masterdataapp_home"] ?>/confirmations/process'>Änderungen bearbeiten</a>
+			href='<?= $config["urls"]["masterdataapp_home"] ?>/datachangerequests/process'>Änderungsanträge bearbeiten</a>
 		</li>
 	<?php
 	}

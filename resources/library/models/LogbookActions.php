@@ -100,6 +100,15 @@ abstract class LogbookActions {
 			405 => "Anfrage Arbeitgebernachweis zurückgezogen",
 			406 => "Arbeitgebernachweis gelöscht",
 			
+			/*
+			 * Master Data
+			 */
+			501 => "Anfrage Datenänderung angelegt",
+			502 => "Anfrage Datenänderung aktualsiert",
+			503 => "Anfrage Datenänderung umgesetzt",
+			504 => "Anfrage Datenänderung abgelehnt",
+			505 => "Anfrage Datenänderung zurückgezogen",
+			
 	);
 	
 	static function getActionText(int $action){
@@ -199,5 +208,15 @@ abstract class LogbookActions {
 	const ConfirmationDeclined = 404;
 	const ConfirmationWithdraw = 405;
 	const ConfirmationDeleted = 406;
+
+	
+	/*
+	 * Master Data
+	 */
+	const DataChangeRequested = 501;
+	const DataChangeUpdated = 502;
+	const DataChangeDone = 503;
+	const DataChangeDeclined = 504;
+	const DataChangeWithdraw = 505;
 	
 }

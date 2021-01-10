@@ -146,6 +146,7 @@ class PrivilegeDAO extends BaseDAO{
 		$this->save(new Privilege('C4E19AFC-14CA-9714-B0E6-B1354EC0571C', Privilege::EVENTPARTICIPENT, true));
 		$this->save(new Privilege('26F7145B-826A-F731-4F59-E435B2E94F81', Privilege::EVENTMANAGER, false));
 		$this->save(new Privilege('9941EE1E-6E61-0656-E72B-18A4EE48633C', Privilege::EVENTADMIN, false));
+		$this->save(new Privilege('E2CA260A-FFA1-09D3-6C31-F32F231454F9', Privilege::MASTERDATAADMIN, false));
 	}
 	
 }

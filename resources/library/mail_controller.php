@@ -491,4 +491,37 @@ function mail_send_to_employer($confirmation, $user){
 	return send_mail ( $user->getEmployerMail(), $subject, $body, $file, false);
 }
 
+
+/*
+ * DataChangeRequests
+ */
+
+function mail_send_datachange_request(){
+	global $config, $bodies, $userDAO;
+	
+	$subject = "Neue Anfrage einer Stammdatenänderung";
+	$body = $bodies["datachange_requested"] . $config ["urls"] ["base_url"] . $config["urls"]["masterdataapp_home"] . "/datachangerequests/process";
+	
+	$dataadmins = $userDAO->getUsersWithPrivilegeByName(Privilege::MASTERDATAADMIN);
+	return send_mails($dataadmins, $subject, $body);
+}
+
+function mail_send_datachange_status(DataChangeRequest $datachangerequest){
+	global $config, $bodies;
+	
+	$state = $datachangerequest->getState();
+	if($state == DataChangeRequest::DONE){
+		$subject = "Angefragte Arbeitgeberbestätigung umgesetzt";
+		$body = $bodies["datachange_done"];
+	} else if($state == DataChangeRequest::DECLINED){
+		$subject = "Angefragte Arbeitgeberbestätigung abgelehnt";
+		$body = $bodies["datachange_declined"];
+	} else {
+		return false;
+	}
+	$body = $body . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations";
+	
+	return send_mail ( $datachangerequest->getUser()->getEmail(), $subject, $body );
+}
+
 ?>

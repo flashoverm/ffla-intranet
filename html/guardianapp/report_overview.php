@@ -20,7 +20,7 @@ if(userLoggedIn()){
         }
     }
         
-    if($userController->getCurrentUser()->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
+    if($userController->hasCurrentUserPrivilege(Privilege::FFADMINISTRATION)){
         $variables ['reports'] = $reportDAO->getReports();
     } else {
     	$variables ['reports'] = $reportDAO->getReportsByEngine($userController->getCurrentUser()->getEngine()->getUuid());

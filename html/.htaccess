@@ -37,6 +37,12 @@ RewriteRule ^(.*)employer/confirmations/([^/]+)/file([^/]+)/?$ 		$1/employerapp/
 RewriteRule ^(.*)employer/confirmations/?$ 				$1/employerapp/confirmation_overview.php 
 RewriteRule ^(.*)employer/$ 							$1/employerapp/index.php 
 
+RewriteRule ^(.*)masterdata/datachangerequests/new/?$			$1/masterdataapp/dataChangeRequest_edit.php
+RewriteRule ^(.*)masterdata/datachangerequests/process/?$ 		$1/masterdataapp/dataChangeRequest_process.php 
+RewriteRule ^(.*)masterdata/datachangerequests/([^/]+)/edit/?$ 	$1/masterdataapp/dataChangeRequest_edit.php?id=$2
+RewriteRule ^(.*)masterdata/datachangerequests/?$ 				$1/masterdataapp/dataChangeRequest_overview.php 
+RewriteRule ^(.*)masterdata/$ 									$1/masterdataapp/index.php 
+
 RewriteRule ^(.*)guardian/events/new/?$					$1/guardianapp/event_edit.php
 RewriteRule ^(.*)guardian/events/public/?$ 				$1/guardianapp/event_public.php
 RewriteRule ^(.*)guardian/events/admin/?$ 				$1/guardianapp/event_admin.php

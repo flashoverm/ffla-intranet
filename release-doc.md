@@ -7,7 +7,7 @@ Release Documentation
 Feature:
 	Masterdata app to request change of master data of users in "MP Feuer"
 
-Changes: 
+Changes/Refactoring: 
 	Applied MVC pattern to business objects
 
 PHP Update to 7.4
@@ -20,6 +20,9 @@ PHP Update to 7.4
 	a2dismod php7.0
 	a2enmod php7.4
 	systemctl restart apache2
+	
+Insert Privilege
+	INSERT INTO privilege (uuid, privilege, is_default) VALUES ('E2CA260A-FFA1-09D3-6C31-F32F231454F9', 'MASTERDATAADMIN', '0'); 
 
 #### V2.2.2
 

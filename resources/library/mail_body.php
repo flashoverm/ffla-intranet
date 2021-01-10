@@ -60,7 +60,13 @@ $bodies = array (
 	"confirmation_declined" => $util["head"] . "eine Anfrage einer Arbeitgeberbestätigung wurde abgelehnt. \n\n Der Grund der Ablehnung und die Möglichkeit, den Antrag zu bearbeiten sind zu finden unter: \n\n",
 		
 	"confirmation_accepted" => $util["head"] . "eine Anfrage einer Arbeitgeberbestätigung wurde akzeptiert. \n\n Die Bestätigung befindet sich im Anhang oder unter: \n\n",
+		
+	"datachange_requested" => $util["head"] . "eine neue Anfrage einer Stammdatenänderung wurde erstellt. \n\n Bearbeitung der Anfragen unter: \n\n",
+
+	"datachange_declined" => $util["head"] . "eine Anfrage einer Stammdatenänderung wurde abgelehnt.\n\nÜbersicht aller Anfragen unter:\n\n",
 	
+	"datachange_done" => $util["head"] . "eine Anfrage einer Stammdatenänderung wurde umgesetzt.\n\nÜbersicht aller Anfragen unter:\n\n",
+		
 	"user_add" => $util["head"] . "für Sie wurde ein Zugang angelegt:",
 	"login" => "\n\nLogin: ",
 	"password" => "\n\nPasswort: ",

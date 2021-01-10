@@ -24,6 +24,7 @@ if ( ! isset($mails) || ! count ( $mails ) ) {
 				<td><?= $row->getSubject() ?></td>
 				<td><?= MailLog::MAILLOG_STATES[$row->getState()] ?></td>
 			</tr>
+			<tr class="d-none"></tr><!-- Empty row to apply correct stripe pattern -->
 			<tr>
 				<td class="collapse-td" colspan="5">
 					<div class="collapse" id="collapseme<?= $index ?>">

@@ -47,6 +47,8 @@ class DataChangeRequest extends BaseModel {
 	 */
 	protected ?string $uuid;
 	
+	protected $createDate;
+	
 	/**
 	 * @ORM\Column(type="smallint")
 	 */
@@ -120,6 +122,13 @@ class DataChangeRequest extends BaseModel {
 	public function getLastAdvisor() : ?User {
 		return $this->lastAdvisor;
 	}
+	
+	/**
+	 * @return NULL
+	 */
+	public function getCreateDate() {
+		return $this->createDate;
+	}
 
 	/**
 	 * @param NULL $uuid
@@ -170,6 +179,13 @@ class DataChangeRequest extends BaseModel {
 		$this->lastAdvisor = $lastAdvisor;
 	}
 	
+	/**
+	 * @param NULL $created
+	 */
+	public function setCreateDate($createDate) {
+		$this->createDate = $createDate;
+	}
+	
 	
 	/*
 	 **************************************************
@@ -179,6 +195,7 @@ class DataChangeRequest extends BaseModel {
 	function __construct() {
 		parent::__construct();
 		$this->comment = NULL;
+		$this->createDate = NULL;
 		$this->datatype = 0;
 		$this->lastAdvisor = NULL;
 		$this->newValue = NULL;
@@ -192,6 +209,11 @@ class DataChangeRequest extends BaseModel {
 	 * Custom Methods
 	 */
 	
-	
+	function setDataChangeRequestData($dataType, $newValue, $comment, $user){
+		$this->setDatatype($dataType);
+		$this->setNewValue($newValue);
+		$this->setComment($comment);
+		$this->setUser($user);
+	}
 	
 }

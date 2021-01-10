@@ -42,7 +42,7 @@ if(userLoggedIn()){
    
 }
 
-if((isset($_POST['csv']) || isset($_POST['invoice'])) && $userController->getCurrentUser()->hasPrivilegeByName($variables ['privilege'])){
+if((isset($_POST['csv']) || isset($_POST['invoice'])) && $userController->hasCurrentUserPrivilege($variables ['privilege'])){
 	
 	header('Content-Encoding: UTF-8');
 	header('Content-type: text/csv; charset=UTF-8');
