@@ -25,7 +25,7 @@ class ReportDAO extends BaseDAO{
 		return $saved;
 	}
 	
-	function getReport($reportUuid) : Report{
+	function getReport($reportUuid) {
 		$statement = $this->db->prepare("SELECT * FROM report WHERE uuid = ?");
 		
 		if ($statement->execute(array($reportUuid))) {
@@ -127,7 +127,7 @@ class ReportDAO extends BaseDAO{
 				$this->reportUnitDAO->save($reportUnit);
 			}
 			
-			return $this->getReport($report->getUuid());
+			return $this->getReport($uuid);
 		}
 		return false;
 	}

@@ -18,7 +18,7 @@ class StaffDAO extends BaseDAO{
 		if($this->uuidExists($staff->getUuid(), $this->tableName)){
 			$saved = $this->updateEventStaffEntry($staff);
 		} else {
-			$saved = $this->insertEvent($staff);
+			$saved = $this->insertEventStaffEntry($staff);
 		}
 		if($saved != null){
 			return $saved;

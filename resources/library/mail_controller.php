@@ -332,11 +332,9 @@ function mail_to_manager($event_obj, $subject, $body){
 	return send_mails($recipients, $subject, $body);
 }
 
-function mail_to_creator($event_obj, $subject, $body){
-	global $userDAO;
-	$creator = $userDAO->getUserByUUID( $event_obj->creator );
+function mail_to_creator(Event $event, $subject, $body){
 	
-	return send_mail ( $creator->getEmail(), $subject, $body );
+	return send_mail ( $event->getCreator()->getEmail(), $subject, $body );
 }
 
 function mail_to_staff($event_obj, $subject, $body){

@@ -136,14 +136,14 @@ class EventDAO extends BaseDAO{
 	
 	protected function insertEvent(Event $event){
 		$uuid = $this->generateUuid();
-		$hash = hash ( "sha256", $uuid . $event->getDate() . $event->getStarTime() 
+		$hash = hash ( "sha256", $uuid . $event->getDate() . $event->getStartTime() 
 				. $event->getEndTime() . $event->getType()->getUuid() . $event->getTitle() );
 		
 		$statement = $this->db->prepare("INSERT INTO event 
 		(uuid, date, start_time, end_time, type, type_other, title, comment, engine, creator, published, staff_confirmation, deleted_by, hash)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, ?)");
 		
-		$result = $statement->execute(array($uuid, $event->getDate(), $event->getStarTime(), 
+		$result = $statement->execute(array($uuid, $event->getDate(), $event->getStartTime(), 
 				$event->getEndTime(), $event->getType()->getUuid(), $event->getTypeOther(), 
 				$event->getTitle(), $event->getComment(), $event->getEngine()->getUuid(), 
 				$event->getCreator()->getUuid(), $event->getPublished(), 
@@ -157,7 +157,7 @@ class EventDAO extends BaseDAO{
 				}
 				$this->staffDAO->save($staff);
 			}
-			return $this->getInspection($uuid);
+			return $this->getEvent($uuid);
 		}
 		return false;
 	}

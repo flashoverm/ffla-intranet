@@ -279,22 +279,21 @@ class Event extends BaseModel {
 	
 	function __construct() {
 		parent::__construct();
-		$this->checkByFF = true;
-		$this->cycle = 0;
-		$this->district = NULL;
-		$this->engine = NULL;
-		$this->fid = 0;
-		$this->hy = 0;
-		$this->lastCheck = NULL;
-		$this->lat = 0.0;
-		$this->lng = 0.0;
-		$this->map = NULL;
-		$this->operating = true;
-		$this->street = NULL;
-		$this->type = NULL;
-		$this->uuid = NULL;
+		$this->comment = NULL;
+		$this->creator = NULL;
+		$this->date = NULL;
 		$this->deletedBy = NULL;
+		$this->endTime = NULL;
+		$this->engine = NULL;
+		$this->hash = NULL;
+		$this->published = false;
 		$this->staff = array();
+		$this->staffConfirmation = false;
+		$this->startTime = NULL;
+		$this->title = NULL;
+		$this->type = NULL;
+		$this->typeOther = NULL;
+		$this->uuid = NULL;
 	}
 	
 	/*
