@@ -17,7 +17,7 @@
 			if(isset($dataChangeRequest)){
 				echo "value='" . $dataChangeRequest->getNewValue() . "'";
 			}?>
-			placeholder="Einsatz-Beschreibung eingeben">
+			placeholder="Neuen Wert eingeben">
 	</div>
 	<div class="form-group">
 		<label>Anmerkungen:</label>
