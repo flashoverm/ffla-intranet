@@ -71,6 +71,11 @@ class DataChangeRequest extends BaseModel {
 	
 	protected ?User $user;
 	
+	/**
+	 * @ORM\Column(type="string")
+	 */
+	protected ?string $person;
+	
 	protected ?User $lastAdvisor;
 
 	
@@ -114,6 +119,13 @@ class DataChangeRequest extends BaseModel {
 	 */
 	public function getUser() : ?User {
 		return $this->user;
+	}
+	
+	/**
+	 * @return NULL
+	 */
+	public function getPerson() : ?string {
+		return $this->person;
 	}
 
 	/**
@@ -164,12 +176,19 @@ class DataChangeRequest extends BaseModel {
 	public function setComment($comment) {
 		$this->comment = $comment;
 	}
+	
+	/**
+	 * @param NULL $comment
+	 */
+	public function setUser(?User $user) {
+		$this->user = $user;
+	}
 
 	/**
 	 * @param NULL $user
 	 */
-	public function setUser($user) {
-		$this->user = $user;
+	public function setPerson(?string $person) {
+		$this->person = $person;
 	}
 
 	/**
@@ -200,8 +219,9 @@ class DataChangeRequest extends BaseModel {
 		$this->lastAdvisor = NULL;
 		$this->newValue = NULL;
 		$this->state = 0;
-		$this->user = NULL;
+		$this->person = NULL;
 		$this->uuid = NULL;
+		$this->user = NULL;
 	}
 	
 	/*
@@ -209,11 +229,12 @@ class DataChangeRequest extends BaseModel {
 	 * Custom Methods
 	 */
 	
-	function setDataChangeRequestData($dataType, $newValue, $comment, $user){
+	function setDataChangeRequestData($dataType, $newValue, $comment, $person, $user){
 		$this->setDatatype($dataType);
 		$this->setNewValue($newValue);
 		$this->setComment($comment);
 		$this->setUser($user);
+		$this->setPerson($person);
 	}
 	
 }

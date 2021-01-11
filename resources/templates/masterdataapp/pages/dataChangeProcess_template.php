@@ -9,8 +9,9 @@ if ( ! count ( $open ) ) {
 		<thead>
 			<tr>
 				<th data-sortable="true" class="text-center">Erstelldatum</th>
-				<th data-sortable="true" class="text-center" >Typ</th>
+				<th data-sortable="true" class="text-center">Typ</th>
 				<th data-sortable="true" class="text-center">Neuer Wert</th>
+				<th data-sortable="true" class="text-center">Änderung bei</th>
 				<th data-sortable="true" class="text-center">Antragsteller</th>
 				<th data-sortable="true" class="text-center">Löschzug</th>
 				<th class="text-center">Anmerkungen</th>
@@ -25,6 +26,15 @@ if ( ! count ( $open ) ) {
 				<td class="text-center"><span class='d-none'><?= strtotime($row->getCreateDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getCreateDate())); ?></td>
 				<td class="text-center"><?= DataChangeRequest::DATATYPE_TEXT[$row->getDataType()] ?></td>
 				<td class="text-center"><?= $row->getNewValue() ?></td>
+				<td class="text-center">
+					<?php 
+					if($row->getPerson() != NULL ){
+						echo $row->getPerson();
+					} else {
+						echo "Antragsteller";
+					}
+					?>
+				</td>
 				<td><?= $row->getUser()->getFullName() ?></td>
 				<td><?= $row->getUser()->getEngine()->getName() ?></td>
 				<td class="text-center">

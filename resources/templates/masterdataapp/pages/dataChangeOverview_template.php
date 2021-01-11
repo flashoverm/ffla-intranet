@@ -13,6 +13,7 @@ if ( count ( $open ) ) {
 				<th data-sortable="true" class="text-center" >Erstelldatum</th>
 				<th data-sortable="true" class="text-center" >Typ</th>
 				<th data-sortable="true" class="text-center" >Neuer Wert</th>
+				<th data-sortable="true" class="text-center" >Änderung bei</th>
 				<th class="text-center">Anmerkungen</th>
 				<th class=""></th>
 				<th class=""></th>
@@ -27,6 +28,15 @@ if ( count ( $open ) ) {
 				<td class="text-center"><span class='d-none'><?= strtotime($row->getCreateDate()) ?></span><?= date($config ["formats"] ["datetime"], strtotime($row->getCreateDate())); ?></td>
 				<td class="text-center"><?= DataChangeRequest::DATATYPE_TEXT[$row->getDataType()] ?></td>
 				<td class="text-center"><?= $row->getNewValue() ?></td>
+				<td class="text-center">
+					<?php 
+					if($row->getPerson() != NULL ){
+						echo $row->getPerson();
+					} else {
+						echo "Antragsteller";
+					}
+					?>
+				</td>
 				<td class="text-center">
 					<?php 
 					if($row->getComment() != null){

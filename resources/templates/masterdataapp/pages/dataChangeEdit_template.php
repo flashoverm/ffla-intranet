@@ -20,6 +20,22 @@
 			placeholder="Neuen Wert (z.B. neue Adresse) eingeben">
 	</div>
 	<div class="form-group">
+		<div class="custom-control custom-checkbox custom-checkbox-big">
+			<input type="checkbox" class="custom-control-input" name="forme" id="forme" onclick="toogleForUser()"
+			<?php if( ! isset($dataChangeRequest) || $dataChangeRequest->getPerson() == null) { echo "checked"; } ?>
+			> <label class="custom-control-label custom-control-label-big" for="forme">Änderung bei meinen Daten</label>
+		</div>
+	</div>
+	<div id="forpersonblock" class="form-group" <?php if( ! isset($dataChangeRequest) || $dataChangeRequest->getPerson() == null) { echo "style='display:none'"; } ?>>
+		<label>Änderung für folgende Person (optional bei eigenen Daten):</label> <input type="text"
+			class="form-control" name="forperson" id="forperson"
+			<?php
+			if(isset($dataChangeRequest)){
+				echo "value='" . $dataChangeRequest->getPerson() . "'";
+			}?>
+			placeholder="Namen und Zug der Person eingeben">
+	</div>
+	<div class="form-group">
 		<label>Anmerkungen:</label>
 		<textarea class="form-control" name="comment" id="comment"
 			placeholder="Anmerkungen"><?php
@@ -49,3 +65,18 @@
 	?>
 	>
 </form>
+
+<script>
+function toogleForUser() {
+  var checkBox = document.getElementById("forme");
+  var text = document.getElementById("forpersonblock");
+  var textfield = document.getElementById("forperson");
+
+  if (checkBox.checked == true){
+    text.style.display = "none";
+    textfield.value = "";
+  } else {
+    text.style.display = "block";
+  }
+} 
+</script>

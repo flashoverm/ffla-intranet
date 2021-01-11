@@ -24,13 +24,18 @@ if( isset($_POST['datatype']) && isset($_POST['newvalue']) ){
 		$dataTypeID = trim ( $_POST ['datatype'] );
 		$newValue = trim ( $_POST ['newvalue'] );
 		
+		$forperson = null;
+		if(isset( $_POST ['forperson'] ) && !empty( $_POST ['forperson'] ) ){
+			$forperson = trim( $_POST ['forperson'] );
+		}
+		
 		$comment = null;
 		if(isset( $_POST ['comment'] ) && !empty( $_POST ['comment'] ) ){
 			$comment = trim( $_POST ['comment'] );
 		}
 		
 		$dataChangeRequest->setState(DataChangeRequest::OPEN);
-		$dataChangeRequest->setDataChangeRequestData($dataTypeID, $newValue, $comment, $userController->getCurrentUser());
+		$dataChangeRequest->setDataChangeRequestData($dataTypeID, $newValue, $comment, $forperson, $userController->getCurrentUser());
 		
 		if( ! isset($_GET ['id'])) {
 			$dataChangeRequest->setCreateDate(date('Y-m-d H:i:s'));
