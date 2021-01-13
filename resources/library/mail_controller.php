@@ -101,9 +101,9 @@ function mail_insert_event($event_uuid, $inform_creator, $publish) {
 function mail_assigned_event($event) {
 	global $bodies;
 	
-	$subject = "Neue Wache zugewiesen" . event_subject($event->uuid);
+	$subject = "Neue Wache zugewiesen" . event_subject($event->getUuid());
 	
-	$body = $bodies["event_assign"] . get_event_link($event->uuid);
+	$body = $bodies["event_assign"] . get_event_link($event->getUuid());
 	
 	return mail_to_manager($event, $subject, $body);
 }
@@ -473,14 +473,14 @@ function mail_send_confirmation($confirmation){
 	return send_mail ( $confirmation->getUser()->getEmail(), $subject, $body, $file);
 }
 
-function mail_send_to_employer($confirmation, $user){
+function mail_send_to_employer(Confirmation $confirmation, User $user){
 	global $config;
 
-	$file = $config["paths"]["confirmations"] . $confirmation->uuid . ".pdf";
+	$file = $config["paths"]["confirmations"] . $confirmation->getUuid() . ".pdf";
 	$subject = "Arbeitgebernachweis für Einsatztätigkeit";
 	$body = "Sehr geehrte Damen und Herren,\n\n"
-		. "der/die Feuerwehrmann/frau " . $user->firstname . " " . $user->lastname . "\n\n"
-				. "war am " . date($config ["formats"] ["date"], strtotime($confirmation->date)) . " zwischen " . date($config ["formats"] ["time"], strtotime($confirmation->start_time)) . " Uhr und " . date($config ["formats"] ["time"], strtotime($confirmation->end_time)) . " Uhr\n\n"
+		. "der/die Feuerwehrmann/frau " . $user->getFullName() . "\n\n"
+				. "war am " . date($config ["formats"] ["date"], strtotime($confirmation->getDate())) . " zwischen " . date($config ["formats"] ["time"], strtotime($confirmation->getStartTime())) . " Uhr und " . date($config ["formats"] ["time"], strtotime($confirmation->getEndTime())) . " Uhr\n\n"
 		. "im Feuerwehreinsatz tätig. \n\n"
 		. "Im Anhang finden Sie die formelle Bestätigung als PDF. \n\n"
 		. "Mit freundlichen Grüßen \n"
