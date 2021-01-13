@@ -17,7 +17,7 @@
 							<div class="custom-control custom-checkbox mb-1">
 							  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->getUuid() ?>" name="priv_<?= $row->getUuid() ?>"
 							  <?php
-							  if( 	(isset($user) && $currentUser->hasPrivilegeByName($row->getPrivilege())) 
+							  if( 	(isset($user) && $user->hasPrivilegeByName($row->getPrivilege())) 
 							  		|| isset($_POST['priv_' . $row->getUuid() ]) 
 							  		|| (! isset($user) && $_SERVER['REQUEST_METHOD'] === 'GET' && $row->getIsDefault() )
 							  ){

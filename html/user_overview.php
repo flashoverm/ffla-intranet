@@ -43,10 +43,10 @@ if (isset ( $_POST ['delete'] )) {
 }
 
 if (isset ( $_POST ['resetpw'] )) {
-	$resetpw_user_uuid = trim ( $_POST ['resetpw'] );
-	$password = $userController->resetPassword( $resetpw_user_uuid );
+	$uuid = trim ( $_POST ['resetpw'] );
+	$password = $userController->resetPassword( $uuid );
 	if($password){
-		$mail = mail_reset_password ( $resetpw_user_uuid, $password );
+		$mail = mail_reset_password ( $uuid, $password );
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserResetPassword, $uuid));
 		$variables ['successMessage'] = "Passwort zurückgesetzt";
 		if(!$mail){
@@ -58,10 +58,11 @@ if (isset ( $_POST ['resetpw'] )) {
 }
 
 if (isset ( $_POST ['setpw'] )) {
-	$setpw_user_uuid = trim ( $_POST ['setpw'] );
-	$password = $userController->resetPassword ( $setpw_user_uuid );
+	$uuid = trim ( $_POST ['setpw'] );
+	$password = $userController->resetPassword ( $uuid );
+	$userController->addPrivilegeToUserByName($uuid, Privilege::EDITUSER);
 	if($password){
-		$mail = mail_add_user($userDAO->getUserByUUID($setpw_user_uuid)->getEmail(), $password);
+		$mail = mail_add_user($userDAO->getUserByUUID($uuid)->getEmail(), $password);
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserAddedPassword, $uuid));
 		$variables ['successMessage'] = "Der Benutzer wurde angelegt und informiert";
 		if(!$mail){

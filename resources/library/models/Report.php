@@ -359,19 +359,16 @@ class Report extends BaseModel {
 		$this->setTitle($event->getTitle());
 		$this->setEventUuid($event->getUuid());
 		
-		$reportUnit = new ReportUnit();
-		
-		$reportUnit->setUnitName("Stationäre Wache");
-		$reportUnit->setDate($event->getDate());
-		$reportUnit->setStartTime($event->getStartTime());
-		$reportUnit->setEndTime($event->getEndTime());
+		$reportUnit = new ReportUnit("Stationäre Wache", $event->getDate(), $event->getStartTime(), $event->getEndTime());
 		
 		foreach($event->getStaff() as $eventStaff){
-			$reportStaff = new ReportStaff();
-			$reportStaff->setName($eventStaff->getUser()->getFullName());
-			$reportStaff->setPosition($eventStaff->getPosition());
-			$reportStaff->setEngine($eventStaff->getUser()->getEngine());
-			$reportUnit->addStaff($reportStaff);
+			if($eventStaff->getUser() != NULL){
+				$reportStaff = new ReportStaff(
+						$eventStaff->getPosition(),
+						$eventStaff->getUser()->getFullName(),
+						$eventStaff->getUser()->getEngine());
+				$reportUnit->addStaff($reportStaff);
+			}
 		}
 	}
 		

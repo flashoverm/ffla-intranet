@@ -7,8 +7,6 @@ require_once "phpmailer/src/PHPMailer.php";
 require_once "phpmailer/src/SMTP.php";
 require_once "phpmailer/src/Exception.php";
 
-//TODO successfull mail sending should return true, error return false
-
 function init_mail() {
     global $config;
     
@@ -95,13 +93,13 @@ function send_mail($to, $subject, $body, $attachment = NULL, $footer = true) {
 
 
 function send_mails($recipients, $subject, $body, $attachment = NULL) {
-    $noError = true;
+    $success = true;
     foreach (removeLockedUsers($recipients) as $to) {
         if(!send_mail($to->getEmail(), $subject, $body, $attachment)){
-            $noError = false;
+        	$success = false;
         }
     }
-    return $noError;
+    return $success;
 }
 
 
@@ -110,13 +108,13 @@ function send_mail_to_mailinglist($mailing, $subject, $body, $attachment = NULL)
 	
 	$recipients = $mailingList[$mailing];
     
-    $noError = true;
+	$success = true;
     foreach($recipients as $recipient){
         if(!send_mail($recipient, $subject, $body, $attachment)){
-            $noError = false;    
+        	$success = false;    
         }
     }
-    return $noError;
+    return $success;
 }
 
 function removeLockedUsers($recipients){

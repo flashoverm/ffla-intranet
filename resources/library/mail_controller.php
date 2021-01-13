@@ -114,9 +114,9 @@ function mail_assigned_event($event) {
 function mail_publish_event($event_obj) {
 	global $bodies, $guardianUserController;
 	
-	$subject = "Neue Wache veröffentlicht" . event_subject($event_obj->uuid);
+	$subject = "Neue Wache veröffentlicht" . event_subject($event_obj->getUuid());
 	
-	$body = $bodies["event_publish"] . get_event_link($event_obj->uuid);
+	$body = $bodies["event_publish"] . get_event_link($event_obj->getUuid());
 	
 	$recipients = $guardianUserController->getEventManangerExeptEngineAndCreator($event_obj->getEngine()->getUuid(), $event_obj->getCreator()->getUuid());
 	

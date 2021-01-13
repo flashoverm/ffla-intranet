@@ -53,20 +53,25 @@ class UserController extends BaseController{
 	}
 	
 	function resetPassword(String $uuid){
-		$password = random_password ();
-		$pwhash = password_hash ( $password, PASSWORD_DEFAULT );
+		$password = $this->randomPassword();
+		$pwhash = $this->hashPassword( $password );
 		
 		$user = $this->userDAO->getUserByUUID($uuid);
-		$user->setPassword($pwhash);
-		return $this->userDAO->save($user);
+		if($user){
+			$user->setPassword($pwhash);
+			if($this->userDAO->save($user)){
+				return $password;
+			}
+		}
+		return false;
 	}
 	
 	function changePassword(String $uuid, String $oldPassword, String $newPassword){
 		$user = $this->userDAO->getUserByUUID($uuid);
 		
-		if( password_verify($oldPassword, $user->getPassword()) || $oldPassword == $user->getPassword() ){
+		if( $this->checkPassword($user, $oldPassword) ){
 			
-			$pwhash = password_hash ( $newPassword, PASSWORD_DEFAULT );
+			$pwhash = $this->hashPassword ( $newPassword );
 			$user->setPassword($pwhash);
 			$this->userDAO->save($user);
 			return true;
@@ -114,14 +119,22 @@ class UserController extends BaseController{
 		return $this->userDAO->save($user);
 	}
 	
-	function addDefaultPrivilegesToUser($user){
+	function addDefaultPrivilegesToUser($user, $includeEventParticipant = true){
 		$privileges = $this->privilegeDAO->getPrivileges();
 		foreach($privileges as $privilege){
 			if($privilege->getIsDefault()){
+				if(! $includeEventParticipant && $privilege->getPrivilege() == Privilege::EVENTPARTICIPENT ){
+					continue;
+				}
 				$user->addPrivilege($privilege);
 			}
 		}
 		return $user;
+	}
+	
+	function addDefaultPrivilegesToEventParticipant(User $user){
+		$ep = $user->hasPrivilegeByName(Privilege::EVENTPARTICIPENT);
+		return $this->addDefaultPrivilegesToUser($user, $ep);
 	}
 	
 	function createNewUser(User $user){
@@ -149,23 +162,23 @@ class UserController extends BaseController{
 			throw new Exception("User with login existing", 102);
 		}
 		
-		//Add given password or generate new
-		if($user->getPassword() != NULL){
-			$userByMail->setPassword($this->hashPassword($user->getPassword()));
-		} else {
-			$userByMail->setPassword($this->createPassword());
-		}
-		
+		$userByMail->setPassword($this->hashPassword($user->getPassword()));
+
 		//Add default privileges
 		$this->addDefaultPrivilegesToUser($userByMail);
 		
 		//Save and return user
 		return $this->userDAO->save($userByMail);
 	}
-	
-	protected function createPassword(){
-		$password = randomPassword ();
-		return hashPassword($password);
+
+	function checkPassword($user, $password){
+		if ($password == $user->getPassword() ) {
+			return $user->getUuid();
+		}
+		if (password_verify ( $password, $user->getPassword() )) {
+			return $user->getUuid();
+		}
+		return false;		
 	}
 	
 	protected function hashPassword($password){

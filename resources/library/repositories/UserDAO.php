@@ -141,6 +141,25 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
+	function getDuplicateUsers(){
+		$statement = $this->db->prepare("SELECT * FROM user 
+		WHERE email = (SELECT email FROM user GROUP BY email HAVING COUNT(*) > 1)");
+		
+		if ($statement->execute()) {
+			return $this->handleResult($statement, true);
+		}
+		return false;
+	}
+	
+	function deleteUser($uuid){
+		$statement = $this->db->prepare("DELETE FROM user WHERE uuid= ?");
+		
+		if ($statement->execute(array($uuid))) {
+			return true;
+		}
+		return false;
+	}
+	
 	
 	/*
 	 * Init and helper methods

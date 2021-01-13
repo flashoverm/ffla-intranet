@@ -2,16 +2,6 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
 
-function check_password($user, $password) {
-	if ($password == $user->getPassword() ) {
-		return $user->getUuid();
-	}
-	if (password_verify ( $password, $user->getPassword() )) {
-		return $user->getUuid();
-	}
-	return false;
-}
-
 if (userLoggedIn()) {
 	header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects
 }
@@ -35,7 +25,7 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 	$loggedIn = false;
 	$user = $userDAO->getUserByEmail($email);
 	if ( $user != null && ! $user->getLocked() && ! $user->getDeleted() ) {
-		$uuid = check_password ( $user, $password );
+		$uuid = $userController->checkPassword( $user, $password );
 		if ($uuid) {
 			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserLogedIn, $uuid));
 			
