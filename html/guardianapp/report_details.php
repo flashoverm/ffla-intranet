@@ -39,7 +39,7 @@ if (! isset($_GET['id'])) {
 	                } else {
 	                    $variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
 	                }
-	                $variables['report'] = get_report($uuid);
+	                $variables['report'] = $reportDAO->getReport($uuid);
 	            }
 	            
 	            if(isset($_POST['emsEntryRemoved'])){
@@ -49,7 +49,7 @@ if (! isset($_GET['id'])) {
 	            	} else {
 	            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
 	            	}
-	            	$variables['report'] = get_report($uuid);
+	            	$variables['report'] = $reportDAO->getReport($uuid);
 	            }
 	            
 	            if(isset($_POST['managerApprove'])){
@@ -60,7 +60,7 @@ if (! isset($_GET['id'])) {
 	            	} else {
 	            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
 	            	}
-	            	$variables['report'] = get_report($uuid);
+	            	$variables['report'] = $reportDAO->getReport($uuid);
 	            }
 	            
 	            if(isset($_POST['managerApproveRemove'])){
@@ -70,7 +70,7 @@ if (! isset($_GET['id'])) {
 	            	} else {
 	            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
 	            	}
-	            	$variables['report'] = get_report($uuid);
+	            	$variables['report'] = $reportDAO->getReport($uuid);
 	            }
 	            
 	            if (isset ( $_POST ['delete'] )) {

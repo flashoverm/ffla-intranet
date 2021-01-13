@@ -16,25 +16,25 @@ class ReportController extends BaseController{
 	function setEmsEntry($reportUuid){
 		$report = $this->reportDAO->getReport($reportUuid);
 		$report->setEmsEntry(true);
-		$this->reportDAO->updateReportOnly($report);
+		return $this->reportDAO->updateReportOnly($report);
 	}
 	
 	function unsetEmsEntry($reportUuid){
 		$report = $this->reportDAO->getReport($reportUuid);
 		$report->setEmsEntry(false);
-		$this->reportDAO->updateReportOnly($report);
+		return $this->reportDAO->updateReportOnly($report);
 	}
 	
 	function setApproval($reportUuid){
 		$report = $this->reportDAO->getReport($reportUuid);
 		$report->setManagerApproved(true);
-		$this->reportDAO->updateReportOnly($report);
+		return $this->reportDAO->updateReportOnly($report);
 	}
 	
 	function unsetApproval($reportUuid){
 		$report = $this->reportDAO->getReport($reportUuid);
 		$report->setManagerApproved(false);
-		$this->reportDAO->updateReportOnly($report);
+		return $this->reportDAO->updateReportOnly($report);
 	}
 	
 }
