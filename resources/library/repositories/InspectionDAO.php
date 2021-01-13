@@ -147,7 +147,7 @@ class InspectionDAO extends BaseDAO{
 		
 		if ($result) {
 			foreach($inspection->getInspectedHydrants() as $inspectedHydrant){
-				if($this->inspectedHydrantExists($inspectedHydrant)){
+				if($this->inspectedHydrantExists($inspection->getUuid(), $inspectedHydrant)){
 					$this->updateInspectedHydrant($inspection->getUuid(), $inspectedHydrant);
 				} else {
 					$this->insertInspectedHydrant($inspection->getUuid(), $inspectedHydrant);
@@ -178,8 +178,8 @@ class InspectionDAO extends BaseDAO{
 		
 		$statement = $this->db->prepare("UPDATE hydrant_inspection
 		SET idx = ?, type = ?, criteria = ?
-		WHERE inspection = ? AND hyrant = ?" );
-		
+		WHERE inspection = ? AND hydrant = ?" );
+	
 		$result = $statement->execute(array($inspectedHydrant->getIndex(), $inspectedHydrant->getType(), 
 				$criteria, $inspectionUuid, $inspectedHydrant->getHydrant()->getUuid()
 		));

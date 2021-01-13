@@ -13,11 +13,9 @@
 </script>
 
 <body>
-<!--
 	<div id="overlay" style="display:inline;">
  		<div class="loader"></div>
  	</div>
- -->
 	<header>
 	<div class="jumbotron py-3">
 		<!-- 
