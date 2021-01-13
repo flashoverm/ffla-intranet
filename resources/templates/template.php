@@ -32,7 +32,7 @@ function renderPrintContentFile($app, $contentFile, $variables = array(), $noHea
         
     require_once (TEMPLATES_PATH . "/header_print.php");
     
-    if( isset($privilege) && ! $currentUser->hasPrivilegeByName($privilege) && ! $localhostRequest ){
+    if( ! $localhostRequest && isset($privilege) && (! $currentUser || ! $currentUser->hasPrivilegeByName($privilege) ) ){
     	showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
     	$showFormular = false;
     }
@@ -87,14 +87,12 @@ function renderLayoutWithContentFile($app, $contentFile, $variables = array()) {
 	if ($secured && ! $currentUser) {
         goToLogin();		
 	}
-	
-	$currentUser = $userController->getCurrentUser();
-	
+		
 	require_once (TEMPLATES_PATH . "/header.php");
 
 	echo "<div class=\"container\" id=\"container\">\n" . "\t<div id=\"content\">\n";
 
-	if(isset($privilege) && ! $currentUser->hasPrivilegeByName($privilege)){
+	if(isset($privilege) && (! $currentUser || ! $currentUser->hasPrivilegeByName($privilege) ) ){
 		showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
 		$showFormular = false;
 	}

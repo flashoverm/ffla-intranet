@@ -11,9 +11,6 @@
 	<?php
 	if(! $noHeader ){
 	?>
-	<div id="overlay" style="display:inline;">
- 		<div class="loader"></div>
- 	</div>
  	<header>
 	 	<div class="row">
 			<div class="col">
