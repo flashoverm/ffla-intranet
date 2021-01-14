@@ -141,21 +141,25 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
-	function getDuplicateUsers(){
-		$statement = $this->db->prepare("SELECT * FROM user 
-		WHERE email = (SELECT email FROM user GROUP BY email HAVING COUNT(*) > 1)");
+	function getDuplicateUsersEmail(){
+		$statement = $this->db->prepare("SELECT email FROM user GROUP BY email HAVING COUNT(*) > 1");
 		
 		if ($statement->execute()) {
-			return $this->handleResult($statement, true);
+			return $statement->fetchAll();
 		}
 		return false;
 	}
 	
 	function deleteUser($uuid){
-		$statement = $this->db->prepare("DELETE FROM user WHERE uuid= ?");
+		$statement = $this->db->prepare("DELETE FROM user_privilege WHERE user= ?");
 		
 		if ($statement->execute(array($uuid))) {
-			return true;
+			$statement = $this->db->prepare("DELETE FROM user WHERE uuid= ?");
+			
+			if ($statement->execute(array($uuid))) {
+				return true;
+			}
+			return false;
 		}
 		return false;
 	}

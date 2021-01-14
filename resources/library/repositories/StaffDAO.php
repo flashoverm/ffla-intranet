@@ -44,6 +44,15 @@ class StaffDAO extends BaseDAO{
 		return false;
 	}
 	
+	function getStaffByUser($userUuid){
+		$statement = $this->db->prepare("SELECT * FROM staff WHERE user = ?");
+		
+		if ($statement->execute(array($userUuid))) {
+			return $this->handleResult($statement, true);
+		}
+		return false;
+	}
+	
 	function deleteEventStaffEntry($staffEntryUuid){
 		$statement = $this->db->prepare("DELETE FROM staff WHERE uuid= ?");
 		

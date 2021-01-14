@@ -34,9 +34,7 @@ class PrivilegeDAO extends BaseDAO{
 			return true;
 			
 		}
-		// echo "Error: " . $query . "<br>" . $db->error;
 		return false;
-		
 	}
 
 	function getPrivileges(){

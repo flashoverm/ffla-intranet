@@ -57,6 +57,15 @@ class EventDAO extends BaseDAO{
 		return false;	
 	}
 	
+	function getEventsWithCreator($userUuid){
+		$statement = $this->db->prepare("SELECT * FROM event WHERE creator = ?");
+		
+		if ($statement->execute(array($userUuid))) {
+			return $this->handleResult($statement, true);
+		}
+		return false;
+	}
+	
 	function getPastEvents(){
 		$statement = $this->db->prepare("SELECT * FROM event WHERE date < (now() - INTERVAL 1 DAY) AND deleted_by IS NULL ORDER BY date ASC");
 		

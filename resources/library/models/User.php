@@ -260,16 +260,18 @@ class User extends BaseModel {
 	
 	public function addPrivilege(Privilege $privilege){
 		if($this->hasPrivilegeByName($privilege->getPrivilege())){
-			return;
+			return false;
 		}
 		$this->privileges[] = $privilege;
+		return true;
 	}
 	
 	public function removePrivilege(Privilege $privilege){
 		if( ! $this->hasPrivilegeByName($privilege->privilege())){
-			return;
+			return false;
 		}
 		$this->privileges->detach($privilege);
+		return true;
 	}
 	
 	public function resetPrivileges(array $newPrivileges){
