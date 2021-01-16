@@ -45,6 +45,7 @@ $config = array (
 					"content" => $_SERVER ["DOCUMENT_ROOT"] . "/images/content",
 					"layout" => $_SERVER ["DOCUMENT_ROOT"] . "/images/layout/"
 			),
+			"initial" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/_initial/",
 			"files" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/files/",
 			"maps" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/maps/",
 			"inspections" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/inspections/",

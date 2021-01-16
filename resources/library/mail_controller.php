@@ -454,7 +454,9 @@ function mail_send_confirmation($confirmation){
 		$employer_informed = mail_send_to_employer($confirmation, $confirmation->getUser());
 	}
 
-	$file = $config["paths"]["confirmations"] . $confirmation->getUuid() . ".pdf";
+	$files = array();
+	$files[] = $config["paths"]["confirmations"] . $confirmation->getUuid() . ".pdf";
+	$files[] = $config["paths"]["files"] . "Lohnerstattung-Verdienstausfall.pdf";
 	$subject = "Arbeitgebernachweis für Einsatztätigkeit";
 	$body = $bodies["confirmation_accepted"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations";
 	
@@ -470,13 +472,15 @@ function mail_send_confirmation($confirmation){
 					. "(In den Benutzerdaten kann die E-Mail-Adresse des Arbeitgebers hinterlegt werden. Die Bestätigung wird dann direkt an diese Adresse gesendet)";
 	}
 		
-	return send_mail ( $confirmation->getUser()->getEmail(), $subject, $body, $file);
+	return send_mail ( $confirmation->getUser()->getEmail(), $subject, $body, $files);
 }
 
 function mail_send_to_employer(Confirmation $confirmation, User $user){
 	global $config;
 
-	$file = $config["paths"]["confirmations"] . $confirmation->getUuid() . ".pdf";
+	$files = array();
+	$files[] = $config["paths"]["confirmations"] . $confirmation->getUuid() . ".pdf";
+	$files[] = $config["paths"]["files"] . "Lohnerstattung-Verdienstausfall.pdf";
 	$subject = "Arbeitgebernachweis für Einsatztätigkeit";
 	$body = "Sehr geehrte Damen und Herren,\n\n"
 		. "der/die Feuerwehrmann/frau " . $user->getFullName() . "\n\n"
@@ -486,7 +490,7 @@ function mail_send_to_employer(Confirmation $confirmation, User $user){
 		. "Mit freundlichen Grüßen \n"
 		. "Stadt Landshut\nReferat 5 Feuerwehr";
 	
-	return send_mail ( $user->getEmployerMail(), $subject, $body, $file, false);
+	return send_mail ( $user->getEmployerMail(), $subject, $body, $files, false);
 }
 
 

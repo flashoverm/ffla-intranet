@@ -5,7 +5,16 @@ require_once "BaseDAO.php";
 class FileDAO extends BaseDAO {
 	
 	function __construct(PDO $pdo) {
+		global $config;
 		parent::__construct($pdo, "file");
+		
+		$files = scandir($config['paths']['initial'] . "files/");
+		foreach($files as $file){
+			if( ! file_exists($config['paths']['files'] . $file) ){
+				copy($config['paths']['initial'] . "files/" . $file,
+						$config['paths']['files'] . $file);
+			}
+		}
 	}
 	
 	function save(File $file){

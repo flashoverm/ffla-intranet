@@ -6,9 +6,13 @@ Release Documentation
 
 Feature:
 	Masterdata app to request change of master data of users in "MP Feuer"
+	Merge duplicate user script
+	Added refund form to confirmation mail
 
 Changes/Refactoring: 
 	Applied MVC pattern to business objects
+	
+Some bugfixes
 
 PHP Update to 7.4
 	apt update && apt upgrade

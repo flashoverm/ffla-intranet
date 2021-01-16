@@ -26,7 +26,7 @@ function init_mail() {
     return $mail;
 }
 
-function send_mail($to, $subject, $body, $attachment = NULL, $footer = true) {
+function send_mail($to, $subject, $body, $attachments = NULL, $footer = true) {
 	global $util, $config, $mailLogDAO;
     
 	$mailBody = $body;
@@ -43,12 +43,19 @@ function send_mail($to, $subject, $body, $attachment = NULL, $footer = true) {
 	        $mail->addAddress ( $to );
 	        $mail->Subject = $subject;
 	       
-	        if($attachment != NULL){
-	        	if(file_exists ( $attachment ) ){
-	        		$mail->AddAttachment($attachment, $name = basename($attachment),  $encoding = 'base64', $type = 'application/pdf');
-	        	} else {
-	        		$mailBody = $mailBody . $util["attachment_error"];
-	        		$mailState = MailLog::AttachmentError;
+	        if($attachments != NULL){
+
+	        	if( ! is_array($attachments)){
+	        		$attachment = $attachments;
+	        		$attachments = array($attachment);
+	        	}
+	        	foreach($attachments as $attachment){
+	        		if(file_exists ( $attachment ) ){
+	        			$mail->AddAttachment($attachment, basename($attachment), 'base64', 'application/pdf');
+	        		} else {
+	        			$mailBody = $mailBody . $util["attachment_error"];
+	        			$mailState = MailLog::AttachmentError;
+	        		}
 	        	}
 	        }
 	        
