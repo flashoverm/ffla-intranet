@@ -22,6 +22,9 @@ if( isset( $_POST['withdraw'] ) ){
 	}
 }
 
+$furtherRequest = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::REQUEST, $_SESSION ['intranet_userid']);
+$variables['furtherRequest'] = $furtherRequest;
+
 $open = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::OPEN, $_SESSION ['intranet_userid']);
 $variables['open'] = $open;
 

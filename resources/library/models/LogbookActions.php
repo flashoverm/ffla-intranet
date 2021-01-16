@@ -108,6 +108,7 @@ abstract class LogbookActions {
 			503 => "Anfrage Datenänderung umgesetzt",
 			504 => "Anfrage Datenänderung abgelehnt",
 			505 => "Anfrage Datenänderung zurückgezogen",
+			506 => "Rückfrage zu Anfrage Datenänderung",
 			
 	);
 	
@@ -218,5 +219,6 @@ abstract class LogbookActions {
 	const DataChangeDone = 503;
 	const DataChangeDeclined = 504;
 	const DataChangeWithdraw = 505;
+	const DataChangeFurtherRequest = 506;
 	
 }

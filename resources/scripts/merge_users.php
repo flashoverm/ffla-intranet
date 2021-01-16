@@ -22,7 +22,7 @@ foreach ($duplicates as $dublicate){
 	foreach($staff as $entry){
 		$entry->setUser($users[1]);
 		$staffDAO->save($entry);
-		echo "Updated staff " . $entry->getUuid() . " - Event: " . $entry->getEvent()->getUuid() . "\n";
+		echo "Updated staff " . $entry->getUuid() . " - Event: " . $entry->getEventUuid() . "\n";
 	}
 	
 	//datachangerequest

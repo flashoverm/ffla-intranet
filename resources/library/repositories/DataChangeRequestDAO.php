@@ -93,13 +93,14 @@ class DataChangeRequestDAO extends BaseDAO {
 		}
 		
 		$statement = $this->db->prepare("UPDATE datachangerequest
-		SET createdate = ?, datatype = ?, newvalue = ?, comment = ?, state = ?, person = ?, user = ?, last_advisor = ?
+		SET createdate = ?, datatype = ?, newvalue = ?, comment = ?, state = ?, person = ?, user = ?, 
+		last_advisor = ?, further_request = ?
 		WHERE uuid= ?");
 		
 		$result = $statement->execute(array( $dataChangeRequest->getCreateDate(),$dataChangeRequest->getDatatype(), 
 				$dataChangeRequest->getNewValue(), $dataChangeRequest->getComment(), $dataChangeRequest->getState(),
 				$dataChangeRequest->getPerson(), $dataChangeRequest->getUser()->getUuid(), $lastAdvisorUuid, 
-				$dataChangeRequest->getUuid()
+				$dataChangeRequest->getFurtherRequest(), $dataChangeRequest->getUuid()
 		));
 		
 		if ($result) {
@@ -119,6 +120,7 @@ class DataChangeRequestDAO extends BaseDAO {
 		$object->setComment($result['comment']);
 		$object->setUser($this->userDAO->getUserByUUID($result['user']));
 		$object->setPerson($result['person']);
+		$object->setFurtherRequest($result['further_request']);
 		
 		if($result['last_advisor'] != NULL){
 			$object->setLastAdvisor($this->userDAO->getUserByUUID($result['last_advisor']));
@@ -136,6 +138,7 @@ class DataChangeRequestDAO extends BaseDAO {
 						  state TINYINT NOT NULL,
 						  person VARCHAR(255),
 						  user CHARACTER(36) NOT NULL,
+						  further_request VARCHAR(255),
 						  last_advisor CHARACTER(36),
                           PRIMARY KEY  (uuid),
 						  FOREIGN KEY (user) REFERENCES user(uuid),

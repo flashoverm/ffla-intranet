@@ -42,6 +42,22 @@ if( isset($_POST['datachangerequest']) ){
 		} else {
 			$variables ['alertMessage'] = "Anfrage konnte nicht bearbeitet werden";
 		}
+	} else if ( isset($_POST['request']) ){
+		
+		$requestText = trim($_POST['requesttext']);
+		
+		$dataChangeRequest = $dataChangeRequestController->requestToDataChangeRequest($dataChangeRequestUuid, $requestText);
+		
+		if($dataChangeRequest){
+			if( ! mail_send_datachange_status($dataChangeRequest)){
+				$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
+			}
+			$variables ['successMessage'] = "Rückfrage gestellt";
+			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::DataChangeDeclined, $dataChangeRequest->getUuid()));
+			
+		} else {
+			$variables ['alertMessage'] = "Anfrage konnte nicht bearbeitet werden";
+		}
 	}
 	
 }

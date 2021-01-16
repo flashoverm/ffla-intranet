@@ -30,6 +30,8 @@ if( isset($_POST['date']) && isset($_POST['start']) && isset($_POST['end']) ){
 			$description = trim( $_POST ['description'] );
 		}
 		
+		$previousState = $confirmation->getState();
+		
 		$confirmation->setState(Confirmation::OPEN);
 		$confirmation->setReason(NULL);
 		
@@ -38,7 +40,7 @@ if( isset($_POST['date']) && isset($_POST['start']) && isset($_POST['end']) ){
 			$confirmation = $confirmationDAO->save($confirmation);
 			
 			if($confirmation){
-				if($variables ['confirmation']->getState() == Confirmation::DECLINED){
+				if($previousState == Confirmation::DECLINED){
 					if( ! mail_send_confirmation_request($confirmation)){
 						$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
 					}

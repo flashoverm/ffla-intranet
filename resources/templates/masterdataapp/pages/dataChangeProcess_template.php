@@ -25,7 +25,7 @@ if ( ! count ( $open ) ) {
 			<tr>
 				<td class="text-center"><span class='d-none'><?= strtotime($row->getCreateDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getCreateDate())); ?></td>
 				<td class="text-center"><?= DataChangeRequest::DATATYPE_TEXT[$row->getDataType()] ?></td>
-				<td class="text-center"><?= $row->getNewValue() ?></td>
+				<td class="text-center" id="value<?= $row->getUuid() ?>"><?= $row->getNewValue() ?></td>
 				<td class="text-center">
 					<?php 
 					if($row->getPerson() != NULL ){
@@ -41,9 +41,10 @@ if ( ! count ( $open ) ) {
 					<?php 
 					if($row->getComment() != null){
 					?>
-						<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#showComment<?= $row->getUuid()?>">Anmerkungen</button>
+						<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#showComment<?= $row->getUuid()?>">Anmerkungen</button><br>
+						<button type="button" class="btn btn-outline-primary btn-sm mt-1" id="copy<?= $row->getUuid() ?>" onclick="copyToClipboard('<?= $row->getUuid()?>')">Wert kopieren</button>
 					<?php
-						createDialog('showComment' . $row->getUuid(), "Anmerkungen", null, null, null, null, "Schließen", $row->getComment());
+						createDialog('showComment' . $row->getUuid(), "Anmerkungen", null, null, null, null, "Schließen", nl2br($row->getComment()));
 					} else {
 						echo "Keine";
 					}
@@ -57,6 +58,8 @@ if ( ! count ( $open ) ) {
 								<input type="hidden" name="datachangerequest" id="datachangerequest" value="<?= $row->getUuid() ?>"/>
 								<input type="submit" name="done" value="Umgesetzt"  class="dropdown-item"/>
 								<div class="dropdown-divider"></div>
+								<button type="button" class="dropdown-item" data-toggle='modal' data-target='#sendRequest<?= $row->getUuid() ?>'>Rückfrage</button>
+								<div class="dropdown-divider"></div>
 								<input type="submit" name="declined" value="Ablehnen"  class="dropdown-item"/>
 							</form>
 						</div>
@@ -68,9 +71,53 @@ if ( ! count ( $open ) ) {
 		?>
 		</tbody>
 	</table>
+	<?php
+	foreach ( $open as $row ) {
+	?>
+		<div class='modal' id='sendRequest<?= $row->getUuid() ?>'>
+			<div class='modal-dialog'>
+				<div class='modal-content'>
+					<form method="post" action="">
+						<div class='modal-header'>
+							<h4 class='modal-title'>Rückfrage zu Änderungsantrag</h4>
+							<button type='button' class='close' data-dismiss='modal'>&times;</button>
+						</div>
+						<div class='modal-body'>
+							<div class="form-group">
+								<input type="text" required="required" placeholder="Rückfrage eingeben" class="form-control" 
+								name="requesttext" id="requesttest" >
+							</div>
+						</div>
+						<div class='modal-footer'>
+							<input type="hidden" name="datachangerequest" id="datachangerequest" value="<?= $row->getUuid() ?>"/>
+							<input type='submit' name="request" value='Absenden' class='btn btn-primary'/>
+							<button type='button' class='btn btn-outline-primary' data-dismiss='modal'>Abbrechen</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	<?php 
+	}
+	?>
 </div>
 
 <?php
 }
-
+?>
+<script>
+function copyToClipboard(uuid) {
+	var r = document.createRange();
+	r.selectNode(document.getElementById("value" + uuid));
+	console.log(document.getElementById("value" + uuid).value); 
+	window.getSelection().removeAllRanges();
+	window.getSelection().addRange(r);
+	document.execCommand('copy');
+	window.getSelection().removeAllRanges();
+	
+	btn = document.getElementById("copy" + uuid);
+	btn.className  = "btn btn-outline-success btn-sm mt-1";
+	btn.firstChild.nodeValue = "Wert kopiert";
+}
+</script>
     

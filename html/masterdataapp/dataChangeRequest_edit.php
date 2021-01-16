@@ -19,7 +19,8 @@ if(isset($_GET ['id'])) {
 if( isset($_POST['datatype']) && isset($_POST['newvalue']) ){
 	
 	if(! isset($_GET ['id'])
-			|| (isset($_GET ['id']) && $variables ['dataChangeRequest']->getState() == DataChangeRequest::OPEN) ){
+			|| (isset($_GET ['id']) && ($variables ['dataChangeRequest']->getState() == DataChangeRequest::OPEN 
+					|| $variables ['dataChangeRequest']->getState() == DataChangeRequest::REQUEST  ) ) ){
 		
 		$dataTypeID = trim ( $_POST ['datatype'] );
 		$newValue = trim ( $_POST ['newvalue'] );
@@ -34,9 +35,12 @@ if( isset($_POST['datatype']) && isset($_POST['newvalue']) ){
 			$comment = trim( $_POST ['comment'] );
 		}
 		
+		$priviousState = $dataChangeRequest->getState();
+				
 		$dataChangeRequest->setState(DataChangeRequest::OPEN);
+		$dataChangeRequest->setFurtherRequest(NULL);
 		$dataChangeRequest->setDataChangeRequestData($dataTypeID, $newValue, $comment, $forperson, $userController->getCurrentUser());
-		
+				
 		if( ! isset($_GET ['id'])) {
 			$dataChangeRequest->setCreateDate(date('Y-m-d H:i:s'));
 		}
@@ -46,17 +50,22 @@ if( isset($_POST['datatype']) && isset($_POST['newvalue']) ){
 		if(isset($_GET ['id'])) {
 			
 			if($dataChangeRequest){
+
+				if($priviousState == DataChangeRequest::REQUEST){
+					if( ! mail_send_datachange_request_update($dataChangeRequest)){
+						$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
+					}
+				}
 				
 				$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::DataChangeUpdated, $dataChangeRequest->getUuid()));
 				$variables ['successMessage'] = "Anfrage aktualisiert";
-				header ( "Location: " . $config["urls"]["masterdataapp_home"] . "/datachangerequests"); // redirects
+				//header ( "Location: " . $config["urls"]["masterdataapp_home"] . "/datachangerequests"); // redirects
 				
 			} else {
 				$variables ['alertMessage'] = "Anfrage konnte nicht aktualisiert werden";
 			}
 			
 		} else {
-			
 			if($dataChangeRequest){
 				if( ! mail_send_datachange_request($dataChangeRequest)){
 					$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";

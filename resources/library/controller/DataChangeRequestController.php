@@ -27,4 +27,11 @@ class DataChangeRequestController extends BaseController{
 		return $this->dataChangeRequestDAO->save($dataChangeRequest);
 	}
 	
+	function requestToDataChangeRequest($uuid, $request){
+		$dataChangeRequest = $this->dataChangeRequestDAO->getDataChangeRequest($uuid);
+		$dataChangeRequest->setState(DataChangeRequest::REQUEST);
+		$dataChangeRequest->setFurtherRequest($request);
+		return $this->dataChangeRequestDAO->save($dataChangeRequest);
+	}
+	
 }

@@ -33,12 +33,14 @@ class DataChangeRequest extends BaseModel {
 	const OPEN = 1;
 	const DONE = 2;
 	const DECLINED = 3;
+	const REQUEST = 4;
 	
 	const CONFIRMATION_STATES = array(
 			
 			1 => "Offen",
 			2 => "Erledigt",
 			3 => "Abgelehnt",
+			4 => "Rückfragen",
 	);
 	
 	/**
@@ -75,6 +77,11 @@ class DataChangeRequest extends BaseModel {
 	 * @ORM\Column(type="string")
 	 */
 	protected ?string $person;
+	
+	/**
+	 * @ORM\Column(type="string")
+	 */
+	protected ?string $furtherRequest;
 	
 	protected ?User $lastAdvisor;
 
@@ -126,6 +133,13 @@ class DataChangeRequest extends BaseModel {
 	 */
 	public function getPerson() : ?string {
 		return $this->person;
+	}
+	
+	/**
+	 * @return NULL
+	 */
+	public function getFurtherRequest() : ?string {
+		return $this->furtherRequest;
 	}
 
 	/**
@@ -190,6 +204,13 @@ class DataChangeRequest extends BaseModel {
 	public function setPerson(?string $person) {
 		$this->person = $person;
 	}
+	
+	/**
+	 * @param NULL $user
+	 */
+	public function setFurtherRequest(?string $furtherRequest) {
+		$this->furtherRequest = $furtherRequest;
+	}
 
 	/**
 	 * @param NULL $lastAdvisor
@@ -222,6 +243,7 @@ class DataChangeRequest extends BaseModel {
 		$this->person = NULL;
 		$this->uuid = NULL;
 		$this->user = NULL;
+		$this->furtherRequest = NULL;
 	}
 	
 	/*

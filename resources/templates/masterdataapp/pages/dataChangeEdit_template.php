@@ -53,11 +53,23 @@
 			>
 		</div>
 		<?php
+		if( $dataChangeRequest->getFurtherRequest() != null ){
+		?>
+		<div class="form-group">
+			<label>Rückfrage (Antwort bitte in den Anmerkungen ergänzen):</label> 
+			<textarea type="text" class="form-control" name="reason" id="reason" readonly><?= $dataChangeRequest->getFurtherRequest() ?></textarea>
+		</div>
+	<?php
+		}
 	}
 	?>
+	<a class="btn btn-outline-primary" href="<?= $config["urls"]["masterdataapp_home"] ?>/datachangerequests/">Zurück</a>
 	<input type="submit" class="btn btn-primary" id="submitDataChangeRequest" 
 	<?php
-	if(isset($dataChangeRequest) && $dataChangeRequest->getState() == DataChangeRequest::OPEN){
+	if(isset($dataChangeRequest) 
+			&& ($dataChangeRequest->getState() == DataChangeRequest::OPEN 
+					|| $dataChangeRequest->getState() == DataChangeRequest::REQUEST
+	)){
 		echo " value='Antrag aktualisieren'";
 	} else {
 		echo " value='Beantragen'";
