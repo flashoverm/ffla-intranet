@@ -37,13 +37,7 @@ class EventController extends BaseController{
 			}
 		}
 		
-		var_dump($event->getStaff());
-		
 		$saved = $this->eventDAO->save($event);
-		
-		echo "<br><br>";
-		var_dump($saved->getStaff());
-		
 		return $saved;
 	}
 		

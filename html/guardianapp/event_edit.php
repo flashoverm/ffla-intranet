@@ -174,9 +174,11 @@ if (isset ( $_POST ['type'] ) ) {
 			} else {
 				if( ! isset($_POST ['forwardToEvent']) || $_POST ['forwardToEvent'] != 1){
 					unset($variables['event']);
+				} else {
+					header ( "Location: " . $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() ); // redirects
 				}
 			}
-			
+
 		} else {
 			$variables ['alertMessage'] = "Wache konnte nicht angelegt werden";
 		}
