@@ -66,6 +66,7 @@ class ConfirmationDAO extends BaseDAO {
 	
 	protected function insertConfirmation(Confirmation $confirmation){
 		$uuid = $this->generateUuid();
+		$confirmation->setUuid($uuid);
 		
 		$statement = $this->db->prepare("INSERT INTO confirmation (uuid, date, start_time, end_time, description, state, user)
 		VALUES (?, ?, ?, ?, ?, ?, ?)");

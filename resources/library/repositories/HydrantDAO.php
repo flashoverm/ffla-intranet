@@ -149,6 +149,7 @@ class HydrantDAO extends BaseDAO{
 	
 	protected function insertHydrant(Hydrant $hydrant){
 		$uuid = $this->generateUuid();
+		$hydrant->setUuid($uuid);
 		
 		$statement = $this->db->prepare("INSERT INTO hydrant
             (uuid, fid, hy, street, type, checkbyff, district, lat, lng, engine, cycle, operating)

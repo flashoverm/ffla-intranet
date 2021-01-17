@@ -171,6 +171,7 @@ class UserDAO extends BaseDAO {
 	
 	protected function insertUser(User $user){
 		$uuid = $this->generateUuid();
+		$user->setUuid($uuid);
 		$emailLower = strtolower($user->getEmail());
 		
 		$statement = $this->db->prepare("INSERT INTO user (
