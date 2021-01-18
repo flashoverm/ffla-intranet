@@ -25,8 +25,9 @@ PHP Update to 7.4
 	a2enmod php7.4
 	systemctl restart apache2
 	
-Insert Privilege
-	INSERT INTO privilege (uuid, privilege, is_default) VALUES ('E2CA260A-FFA1-09D3-6C31-F32F231454F9', 'MASTERDATAADMIN', '0'); 
+SQL
+	INSERT INTO privilege (uuid, privilege, is_default) VALUES ('E2CA260A-FFA1-09D3-6C31-F32F231454F9', 'MASTERDATAADMIN', '0');
+	ALTER TABLE staff ADD user_acknowledged BOOLEAN NOT NULL AFTER unconfirmed;  
 
 #### V2.2.2
 

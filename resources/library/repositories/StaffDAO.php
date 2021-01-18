@@ -20,7 +20,7 @@ class StaffDAO extends BaseDAO{
 		} else {
 			$saved = $this->insertEventStaffEntry($staff);
 		}
-		if($saved != null){
+		if($saved){
 			return $saved;
 		}
 		return false;
@@ -77,17 +77,19 @@ class StaffDAO extends BaseDAO{
 			$object->setUser($this->userDAO->getUserByUUID($result['user']));
 		}
 		$object->setUnconfirmed($result['unconfirmed']);
+		$object->setUserAcknowledged($result['user_acknowledged']);
 		$object->setEventUuid($result['event']);
 		return $object;
 	}
 	
 	protected function insertEventStaffEntry(Staff $staff){
 		$uuid = $this->generateUuid();
+		$staff->setUuid($uuid);
 		
-		$statement = $this->db->prepare("INSERT INTO staff (uuid, position, event, user, unconfirmed) VALUES (?, ?, ?, NULL, ?)");
+		$statement = $this->db->prepare("INSERT INTO staff (uuid, position, event, user, unconfirmed, user_acknowledged) VALUES (?, ?, ?, NULL, ?, ?)");
 		
 		$result = $statement->execute(array($uuid, $staff->getPosition()->getUuid(),
-				$staff->getEventUuid(), $staff->getUnconfirmed()
+				$staff->getEventUuid(), $staff->getUnconfirmed(), $staff->getUserAcknowledged()
 		));
 		
 		if($result){
@@ -103,11 +105,12 @@ class StaffDAO extends BaseDAO{
 		}
 		
 		$statement = $this->db->prepare("UPDATE staff
-		SET position = ?, user = ?, unconfirmed = ?, event = ?
+		SET position = ?, user = ?, unconfirmed = ?, user_acknowledged = ?, event = ?
 		WHERE uuid = ?");
 		
 		$result = $statement->execute(array($staff->getPosition()->getUuid(),
-				$user, $staff->getUnconfirmed(), $staff->getEventUuid(), $staff->getUuid()
+				$user, $staff->getUnconfirmed(), $staff->getUserAcknowledged(), 
+				$staff->getEventUuid(), $staff->getUuid()
 		));
 		if($result){
 			return $staff;
@@ -132,6 +135,7 @@ class StaffDAO extends BaseDAO{
                           event CHARACTER(36) NOT NULL,
 						  user CHARACTER(36),
 						  unconfirmed BOOLEAN NOT NULL,
+						  user_acknowledged BOOLEAN NOT NULL,
                           PRIMARY KEY  (uuid),
 						  FOREIGN KEY (user) REFERENCES user(uuid),
 						  FOREIGN KEY (event) REFERENCES event(uuid),

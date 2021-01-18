@@ -3,8 +3,6 @@
 if(isset($event)){
 	$relevant = false;
 	require_once 'eventTable.php'; ?>
-			</tbody>
-		</table>
 		<table class="table table-bordered">
 			<tbody>
 				<tr>

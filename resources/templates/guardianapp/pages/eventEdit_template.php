@@ -141,7 +141,6 @@
 						</th>
 					</tr>
 					
-					
 					<tr id="staffEntryTemplate" style="display:none;">
 						<td class="p-0">
 								<select class="select-cornered" name="">
@@ -191,10 +190,7 @@
 								if($entry->getUser() != NULL){ ?>
 									<input type='hidden' name="staff[<?= $staffId ?>][user]" value="<?= $entry->getUser()->getUuid() ?>" />
 									<?= $entry->getUser()->getFullNameWithEngine() ?>
-									<?php 
-									if($event->getStaffConfirmation() && $entry->getUnconfirmed()){ 
-										echo "<br><i>Bestätigung ausstehend</i>";
-									}
+								<?php
 								}
 								?>
 							</td>

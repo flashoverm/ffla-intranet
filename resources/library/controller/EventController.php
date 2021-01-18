@@ -66,6 +66,12 @@ class EventController extends BaseController{
 		return $this->eventDAO->save($event);
 	}
 	
+	function acknowledgeStaffUser($staffUuid){
+		$staff = $this->staffDAO->getEventStaffEntry($staffUuid);
+		$staff->setUserAcknowledged(true);
+		return $this->staffDAO->save($staff);
+	}
+	
 	function confirmStaffUser($staffUuid){
 		$staff = $this->staffDAO->getEventStaffEntry($staffUuid);
 		$staff->setUnconfirmed(false);
@@ -76,6 +82,7 @@ class EventController extends BaseController{
 		$staff = $this->staffDAO->getEventStaffEntry($staffUuid);
 		if($staff->getUser() == NULL){
 			$staff->setUser($user);
+			$staff->setUserAcknowledged(true);
 			return $this->staffDAO->save($staff);
 		}
 		return -1;
@@ -91,6 +98,7 @@ class EventController extends BaseController{
 	function removeUser($staffUuid){
 		$staff = $this->staffDAO->getEventStaffEntry($staffUuid);
 		$staff->setUnconfirmed(true);
+		$staff->setUserAcknowledged(false);
 		$staff->setUser(NULL);
 		return $this->staffDAO->save($staff);
 	}

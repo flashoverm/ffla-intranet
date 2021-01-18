@@ -28,20 +28,14 @@ if (isset($_GET['id'])) {
     	
     	$dateNow = getdate();
     	$now = strtotime( $dateNow['year']."-".$dateNow['mon']."-".($dateNow['mday']) );
-    	if(strtotime($event->getDate()) >= $now){
 
-    		if (userLoggedIn() && $eventController->isUserManagerOrCreator(getCurrentUserUUID(), $event->getUuid())){
-	            $variables['event'] = $event;
+		if (userLoggedIn() && $eventController->isUserManagerOrCreator(getCurrentUserUUID(), $event->getUuid())){
+			$variables['event'] = $event;
 	            
-	        } else {
-	            $variables ['alertMessage'] = "Sie sind nicht berechtigt, diese Wache zu bearbeiten";
-	            $variables ['showFormular'] = false;
-	        }
-	        
-    	} else {
-    		$variables ['alertMessage'] = "Diese Wache hat bereits stattgefunden - Bearbeitung nicht mehr möglich";
-    		$variables ['showFormular'] = false;
-    	}
+		} else {
+			$variables ['alertMessage'] = "Sie sind nicht berechtigt, diese Wache zu bearbeiten";
+			$variables ['showFormular'] = false;
+		}
     	
     } else {
         $variables ['alertMessage'] = "Wache nicht gefunden";
@@ -135,7 +129,7 @@ if (isset ( $_POST ['type'] ) ) {
 				$object->setUuid($_POST['staff'][$i]['uuid']);
 			}
 			if(isset($_POST['staff'][$i]['user'])){
-				$object->setUser($userDAO->getUserByUUID($_POST['staff'][$i]['uuid']));
+				$object->setUser($userDAO->getUserByUUID($_POST['staff'][$i]['user']));
 			}
 			$object->setPosition($staffPositionDAO->getStaffPosition($_POST['staff'][$i]['position']));
 			$staff[] = $object;
@@ -156,8 +150,13 @@ if (isset ( $_POST ['type'] ) ) {
 			if($inform){
 				if(!mail_event_updates($event->getUuid())){
 					$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
+				} else {
+					header ( "Location: " . $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() ); // redirects
 				}
+			} else {
+				header ( "Location: " . $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() ); // redirects
 			}
+			
 		} else {
 			$variables ['alertMessage'] = "Wache konnte nicht aktualisiert werden";
 		}

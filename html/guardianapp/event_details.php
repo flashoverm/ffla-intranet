@@ -42,6 +42,16 @@ if (! isset($_GET['id'])) {
     		$variables['subtitle'] = $event->getTypeOther();
     	}
     	
+    	if(isset($_GET['acknowledge'])){
+    		$staffUuid = $_GET['acknowledge'];
+    		if($eventController->acknowledgeStaffUser($staffUuid)){
+    			$variables['successMessage'] = "Die Wachteilnahme wurde zur Kentniss genommen";
+    		} else {
+    			$variables['alertMessage'] = "Kentnissnahme nicht möglich";
+    		}
+    		
+    	}
+    	
     	if (isset($_POST['removestaffid'])) {
     		// Remove by manager
     		$staff_uuid = trim($_POST['removestaffid']);
@@ -106,6 +116,7 @@ if(isset($_GET['print'])){
 	
 	$variables['showFormular'] = true;
 	$variables['orientation'] = 'portrait';
+	$variables['print'] = true;
 	renderPrintContentFile($config["apps"]["guardian"], "eventDetails/eventPrint_template.php", $variables);
 
 } else {

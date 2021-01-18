@@ -20,6 +20,8 @@ class Staff extends BaseModel {
 	
 	protected bool $unconfirmed;
 	
+	protected bool $userAcknowledged;
+	
 	protected ?string $eventUuid;
 	
 
@@ -49,6 +51,13 @@ class Staff extends BaseModel {
 	 */
 	public function getUnconfirmed() : bool {
 		return $this->unconfirmed;
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function getUserAcknowledged() : bool {
+		return $this->userAcknowledged;
 	}
 	
 	/**
@@ -87,6 +96,13 @@ class Staff extends BaseModel {
 	}
 	
 	/**
+	 * @param boolean $userAcknowledged
+	 */
+	public function setUserAcknowledged(bool $userAcknowledged) {
+		$this->userAcknowledged = $userAcknowledged;
+	}
+	
+	/**
 	 * @param NULL $uuid
 	 */
 	public function setEventUuid(?string $eventUuid) {
@@ -106,6 +122,7 @@ class Staff extends BaseModel {
 		$this->user = NULL;
 		$this->unconfirmed = false;
 		$this->eventUuid = NULL;
+		$this->userAcknowledged = false;
 	}
 	
 	/*

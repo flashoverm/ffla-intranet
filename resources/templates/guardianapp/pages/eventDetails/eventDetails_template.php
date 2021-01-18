@@ -24,6 +24,8 @@ if ($isCreator) {
 
 	require_once 'eventTable.php';
 	?>
+		<table class="table table-bordered">
+			<tbody>
 				<tr>
 				<td colspan="3">
 					<b>Link:&nbsp;</b> 

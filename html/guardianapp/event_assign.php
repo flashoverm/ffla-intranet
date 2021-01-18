@@ -59,7 +59,7 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     				if( ! $event->isUserAlreadyStaff($user->getUuid())){
     					
     					if($eventController->assignUser( $staffUUID, $user )){
-    						mail_add_staff_user ($eventUUID, $user->getUuid());
+    						mail_add_staff_user ($eventUUID, $user->getUuid(), $staffUUID);
     						$variables ['successMessage'] = "Wachteilnehmer zugewiesen - <a href=\"" . $config["urls"]["guardianapp_home"] . "/events/" . $eventUUID . "\" class=\"alert-link\">Zurück</a>";
     						$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventAssigned, $staffUUID));
     						$variables ['showFormular'] = false;

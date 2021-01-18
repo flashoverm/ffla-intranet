@@ -255,14 +255,16 @@ function mail_confirm_staff_user($staff_uuid, $event_uuid) {
 }
 
 //by manager
-function mail_add_staff_user($event_uuid, $user_uuid) {
+function mail_add_staff_user($event_uuid, $user_uuid, $staffUUID) {
 	global $bodies, $userDAO;
 	
 	$sendOK = true;
 	
 	//send mail to added user
 	$subject = "In Wache eingeteilt" . event_subject($event_uuid);
-	$body = $bodies["event_staff_add"] . get_event_link($event_uuid) . $bodies["event_report_link"] . get_report_create_link($event_uuid);;
+	$body = $bodies["event_staff_add"] . get_event_link($event_uuid) 
+	. $bodies["event_staff_ack"] . get_staff_acknowledge_link($event_uuid, $staffUUID)
+	. $bodies["event_report_link"] . get_report_create_link($event_uuid);
 	
 	$user = $userDAO->getUserByUUID($user_uuid);
 	$sendOK = $sendOK && send_mail ( $user->getEmail(), $subject, $body );
@@ -300,6 +302,11 @@ function mail_remove_staff_user($staff_uuid, $event_uuid) {
 function get_event_link($event_uuid){
 	global $config;
 	return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event_uuid;
+}
+
+function get_staff_acknowledge_link($event_uuid, $staff_uuid){
+	global $config;
+	return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event_uuid . "/acknowledge/" . $staff_uuid;
 }
 
 function get_report_create_link($event_uuid){

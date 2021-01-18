@@ -28,8 +28,10 @@ $bodies = array (
 	"event_subscribe" => $util["head"] . "Sie haben sich in eine Wache eingeschrieben: \n\n",
 	
 	"event_staff_add" => $util["head"] . "Sie wurden in eine Wache eingeteilt: \n\n",
+		
+	"event_staff_ack" => "\n\n Bitte bestätigen Sie die Kenntnisnahme durch Klick auf folgendem Link:\n\n",
 	
-	"event_report_link" => "\n\n Unter folgendem Link kann im Anschluss der Wache der bereits vorausgefüllte Wachbericht erstellt werden:\n\n",
+	"event_report_link" => "\n\n Unter diesem Link kann im Anschluss der Wache der bereits vorausgefüllte Wachbericht erstellt werden:\n\n",
 	
 	"event_subscribe_manager" => $util["head"] . "jemand aus Ihrem Zug nimmt an einer Wache teil: \n\n",
 	
