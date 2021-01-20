@@ -38,7 +38,7 @@
 	<div class="form-group">
 		<label>Anmerkungen:</label>
 		<textarea class="form-control" name="comment" id="comment"
-			placeholder="Anmerkungen"><?php
+			placeholder="Anmerkungen (ggf. Zeitraum/Beginn eintragen)"><?php
 			if(isset($dataChangeRequest) && $dataChangeRequest->getComment() != null){
 				echo $dataChangeRequest->getComment();
 			}?></textarea>
