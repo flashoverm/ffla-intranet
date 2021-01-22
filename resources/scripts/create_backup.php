@@ -16,12 +16,16 @@ $cmd = "mysqldump "
 		. " " . $db_config['dbname']
 		. " > " . $db_file . ".sql";
 
-echo "Creating mysql dump";
+echo " \n \nCreating mysql dump \n";
+echo $db_file . ".sql\n";
+
 exec($cmd);
 
 $cmd = "zip " . $db_file . ".zip " . $db_file . ".sql";
 
-echo "Zipping mysql dump";
+echo " \n \nZipping mysql dump: \n";
+echo $db_file . ".zip\n";
+
 exec($cmd);
 
 $backup_data = array(
@@ -37,13 +41,15 @@ foreach($backup_data as $path){
 	$cmd .= $path . " ";
 }
 
-echo "Zipping data";
+echo " \n \nZipping data: \n";
+echo $data_file . ".zip\n";
+
 exec($cmd);
 
 $pcloudController = new PCloudController();
 
-echo "Uploading dump file (zip)";
+echo " \n \nUploading dump file (zip) \n";
 $pcloudController->uploadBackup($db_file . ".zip");
 
-echo "Uploading data file (zip)";
+echo " \n \nUploading data file (zip) \n";
 $pcloudController->uploadBackup($data_file);
