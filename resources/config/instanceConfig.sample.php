@@ -35,6 +35,10 @@ $overrideConfig = array(
 		"mapView" => array(
 				"apiKey" => "yourapikey",
 		),
+		"pcloud" => array (
+				"username" => "",
+				"password" => "",
+		),
 		"settings" => array(
 				"deactivateOutgoingMails" => true,
 				"selfregistration" => false,

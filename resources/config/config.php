@@ -45,12 +45,14 @@ $config = array (
 					"content" => $_SERVER ["DOCUMENT_ROOT"] . "/images/content",
 					"layout" => $_SERVER ["DOCUMENT_ROOT"] . "/images/layout/"
 			),
+			"data" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/",
 			"initial" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/_initial/",
 			"files" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/files/",
 			"maps" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/maps/",
 			"inspections" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/inspections/",
 			"reports" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/reports/",
 			"confirmations" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/confirmations/",
+			"backup" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/backup/",
 			"nodejs" => "nodejs"
 	),
 	"formats" => array (
@@ -69,6 +71,10 @@ $config = array (
 			"marker" => "/hydrant.png",
 			"maptype" => "roadmap", 	//roadmap, satellite, hybrid, and terrain
 			"defaultcoordinates" => "48.5441917,12.1468532",
+	),
+	"pcloud" => array (
+			"username" => "",
+			"password" => "",
 	),
 	//default settings, can be overwritten in instanceConfig
 	"settings" => array (
@@ -92,7 +98,6 @@ $config["db"] = $dbConfig;
 $config["mail"] = $mailConfig;
 
 $config = overrideConfig($config, $overrideConfig);
-
 
 //Mailing Lists
 define("INSPECTIONREPORT", "INSPECTIONREPORT");

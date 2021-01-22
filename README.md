@@ -46,10 +46,11 @@ Clone repository in webserver folder (e.g. /var/www/)
 Replace and adapt config sample
 
 Create new database and fill with the data
-(hydrants, mailings)
+(hydrants)
 
+apt install zip
 
-apt install -y gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget php7.0-gd
+apt install -y gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget php7.0-gd 
 
 Install nodejs
 
@@ -65,4 +66,4 @@ Run in folder {application}/resources/library/puppeteer/
 	(set name to fflaintranet)
 	npm i --save puppeteer
 
-Create folder "reports, inspections, files, ..." and check access/write rights
+check access/write rights  "reports, inspections, files, ..."
