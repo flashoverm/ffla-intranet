@@ -40,19 +40,14 @@ $config = array (
 	),
 	
 	"paths" => array (
-			"resources" => $_SERVER ['DOCUMENT_ROOT'] . "/../resources/",
-			"images" => array (
-					"content" => $_SERVER ["DOCUMENT_ROOT"] . "/images/content",
-					"layout" => $_SERVER ["DOCUMENT_ROOT"] . "/images/layout/"
-			),
-			"data" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/",
-			"initial" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/_initial/",
-			"files" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/files/",
-			"maps" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/maps/",
-			"inspections" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/inspections/",
-			"reports" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/reports/",
-			"confirmations" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/confirmations/",
-			"backup" => $_SERVER ["DOCUMENT_ROOT"] . "/../data/backup/",
+			"data" => dirname ( __FILE__ ) . "/../../data/",
+			"initial" => dirname ( __FILE__ ) . "/../../data/_initial/",
+			"files" => dirname ( __FILE__ ) . "/../../data/files/",
+			"maps" => dirname ( __FILE__ ) . "/../../data/maps/",
+			"inspections" => dirname ( __FILE__ ) . "/../../data/inspections/",
+			"reports" => dirname ( __FILE__ ) . "/../../data/reports/",
+			"confirmations" => dirname ( __FILE__ ) . "/../../data/confirmations/",
+			"backup" => dirname ( __FILE__ ) . "/../../data/backup/",
 			"nodejs" => "nodejs"
 	),
 	"formats" => array (
@@ -108,8 +103,6 @@ $mailingList = array(
 			"markus@thral.de",
 	),
 );
-
-
 
 defined ( "LIBRARY_PATH" ) or define ( "LIBRARY_PATH", realpath ( dirname ( __FILE__ ) . '/../library' ) );
 
