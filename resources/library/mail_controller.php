@@ -541,7 +541,7 @@ function mail_send_datachange_status(DataChangeRequest $datachangerequest){
 	} else {
 		return false;
 	}
-	$body = $body . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations";
+	$body = $body . $config ["urls"] ["base_url"] . $config["urls"]["masterdataapp_home"] . "/datachangerequests/";
 	
 	return send_mail ( $datachangerequest->getUser()->getEmail(), $subject, $body );
 }
