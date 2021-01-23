@@ -12,9 +12,9 @@ $db_config = $config['db'];
 $today = date('Y-m-d', time());
 
 $db_dir = $config['paths']['backup'] . "db_dumps";
-$db_file =  $db_config['dbname'] . "_" . $today;
+$db_file = gethostname ( ) . "_db_". $db_config['dbname'] . "_" . $today;
 
-$data_file = $config['paths']['backup'] . "/data_" . $today . ".zip";
+$data_file = $config['paths']['backup'] . "/" . gethostname ( ) . "_data_" . $today . ".zip";
 
 $cmd = "mysqldump " 
 		. " --user=" . $db_config['username']
