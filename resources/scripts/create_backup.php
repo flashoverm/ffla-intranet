@@ -38,10 +38,6 @@ exec($cmd);
 
 $backup_data = array(
 		$config['paths']['files'],
-		$config['paths']['confirmations'],
-		$config['paths']['inspections'],
-		$config['paths']['reports'],
-		$config['paths']['confirmations'],
 );
 
 $cmd = "cd " . $config['paths']['data'] . " && zip -r " . $data_file . " ";
