@@ -6,8 +6,11 @@ data/files/*
 data/inspections/*
 data/reports/*
 data/confirmations/*
+data/backup/*
+data/backup/db_dumps/*
 
 !data/*/.gitkeep
+!data/*/*/.gitkeep
 !data/*/.gitkeep2
 
 resources/library/puppeteer/node_modules/
