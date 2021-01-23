@@ -46,6 +46,7 @@ foreach($backup_data as $path){
 	$folder = substr($folder, strrpos($folder, '/') + 1);
 	$cmd .= $folder . " ";
 }
+$cmd .= " -x files/LZ\*";
 
 echo " \n \nZipping data: \n";
 echo $data_file . ".zip\n";
