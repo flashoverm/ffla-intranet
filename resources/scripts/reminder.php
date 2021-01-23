@@ -1,4 +1,10 @@
 <?php
+/**
+ *	Create crontab entry:
+ *  0 1 * * * /usr/bin/php /var/www/ffla-intranet/resources/scripts/reminder.php
+ *
+ */
+
 require_once realpath ( dirname ( __FILE__ ) . "/../bootstrap.php" );
 require_once LIBRARY_PATH . "/mail_controller.php";
 
