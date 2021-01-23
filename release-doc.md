@@ -2,6 +2,11 @@
 Release Documentation
 ******************************
 
+#### V2.3.1
+
+Feature:
+	Backup data and database to pcloud
+
 #### V2.3.0
 
 Feature:
