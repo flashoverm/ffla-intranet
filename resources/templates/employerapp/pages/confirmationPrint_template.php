@@ -49,7 +49,7 @@ if(isset($confirmation)){
 					<br>
 					für die Freiwillige Feuerwehr der Stadt Landshut im Einsatz.<br>
 					<br>
-					Die Richtigkeit der Angaben wir hiermit bestätigt.<br>
+					Die Richtigkeit der Angaben wird hiermit bestätigt.<br>
 					<br>
 					<br>
 					<br>
