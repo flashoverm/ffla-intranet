@@ -83,6 +83,10 @@ RewriteRule ^(.*)ajax/templates/([^/]+)/?$ 			$1/ajax/staff_template.php?uuid=$2
 RewriteRule ^(.*)ajax/user/([^/]+)/?$				$1/ajax/user.php?uuid=$2
 RewriteRule ^(.*)ajax/privileges/([^/]+)/?$			$1/ajax/privileges.php?uuid=$2
 
+RewriteRule ^(.*)users/password/forgot/?$ 			$1/forgot_password.php
+RewriteRule ^(.*)users/password/change/?$ 			$1/change_password.php
+RewriteRule ^(.*)users/password/reset/([^.]+)/?$ 	$1/reset_password.php?token=$2
+
 RewriteRule ^(.*)users/register/?$ 			$1/user_edit.php
 RewriteRule ^(.*)users/new/?$ 				$1/user_edit_admin.php 
 RewriteRule ^(.*)users/edit/?$				$1/user_edit.php?self=true 

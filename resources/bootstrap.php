@@ -28,6 +28,7 @@ $engineDAO = new EngineDAO($db);
 
 $userDAO = new UserDAO($db, $privilegeDAO, $engineDAO);
 
+$tokenDAO = new TokenDAO($db, $userDAO);
 $mailLogDAO = new MailLogDAO($db);
 $logbookDAO = new LogbookDAO($db);
 
@@ -50,9 +51,9 @@ $reportDAO = new ReportDAO($db, $engineDAO, $eventTypeDAO, $reportUnitDAO);
 
 //Controller
 
-$userController = new UserController($privilegeDAO, $userDAO);
+$userController = new UserController($privilegeDAO, $userDAO, $tokenDAO);
 
-$guardianUserController = new GuardianUserController($privilegeDAO, $userDAO);
+$guardianUserController = new GuardianUserController($privilegeDAO, $userDAO, $tokenDAO);
 $eventController = new EventController($eventDAO, $staffDAO, $userDAO, $userController);
 $reportController = new ReportController($reportDAO);
 
@@ -60,4 +61,3 @@ $hydrantController = new HydrantController($hydrantDAO);
 
 $confirmationController = new ConfirmationController($confirmationDAO);
 $dataChangeRequestController = new DataChangeRequestController($dataChangeRequestDAO);
-

@@ -141,8 +141,7 @@ class ConfirmationDAO extends BaseDAO {
 		
 		if ($result) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 }

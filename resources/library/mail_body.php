@@ -81,5 +81,8 @@ $bodies = array (
 	
 	"reset_password" => $util["head"] . "ihr Passwort wurde zurückgesetzt:",
 	"reset_password2" => "\n\n Sie können es im Portal unter " . $config ["urls"] ["base_url"] . " in ihr Wunschkennwort ändern.",
+		
+	"forgot_password" => $util["head"] . "sie können ihr Passwort unter folgendem Link zurücksetzen:\n\n",
+	"forgot_password_2" => "\n\n Der Link ist  " . Token::TOKEN_VALIDITY[Token::ResetPassword] . " Minuten gültig, danach muss ein neuer Link angefordert werden",
 	
 );

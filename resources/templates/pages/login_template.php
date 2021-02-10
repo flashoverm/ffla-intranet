@@ -20,8 +20,12 @@
 		<input type="submit" value="Einloggen" class="btn btn-primary">
 	</div>
 	<div class="form-group">
+		<a class="btn btn-primary btn-sm" href='<?= $config["urls"]["intranet_home"] ?>/users/password/forgot'>Passwort vergessen</a>
+	</div>
+	<div class="form-group">
 		<button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse" data-target="#description">Wie erhalte ich einen Zugang?</button>
 	</div>
+
 	
 	<div class="collapse" id="description">
 	  <div class="card card-body">

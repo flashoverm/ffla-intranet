@@ -8,11 +8,13 @@ class UserController extends BaseController{
 	
 	protected $userDAO;
 	protected $privilegeDAO;
+	protected $tokenDAO;
 	
-	function __construct(PrivilegeDAO $privilegeDAO, UserDAO $userDAO) {
+	function __construct(PrivilegeDAO $privilegeDAO, UserDAO $userDAO, TokenDAO $tokenDAO) {
 		parent::__construct();
 		$this->userDAO = $userDAO;
 		$this->privilegeDAO = $privilegeDAO;
+		$this->tokenDAO = $tokenDAO;
 	}
 	
 	function getUserDAO(){
@@ -52,6 +54,18 @@ class UserController extends BaseController{
 		return $this->userDAO->save($user);
 	}
 	
+	function forgotPassword(String $email){
+		
+		$user = $this->userDAO->getUserByEmail($email);
+		if($user){
+			$token = new Token();
+			$token->initialize(Token::ResetPassword, $user);
+			$token = $this->tokenDAO->save($token);
+			return $token;
+		}
+		return false;
+	}
+	
 	function resetPassword(String $uuid){
 		$password = $this->randomPassword();
 		$pwhash = $this->hashPassword( $password );
@@ -74,6 +88,22 @@ class UserController extends BaseController{
 			$pwhash = $this->hashPassword ( $newPassword );
 			$user->setPassword($pwhash);
 			$this->userDAO->save($user);
+			return true;
+		}
+		return false;
+	}
+	
+	function resetPasswordWithToken(Token $token, String $password){
+		if( ! $token->isValid()){
+			return false;
+		}
+		
+		$user = $token->getUser();
+		$pwhash = $this->hashPassword ( $password );
+		$user->setPassword($pwhash);
+		$user = $this->userDAO->save($user);
+		if($user){
+			$this->tokenDAO->deleteToken($token->getUuid());
 			return true;
 		}
 		return false;

@@ -55,6 +55,17 @@ function mail_reset_password($user_uuid, $password) {
 	return send_mail ($user->getEmail(), $subject, $body );
 }
 
+function mail_forgot_password(String $email, String $token) {
+	global $config, $bodies;
+	$subject = "Passwort zurücksetzen";
+	
+	$link = $config ["urls"] ["base_url"] . "/users/password/reset/" . $token;
+	
+	$body = $bodies["forgot_password"] . $link . $bodies["forgot_password_2"];
+	
+	return send_mail ($email, $subject, $body );
+}
+
 
 /*
  * event

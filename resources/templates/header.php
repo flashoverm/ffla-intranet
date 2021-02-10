@@ -117,7 +117,7 @@
 							if( $currentUser->hasPrivilegeByName(Privilege::EDITUSER)) {
 							?>
 								<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/users/edit'>Benutzer bearbeiten</a>
-								<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/change_password'>Passwort ändern</a>
+								<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/password/change'>Passwort ändern</a>
 							<?php
 							}
 							?>
