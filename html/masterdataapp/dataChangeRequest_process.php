@@ -64,5 +64,9 @@ if( isset($_POST['datachangerequest']) ){
 
 $open = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::OPEN);
 $variables['open'] = $open;
+$done = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::DONE);
+$variables['done'] = $done;
+$declined = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::DECLINED);
+$variables['declined'] = $declined;
 
 renderLayoutWithContentFile($config["apps"]["masterdata"], "dataChangeProcess_template.php", $variables);
