@@ -2,6 +2,13 @@
 Release Documentation
 ******************************
 
+#### V2.3.2
+
+Feature:
+	Added password-forgot function
+	Token functionality 
+	Added done and declined datachangerequests to process
+	
 #### V2.3.1
 
 Feature:
