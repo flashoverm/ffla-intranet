@@ -40,6 +40,8 @@ class User extends BaseModel {
 	 */
 	protected ?Engine $engine;
 	
+	protected array $additionalEngines;
+	
 	/**
 	 * @ORM\Column(type="boolean")
 	 */
@@ -109,7 +111,24 @@ class User extends BaseModel {
 	 * @return NULL
 	 */
 	public function getEngine() : ?Engine {
+		if( isset( $_SESSION["setEngine"] ) ){
+			return $_SESSION["setEngine"];
+		}
 		return $this->engine;
+	}
+	
+	/**
+	 * @return NULL
+	 */
+	public function getMainEngine() : ?Engine {
+		return $this->engine;
+	}
+	
+	/**
+	 * @return NULL
+	 */
+	public function getAdditionalEngines() : array {
+		return $this->additionalEngines;
 	}
 
 	/**
@@ -188,6 +207,13 @@ class User extends BaseModel {
 	public function setEngine(?Engine $engine) {
 		$this->engine = $engine;
 	}
+	
+	/**
+	 * @param NULL array
+	 */
+	public function setAdditionalEngines(array $additionalEngines) {
+		$this->additionalEngines = $additionalEngines;
+	}
 
 	/**
 	 * @param boolean $locked
@@ -232,6 +258,7 @@ class User extends BaseModel {
 		$this->firstname = NULL;
 		$this->lastname = NULL;
 		$this->engine = NULL;
+		$this->additionalEngines = array();
 		$this->locked = false;
 		$this->deleted = false;
 		$this->employerAddress = NULL;
@@ -245,6 +272,10 @@ class User extends BaseModel {
 	 **************************************************
 	 * Custom Methods
 	 */
+	
+	public function addAdditionalEngines($additionalEngine){
+		$this->additionalEngines = $additionalEngine;
+	}
 	
 	public function hasPrivilegeByName(string $privilegeName) : bool{
 		if($this->privileges == null){

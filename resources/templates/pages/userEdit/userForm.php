@@ -102,6 +102,38 @@ if( ! isset($user)){
 	?>	
 </div>
 
+
+<div class="form-group">
+	<label>Zusätzliche Löschzüge/Einheiten:</label>  
+	<?php
+	if( count($user->getAdditionalEngines()) > 0 ) {
+	?>
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<?php foreach( $user->getAdditionalEngines() as $additinalEngine ) { ?>
+			<tr>
+				<td>$additinalEngine->getName()</td>
+				<?php if( ! isset($userSelfEdit) ){ ?>
+				<td>			
+					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#removeAdditionalEngine<?= "1"?>">Entfernen</button>
+					<?php
+						createDialog('removeAdditionalEngine' . "1", "Zusätzliche(n) Löschzug/Einheit entfernen?", "removeAdditionalEngine", "removeEngine", "1");
+					?>
+    			</td>
+    			<td>
+    				<a type="button" class="btn btn-outline-primary btn-sm" href='<?= $config["urls"]["intranet_home"] ?>/users/<?= $user->getUuid() ?>/privilege/<?= "" ?>'>Bearbeiten</a>
+    			</td>
+    			<?php } ?>
+			</tr>
+			<?php } ?>
+		</table>
+	</div>
+	<?php } ?>
+	<div>
+		<a type="button" class="btn btn-outline-primary btn-sm" href='<?= $config["urls"]["intranet_home"] ?>/users/<?= $user->getUuid() ?>/privilege'>Zusätzliche(n) Löschzug/Einheit hinzufügen</a>
+	</div>
+</div>
+
 <br>
 <div class="row">
 	<div class="col">

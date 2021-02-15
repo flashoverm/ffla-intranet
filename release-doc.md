@@ -2,6 +2,22 @@
 Release Documentation
 ******************************
 
+#### V2.4
+
+
+
+ALTER TABLE user_privilege ADD engine CHAR(32) NOT NULL AFTER privilege; 
+ALTER TABLE user_privilege DROP PRIMARY KEY, ADD PRIMARY KEY(privilege, engine, user);
+ALTER TABLE user_privilege ADD FOREIGN KEY (engine) REFERENCES engine(uuid);
+
+CREATE TABLE additional_engines (
+                          user CHARACTER(36) NOT NULL,
+                          engine CHARACTER(36) NOT NULL,
+                          PRIMARY KEY  (user, engine),
+						  FOREIGN KEY (user) REFERENCES user(uuid),
+						  FOREIGN KEY (engine) REFERENCES engine(uuid) );
+						  
+
 #### V2.3.2
 
 Feature:

@@ -33,13 +33,7 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 			
 			$loggedIn = true;
 			
-			if(isset($_SESSION["ref"]) && $_SESSION["ref"] != ""){
-				$ref = $_SESSION["ref"];
-				unset($_SESSION["ref"]);
-				header ( "Location: " . $config["urls"]["intranet_home"] . $ref ); // redirects	
-			} else {
-				header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects
-			}
+			header ( "Location: " . $config["urls"]["intranet_home"] . $ref ); // redirects	
 		}
 	}
 	if( ! $loggedIn){

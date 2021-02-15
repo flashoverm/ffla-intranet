@@ -164,6 +164,15 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
+	protected function getAdditionalEngines($userUuid){
+		$statement = $this->db->prepare("SELECT * FROM additional_engines WHERE user = ?");
+		
+		if ($statement->execute(array($userUuid))) {
+			return $this->handleResult($statement, true, "resultToAdditionalEngines");
+		}
+		return false;
+	}
+	
 	
 	/*
 	 * Init and helper methods
@@ -222,6 +231,10 @@ class UserDAO extends BaseDAO {
 		return $object;
 	}
 	
+	protected function resultToAdditionalEngines($result){
+		return $this->engineDAO->getEngine($result['engine']);
+	}
+	
 	protected function createTable() {
 		$statement = $this->db->prepare("CREATE TABLE user (
                           uuid CHARACTER(36) NOT NULL,
@@ -241,7 +254,19 @@ class UserDAO extends BaseDAO {
 		$result = $statement->execute();
 		
 		if ($result) {
-			return true;
+			$statement = $this->db->prepare("CREATE TABLE additional_engines (
+                          user CHARACTER(36) NOT NULL,
+                          engine CHARACTER(36) NOT NULL,
+                          PRIMARY KEY  (user, engine),
+						  FOREIGN KEY (user) REFERENCES user(uuid),
+						  FOREIGN KEY (engine) REFERENCES engine(uuid)
+                          )");
+			
+			$result = $statement->execute();
+			
+			if ($result) {
+				return true;
+			}
 		}
 		return false;
 	}

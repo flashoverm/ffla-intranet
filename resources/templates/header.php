@@ -112,6 +112,11 @@
 						<a class='nav-link dropdown-toggle text-light' data-toggle='dropdown' href='#'><?= $currentUser->getEmail() ?></a>
 			        	<div class='dropdown-menu dropdown-menu-right bg-dark'>
 							<a class='dropdown-item disabled text-secondary'><?= $currentUser->getEngine()->getName() ?></a>
+							<?php
+							if( count($currentUser->getAdditionalEngines()) >= 0 ){
+								echo "<a class='dropdown-item text-light' href='" . $config["urls"]["intranet_home"] . "/setView'>Ansicht wechseln</a>";
+							}
+							?>
 							<div class='dropdown-divider'></div>
 							<?php
 							if( $currentUser->hasPrivilegeByName(Privilege::EDITUSER)) {

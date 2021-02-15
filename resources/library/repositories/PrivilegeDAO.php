@@ -116,11 +116,14 @@ class PrivilegeDAO extends BaseDAO{
 		
 		if ($result) {
 			
+			
 			$statement = $this->db->prepare("CREATE TABLE user_privilege (
 						  privilege CHARACTER(36) NOT NULL,
+						  engine CHARACTER(36) NOT NULL,
 						  user CHARACTER(36) NOT NULL,
-                          PRIMARY KEY (privilege, user),
+                          PRIMARY KEY (privilege, engine, user),
 						  FOREIGN KEY (privilege) REFERENCES privilege(uuid),
+						  FOREIGN KEY (engine) REFERENCES engine(uuid),
 						  FOREIGN KEY (user) REFERENCES user(uuid)
                           )");
 			
