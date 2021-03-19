@@ -38,15 +38,17 @@ if(isset($_POST['engine'])){
 				
 				try{
 					$user = $userController->createNewUser($user);
-					$userDAO->save($user);
+					$user = $userDAO->save($user);
 					
 					if($user){
 												
 						$mail = mail_add_user($email, $password);
 						
 						$imported++;
+						
+						$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserImported, $user->getUuid()));
+						
 					}
-
 				
 				} catch(Exception $e) {
 					switch ($e->getCode()){
