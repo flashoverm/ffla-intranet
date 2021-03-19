@@ -2,17 +2,17 @@
 
 	<div class="form-group">
 		<label>Löschzug:</label>  
-			<select class="form-control" name="engine" required="required" 
-			<?php if(isset($engine)){
-				echo "disabled";
-			}
-			?>		
-			>
+		<select class="form-control" name="engine" required="required" 
+		<?php if(isset($engine)){
+			echo "disabled";
+		}
+		?>		
+		>
 			<option value="" disabled selected>Löschzug auswählen</option>
 			<?php foreach ( $engines as $option ) :
 				if(isset($_POST['engine']) && $option->getUuid() == $_POST['engine']){?>
 					<option value="<?php echo $option->getUuid(); ?>" selected><?php echo $option->getName(); ?></option>
-				<?php } else if ( isset($user) && $user->getEngine()->getUuid() == $option->getUuid()) { ?>
+				<?php } else if ( isset($engine) && $engine->getUuid() == $option->getUuid()) { ?>
 					<option value="<?php echo $option->getUuid(); ?>" selected><?php echo $option->getName(); ?></option>
 				<?php } else { ?>
 					<option value="<?php echo $option->getUuid(); ?>"><?php echo $option->getName(); ?></option>
@@ -36,9 +36,9 @@
 							<div class="custom-control custom-checkbox mb-1">
 							  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->getUuid() ?>" name="priv_<?= $row->getUuid() ?>"
 							  <?php
-							  if( 	(isset($user) && $user->hasPrivilegeByName($row->getPrivilege())) 
+							  if( 	(isset($engine) && $user->hasPrivilegeForEngineByName($engine, $row->getPrivilege())) 
 							  		|| isset($_POST['priv_' . $row->getUuid() ]) 
-							  		|| (! isset($user) && $_SERVER['REQUEST_METHOD'] === 'GET' && $row->getIsDefault() )
+							  		|| ($_SERVER['REQUEST_METHOD'] === 'GET' && $row->getIsDefault() )
 							  ){
 							  	echo "checked";
 							  }
@@ -55,4 +55,6 @@
 			</table>
 		</div>
 	</div>
+	<input type="submit" class="btn btn-primary" value='Speichern' id='save'>
+	<a class="btn btn-outline-primary" href="<?= $config["urls"]["intranet_home"] ?>/users/<?= $user->getUuid() ?>/edit/">Zurück</a>
 </form>

@@ -26,7 +26,8 @@ $db = BaseDAO::getPDO();
 $privilegeDAO = new PrivilegeDAO($db);
 $engineDAO = new EngineDAO($db);
 
-$userDAO = new UserDAO($db, $privilegeDAO, $engineDAO);
+$userPrivilegeDAO = new UserPrivilegeDAO($db, $privilegeDAO, $engineDAO);
+$userDAO = new UserDAO($db, $userPrivilegeDAO, $engineDAO);
 
 $tokenDAO = new TokenDAO($db, $userDAO);
 $mailLogDAO = new MailLogDAO($db);

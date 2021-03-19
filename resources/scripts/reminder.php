@@ -8,19 +8,19 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../bootstrap.php" );
 require_once LIBRARY_PATH . "/mail_controller.php";
 
-$events = get_all_active_events();
+$events = $eventDAO->getActiveEvents();
 
 foreach ( $events as $event ) {
        
-    if(!is_event_full($event->uuid)){
+	if(! $event->isEventFull() ){
         
-        $date = date_create($event->date);
+        $date = date_create($event->getDate());
         date_sub($date, new DateInterval( "P".$config ["settings"] ["reminderAtDay"]."D" ));
                 
         if($date->format("d.m.Y") == date("d.m.Y")){
             //Send reminder mail
-            mail_not_full($event->uuid);
-            send_mail("guardian@thral.de", "Sending reminder - Event: " . $event->uuid, $date->format("d.m.Y") . " - " . date("d.m.Y"));
+            mail_not_full($event->getUuid());
+            send_mail("guardian@thral.de", "Sending reminder - Event: " . $event->getUuid(), $date->format("d.m.Y") . " - " . date("d.m.Y"));
         }
     }
 }

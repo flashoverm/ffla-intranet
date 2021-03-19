@@ -4,13 +4,13 @@ require_once "BaseDAO.php";
 
 class UserDAO extends BaseDAO {
 	
-	protected $privilegeDAO;
+	protected $userPrivilegeDAO;
 	protected $engineDAO;
 	
-	function __construct(PDO $pdo, PrivilegeDAO $privilegeDAO, EngineDAO $engineDAO) {
+	function __construct(PDO $pdo, UserPrivilegeDAO $userPrivilegeDAO, EngineDAO $engineDAO) {
 		parent::__construct($pdo, "user");
-		$this->privilegeDAO = $privilegeDAO;
 		$this->engineDAO = $engineDAO;
+		$this->userPrivilegeDAO = $userPrivilegeDAO;
 	}
 	
 	function save(User $user){
@@ -21,9 +21,12 @@ class UserDAO extends BaseDAO {
 			$saved = $this->insertUser($user);
 		}
 		if($saved != null){
-			$privilegeSaved = $this->privilegeDAO->saveUsersPrivilege($user);
+			$privilegeSaved = $this->userPrivilegeDAO->saveUsersPrivilege($user);
 			if( $privilegeSaved){
-				return $this->getUserByUUID($saved->getUuid());
+				$enginesSaved = $this->saveAdditionalEngines($user);
+				if($enginesSaved){
+					return $this->getUserByUUID($saved->getUuid());
+				}
 			}
 		}
 		return false;
@@ -164,19 +167,17 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
-	protected function getAdditionalEngines($userUuid){
-		$statement = $this->db->prepare("SELECT * FROM additional_engines WHERE user = ?");
-		
-		if ($statement->execute(array($userUuid))) {
-			return $this->handleResult($statement, true, "resultToAdditionalEngines");
-		}
-		return false;
-	}
-	
-	
 	/*
 	 * Init and helper methods
 	 */
+	
+	protected function filterDeletedUsers($users){
+		return array_filter($users, array(__CLASS__, 'isNotDeleted'));
+	}
+	
+	protected function isNotDeleted($user){
+		return ! $user->getDeleted();
+	}
 	
 	protected function insertUser(User $user){
 		$uuid = $this->generateUuid();
@@ -227,12 +228,47 @@ class UserDAO extends BaseDAO {
 		$object->setEmployerAddress($result['employer_address']);
 		$object->setEmployerMail($result['employer_mail']);
 		$object->setEngine($this->engineDAO->getEngine($result['engine']));
-		$object->setPrivileges($this->privilegeDAO->getPrivilegesByUser($result['uuid']));
+		$object->setPrivileges($this->userPrivilegeDAO->getPrivilegesByUser($result['uuid']));
+		$object->setAdditionalEngines($this->getAdditionalEngines($result['uuid']));
 		return $object;
 	}
 	
 	protected function resultToAdditionalEngines($result){
 		return $this->engineDAO->getEngine($result['engine']);
+	}
+
+	protected function getAdditionalEngines($userUuid){
+		$statement = $this->db->prepare("SELECT * FROM additional_engines WHERE user = ?");
+		
+		if ($statement->execute(array($userUuid))) {
+			return $this->handleResult($statement, true, "resultToAdditionalEngines");
+		}
+		return false;
+	}
+	
+	protected function saveAdditionalEngines(User $user){
+		$statement = $this->db->prepare("DELETE FROM additional_engines WHERE user = ?");
+		
+		$result = $statement->execute(array($user->getUuid()));
+		
+		if ($result) {
+			foreach($user->getAdditionalEngines() as $additionalEngine){
+				$this->insertAdditionalEngine($user->getUuid(), $additionalEngine->getUuid());
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	protected function insertAdditionalEngine($userUuid, $engineUuid){
+		$statement = $this->db->prepare("INSERT INTO additional_engines (user, engine) VALUES (?, ?)");
+		
+		$result = $statement->execute(array($userUuid, $engineUuid));
+		
+		if ($result) {
+			return true;
+		}
+		return false;
 	}
 	
 	protected function createTable() {
@@ -263,7 +299,6 @@ class UserDAO extends BaseDAO {
                           )");
 			
 			$result = $statement->execute();
-			
 			if ($result) {
 				return true;
 			}

@@ -27,12 +27,14 @@ if(isset($_POST['engine'])){
 			$email = trim(strToLower($columns[2]));
 			
 			if(sizeof($columns) == 3){
-				if(email_in_use($email)){
+				if($userController->isEmailInUse($email)){
 					$errorString .=  "Benutzer bereits vorhanden:\t" . col_to_string($columns). "<br>";
 				} else {
 					$firstname = trim($columns[0]);
 					$lastname = trim($columns[1]);
-					if(insert_user($firstname, $lastname, $email, $_POST['engine'], null, null)){
+					$user = new User();
+					$user->setUserData($firstname, $lastname, $email, $engineDAO->getEngine($_POST['engine']), null, null);
+					if($userController->createNewUser($user)){
 						$imported++;
 					}
 				}

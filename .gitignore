@@ -1,4 +1,7 @@
 
+vendor
+composer.*
+
 resources/config/instanceConfig.php
 
 data/maps/*

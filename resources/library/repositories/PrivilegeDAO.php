@@ -20,22 +20,6 @@ class PrivilegeDAO extends BaseDAO{
 			return false;
 		}
 	}
-	
-	function saveUsersPrivilege(User $user){
-		$statement = $this->db->prepare("DELETE FROM user_privilege WHERE user = ?");
-		
-		$result = $statement->execute(array($user->getUuid()));
-		
-		if ($result) {
-			foreach($user->getPrivileges() as $privilege){
-				$this->addPrivilegeToUser($privilege->getUuid(), $user->getUuid());
-			}
-			
-			return true;
-			
-		}
-		return false;
-	}
 
 	function getPrivileges(){
 		$statement = $this->db->prepare("SELECT * FROM privilege ORDER BY privilege");
@@ -45,16 +29,7 @@ class PrivilegeDAO extends BaseDAO{
 		}
 		return false;
 	}
-	
-	function getPrivilegesByUser(String $userUuid){		
-		$statement = $this->db->prepare("SELECT privilege.* FROM user_privilege, privilege WHERE privilege.uuid = user_privilege.privilege AND user = ? ");
-		
-		if ($statement->execute(array($userUuid))) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
-	}
-	
+
 	function getPrivilege(String $uuid){
 		$statement = $this->db->prepare("SELECT * FROM privilege WHERE uuid = ? ");
 		
@@ -77,31 +52,10 @@ class PrivilegeDAO extends BaseDAO{
 	/*
 	 * Init and helper methods
 	 */
-	
-	protected function addPrivilegeToUser($privilegeUuid, $userUuid){
-		$statement = $this->db->prepare("INSERT INTO user_privilege (user, privilege) VALUES (?, ?)");
-		
-		$result = $statement->execute(array($userUuid, $privilegeUuid));
-		
-		if ($result) {
-			return true;
-		}
-		return false;
-	}
-	
+
 	protected function resultToObject($result){
 		$object = new Privilege($result['uuid'], $result['privilege'], $result['is_default']);
 		return $object;
-	}
-	
-	protected function filterDeletedUsers($users){
-		
-		return array_filter($users, array(__CLASS__, 'isNotDeleted'));
-	}
-	
-	protected function isNotDeleted($user){
-		//return ! $user->getDeleted();
-		return $user->deleted;
 	}
 	
 	protected function createTable() {
@@ -115,24 +69,8 @@ class PrivilegeDAO extends BaseDAO{
 		$result = $statement->execute();
 		
 		if ($result) {
-			
-			
-			$statement = $this->db->prepare("CREATE TABLE user_privilege (
-						  privilege CHARACTER(36) NOT NULL,
-						  engine CHARACTER(36) NOT NULL,
-						  user CHARACTER(36) NOT NULL,
-                          PRIMARY KEY (privilege, engine, user),
-						  FOREIGN KEY (privilege) REFERENCES privilege(uuid),
-						  FOREIGN KEY (engine) REFERENCES engine(uuid),
-						  FOREIGN KEY (user) REFERENCES user(uuid)
-                          )");
-			
-			$result = $statement->execute();
-			
-			if ($result) {
-				$this->initializePrivileges();
-				return true;
-			}
+			$this->initializePrivileges();
+			return true;
 		}
 		return false;
 	}

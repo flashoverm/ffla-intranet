@@ -6,7 +6,7 @@
  * @ORM\Entity
  * @ORM\Table(name="user_privilege")
  */
-class UsersPrivilege extends BaseModel {
+class UserPrivilege extends BaseModel {
 	
 	protected ?Engine $engine;
 	
@@ -58,9 +58,9 @@ class UsersPrivilege extends BaseModel {
 	}
 
 	public function __construct(Engine $engine, Privilege $privilege, string $userUuid) {
-		$this->engine = null;
-		$this->privilege = null;
-		$this->userUuid = null;
+		$this->engine = $engine;
+		$this->privilege = $privilege;
+		$this->userUuid = $userUuid;
 	}
 	
 }

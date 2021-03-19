@@ -231,7 +231,8 @@ class LogbookEntry extends BaseModel {
 	}
 	
 	protected static function hydrantEntry($action, $hydrant_uuid){
-		$hydrant = get_hydrant_by_uuid($hydrant_uuid);
+		global $hydrantDAO;
+		$hydrant = $hydrantDAO->getHydrantByUuid($hydrant_uuid);
 		if( ! $hydrant ){
 			return null;
 		}

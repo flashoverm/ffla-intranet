@@ -60,7 +60,7 @@ if (isset ( $_POST ['resetpw'] )) {
 if (isset ( $_POST ['setpw'] )) {
 	$uuid = trim ( $_POST ['setpw'] );
 	$password = $userController->resetPassword ( $uuid );
-	$userController->addPrivilegeToUserByName($uuid, Privilege::EDITUSER);
+	$userController->addPrivilegeForMainEngineToUserByName($uuid, Privilege::EDITUSER);
 	if($password){
 		$mail = mail_add_user($userDAO->getUserByUUID($uuid)->getEmail(), $password);
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserAddedPassword, $uuid));

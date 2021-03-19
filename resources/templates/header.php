@@ -99,7 +99,7 @@
         					<div class='dropdown-menu bg-dark'>
 								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users'>Benutzerverwaltung</a>
 								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users/new'>Benutzer anlegen</a>
-								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/privilege'>Rechteverwaltung</a>
+								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/privilege'>Berechtigungen</a>
 								<div class='dropdown-divider'></div>
 								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/logbook'>Logbuch</a>
 								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/maillog'>Mail Logbuch</a>

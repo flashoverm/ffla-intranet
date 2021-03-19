@@ -62,13 +62,6 @@ class User extends BaseModel {
 	 */
 	protected ?string $employerMail;
 	
-	/**
-	 * @ORM\ManyToMany(targetEntity="Privilege", inversedBy="users")
-	 * @ORM\JoinTable(name="user_privilege",
-	 * 		joinColumns={@ORM\JoinColumn(name="user", referencedColumnName="uuid")},
-	 * 		inverseJoinColumns={@ORM\JoinColumn(name="privilege", referencedColumnName="uuid")}
-	 * )
-	 */
 	protected array $privileges;
 	
 	
@@ -273,41 +266,63 @@ class User extends BaseModel {
 	 * Custom Methods
 	 */
 	
-	public function addAdditionalEngines($additionalEngine){
-		$this->additionalEngines = $additionalEngine;
-	}
-	
-	public function hasPrivilegeByName(string $privilegeName) : bool{
-		if($this->privileges == null){
-			return false;
+	public function hasEngine(Engine $engine){
+		if($this->getMainEngine()->getUuid() == $engine->getUuid()){
+			return true;
 		}
-		foreach($this->privileges as $usersPriv){
-			if($usersPriv->getPrivilege() == $privilegeName){
+		foreach( $this->getAdditionalEngines() as $additionalEngine){
+			if($additionalEngine->getUuid() == $engine->getUuid()){
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public function addPrivilege(Privilege $privilege){
-		if($this->hasPrivilegeByName($privilege->getPrivilege())){
+	public function addAdditionalEngine(Engine $additionalEngine){
+		$this->additionalEngines[] = $additionalEngine;
+	}
+	
+	public function hasPrivilegeByName(string $privilegeName) : bool{
+		return $this->hasPrivilegeForEngineByName($this->getEngine(), $privilegeName);
+	}
+	
+	public function hasPrivilegeForEngineByName(Engine $engine, string $privilegeName){
+		if($this->privileges == null){
 			return false;
 		}
-		$this->privileges[] = $privilege;
+		foreach($this->privileges as $usersPriv){
+			if($usersPriv->getEngine()->getUuid() == $engine->getUuid()
+					&& $usersPriv->getPrivilege()->getPrivilege() == $privilegeName){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public function addPrivilegeForEngine(Engine $engine, Privilege $privilege){
+		if($this->hasPrivilegeForEngineByName($engine, $privilege->getPrivilege())){
+			return false;
+		}
+		$this->privileges[] = new UserPrivilege($engine, $privilege, $this->uuid);
 		return true;
 	}
 	
-	public function removePrivilege(Privilege $privilege){
-		if( ! $this->hasPrivilegeByName($privilege->privilege())){
-			return false;
+	public function resetPrivilegeForEngine(Engine $engine, $newPrivileges){
+		$this->clearPrivilegesForEngine($engine);
+		foreach($newPrivileges as $newPrivilege){
+			$this->addPrivilegeForEngine($engine, $newPrivilege);
 		}
-		$this->privileges->detach($privilege);
-		return true;
 	}
 	
-	public function resetPrivileges(array $newPrivileges){
-		$this->privileges = $newPrivileges;
+	protected function clearPrivilegesForEngine(Engine $engine){
+		foreach($this->privileges as $index => $usersPriv){
+			if($usersPriv->getEngine()->getUuid() == $engine->getUuid()){
+				unset($this->privileges[$index]);
+			}
+		}
 	}
+
+	
 	
 	public function getFullName() : string {
 		return $this->firstname . " " . $this->lastname;

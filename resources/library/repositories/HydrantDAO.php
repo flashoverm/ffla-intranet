@@ -161,7 +161,7 @@ class HydrantDAO extends BaseDAO{
 		));
 		
 		if ($result) {
-			return $this->getUserByUUID($uuid);
+			return $this->getHydrantByUuid($uuid);
 		}
 		return false;
 	}

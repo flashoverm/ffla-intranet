@@ -59,12 +59,12 @@ if (isset ( $_POST ['useremail'] ) ) {
 		$uuid = trim($_GET['uuid']);
 	}
 	
-	$newPrivileges = array();
+	$newMainPrivileges = array();
 	foreach($privileges as $privilege){
 		
 		$inputName = "priv_" . $privilege->getUuid();
 		if(isset ( $_POST [ $inputName ] )){
-			$newPrivileges [] = $privilege;
+			$newMainPrivileges [] = $privilege;
 		}
 	}
 	
@@ -89,10 +89,10 @@ if (isset ( $_POST ['useremail'] ) ) {
 			$user = new User();
 			$user->setUserData($firstname, $lastname, $email, $engine, $employerAddress, $employerMail);
 			$user->setPassword($password);
-			
+
 			try{
 				$user = $userController->createNewUser($user);
-				$user->resetPrivileges($newPrivileges);
+				$user->resetPrivilegeForEngine($user->getMainEngine(), $newMainPrivileges);
 				$userDAO->save($user);
 				
 				if($user){
@@ -135,10 +135,9 @@ if (isset ( $_POST ['useremail'] ) ) {
 				//new email address is entered but the new one is already in use
 				$variables ['alertMessage'] = "Die eingegeben E-Mail-Adresse '" . $email . "' ist bereits vergeben";
 			} else {
-				
 				$user->setUserData($firstname, $lastname, $email, $engine, $employerAddress, $employerMail);
-				$user->resetPrivileges($newPrivileges);
-				$user = $userDAO->save($user);
+				$user->resetPrivilegeForEngine($user->getMainEngine(), $newMainPrivileges);
+				$userDAO->save($user);
 				
 				if($user){
 					$variables['user'] = $user;

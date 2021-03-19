@@ -112,7 +112,7 @@ if( ! isset($user)){
 		<table class="table table-bordered">
 			<?php foreach( $user->getAdditionalEngines() as $additinalEngine ) { ?>
 			<tr>
-				<td>$additinalEngine->getName()</td>
+				<td><?= $additinalEngine->getName() ?></td>
 				<?php if( ! isset($userSelfEdit) ){ ?>
 				<td>			
 					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#removeAdditionalEngine<?= "1"?>">Entfernen</button>
@@ -121,7 +121,7 @@ if( ! isset($user)){
 					?>
     			</td>
     			<td>
-    				<a type="button" class="btn btn-outline-primary btn-sm" href='<?= $config["urls"]["intranet_home"] ?>/users/<?= $user->getUuid() ?>/privilege/<?= "" ?>'>Bearbeiten</a>
+    				<a type="button" class="btn btn-outline-primary btn-sm" href='<?= $config["urls"]["intranet_home"] ?>/users/<?= $user->getUuid() ?>/privilege/<?= $additinalEngine->getUuid() ?>'>Rechte bearbeiten</a>
     			</td>
     			<?php } ?>
 			</tr>

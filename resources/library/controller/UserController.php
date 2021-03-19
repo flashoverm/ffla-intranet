@@ -108,18 +108,11 @@ class UserController extends BaseController{
 		}
 		return false;
 	}
-	
-	function addPrivilegeToUser(String $userUUID, String $privilegeUUID){
-		$user = $this->userDAO->getUserByUUID($userUUID);
-		$privilege = $this->privilegeDAO->getPrivilege($privilegeUUID);
-		$user->addPrivilege($privilege);
-		return $this->userDAO->save($user);
-	}
-	
-	function addPrivilegeToUserByName(String $userUUID, String $privilege){
+
+	function addPrivilegeForMainEngineToUserByName(String $userUUID, String $privilege){
 		$user = $this->userDAO->getUserByUUID($userUUID);
 		$privilege = $this->privilegeDAO->getPrivilegeByName($privilege);
-		$user->addPrivilege($privilege);
+		$user->addPrivilegeForEngine($user->getEngine(), $privilege);
 		return $this->userDAO->save($user);
 	}
 	
@@ -128,14 +121,7 @@ class UserController extends BaseController{
 		$user->resetPrivileges($newPrivileges);
 		return $this->userDAO->save($user);
 	}
-	
-	function removePrivilegeFromUser(String $userUUID, String $privilegeUUID){
-		$user = $this->userDAO->getUserByUUID($userUUID);
-		$privilege = $this->privilegeDAO->getPrivilege($privilegeUUID);
-		$user->removePrivilege($privilege);
-		return $this->userDAO->save($user);
-	}
-	
+
 	function deleteUser(String $uuid){
 		$user = $this->userDAO->getUserByUUID($uuid);
 		$user->setDeleted(true);
