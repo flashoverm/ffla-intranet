@@ -176,7 +176,7 @@ class UserController extends BaseController{
 			$user->setPassword($this->hashPassword($user->getPassword()));
 			
 			//Add default privileges
-			$this->addDefaultPrivilegesToUser($user);
+			$user = $this->addDefaultPrivilegesToUser($user);
 			
 			//Save and return user
 			return $this->userDAO->save($user);
@@ -195,7 +195,7 @@ class UserController extends BaseController{
 		$userByMail->setPassword($this->hashPassword($user->getPassword()));
 
 		//Add default privileges
-		$this->addDefaultPrivilegesToUser($userByMail);
+		$userByMail = $this->addDefaultPrivilegesToUser($userByMail);
 		
 		//Save and return user
 		return $this->userDAO->save($userByMail);
@@ -216,7 +216,7 @@ class UserController extends BaseController{
 		return $pwhash;
 	}
 	
-	protected function randomPassword($length = 8) {
+	function randomPassword($length = 8) {
 		// $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
 		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		$password = substr ( str_shuffle ( $chars ), 0, $length );
