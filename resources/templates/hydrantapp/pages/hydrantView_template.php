@@ -35,12 +35,16 @@ if (isset($hydrant)){
 			?>
 		</tbody>
 	</table>
-	
-<div class="custom-control custom-checkbox">
+
+<?php if($currentUser->hasPrivilegeByName(Privilege::HYDRANTADMINISTRATOR)){ ?>
+	<div class='float-right'>
+		<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/". $hydrant->getHy() . '/edit' ?>">Bearbeiten</a>
+	</div>
+<?php } ?>
+<div class="custom-control custom-checkbox d-inline-flex mb-3">
   <input type="checkbox" class="custom-control-input" id="toogleMaps">
   <label class="custom-control-label" for="toogleMaps">Verwende Google Maps</label>
 </div>
-<br>
 
 	<?php 
     if($mapURL != null){
