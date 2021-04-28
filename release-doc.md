@@ -8,9 +8,8 @@ Release Documentation
 
 ALTER TABLE user_privilege ADD engine CHAR(36) NOT NULL AFTER privilege; 
 ALTER TABLE user_privilege DROP PRIMARY KEY, ADD PRIMARY KEY(privilege, engine, user);
-ALTER TABLE user_privilege ADD FOREIGN KEY (engine) REFERENCES engine(uuid);
-
 UPDATE user_privilege SET engine = (SELECT engine FROM user WHERE user_privilege.user = uuid)
+ALTER TABLE user_privilege ADD FOREIGN KEY (engine) REFERENCES engine(uuid);
 
 CREATE TABLE additional_engines (
                           user CHARACTER(36) NOT NULL,
