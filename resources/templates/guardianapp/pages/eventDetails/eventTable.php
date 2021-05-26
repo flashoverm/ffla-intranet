@@ -65,7 +65,7 @@
 						?>
 							<button class='btn btn-outline-primary btn-sm' disabled>Bestätigung ausstehend</button>
 						<?php
-						} else if( ! $entry->getUnconfirmed()){
+						} else if($event->getStaffConfirmation() && ! $entry->getUnconfirmed()){
 						?>
 							<button class='btn btn-outline-success btn-sm' disabled>Bestätigt</button>
 						<?php
