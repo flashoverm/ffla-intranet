@@ -80,11 +80,11 @@
 			<?php foreach ( $engines as $option ) :
 			if(isset($report) && $option->getUuid() == $report->getEngine()->getUuid()){
 			?>
-			<option value="<?=  $option->getUuid(); ?> " selected><?= $option->getName(); ?></option>
+				<option value="<?=  $option->getUuid(); ?> " selected><?= $option->getName(); ?></option>
 			<?php 
-			}else if(!isset($event) && $option->getUuid() == $currentUser->getEngine()->getUuid()){
+			}else if(!isset($report) && isset($currentUser) && $option->getUuid() == $currentUser->getEngine()->getUuid()){
 				?>
-			   	<option selected value="<?=  $option->getUuid();	?> "><?= $option->getName(); ?></option>
+			   	<option selected value="<?= $option->getUuid(); ?>"><?= $option->getName(); ?></option>
 			    <?php 
 			}else{
 		    ?>

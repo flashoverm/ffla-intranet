@@ -35,7 +35,7 @@
 				<th>Personal</th>
 				<?php
 				if( ! isset($print) ){
-					if($guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid())){
+					if($currentUser && $guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid())){
 						echo "<td></td>";
 					}
 					echo "<td></td>";
@@ -58,7 +58,7 @@
 					?>
 				</td>
 				<?php
-				if( ! isset($print) && $guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid())){
+				if( ! isset($print) && $currentUser && $guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid())){
 					echo "<td>";
 					if($entry->getUser()){
 						if($event->getStaffConfirmation() && $entry->getUnconfirmed()){
