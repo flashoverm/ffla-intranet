@@ -1,4 +1,3 @@
-<?php echo "Print: " . isset($print); ?>
 <div class="table-responsive">
 	<table class="table table-bordered">
 		<tbody>
