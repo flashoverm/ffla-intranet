@@ -4,6 +4,10 @@ function getCurrentUserUUID(){
 	return $_SESSION ['intranet_userid'];
 }
 
+function setCurrentUserUUID($uuid){
+	$_SESSION ['intranet_userid'] = $uuid;
+}
+
 function userLoggedIn(){
 	return isset ( $_SESSION ['intranet_userid'] );
 }

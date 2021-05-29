@@ -149,8 +149,8 @@ class LogbookEntry extends BaseModel {
 		$entry->setTimestamp(date('Y-m-d H:i:s'));
 		$entry->setAction($actionId);
 		$entry->setUser(NULL);
-		if(isset($_SESSION ['intranet_userid'])){
-			$entry->setUser($_SESSION ['intranet_userid']);
+		if(userLoggedIn()){
+			$entry->setUser(getCurrentUserUUID());
 		}
 		$entry->setObjects($objects);
 		$entry->setMessage(LogbookEntry::logbookEnry($actionId, $objects));

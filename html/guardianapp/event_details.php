@@ -21,7 +21,7 @@ if (! isset($_GET['id'])) {
         $isCreator = false;
         $otherEngine = null;
     	if (userLoggedIn()) {
-    		$isCreator = (strcmp($event->getCreator()->getUuid(), $_SESSION['intranet_userid']) == 0);
+    		$isCreator = (strcmp($event->getCreator()->getUuid(), getCurrentUserUUID()) == 0);
     		
     		if(strcmp($userController->getCurrentUser()->getEngine()->getUuid(), $event->getEngine()->getUuid()) != 0){
     			$otherEngine = $event->getEngine();

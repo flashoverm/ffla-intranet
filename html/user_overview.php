@@ -12,7 +12,7 @@ $variables = array (
 
 if (isset ( $_POST ['disable'] )) {
 	$uuid = trim ( $_POST ['disable'] );
-	if($uuid == $_SESSION ['intranet_userid']){
+	if($uuid == getCurrentUserUUID()){
 		$variables ['alertMessage'] = "Eigenes Konto kann nicht gesperrt werden";
 	} else if($userController->lockUser( $uuid )) {
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserLocked, $uuid));
@@ -32,7 +32,7 @@ if (isset ( $_POST ['enable'] )) {
 }
 if (isset ( $_POST ['delete'] )) {
 	$uuid = trim ( $_POST ['delete'] );
-	if($uuid == $_SESSION ['intranet_userid']){
+	if($uuid == getCurrentUserUUID()){
 		$variables ['alertMessage'] = "Eigenes Konto kann nicht gelöscht werden";
 	} else if($userController->deleteUser( $uuid )) {
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserDeleted, $uuid));

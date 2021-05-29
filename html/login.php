@@ -29,11 +29,15 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 		if ($uuid) {
 			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserLogedIn, $uuid));
 			
-			$_SESSION ['intranet_userid'] = $uuid;
+			setCurrentUserUUID($uuid);
 			
 			$loggedIn = true;
 			
-			header ( "Location: " . $config["urls"]["intranet_home"] . $ref ); // redirects	
+			if(isset($_SESSION["ref"]) && $_SESSION["ref"] != ""){
+				$ref = $_SESSION["ref"];
+				unset($_SESSION["ref"]);
+				header ( "Location: " . $config["urls"]["intranet_home"] . $ref ); // redirects	
+			}
 		}
 	}
 	if( ! $loggedIn){

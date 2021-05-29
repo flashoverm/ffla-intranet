@@ -22,8 +22,8 @@ class UserController extends BaseController{
 	}
 		
 	function getCurrentUser(){
-		if(isset($_SESSION ['intranet_userid'])){
-			return $this->userDAO->getUserByUUID($_SESSION ['intranet_userid']);
+		if( userLoggedIn()){
+			return $this->userDAO->getUserByUUID(getCurrentUserUUID());
 		}
 		return false;
 	}

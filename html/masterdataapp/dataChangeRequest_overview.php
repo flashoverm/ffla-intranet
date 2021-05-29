@@ -22,16 +22,16 @@ if( isset( $_POST['withdraw'] ) ){
 	}
 }
 
-$furtherRequest = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::REQUEST, $_SESSION ['intranet_userid']);
+$furtherRequest = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::REQUEST, getCurrentUserUUID());
 $variables['furtherRequest'] = $furtherRequest;
 
-$open = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::OPEN, $_SESSION ['intranet_userid']);
+$open = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::OPEN, getCurrentUserUUID());
 $variables['open'] = $open;
 
-$done = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::DONE, $_SESSION ['intranet_userid']);
+$done = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::DONE, getCurrentUserUUID());
 $variables['done'] = $done;
 
-$declined = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::DECLINED, $_SESSION ['intranet_userid']);
+$declined = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::DECLINED, getCurrentUserUUID());
 $variables['declined'] = $declined;
 
 renderLayoutWithContentFile($config["apps"]["masterdata"], "dataChangeOverview_template.php", $variables);

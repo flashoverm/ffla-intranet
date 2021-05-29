@@ -9,9 +9,9 @@ $variables = array(
 	'privilege' => Privilege::EDITUSER,	
 );
 
-if (isset($_POST['password_old']) && isset($_POST['password']) && isset($_POST['password2']) && isset($_SESSION['intranet_userid'])) {
+if (isset($_POST['password_old']) && isset($_POST['password']) && isset($_POST['password2']) && userLoggedIn()) {
 
-    $uuid = $_SESSION['intranet_userid'];
+	$uuid = getCurrentUserUUID();
     $password_old = trim($_POST['password_old']);
     $password = trim($_POST['password']);
     $password2 = trim($_POST['password2']);
