@@ -38,7 +38,7 @@
 							  <?php
 							  if( 	(isset($engine) && $user->hasPrivilegeForEngineByName($engine, $row->getPrivilege())) 
 							  		|| isset($_POST['priv_' . $row->getUuid() ]) 
-							  		|| ($_SERVER['REQUEST_METHOD'] === 'GET' && $row->getIsDefault() )
+							  		|| ( empty($_POST) &&  $row->getIsDefault() )
 							  ){
 							  	echo "checked";
 							  }

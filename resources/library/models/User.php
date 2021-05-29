@@ -282,6 +282,14 @@ class User extends BaseModel {
 		$this->additionalEngines[] = $additionalEngine;
 	}
 	
+	public function removeAdditionalEngine(Engine $additionalEngine){
+		$this->clearPrivilegesForEngine($additionalEngine);
+		
+		if (($key = array_search($additionalEngine, $this->additionalEngines)) !== false) {
+			unset($this->additionalEngines[$key]);
+		}
+	}
+	
 	public function hasPrivilegeByName(string $privilegeName) : bool{
 		return $this->hasPrivilegeForEngineByName($this->getEngine(), $privilegeName);
 	}

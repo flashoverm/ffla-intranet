@@ -16,8 +16,15 @@ if( isset( $_GET["user"] ) ) {
 	
 	if( isset ( $_POST["updateRights"] ) ) {
 		
+		$update = false;
+		
 		$user = $userDAO->getUserByUUID( $_GET["user"] );
-		$engine = $engineDAO->getEngine($_POST['engine']);
+		if(isset($_GET['engine'])){
+			$engine = $engineDAO->getEngine($_GET['engine']);
+			$update = true;
+		} else if(isset($_POST['engine'])) {
+			$engine = $engineDAO->getEngine($_POST['engine']);
+		}
 		
 		$enginePrivileges = array();
 		foreach($privileges as $privilege){
@@ -28,27 +35,34 @@ if( isset( $_GET["user"] ) ) {
 			}
 		}
 		
-		$user->addAdditionalEngine($engine);
-		$user->resetPrivilegeForEngine($engine, $enginePrivileges);
-		$user = $userDAO->save($user);
-		
-		if($user){
+		if( ! $update && $user->hasEngine($engine) ){
 			
-			unset($_POST);
-			
-			if( isset( $_GET["engine"] ) ) {
-				$variables ['successMessage'] = "Rechte für " . $engine->getName() . " aktualisiert";
-			} else {
-				$variables ['successMessage'] = $engine->getName() . " hinzugefügt";
-			}
+			$variables ['alertMessage'] = $engine->getName() . " bereits vorhanden";
+	
 		} else {
-			if( isset( $_GET["engine"] ) ) {
-				$variables ['alertMessage'] = "Rechte für " . $engine->getName() . " konnten nicht aktualisiert werden";
+			
+			$user->addAdditionalEngine($engine);
+			$user->resetPrivilegeForEngine($engine, $enginePrivileges);
+			$user = $userDAO->save($user);
+			
+			if($user){
+				
+				unset($_POST);
+				
+				if( isset( $_GET["engine"] ) ) {
+					$variables ['successMessage'] = "Rechte für " . $engine->getName() . " aktualisiert";
+				} else {
+					$variables ['successMessage'] = $engine->getName() . " hinzugefügt";
+				}
 			} else {
-				$variables ['alertMessage'] = $engine->getName() . " konnte nicht konnte nicht hinzugefügt werden";
+				if( isset( $_GET["engine"] ) ) {
+					$variables ['alertMessage'] = "Rechte für " . $engine->getName() . " konnten nicht aktualisiert werden";
+				} else {
+					$variables ['alertMessage'] = $engine->getName() . " konnte nicht hinzugefügt werden";
+				}
 			}
+			
 		}
-		
 	} else {
 		$user = $userDAO->getUserByUUID( $_GET["user"] );
 	}

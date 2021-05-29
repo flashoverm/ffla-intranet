@@ -115,10 +115,7 @@ if( ! isset($user)){
 				<td><?= $additinalEngine->getName() ?></td>
 				<?php if( ! isset($userSelfEdit) ){ ?>
 				<td>			
-					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#removeAdditionalEngine<?= "1"?>">Entfernen</button>
-					<?php
-						createDialog('removeAdditionalEngine' . "1", "Zusätzliche(n) Löschzug/Einheit entfernen?", "removeAdditionalEngine", "removeEngine", "1");
-					?>
+					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#removeAdditionalEngine<?= $additinalEngine->getUuid() ?>">Entfernen</button>
     			</td>
     			<td>
     				<a type="button" class="btn btn-outline-primary btn-sm" href='<?= $config["urls"]["intranet_home"] ?>/users/<?= $user->getUuid() ?>/privilege/<?= $additinalEngine->getUuid() ?>'>Rechte bearbeiten</a>

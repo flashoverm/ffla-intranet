@@ -38,8 +38,8 @@ function createDialog($id, $title, $name, $additionalValueName = null, $addition
 	            if($text != null ){
 	                echo "<div class='modal-body'>" . $text . "</div>";
             	}
-            	echo "<div class='modal-footer'>
-					<form action='' method='post' style='margin-bottom: 0px;'>";
+            	echo "<form action='' method='post' style='margin-bottom: 0px;'>
+						<div class='modal-footer'>";
 					if($additionalValueName != null && $additionalValue != null){
 						echo "<input type='hidden' name='" . $additionalValueName . "' value='" . $additionalValue . "' />";
 					}
@@ -51,8 +51,8 @@ function createDialog($id, $title, $name, $additionalValueName = null, $addition
 						echo "value='" . $positiveButton . "' class='btn btn-primary' />";
 					}
 					echo "<button type='button' class='btn btn-outline-primary' data-dismiss='modal'>" . $negativeButton .  "</button>
-					</form>
-				</div>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>

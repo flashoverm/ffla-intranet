@@ -35,8 +35,23 @@ if( isset($_GET['uuid']) ){
 }
 
 
+if(isset($_POST['removeEngine'])){
+	
+	$removeEngine = $engineDAO->getEngine($_POST['removeEngine']);
+	
+	$user->removeAdditionalEngine($removeEngine);
+	$user = $userDAO->save($user);
+	
+	if($user){
+		$variables ['successMessage'] = $removeEngine->getName() . " entfernt";
+	} else {
+		$variables ['alertMessage'] = $removeEngine->getName() . " konnte nicht entfernt werden";
+		$user = $userDAO->getUserByUUID($_GET['uuid']);
+	}
+}
 
 if (isset ( $_POST ['useremail'] ) ) {
+
 	
 	$firstname = trim($_POST ['firstname']);
 	$lastname = trim($_POST ['lastname']);

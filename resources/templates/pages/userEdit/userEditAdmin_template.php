@@ -54,3 +54,8 @@
 	?>
 	>
 </form>
+<?php 
+foreach( $user->getAdditionalEngines() as $additinalEngine ) {
+	createDialog('removeAdditionalEngine' . $additinalEngine->getUuid(), "<i>" . $additinalEngine->getName() . "</i> von Benutzer entfernen?", "removeAdditionalEngine", "removeEngine", $additinalEngine->getUuid());
+}
+?>
