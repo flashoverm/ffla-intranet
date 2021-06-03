@@ -44,10 +44,10 @@ if (! count ( $user )) {
 						<div class="dropdown-menu">
 
 							<a class="dropdown-item" href="<?= $config["urls"]["intranet_home"] . "/users/" . $row->getUuid() . "/edit"?>">Bearbeiten</a>
+							<div class="dropdown-divider"></div>
 							<?php
 							if($row->getPassword() != null){
 								?>
-								<div class="dropdown-divider"></div>
 								<form method="post" action="">
 								<?php
 								if (! $row->getLocked()) {
@@ -59,13 +59,13 @@ if (! count ( $user )) {
 								}
 								?>
 								</form>
-								<form method="post" action="">
-									<input type="hidden" name="delete" id="delete" value="<?= $row->getUuid() ?>"/>
-									<input type="submit" value="Löschen"  class="dropdown-item"/>
-								</form>
 							<?php
 							}
 							?>
+							<form method="post" action="">
+								<input type="hidden" name="delete" id="delete" value="<?= $row->getUuid() ?>"/>
+								<input type="submit" value="Löschen"  class="dropdown-item"/>
+							</form>
 							<div class="dropdown-divider"></div>
 							<?php
 							if($row->getPassword() != null){

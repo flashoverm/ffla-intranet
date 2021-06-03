@@ -25,8 +25,17 @@ if(isset($_POST['engine'])){
 			$lines++;
 			$columns = explode(DELIMITER, $line);
 			$email = trim(strToLower($columns[2]));
+			$firstname = trim($columns[0]);
+			$lastname = trim($columns[1]);
+			$engine = $engineDAO->getEngine($_POST['engine']);
+			$password = $userController->randomPassword();
+			
+			$user = new User();
+			$user->setUserData($firstname, $lastname, $email, $engine, "", "");
+			$user->setPassword($password);
 			
 			if(sizeof($columns) == 3){
+<<<<<<< HEAD
 				if($userController->isEmailInUse($email)){
 					$errorString .=  "Benutzer bereits vorhanden:\t" . col_to_string($columns). "<br>";
 				} else {
@@ -35,9 +44,36 @@ if(isset($_POST['engine'])){
 					$user = new User();
 					$user->setUserData($firstname, $lastname, $email, $engineDAO->getEngine($_POST['engine']), null, null);
 					if($userController->createNewUser($user)){
+=======
+				
+				try{
+					$user = $userController->createNewUser($user);
+					$user = $userDAO->save($user);
+					
+					if($user){
+												
+						$mail = mail_add_user($email, $password);
+						
+>>>>>>> refs/remotes/origin/master
 						$imported++;
+						
+						$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserImported, $user->getUuid()));
+						
+					}
+				
+				} catch(Exception $e) {
+					switch ($e->getCode()){
+						case 101:
+							$errorString .=  "E-Mail-Adresse bereits mit anderem Namen/Zug in Verwendung:\t" . col_to_string($columns). "<br>";
+							break;
+						case 102:
+							$errorString .=  "Diese E-Mail-Adresse ist bereits vergeben:\t" . col_to_string($columns). "<br>";
+							break;
+						default:
+							$errorString .=  "Ein unbekannter Fehler ist aufgetreten:\t" . col_to_string($columns). "<br>";
 					}
 				}
+					
 			} else {
 				$errorString .=  "Falsches Datenformat:\t\t\t" . col_to_string($columns). "<br>";
 			}

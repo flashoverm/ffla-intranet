@@ -1,6 +1,7 @@
 
 vendor
 composer.*
+.scannerwork
 
 resources/config/instanceConfig.php
 

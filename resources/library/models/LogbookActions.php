@@ -16,10 +16,11 @@ abstract class LogbookActions {
 			7 => "Benutzerpasswort zurückgesetzt",
 			8 => "Benutzer hat Passwort-Link angefordert",
 			9 => "Benutzerpasswort via Link zurückgesetzt",
+			10 => "Benutzer importiert",
 			
 			21 => "Benutzer hat sich angemeldet",
 			22 => "Benutzer hat falsches Passwort eingegeben",
-			
+
 			/*
 			 * Logs
 			 */
@@ -127,6 +128,7 @@ abstract class LogbookActions {
 	const UserResetPassword = 7;
 	const UserRequestedPasswordLink = 8;
 	const UserResetPasswordLink = 9;
+	const UserImported = 10;
 	
 	const UserLogedIn = 21;
 	const UserLoginFailed = 22;

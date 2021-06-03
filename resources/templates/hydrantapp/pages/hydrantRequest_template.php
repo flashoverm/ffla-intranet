@@ -1,11 +1,11 @@
 <form onsubmit="showLoader()" action="" method="post">
 	<div class="form-group">
-		<label>Hydrant ID (HY):</label> <input type="text" class="form-control"
+		<label>Hydrant ID (HY):</label> <input type="number" class="form-control"
 			required="required" name="hy" id="hy"
 			placeholder="ID des Hydranten eingeben">
 	</div>
 	<input type="hidden" name="location" id="location" value=""/>
-	<input type="submit" value="Karte anzeigen" class="btn btn-primary" id="submit">
+	<input type="submit" value="Hydrant anzeigen" class="btn btn-primary" id="submit">
 </form>
 
 <form class="mt-4" onsubmit="showLoader()" action="" method="post">

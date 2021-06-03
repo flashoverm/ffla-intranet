@@ -1,4 +1,3 @@
-<?php echo "Print: " . isset($print); ?>
 <div class="table-responsive">
 	<table class="table table-bordered">
 		<tbody>
@@ -35,7 +34,7 @@
 				<th>Personal</th>
 				<?php
 				if( ! isset($print) ){
-					if($guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid())){
+					if($currentUser && $guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid())){
 						echo "<td></td>";
 					}
 					echo "<td></td>";
@@ -58,14 +57,14 @@
 					?>
 				</td>
 				<?php
-				if( ! isset($print) && $guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid())){
+				if( ! isset($print) && $currentUser && $guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid())){
 					echo "<td>";
 					if($entry->getUser()){
 						if($event->getStaffConfirmation() && $entry->getUnconfirmed()){
 						?>
 							<button class='btn btn-outline-primary btn-sm' disabled>Bestätigung ausstehend</button>
 						<?php
-						} else if( ! $entry->getUnconfirmed()){
+						} else if($event->getStaffConfirmation() && ! $entry->getUnconfirmed()){
 						?>
 							<button class='btn btn-outline-success btn-sm' disabled>Bestätigt</button>
 						<?php

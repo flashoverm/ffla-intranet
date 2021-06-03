@@ -58,6 +58,11 @@ class GuardianUserController extends UserController{
 				&& $event->getEngine()->getUuid() == $user->getEngine()->getUuid()){
 			return true;
 		}
+		
+		if($user->getUuid() == $event->getCreator()->getUuid()){
+		    return true;
+		}
+		
 		return false;
 	}
 	

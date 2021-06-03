@@ -6,7 +6,7 @@
 				<label>HY Nr.:</label><input id="hy" name="hy" class="form-control" 
 					type="number" required placeholder="HY Nr."
 					<?php if(isset($hydrant)){
-					    echo ' value="' . $hydrant->hy . '" disabled'; 
+						echo ' value="' . $hydrant->getHy() . '" disabled'; 
 					}?>
 					>
 			</div>
@@ -17,7 +17,7 @@
 				<label>FID Nr.:</label><input id="fid" name="fid" class="form-control" 
 					type="number" required placeholder="HY Nr."
 					<?php if(isset($hydrant)){
-					    echo ' value="' . $hydrant->fid . '"'; 
+					    echo ' value="' . $hydrant->getFid() . '"'; 
 					}?>
 					>
 			</div>
@@ -30,7 +30,7 @@
 				<label>Breitengrad (Lat):</label><input id="lat" name="lat" class="form-control" type="text" 
 					required placeholder="00.00000000" pattern="^-?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,8}"
 					<?php if(isset($hydrant)){
-					    echo ' value="' . $hydrant->lat . '"'; 
+					    echo ' value="' . $hydrant->getLat() . '"'; 
 					}?>
 					>
 			</div>
@@ -41,7 +41,7 @@
 				<label>Längengrad (Lng):</label><input id="lng" name="lng" class="form-control" type="text" 
 					required placeholder="00.00000000" pattern="^-?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,8}"
 					<?php if(isset($hydrant)){
-					    echo ' value="' . $hydrant->lng . '"'; 
+					    echo ' value="' . $hydrant->getLng() . '"'; 
 					}?>
 					>
 			</div>
@@ -55,7 +55,7 @@
         			class="form-control" name="street" id="street"
         			placeholder="Straße eingeben"
         			<?php if(isset($hydrant)){
-					    echo ' value="' . $hydrant->street . '"'; 
+					    echo ' value="' . $hydrant->getStreet() . '"'; 
 					}?>
 					>
         	</div>
@@ -66,7 +66,7 @@
         			class="form-control" name="district" id="district"
         			placeholder="Stadtteil eingeben"
         			<?php if(isset($hydrant)){
-					    echo ' value="' . $hydrant->district . '"'; 
+					    echo ' value="' . $hydrant->getDistrict() . '"'; 
 					}?>
 					>
         	</div>
@@ -78,7 +78,7 @@
 			class="form-control" name="type" id="type"
 			placeholder="Typ eingeben"
 			<?php if(isset($hydrant)){
-                echo ' value="' . $hydrant->type . '"'; 
+                echo ' value="' . $hydrant->getType() . '"'; 
 			}?>>
 	</div>
         	
@@ -87,8 +87,8 @@
 		<select class="form-control" name="engine" id="engine" required="required" onchange="setEngineHid()">
 			<option value="" disabled selected>Löschzug auswählen</option>
 			<?php foreach ( $engines as $option ) : 
-			if(isset($hydrant) && $option->getUuid() == $hydrant->engine){?>
-			   	<option selected="selected" value="<?=  $option->getUuid();	?> "><?= $option->getUuid(); ?></option>
+			if(isset($hydrant) && $option->getUuid() == $hydrant->getEngine()->getUuid()){?>
+			   	<option selected="selected" value="<?=  $option->getUuid();	?> "><?= $option->getName(); ?></option>
 			<?php }else{ ?>
 			   <option value="<?=  $option->getUuid();	?> "><?= $option->getName(); ?></option>
 			<?php } 
@@ -100,7 +100,7 @@
 	<div class="form-group">
 		<div class="custom-control custom-checkbox custom-checkbox-big">
 			<input type="checkbox" class="custom-control-input" id="checkbyff" name="checkbyff" 
-			<?php if(!isset($hydrant) || $hydrant->checkbyff){
+			<?php if(!isset($hydrant) || $hydrant->getCheckByFF()){
 			    echo "checked";
 			}?>
 			>
@@ -110,7 +110,7 @@
 	<div class="form-group">
 		<div class="custom-control custom-checkbox custom-checkbox-big">
 			<input type="checkbox" class="custom-control-input" id="operating" name="operating" 
-			<?php if(!isset($hydrant) || $hydrant->operating){
+			<?php if(!isset($hydrant) || $hydrant->getOperating()){
 			    echo "checked";
 			}?>
 			>

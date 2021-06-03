@@ -236,7 +236,7 @@ class LogbookEntry extends BaseModel {
 		if( ! $hydrant ){
 			return null;
 		}
-		return LogbookActions::getActionText($action) . ": HY-Nr. " . $hydrant->hy;
+		return LogbookActions::getActionText($action) . ": HY-Nr. " . $hydrant->getHy();
 	}
 	
 	protected static function hydrantInspectionEntry($action, $inspection_uuid){

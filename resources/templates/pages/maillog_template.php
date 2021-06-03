@@ -55,7 +55,7 @@ if ( ! isset($mails) || ! count ( $mails ) ) {
   	if($currentPage > 1){
   		echo '<li class="page-item"><a class="page-link" href="' . $config["urls"]["intranet_home"] . '/maillog/page/' . ($currentPage-1) . '"><</a></li>';
   	}
-    for($i=1; $i<=( $pages ); $i++){    	
+  	for($i=max(1, $currentPage-9);  ($i<=( $pages ) && $i<=($currentPage+9) ); $i++){
     	echo '<li class="page-item';
     	if($i == $currentPage){
     		echo ' active';

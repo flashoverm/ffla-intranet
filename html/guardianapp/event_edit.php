@@ -29,7 +29,7 @@ if (isset($_GET['id'])) {
     	$dateNow = getdate();
     	$now = strtotime( $dateNow['year']."-".$dateNow['mon']."-".($dateNow['mday']) );
 
-		if (userLoggedIn() && $eventController->isUserManagerOrCreator(getCurrentUserUUID(), $event->getUuid())){
+    	if (userLoggedIn() && $guardianUserController->isUserAllowedToEditEvent($userController->getCurrentUser(), $event->getUuid())){
 			$variables['event'] = $event;
 	            
 		} else {
