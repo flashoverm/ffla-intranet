@@ -35,32 +35,21 @@ if(isset($_POST['engine'])){
 			$user->setPassword($password);
 			
 			if(sizeof($columns) == 3){
-<<<<<<< HEAD
-				if($userController->isEmailInUse($email)){
-					$errorString .=  "Benutzer bereits vorhanden:\t" . col_to_string($columns). "<br>";
-				} else {
-					$firstname = trim($columns[0]);
-					$lastname = trim($columns[1]);
-					$user = new User();
-					$user->setUserData($firstname, $lastname, $email, $engineDAO->getEngine($_POST['engine']), null, null);
-					if($userController->createNewUser($user)){
-=======
 				
 				try{
 					$user = $userController->createNewUser($user);
 					$user = $userDAO->save($user);
 					
 					if($user){
-												
+						
 						$mail = mail_add_user($email, $password);
 						
->>>>>>> refs/remotes/origin/master
 						$imported++;
 						
 						$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserImported, $user->getUuid()));
 						
 					}
-				
+					
 				} catch(Exception $e) {
 					switch ($e->getCode()){
 						case 101:
@@ -73,7 +62,7 @@ if(isset($_POST['engine'])){
 							$errorString .=  "Ein unbekannter Fehler ist aufgetreten:\t" . col_to_string($columns). "<br>";
 					}
 				}
-					
+				
 			} else {
 				$errorString .=  "Falsches Datenformat:\t\t\t" . col_to_string($columns). "<br>";
 			}
@@ -83,7 +72,7 @@ if(isset($_POST['engine'])){
 	} else {
 		$errorString .= "Datei " . $file . " kann nicht gelesen werden ";
 	}
-
+	
 	if($imported){
 		$variables ['successMessage'] = $imported . " von " . $lines ." Benutzer importiert";
 	} else {
