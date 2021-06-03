@@ -59,7 +59,7 @@ if (isset($_GET['id'])) {
     
     function createVCS(Event $event){
     	global $config, $eol;
-    	$type = $event>getType()->getType();
+    	$type = $event->getType()->getType();
     	
     	header('Content-Disposition: attachment; filename=event.vcs');
     	
