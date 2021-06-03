@@ -47,6 +47,7 @@ RewriteRule ^(.*)guardian/events/new/?$					$1/guardianapp/event_edit.php
 RewriteRule ^(.*)guardian/events/public/?$ 				$1/guardianapp/event_public.php
 RewriteRule ^(.*)guardian/events/admin/?$ 				$1/guardianapp/event_admin.php
 RewriteRule ^(.*)guardian/events/([^/]+)/print?$ 		$1/guardianapp/event_details.php?id=$2&print=true
+RewriteRule ^(.*)guardian/events/([^/]+)/calender?$ 	$1/guardianapp/calender.php?id=$2
 
 RewriteRule ^(.*)guardian/events/([^/]+)/edit/?$ 		$1/guardianapp/event_edit.php?id=$2
 RewriteRule ^(.*)guardian/events/([^/]+)/assign/?([^/]+)/?$		$1/guardianapp/event_assign.php?id=$2&staffid=$3
