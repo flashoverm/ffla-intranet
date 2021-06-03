@@ -85,18 +85,28 @@ class EventDAO extends BaseDAO{
 	}
 	
 	function getUsersActiveEvents(User $user){
-		$statement = $this->db->prepare("SELECT * FROM event WHERE (engine = ? OR creator = ?) AND date >= (now() - INTERVAL 1 DAY) AND deleted_by IS NULL ORDER BY date ASC");
+		$statement = $this->db->prepare("SELECT event.* 
+				 FROM event 
+				 WHERE (engine = ? OR creator = ? OR engine IN (SELECT engine FROM additional_engines WHERE user = ?) )
+                 AND date >= (now() - INTERVAL 1 DAY) 
+				 AND deleted_by IS NULL 
+                 ORDER BY date ASC");
 		
-		if ($statement->execute(array($user->getEngine()->getUuid(), $user->getUuid()))) {
+		if ($statement->execute(array($user->getEngine()->getUuid(), $user->getUuid(), $user->getUuid()))) {
 			return $this->handleResult($statement, true);
 		}
 		return false;	
 	}
 	
 	function getUsersPastEvents(User $user){
-		$statement = $this->db->prepare("SELECT * FROM event WHERE (engine = ? OR creator = ?) AND date < (now() - INTERVAL 1 DAY) AND deleted_by IS NULL ORDER BY date DESC");
+		$statement = $this->db->prepare("SELECT event.* 
+				FROM event 
+				WHERE (engine = ? OR creator = ? OR engine IN (SELECT engine FROM additional_engines WHERE user = ?) ) 
+				AND date < (now() - INTERVAL 1 DAY) 
+				AND deleted_by IS NULL 
+				ORDER BY date DESC");
 		
-		if ($statement->execute(array($user->getEngine()->getUuid(), $user->getUuid()))) {
+		if ($statement->execute(array($user->getEngine()->getUuid(), $user->getUuid(), $user->getUuid()))) {
 			return $this->handleResult($statement, true);
 		}
 		return false;

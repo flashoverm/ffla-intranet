@@ -19,8 +19,7 @@ function localhostRequest(){
 function goToLogin(){
     global $config;
     
-    $actual_link = "{$_SERVER['REQUEST_URI']}";
-    $_SESSION["ref"] = $actual_link;
+    $_SESSION["ref"] = "{$_SERVER['REQUEST_URI']}";
     header("Location: " . $config["urls"]["intranet_home"] . "/login"); // redirects
     exit();
 }

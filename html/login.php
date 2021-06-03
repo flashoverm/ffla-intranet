@@ -37,6 +37,12 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 				$ref = $_SESSION["ref"];
 				unset($_SESSION["ref"]);
 				header ( "Location: " . $config["urls"]["intranet_home"] . $ref ); // redirects	
+				
+			//} else if(count($userController->getCurrentUser()->getAdditionalEngines()) > 0) {
+			//	header ( "Location: " . $config["urls"]["intranet_home"] . "/setView" ); // redirects	
+			
+			} else {
+				header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects
 			}
 		}
 	}

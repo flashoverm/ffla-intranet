@@ -114,7 +114,12 @@
 							<a class='dropdown-item disabled text-secondary'><?= $currentUser->getEngine()->getName() ?></a>
 							<?php
 							if( count($currentUser->getAdditionalEngines()) > 0 ){
-								echo "<a class='dropdown-item text-light' href='" . $config["urls"]["intranet_home"] . "/setView'>Ansicht wechseln</a>";
+							?>
+								<form action="/setView" method='POST'>
+									<input type="hidden" id="ref" name="ref" value="<?= $_SERVER['REQUEST_URI'] ?>">
+									<input type="submit" class='dropdown-item text-light' value="Ansicht wechseln">
+								</form>
+							<?php
 							}
 							?>
 							<div class='dropdown-divider'></div>

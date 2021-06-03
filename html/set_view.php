@@ -12,6 +12,12 @@ $redirect = false;
 
 $currentUser = $userController->getCurrentUser();
 
+//echo parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH);
+
+if(isset($_POST["ref"]) && ! isset($_SESSION["ref"])){
+	$_SESSION["ref"] = $_POST["ref"];
+}
+
 if( ! count($currentUser->getAdditionalEngines()) > 0 ){
 	$_SESSION["setEngine"] = $currentUser->getEngine();
 	$redirect = true;	

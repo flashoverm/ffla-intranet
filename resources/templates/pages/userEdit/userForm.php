@@ -102,11 +102,11 @@ if( ! isset($user)){
 	?>	
 </div>
 
-
+<?php if( isset($user) ){ ?>
 <div class="form-group">
 	<label>Zusätzliche Löschzüge/Einheiten:</label>  
 	<?php
-	if( count($user->getAdditionalEngines()) > 0 ) {
+	if(count($user->getAdditionalEngines()) > 0 ) {
 	?>
 	<div class="table-responsive">
 		<table class="table table-bordered">
@@ -126,10 +126,14 @@ if( ! isset($user)){
 		</table>
 	</div>
 	<?php } ?>
+	<small class="form-text text-muted">Keine zusätzlichen Löschzüge/Einheiten vorhanden</small>
+	<?php if( ! isset($userSelfEdit) ){ ?>
 	<div>
 		<a type="button" class="btn btn-outline-primary btn-sm" href='<?= $config["urls"]["intranet_home"] ?>/users/<?= $user->getUuid() ?>/privilege'>Zusätzliche(n) Löschzug/Einheit hinzufügen</a>
 	</div>
+	<?php } ?>
 </div>
+<?php } ?>
 
 <br>
 <div class="row">
