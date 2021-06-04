@@ -4,7 +4,7 @@ Release Documentation
 
 #### V2.4
 
-
+Feature: Added multible/additional engines
 
 ALTER TABLE user_privilege ADD engine CHAR(36) NOT NULL AFTER privilege; 
 ALTER TABLE user_privilege DROP PRIMARY KEY, ADD PRIMARY KEY(privilege, engine, user);
@@ -18,6 +18,20 @@ CREATE TABLE additional_engines (
 						  FOREIGN KEY (user) REFERENCES user(uuid),
 						  FOREIGN KEY (engine) REFERENCES engine(uuid) );
 						  
+ALTER TABLE engine ADD shortname VARCHAR(32) NOT NULL AFTER isadministration; 
+UPDATE engine SET shortname = "Verw." WHERE uuid LIKE "9BEECEFA-56CF-A009-0059-99DAA5FA0D4E";
+UPDATE engine SET shortname = "LZ 1/2" WHERE uuid LIKE "2BAA144B-F946-1524-E60E-7DD485FE1881";
+UPDATE engine SET shortname = "LZ 3" WHERE uuid LIKE "9704558C-9A89-A5B0-7CDE-0321A518DCB1";
+UPDATE engine SET shortname = "LZ 4" WHERE uuid LIKE "B0C263B5-6416-B8F5-B7A2-4ED57E2123BE";
+UPDATE engine SET shortname = "LZ 5" WHERE uuid LIKE "A67C8A08-3BCD-6FA0-9BF4-491A5121EA7B";
+UPDATE engine SET shortname = "LZ 6" WHERE uuid LIKE "6D9D8344-BE44-BFD3-1B0F-72BE5E56571E";
+UPDATE engine SET shortname = "LZ 7" WHERE uuid LIKE "C440BB6A-D8BF-3FAB-FC57-FAE475A1DBED";
+UPDATE engine SET shortname = "LZ 8" WHERE uuid LIKE "1311075E-1260-2685-0822-8102BE480F32";
+UPDATE engine SET shortname = "LZ 9" WHERE uuid LIKE "67CF2ADD-F5ED-3D43-FFF1-C504B8F39743";
+UPDATE engine SET shortname = "BZ" WHERE uuid LIKE "ACCEC110-290E-6A65-A750-6AA93625D784";
+UPDATE engine SET shortname = "-" WHERE uuid LIKE "57D2CB43-F3CE-3837-4181-2FE60FDB9277";
+INSERT INTO engine (uuid, name, isadministration, shortname) VALUES ('FEE13FE0-CDE3-AD5F-8A25-851467C12C26', 'UG ÖEL', false, 'UG ÖEL') 
+
 
 #### V2.3.2
 

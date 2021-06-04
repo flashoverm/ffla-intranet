@@ -25,6 +25,11 @@ class Engine extends BaseModel {
 	protected bool $isAdministration;
 	
 	/**
+	 * @ORM\Column(type="string")
+	 */
+	protected ?string $shortName;
+	
+	/**
 	 * @return mixed
 	 */
 	public function getUuid() : ?string {
@@ -43,6 +48,13 @@ class Engine extends BaseModel {
 	 */
 	public function getIsAdministration() : bool {
 		return $this->isAdministration;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getShortName() : ?string {
+		return $this->shortName;
 	}
 
 	/**
@@ -65,17 +77,25 @@ class Engine extends BaseModel {
 	public function setIsAdministration(bool $isAdministration) {
 		$this->isAdministration = $isAdministration;
 	}
+	
+	/**
+	 * @param mixed $name
+	 */
+	public function setShortName(?string $shortName) {
+		$this->shortName = $shortName;
+	}
 
 	/*
 	 **************************************************
 	 * Constructor
 	 */
 	
-	function __construct(?string $uuid, ?string $name, bool $isadministration) {
+	function __construct(?string $uuid, ?string $name, bool $isadministration, ?string $shortName) {
 		parent::__construct();
 		$this->uuid = $uuid;
 		$this->name = $name;
 		$this->isAdministration = $isadministration;
+		$this->shortName = $shortName;
 	}
 	
 	/*

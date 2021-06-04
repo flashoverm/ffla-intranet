@@ -108,7 +108,7 @@ if (isset ( $_POST ['useremail'] ) ) {
 			try{
 				$user = $userController->createNewUser($user);
 				$user->resetPrivilegeForEngine($user->getMainEngine(), $newMainPrivileges);
-				$userDAO->save($user);
+				$user = $userDAO->save($user);
 				
 				if($user){
 					//Password and selected privileges added to existing non-login-user or new user created
@@ -149,15 +149,26 @@ if (isset ( $_POST ['useremail'] ) ) {
 			if($user->getEmail() != $email && $userController->isEmailInUse($email)){
 				//new email address is entered but the new one is already in use
 				$variables ['alertMessage'] = "Die eingegeben E-Mail-Adresse '" . $email . "' ist bereits vergeben";
+			
+			} else if($user->hasAdditionalEngine($engine)){
+				//new main engine is already in additional engine
+				$variables ['alertMessage'] = "Der ausgewählte Löschzug \"" . $engine->getName() . "\" ist in \"Zusätzliche Löschzüge/Einheiten\" enthalten. Der Eintrag muss vor Änderung des Löschzugs entfernt werden.";
+			
 			} else {
-				$user->setUserData($firstname, $lastname, $email, $engine, $employerAddress, $employerMail);
-				$user->resetPrivilegeForEngine($user->getMainEngine(), $newMainPrivileges);
-				$userDAO->save($user);
+				$mainEngineUpdate = ($engine->getUuid() != $user->getMainEngine()->getUuid());
+				
+				$user = $userController->updateUserByAdmin(
+						$user, $firstname, $lastname, $email, $engine, 
+						$employerAddress, $employerMail, $newMainPrivileges);
 				
 				if($user){
 					$variables['user'] = $user;
 					$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserUpdated, $user->getUuid()));
 					$variables ['successMessage'] = "Der Benutzer wurde aktualisiert";
+					
+					if($mainEngineUpdate){
+						$variables ['infoMessage'] = "Haupt-Löschzug/-Einheit wurde geändert - bitte Rechte überprüfen!";
+					}
 				} else {
 					$variables ['alertMessage'] = "Der Benutzer konnte nicht aktualisiert werden";
 				}

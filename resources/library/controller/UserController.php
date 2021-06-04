@@ -42,6 +42,31 @@ class UserController extends BaseController{
 		return $this->getCurrentUser()->hasPrivilegeByName($privilegeName);
 	}
 	
+	function updateUserByAdmin(User $user, ?string $firstname, ?string $lastname, ?string $email, 
+			?Engine $engine,  ?string $employerAddress,  ?string $employerMail, $newMainPrivileges){
+		
+		if($user->getMainEngine()->getUuid() != $engine->getUuid()){
+			
+			//clear privileges for former main engine
+			$user->clearPrivilegesForEngine($user->getMainEngine());
+			
+			//Remove new main engine if listed in additional
+			if($user->hasAdditionalEngine($engine)){
+				$user->removeAdditionalEngine($engine);
+			}
+			
+			//new main engine and rights will be set in update user method
+		}
+		
+		$user->setUserData($firstname, $lastname, $email, $engine, $employerAddress, $employerMail);
+		
+		$user->resetPrivilegeForEngine($user->getMainEngine(), $newMainPrivileges);
+		
+		$user = $this->userDAO->save($user);
+		
+		return $user;
+	}
+		
 	function lockUser(String $uuid){
 		$user = $this->userDAO->getUserByUUID($uuid);
 		$user->setLocked(true);

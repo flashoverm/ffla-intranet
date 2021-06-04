@@ -109,7 +109,13 @@
 					}
 					?>
 					<li class='nav-item dropdown'>
-						<a class='nav-link dropdown-toggle text-light' data-toggle='dropdown' href='#'><?= $currentUser->getEmail() ?></a>
+						<?php if($currentUser->getEngine()->getUuid() == $currentUser->getMainEngine()->getUuid()) {
+							$displayname = $currentUser->getEmail();
+						} else {
+							$displayname = $currentUser->getEmail() . " (" . $currentUser->getEngine()->getShortName() . ")";
+						}
+						?>
+						<a class='nav-link dropdown-toggle text-light' data-toggle='dropdown' href='#'><?= $displayname ?></a>
 			        	<div class='dropdown-menu dropdown-menu-right bg-dark'>
 							<a class='dropdown-item disabled text-secondary'><?= $currentUser->getEngine()->getName() ?></a>
 							<?php

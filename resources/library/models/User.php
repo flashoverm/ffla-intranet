@@ -270,6 +270,10 @@ class User extends BaseModel {
 		if($this->getMainEngine()->getUuid() == $engine->getUuid()){
 			return true;
 		}
+		return $this->hasAdditionalEngine($engine);
+	}
+	
+	public function hasAdditionalEngine(Engine $engine){
 		foreach( $this->getAdditionalEngines() as $additionalEngine){
 			if($additionalEngine->getUuid() == $engine->getUuid()){
 				return true;
@@ -322,7 +326,7 @@ class User extends BaseModel {
 		}
 	}
 	
-	protected function clearPrivilegesForEngine(Engine $engine){
+	public function clearPrivilegesForEngine(Engine $engine){
 		foreach($this->privileges as $index => $usersPriv){
 			if($usersPriv->getEngine()->getUuid() == $engine->getUuid()){
 				unset($this->privileges[$index]);
