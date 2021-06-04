@@ -89,7 +89,7 @@ if( ! isset($user)){
 		<?php foreach ( $engines as $option ) :
 			if(isset($_POST['engine']) && $option->getUuid() == $_POST['engine']){?>
 				<option value="<?php echo $option->getUuid(); ?>" selected><?php echo $option->getName(); ?></option>
-			<?php } else if ( isset($user) && $user->getEngine()->getUuid() == $option->getUuid()) { ?>
+			<?php } else if ( isset($user) && $user->getMainEngine()->getUuid() == $option->getUuid()) { ?>
 				<option value="<?php echo $option->getUuid(); ?>" selected><?php echo $option->getName(); ?></option>
 			<?php } else { ?>
 				<option value="<?php echo $option->getUuid(); ?>"><?php echo $option->getName(); ?></option>

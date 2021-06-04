@@ -42,7 +42,7 @@ if (isset ( $_POST ['useremail'] ) ) {
 	$email = strtolower(trim($_POST ['useremail']));
 	
 	if(isset($variables['userSelfEdit'])){
-		$engine = $variables['user']->getEngine();
+		$engine = $variables['user']->getMainEngine();
 	} else {
 		$engineUuid = trim($_POST ['engine']);
 		$engine = $engineDAO->getEngine($engineUuid);
