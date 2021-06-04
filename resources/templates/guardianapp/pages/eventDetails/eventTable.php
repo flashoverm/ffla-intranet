@@ -83,7 +83,7 @@
 				if( ! isset($print) && $relevant){
 					echo "<td>";
 						if ( ! $entry->getUser()) {
-							if(isset($_SESSION['intranet_userid']) && $eventController->isUserManagerOrCreator($currentUser->getUuid(), $event->getUuid())){
+							if(userLoggedIn() && $eventController->isUserManagerOrCreator($currentUser->getUuid(), $event->getUuid())){
 							?>
 								<a class='btn btn-primary btn-sm' href='<?= $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() . "/assign/" . $entry->getUuid() ?>'>Einteilen</a>
 							<?php
@@ -91,14 +91,14 @@
 							?>
 							<a class='btn btn-primary btn-sm' href='<?= $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() . "/subscribe/" . $entry->getUuid() ?>'>Eintragen</a>
 							<?php
-						} else if(isset($_SESSION['intranet_userid'])){
+						} else if(userLoggedIn()){
 
 							if ($eventController->isUserManagerOrCreator($currentUser->getUuid(), $event->getUuid()) && $event->getStaffConfirmation() && $entry->getUnconfirmed()) { ?>
 		    					<button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#confirmConfirmation<?= $entry->getUuid() ?>'>Bestätigen</button>
 		    				<?php 
 		    					createDialog('confirmConfirmation' . $entry->getUuid(), "Personal wirklich bestätigen?", null, "confirmstaffid", $entry->getUuid());
 							} 
-							if ($entry->getUser()->getUuid() == $_SESSION['intranet_userid']) {	// Remove by user himself ?>
+							if ($entry->getUser()->getUuid() == getCurrentUserUUID()) {	// Remove by user himself ?>
 								<button type='button' class='btn btn-outline-primary btn-sm' data-toggle='modal' data-target='#confirmUnscribeByUser<?= $entry->getUuid() ?>'>Austragen</button>
 								<?php 
 								createDialog('confirmUnscribeByUser' . $entry->getUuid(), "Personal wirklich austragen?", null, "removestaffbyuserid", $entry->getUuid());
