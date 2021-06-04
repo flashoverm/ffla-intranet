@@ -22,7 +22,14 @@ class HydrantDAO extends BaseDAO{
 	}
 	
 	function getHydrants(){
-		$statement = $this->db->prepare("SELECT * FROM hydrant");
+		$statement = $this->db->prepare("SELECT * 
+			FROM hydrant
+			LEFT JOIN (
+        		SELECT hydrant_inspection.hydrant, MAX(inspection.date) AS lastcheck
+            	FROM inspection, hydrant_inspection
+            	WHERE hydrant_inspection.inspection = inspection.uuid
+        		GROUP BY hydrant_inspection.hydrant
+            ) AS lastchecks ON hydrant.uuid = lastchecks.hydrant");
 		
 		if ($statement->execute()) {
 			return $this->handleResult($statement, true);
@@ -31,7 +38,15 @@ class HydrantDAO extends BaseDAO{
 	}
 	
 	function getHydrantsOfEngine($engineUuid){
-		$statement = $this->db->prepare("SELECT * FROM hydrant WHERE engine = ? AND operating = TRUE");
+		$statement = $this->db->prepare("SELECT * 
+			FROM hydrant 
+			LEFT JOIN (
+        		SELECT hydrant_inspection.hydrant, MAX(inspection.date) AS lastcheck
+            	FROM inspection, hydrant_inspection
+            	WHERE hydrant_inspection.inspection = inspection.uuid
+        		GROUP BY hydrant_inspection.hydrant
+            ) AS lastchecks ON hydrant.uuid = lastchecks.hydrant
+			WHERE engine = ? AND operating = TRUE");
 		
 		if ($statement->execute(array($engineUuid))) {
 			return $this->handleResult($statement, true);

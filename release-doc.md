@@ -2,6 +2,14 @@
 Release Documentation
 ******************************
 
+#### V2.5
+
+Feature: Message board
+
+#### V2.4.1
+
+Feature: Checked hydrants list
+
 #### V2.4
 
 Feature: Added multible/additional engines
@@ -30,7 +38,7 @@ UPDATE engine SET shortname = "LZ 8" WHERE uuid LIKE "1311075E-1260-2685-0822-81
 UPDATE engine SET shortname = "LZ 9" WHERE uuid LIKE "67CF2ADD-F5ED-3D43-FFF1-C504B8F39743";
 UPDATE engine SET shortname = "BZ" WHERE uuid LIKE "ACCEC110-290E-6A65-A750-6AA93625D784";
 UPDATE engine SET shortname = "-" WHERE uuid LIKE "57D2CB43-F3CE-3837-4181-2FE60FDB9277";
-INSERT INTO engine (uuid, name, isadministration, shortname) VALUES ('FEE13FE0-CDE3-AD5F-8A25-851467C12C26', 'UG ÖEL', false, 'UG ÖEL') 
+INSERT INTO engine (uuid, name, isadministration, shortname) VALUES ('FEE13FE0-CDE3-AD5F-8A25-851467C12C26', 'UG ÖEL', false, 'UG ÖEL');
 
 
 #### V2.3.2

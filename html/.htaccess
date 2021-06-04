@@ -16,6 +16,7 @@ RewriteRule ^(.*)hydrant/manual/?$ 			$1/hydrantapp/manual.php
 RewriteRule ^(.*)hydrant/new/?$ 			$1/hydrantapp/hydrant_edit.php 
 RewriteRule ^(.*)hydrant/search/?$ 			$1/hydrantapp/hydrant_request.php
 RewriteRule ^(.*)hydrant/all/?$ 			$1/hydrantapp/hydrant_overview.php
+RewriteRule ^(.*)hydrant/inspected/?$ 		$1/hydrantapp/hydrant_inspected_view.php
 RewriteRule ^(.*)hydrant/street/([^/]+)/?$ 	$1/hydrantapp/hydrant_street_view.php?street=$2
 RewriteRule ^(.*)hydrant/engine/([^/]+)/?$ 	$1/hydrantapp/hydrant_engine_view.php?engine=$2
 RewriteRule ^(.*)hydrant/([^/]+)/map/?$ 	$1/hydrantapp/maps.php?hydrant=$2

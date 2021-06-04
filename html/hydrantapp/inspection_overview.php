@@ -6,7 +6,7 @@ require_once TEMPLATES_PATH . "/template.php";
 $variables = array(
     'title' => "Hydrantenprüfungen",
     'secured' => true,
-		'privilege' => Privilege::ENGINEHYDRANTMANANGER
+	'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
 
 $engine = $userController->getCurrentUser()->getEngine();
