@@ -8,7 +8,7 @@ $variables = array(
     'secured' => true
 );
 
-if (isset($_GET['id'])) {
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         
     $id = trim($_GET['id']);
         
