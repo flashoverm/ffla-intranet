@@ -29,13 +29,14 @@ class GuardianUserController extends UserController{
 	}
 	
 	public function getEventManangerExeptEngineAndCreator($engineUuid, $creatorUuid){
-		$users =$this->getEventmanagerOfEngine($engineUuid);
+		
+		$users = $this->userDAO->getUsersWithPrivilegeByName(Privilege::EVENTMANAGER);
 		$manager = array();
 		
 		foreach($users as $user){
 			
 			if($user->getUuid() != $creatorUuid
-					&& $user->getEngine()->getUuid() == $engineUuid){
+					&& $user->getEngine()->getUuid() != $engineUuid){
 						$manager [] = $user;
 			}
 		}
