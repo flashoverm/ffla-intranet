@@ -99,6 +99,3 @@ if (! count ( $user )) {
 <?php
 }
 ?>
-<a href='<?= $config["urls"]["intranet_home"]?>/users/new' class="btn btn-primary">Benutzer anlegen</a>
-<a href='<?= $config["urls"]["intranet_home"]?>/users/import' class="btn btn-primary float-right">Benutzer importieren</a>
-

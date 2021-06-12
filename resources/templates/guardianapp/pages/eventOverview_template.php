@@ -15,12 +15,12 @@ if (!isset($events) || ! count ( $events ) ) {
 				<th data-sortable="true" class="text-center">Zuständig</th>
 				<th data-sortable="true" class="text-center">Belegung</th>
 				<th data-sortable="true" class="text-center">Öffentlich</th>
-				<th class="text-center">Details</th>
+				<th></th>
 				<?php
 				if( $currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)
 						|| $currentUser->hasPrivilegeByName(Privilege::EVENTADMIN)
 						|| $currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
-					echo"<th class='text-center'>Löschen</th>";
+					echo"<th></th>";
 				}
 				?>
 			</tr>
@@ -64,7 +64,7 @@ if (!isset($events) || ! count ( $events ) ) {
 					?>
 				</td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->getUuid() ?>">Details</a>
+					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->getUuid() ?>">Anzeigen</a>
 				</td>
 				<?php
 				if($guardianUserController->isUserAllowedToEditEvent($currentUser, $row->getUuid())){

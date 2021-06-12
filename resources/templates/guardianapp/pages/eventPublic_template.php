@@ -16,7 +16,7 @@ if(!isset($events) ){
 				<th data-sortable="true" class="text-center">Titel</th>
 				<th data-sortable="true" class="text-center">Zuständig</th>
 				<th data-sortable="true" class="text-center">Belegung</th>
-				<th class="text-center">Details</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -48,7 +48,7 @@ if(!isset($events) ){
 				    ?>
 				</td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/" . $row->getUuid() ?>">Details</a>
+					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/" . $row->getUuid() ?>">Anzeigen</a>
 				</td>
 			</tr>
 <?php

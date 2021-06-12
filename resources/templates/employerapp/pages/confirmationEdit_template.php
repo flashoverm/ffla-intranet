@@ -65,6 +65,8 @@
 		}
 	}
 	?>
+	<a class="btn btn-outline-primary" href="<?= $config ["urls"] ["employerapp_home"] ?>/confirmations/">Zurück</a>
+	
 	<input type="submit" class="btn btn-primary" id="submitConfirmation" 
 	<?php
 	if(isset($confirmation) && $confirmation->getState() == Confirmation::OPEN){

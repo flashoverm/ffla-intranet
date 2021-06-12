@@ -13,7 +13,8 @@ if (! count ( $inspections )) {
 				<th data-sortable="true" class="text-center">Name(n)</th>
 				<th data-sortable="true" class="text-center">Fahrzeug</th>
 				<th data-sortable="true" class="text-center">Hydranten</th>
-				<th class="text-center"></th>
+				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -27,11 +28,12 @@ if (! count ( $inspections )) {
 				<td class="text-center"><?= $row->getName() ?></td>
 				<td class="text-center"><?= $row->getVehicle() ?></td>
 				<td class="text-center"><?= count ($row->getInspectedHydrants()) ?></td>
+				<td><a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->getUuid(); ?>">Anzeigen</a></td>
 				<td>
 					<div class="dropdown">
 						<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Optionen</button>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->getUuid(); ?>">Anzeigen</a>
+							
 							<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/". $row->getUuid() . "/file"; ?>">PDF anzeigen</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/edit/". $row->getUuid(); ?>">Bearbeiten</a>

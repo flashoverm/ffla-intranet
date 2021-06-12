@@ -61,10 +61,10 @@ if ($isCreator) {
 			<?php
 			    if( ! $event->getPublished()){
 			    	if( $guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid()) and $relevant) {?>
-			          	<a class='btn btn-primary' href='<?= $config["urls"]["guardianapp_home"] ?>/events/<?= $event->getUuid() ?>/edit'>Bearbeiten</a>
 		                <span class='d-inline-block' data-toggle='tooltip' title='Andere Züge über Wache informieren'>
 					  		<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#confirmPublish<?= $event->getUuid() ?>'>Veröffentlichen</button>
 		                </span>
+		                <a class='btn btn-primary' href='<?= $config["urls"]["guardianapp_home"] ?>/events/<?= $event->getUuid() ?>/edit'>Bearbeiten</a>
 						<?php 
 						createDialog('confirmPublish' . $event->getUuid(), "Wache veröffentlichen <br>(E-Mail an alle Wachbeauftragen)?", 'publish');
 						?>
@@ -73,11 +73,10 @@ if ($isCreator) {
 			            echo "<button type='button' class='btn btn-outline-primary ml-1' disabled='disabled' >Wache ist nicht öffentlich</button>";   
 			        }
 				} else {
-					if( $guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid()) and $relevant) {
-						echo "<a class='btn btn-primary' href='" . $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() . "/edit'>Bearbeiten</a>";
-					}
 				    echo "<button type='button' class='btn btn-outline-primary ml-1' disabled='disabled' >Wache ist öffentlich</button>";
-		
+				    if( $guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid()) and $relevant) {
+				    	echo "<a class='btn btn-primary' href='" . $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() . "/edit'>Bearbeiten</a>";
+				    }
 				}
 				?>
 	    	</div>

@@ -59,7 +59,7 @@
     				<th data-sortable="true" class="text-center">Titel</th>
     				<th data-sortable="true" class="text-center">Zuständig</th>
     				<th data-sortable="true" class="text-center">Freigabe</th>
-    				<th class="text-center">Bericht</th>
+    				<th></th>
     			</tr>
     		</thead>
     		<tbody>
@@ -90,7 +90,7 @@
     					?>
     				</td>
     				<td class="text-center">
-    					<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/" . $row->getUuid() ?>">Bericht</a>
+    					<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/" . $row->getUuid() ?>">Anzeigen</a>
     				</td>
     			</tr>
     		<?php

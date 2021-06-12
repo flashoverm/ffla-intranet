@@ -14,9 +14,9 @@ if (! count ( $hydrants )) {
 				<th data-sortable="true" class="text-center">Stadtteil</th>
 				<th data-sortable="true" class="text-center">Typ</th>
 				<th data-sortable="true" class="text-center">Geprüft am</th>
-				<th class="text-center">Anzeigen</th>
+				<th></th>
 				<?php if($currentUser->hasPrivilegeByName(Privilege::HYDRANTADMINISTRATOR)){
-				    echo '<th class="text-center">Bearbeiten</th>';
+				    echo '<th></th>';
 				}?>
 			</tr>
 		</thead>

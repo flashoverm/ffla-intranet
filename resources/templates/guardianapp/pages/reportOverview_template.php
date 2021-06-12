@@ -17,7 +17,7 @@ if (! count ( $reports )) {
 				<th data-sortable="true" class="text-center">Vorkomnisse</th>
 				<th data-sortable="true" class="text-center">Freigabe</th>
 				<th data-sortable="true" class="text-center">EMS</th>
-				<th class="text-center">Bericht</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -67,7 +67,7 @@ if (! count ( $reports )) {
 					?>
 				</td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/" . $row->getUuid() ?>" title='Zum Bericht'>Bericht</a>
+					<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/" . $row->getUuid() ?>">Anzeigen</a>
 				</td>
 			</tr>
 	<?php

@@ -7,9 +7,9 @@ if (! count ( $files )) {
 	<table class="table table-striped" data-toggle="table" data-pagination="true" data-search="true"">
 		<thead>
 			<tr>
-				<th data-sortable="true" class="text-center">Beschreibung</th>
+				<th data-sortable="true">Beschreibung</th>
 				<th data-sortable="true" class="text-center">Upload-Datum</th>
-				<th class="text-center">Anzeigen</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -17,8 +17,8 @@ if (! count ( $files )) {
     <?php
     foreach ( $files as $row ) {
         ?>
-				<tr>
-				<td class="text-center"><?= $row->getDescription(); ?></td>
+			<tr>
+				<td><?= $row->getDescription(); ?></td>
 				<td class="text-center"><span class='d-none'><?= strtotime($row->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
 
 				<td class="text-center">
