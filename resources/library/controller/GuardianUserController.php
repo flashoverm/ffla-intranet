@@ -42,6 +42,22 @@ class GuardianUserController extends UserController{
 		}
 		return $manager;
 	}
+	
+	public function isUserAllowedToEditSomeEvent(User $user){
+		if($user->hasPrivilegeByName(Privilege::EVENTADMIN)){
+			return true;
+		}
+		
+		if($user->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
+			return true;
+		}
+		
+		if($user->hasPrivilegeByName(Privilege::EVENTMANAGER)){
+			return true;
+		}
+		
+		return false;
+	}
 		
 	public function isUserAllowedToEditEvent(User $user, $eventUuid){
 		global $eventDAO;

@@ -50,10 +50,13 @@ if( isset($_POST['confirmation']) ){
 	
 }
 
-$open = $confirmationDAO->getConfirmationsByState(Confirmation::OPEN);
-$variables['open'] = $open;
-
-$accepted = $confirmationDAO->getConfirmationsByState(Confirmation::ACCEPTED);
-$variables['accepted'] = $accepted;
+if( isset( $_GET["accepted"] ) ){
+	$variables ['tab'] = 'accepted';
+	$variables['confirmations'] = $confirmationDAO->getConfirmationsByState(Confirmation::ACCEPTED);
+} else {
+	$variables ['tab'] = 'open';
+	$variables['confirmations'] = $confirmationDAO->getConfirmationsByState(Confirmation::OPEN);
+	
+}
 
 renderLayoutWithContentFile($config["apps"]["employer"], "confirmationProcess_template.php", $variables);

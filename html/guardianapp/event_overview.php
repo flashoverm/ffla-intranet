@@ -22,22 +22,31 @@ if (isset ( $_POST ['delete'] )) {
 
 if(userLoggedIn()){
 	$currentUser = $userController->getCurrentUser();
+	
+	if( isset( $_GET["past"] ) ){
+		$variables ['tab'] = 'past';
+	} else {
+		$variables ['tab'] = 'current';
+	}
     
 	if($currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
-		$events = $eventDAO->getActiveEvents();
-		$pastEvents = $eventDAO->getPastEvents();
+		if($variables ['tab'] == 'past'){
+			$variables ['events'] = $eventDAO->getPastEvents();
+		} else {
+			$variables ['events'] = $eventDAO->getActiveEvents();
+		}
 	} else {
-		$publicEvents = $eventDAO->getPublicEvents();
-		$engineEvents = $eventDAO->getUsersActiveEvents($currentUser);
-	    $events = array_merge($engineEvents, $publicEvents);
-	    
-	    $pastEvents = $eventDAO->getUsersPastEvents($currentUser);
-
+		if($variables ['tab'] == 'past'){
+			$variables ['events'] = $eventDAO->getUsersPastEvents($currentUser);
+		} else {
+			$publicEvents = $eventDAO->getPublicEvents();
+			$engineEvents = $eventDAO->getUsersActiveEvents($currentUser);
+			$events = array_merge($engineEvents, $publicEvents);
+			
+			$variables ['events'] = $events;
+		}
 	}
-	$variables ['events'] = $events;
-	$variables ['pastEvents'] = $pastEvents;
 }
-
 
 renderLayoutWithContentFile ($config["apps"]["guardian"], "eventOverview_template.php", $variables );
 ?>

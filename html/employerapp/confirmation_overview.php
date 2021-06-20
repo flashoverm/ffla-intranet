@@ -22,13 +22,14 @@ if( isset( $_POST['withdraw'] ) ){
 	}
 }
 
-$declined = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::DECLINED, getCurrentUserUUID());
-$variables['declined'] = $declined;
-
-$open = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::OPEN, getCurrentUserUUID());
-$variables['open'] = $open;
-
-$accepted = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::ACCEPTED, getCurrentUserUUID());
-$variables['accepted'] = $accepted;
+if( isset( $_GET["accepted"] ) ){
+	$variables ['tab'] = 'accepted';
+	$variables['confirmations'] = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::ACCEPTED, getCurrentUserUUID());
+	
+} else {
+	$variables ['tab'] = 'open';
+	$variables['confirmations'] = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::OPEN, getCurrentUserUUID());
+	$variables['declined'] = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::DECLINED, getCurrentUserUUID());
+}
 
 renderLayoutWithContentFile($config["apps"]["employer"], "confirmationOverview_template.php", $variables);

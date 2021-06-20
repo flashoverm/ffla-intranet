@@ -62,11 +62,17 @@ if( isset($_POST['datachangerequest']) ){
 	
 }
 
-$open = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::OPEN);
-$variables['open'] = $open;
-$done = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::DONE);
-$variables['done'] = $done;
-$declined = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::DECLINED);
-$variables['declined'] = $declined;
+if( isset( $_GET["done"] ) ){
+	$variables ['tab'] = 'done';
+	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::DONE);
+	
+} else if (isset( $_GET["declined"] ) ){
+	$variables ['tab'] = 'declined';
+	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::DECLINED);
+	
+} else {
+	$variables ['tab'] = 'open';
+	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::OPEN);
+}
 
 renderLayoutWithContentFile($config["apps"]["masterdata"], "dataChangeProcess_template.php", $variables);
