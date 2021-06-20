@@ -396,15 +396,11 @@ function mail_insert_event_report(Report $report){
 	
 	//send report to administration
 	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
-	send_mails($administration, $subject, $body, $file);
-	
 	//send report to manager of the assigned engine
 	$managerList = $guardianUserController->getEventmanagerOfEngine($report->getEngine()->getUuid());
-	if(sizeof($managerList) > 0){
-		send_mails($managerList, $subject, $body, $file);
-		return true;
-	}
-	return false;
+	
+	$recipients = array_merge($managerList, $administration);
+	return send_mails($recipients, $subject, $body, $file);
 }
 
 function mail_update_report(Report $report){
@@ -415,17 +411,13 @@ function mail_update_report(Report $report){
 	
 	$file = $config["paths"]["reports"] . $report->getUuid() . ".pdf";
 	
-	//send report to manager of the assigned engine
+	//send report to administration
 	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
-	send_mails($administration, $subject, $body, $file);
-	
 	//send report to manager of the assigned engine
 	$managerList = $guardianUserController->getEventmanagerOfEngine($report->getEngine()->getUuid());
-	if(sizeof($managerList) > 0){
-		send_mails($managerList, $subject, $body, $file);
-		return true;
-	}
-	return false;
+	
+	$recipients = array_merge($managerList, $administration);
+	return send_mails($recipients, $subject, $body, $file);
 }
 
 function mail_report_approved($report_uuid){
