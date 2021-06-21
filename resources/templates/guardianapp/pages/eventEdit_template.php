@@ -229,7 +229,7 @@
 						?>
 						<tr id="staffEntry1">
 							<td class="p-0">
-								<select class="select-cornered" name="staff1" required="required" id="staff1">
+								<select class="select-cornered" name="staff[1][position]" required="required" id="staff[1][position]">
 									<option value="" disabled selected>Funktion auswählen</option>
 									<?php foreach ( $staffpositions as $option ) : 
 									?>
