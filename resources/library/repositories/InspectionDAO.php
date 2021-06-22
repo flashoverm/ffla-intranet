@@ -36,7 +36,8 @@ class InspectionDAO extends BaseDAO{
 	}
 	
 	function getInspections(){
-		$statement = $this->db->prepare("SELECT * FROM inspection");
+		echo "Test";
+		$statement = $this->db->prepare("SELECT * FROM inspection ORDER BY date DESC");
 		
 		if ($statement->execute()) {
 			return $this->handleResult($statement, true);
@@ -45,7 +46,8 @@ class InspectionDAO extends BaseDAO{
 	}
 	
 	function getInspectionsByEngine($engineUuid){
-		$statement = $this->db->prepare("SELECT * FROM inspection WHERE engine = ?");
+		echo "Test";
+		$statement = $this->db->prepare("SELECT * FROM inspection WHERE engine = ? ORDER BY date DESC");
 		
 		if ($statement->execute(array($engineUuid))) {
 			return $this->handleResult($statement, true);

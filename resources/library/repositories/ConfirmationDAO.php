@@ -34,7 +34,7 @@ class ConfirmationDAO extends BaseDAO {
 	}
 	
 	function getConfirmationsByState($state){
-		$statement = $this->db->prepare("SELECT * FROM confirmation WHERE state = ?");
+		$statement = $this->db->prepare("SELECT * FROM confirmation WHERE state = ? ORDER BY date DESC, start_time DESC");
 		
 		if ($statement->execute(array($state))) {
 			return $this->handleResult($statement, true);
@@ -43,7 +43,7 @@ class ConfirmationDAO extends BaseDAO {
 	}
 	
 	function getConfirmationsByStateAndUser($state, $userUuid){
-		$statement = $this->db->prepare("SELECT * FROM confirmation WHERE user = ? AND state = ?");
+		$statement = $this->db->prepare("SELECT * FROM confirmation WHERE user = ? AND state = ? ORDER BY date DESC, start_time DESC");
 		
 		if ($statement->execute(array($userUuid, $state))) {
 			return $this->handleResult($statement, true);
