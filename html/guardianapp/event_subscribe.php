@@ -6,7 +6,7 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 // Pass variables (as an array) to template
 $variables = array (
     'title' => 'Wache/Position nicht vorhanden',
-    'secured' => false,
+    'secured' => true,
     'showFormular' => false
 );
 
