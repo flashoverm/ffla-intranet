@@ -2,6 +2,8 @@ RewriteEngine on
 
 #DONT FORGET TO CHANGE htaccess.sample
 
+RewriteRule ^(.*)hydrant/inspection/evaluation/([^/]+)?$ 		$1/hydrantapp/inspection_evaluation.php?year=$2
+RewriteRule ^(.*)hydrant/inspection/evaluation/?$ 		$1/hydrantapp/inspection_evaluation.php
 RewriteRule ^(.*)hydrant/inspection/plan/?$ 		$1/hydrantapp/inspection_plan.php
 RewriteRule ^(.*)hydrant/inspection/prepare/?$ 		$1/hydrantapp/inspection_prepare.php
 RewriteRule ^(.*)hydrant/inspection/assist/?$ 			$1/hydrantapp/inspection_assist.php
