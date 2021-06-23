@@ -11,7 +11,7 @@ $variables = array(
 
 $engine = $userController->getCurrentUser()->getEngine();
 
-if($engine->getIsAdministration() || $userController->hasCurrentUserPrivilege(Privilege::FFADMINISTRATION)){
+if($userController->hasCurrentUserPrivilege(Privilege::HYDRANTADMINISTRATOR)){
 	$variables ['hydrants'] = $hydrantDAO->getHydrants();
 } else {
 	$variables ['hydrants'] =  $hydrantDAO->getHydrantsOfEngine($engine->getUuid());

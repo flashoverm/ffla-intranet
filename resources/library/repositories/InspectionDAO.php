@@ -36,7 +36,8 @@ class InspectionDAO extends BaseDAO{
 	}
 	
 	function getInspections(){
-		$statement = $this->db->prepare("SELECT * FROM inspection");
+		echo "Test";
+		$statement = $this->db->prepare("SELECT * FROM inspection ORDER BY date DESC");
 		
 		if ($statement->execute()) {
 			return $this->handleResult($statement, true);
@@ -45,7 +46,8 @@ class InspectionDAO extends BaseDAO{
 	}
 	
 	function getInspectionsByEngine($engineUuid){
-		$statement = $this->db->prepare("SELECT * FROM inspection WHERE engine = ?");
+		echo "Test";
+		$statement = $this->db->prepare("SELECT * FROM inspection WHERE engine = ? ORDER BY date DESC");
 		
 		if ($statement->execute(array($engineUuid))) {
 			return $this->handleResult($statement, true);
@@ -70,6 +72,30 @@ class InspectionDAO extends BaseDAO{
 			if ($statement->execute(array($uuid))) {
 				return true;
 			}
+		}
+		return false;
+	}
+	
+	function getInspectionYears(){
+		$statement = $this->db->prepare("SELECT DISTINCT(EXTRACT(YEAR FROM date)) as year FROM inspection ORDER BY date DESC");
+		
+		if ($statement->execute()) {
+			return $statement->fetchAll(PDO::FETCH_COLUMN);
+		}
+		return false;
+	}
+	
+	function getHydrantsByYear($year){
+		$statement = $this->db->prepare("SELECT engine.name as engine, COUNT(*) as count 
+			FROM inspection, hydrant_inspection, engine
+			WHERE inspection.uuid = hydrant_inspection.inspection
+			AND inspection.engine = engine.uuid
+			AND EXTRACT(YEAR FROM inspection.date) = ?
+			GROUP BY inspection.engine
+			ORDER BY engine.name");
+		
+		if ($statement->execute(array($year))) {
+			return $statement->fetchAll();
 		}
 		return false;
 	}

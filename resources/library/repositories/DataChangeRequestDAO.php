@@ -34,7 +34,7 @@ class DataChangeRequestDAO extends BaseDAO {
 	}
 	
 	function getDataChangeRequestsByState($state){
-		$statement = $this->db->prepare("SELECT * FROM datachangerequest WHERE state = ?");
+		$statement = $this->db->prepare("SELECT * FROM datachangerequest WHERE state = ? ORDER BY createdate DESC");
 		
 		if ($statement->execute(array($state))) {
 			return $this->handleResult($statement, true);
@@ -43,7 +43,7 @@ class DataChangeRequestDAO extends BaseDAO {
 	}
 	
 	function getDataChangeRequestsByStateAndUser($state, $userUuid){
-		$statement = $this->db->prepare("SELECT * FROM datachangerequest WHERE user = ? AND state = ?");
+		$statement = $this->db->prepare("SELECT * FROM datachangerequest WHERE user = ? AND state = ? ORDER BY createdate DESC");
 		
 		if ($statement->execute(array($userUuid, $state))) {
 			return $this->handleResult($statement, true);

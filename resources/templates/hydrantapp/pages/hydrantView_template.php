@@ -4,31 +4,31 @@ if (isset($hydrant)){
 	<table class="table table-bordered">
 		<tbody>
 			<tr>
-				<th class="th-td-padding text-left">Ort</th>
-				<td class="th-td-padding"><?= $hydrant->getStreet() . ", " . $hydrant->getDistrict() ?></td>
+				<th>Ort</th>
+				<td><?= $hydrant->getStreet() . ", " . $hydrant->getDistrict() ?></td>
 			</tr>			
 			<tr>
-				<th class="th-td-padding text-left">Löschzug</th>
-				<td class="th-td-padding"><?= $hydrant->getEngine()->getName(); ?></td>
+				<th>Löschzug</th>
+				<td><?= $hydrant->getEngine()->getName(); ?></td>
 			</tr>
 			<tr>
-				<th class="th-td-padding text-left">Typ</th>
-				<td class="th-td-padding"><?= $hydrant->getType() ?></td>
+				<th>Typ</th>
+				<td><?= $hydrant->getType() ?></td>
 			</tr>
 			<?php
 			if(!$hydrant->getCheckByFF()){
 			?>
 			<tr>
-				<th class="th-td-padding text-left">Prüfung durch</th>
-				<td class="th-td-padding">Stadtwerke Landshut</td>
+				<th>Prüfung durch</th>
+				<td>Stadtwerke Landshut</td>
 			</tr>
 			<?php
 			}
 			if(!$hydrant->getOperating()){
 			?>
 			<tr>
-				<th class="th-td-padding text-left">Achtung</th>
-				<td class="th-td-padding">Hydrant ist nicht in Betrieb</td>
+				<th>Achtung</th>
+				<td>Hydrant ist nicht in Betrieb</td>
 			</tr>
 			<?php
 			}
