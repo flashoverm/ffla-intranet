@@ -160,14 +160,14 @@ class UserController extends BaseController{
 		return $this->userDAO->save($user);
 	}
 	
-	function addDefaultPrivilegesToUser($user, $includeEventParticipant = true){
+	function addDefaultPrivilegesToUser(User $user, $includeEventParticipant = true){
 		$privileges = $this->privilegeDAO->getPrivileges();
 		foreach($privileges as $privilege){
 			if($privilege->getIsDefault()){
 				if(! $includeEventParticipant && $privilege->getPrivilege() == Privilege::EVENTPARTICIPENT ){
 					continue;
 				}
-				$user->addPrivilege($privilege);
+				$user->addPrivilegeForEngine($user->getMainEngine(), $privilege);
 			}
 		}
 		return $user;
