@@ -57,7 +57,7 @@ class UserPrivilege extends BaseModel {
 		$this->userUuid = $userUuid;
 	}
 
-	public function __construct(Engine $engine, Privilege $privilege, string $userUuid) {
+	public function __construct(Engine $engine, Privilege $privilege, ?string $userUuid) {
 		$this->engine = $engine;
 		$this->privilege = $privilege;
 		$this->userUuid = $userUuid;
