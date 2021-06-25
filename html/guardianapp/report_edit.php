@@ -60,6 +60,11 @@ if (isset($_POST) && isset($_POST ['start'])) {
     $typeUuid = trim ( $_POST ['type'] );
     $type = $eventTypeDAO->getEventType($typeUuid);
     
+    if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1]).(0[1-9]|1[0-2]).[0-9]{4}$/", $date)) {
+    	//European date format -> change to yyyy-mm-dd
+    	$date = date_create_from_format('d.m.Y', $date)->format('Y-m-d');
+    }
+    
     $typeOther = null;
     if(isset( $_POST ['typeOther'] ) && !empty( $_POST ['typeOther'] ) ){
         $typeOther = trim( $_POST ['typeOther'] );
@@ -102,6 +107,11 @@ if (isset($_POST) && isset($_POST ['start'])) {
         $unitbeginn = trim ( $_POST ['unit' . $unitCount . 'start' . "field"] );
         $unitend = trim ( $_POST ['unit' . $unitCount . 'end' . "field"] );
         $unitname = trim ( $_POST ['unit' . $unitCount . 'unit'] );
+        
+        if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1]).(0[1-9]|1[0-2]).[0-9]{4}$/", $date)) {
+        	//European date format -> change to yyyy-mm-dd
+        	$unitdate = date_create_from_format('d.m.Y', $unitdate)->format('Y-m-d');
+        }
         
         $unit = new ReportUnit($unitname, $unitdate, $unitbeginn, $unitend);
         if(isset ( $_POST ['unit' . $unitCount . 'km'] ) && $_POST ['unit' . $unitCount . 'km'] != ""){

@@ -233,6 +233,18 @@
 </form>
 <script>
 
+<script>
+	if(!isDateSupported()){
+		var dateElement = document.getElementById("date");
+		var date = new Date(dateElement.value);		
+		var dateString = ('0' + date.getDate()).slice(-2) + '.'
+        + ('0' + (date.getMonth()+1)).slice(-2) + '.'
+        + date.getFullYear();
+
+        dateElement.value = dateString;
+	}
+</script>
+
 <?php  
 if(isset($inspection)) {
     echo "var hy_count = " . $inspection->getCount() . ";";

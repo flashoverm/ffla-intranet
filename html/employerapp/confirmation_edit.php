@@ -22,6 +22,12 @@ if( isset($_POST['date']) && isset($_POST['start']) && isset($_POST['end']) ){
 			|| (isset($_GET ['id']) && $variables ['confirmation']->getState() != Confirmation::ACCEPTED) ){
 		
 		$date = trim ( $_POST ['date'] );
+		
+		if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1]).(0[1-9]|1[0-2]).[0-9]{4}$/", $date)) {
+			//European date format -> change to yyyy-mm-dd
+			$date = date_create_from_format('d.m.Y', $date)->format('Y-m-d');
+		}
+		
 		$beginn = trim ( $_POST ['start'] );
 		$end = trim ( $_POST ['end'] );
 		
