@@ -71,7 +71,7 @@
 						}
 						if($entry->getUserAcknowledged()){
 						?>
-							<button class='btn btn-outline-success btn-sm' disabled>Zur Kentniss genommen</button>
+							<button class='btn btn-outline-success btn-sm' disabled>Zur Kenntnis genommen</button>
 						<?php
 						}
 					}
@@ -95,7 +95,7 @@
 
 							if ($eventController->isUserManagerOrCreator($currentUser->getUuid(), $event->getUuid()) && $event->getStaffConfirmation() && $entry->getUnconfirmed()) { ?>
 		    					<button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#confirmConfirmation<?= $entry->getUuid() ?>'>Bestätigen</button>
-		    				<?php 
+		    					<?php 
 		    					createDialog('confirmConfirmation' . $entry->getUuid(), "Personal wirklich bestätigen?", null, "confirmstaffid", $entry->getUuid());
 							} 
 							if ($entry->getUser()->getUuid() == getCurrentUserUUID()) {	// Remove by user himself ?>
@@ -108,6 +108,12 @@
 								<?php 
 								createDialog('confirmUnscribe' . $entry->getUuid(), "Personal wirklich austragen?", null, "removestaffid", $entry->getUuid());
 		        			}
+		        			
+		        			if ($currentUser->getUuid() == $entry->getUser()->getUuid() && ! $entry->getUserAcknowledged()) { ?>
+		    					<button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#acknowledge<?= $entry->getUuid() ?>'>Zur Kenntnis nehmen</button>
+		    					<?php 
+		    					createDialog('acknowledge' . $entry->getUuid(), "Wachteilnahme zur Kenntnis nehmen?", null, "acknowledgeID", $entry->getUuid());
+							}
 						}
 						echo "</td>";
 					} ?>

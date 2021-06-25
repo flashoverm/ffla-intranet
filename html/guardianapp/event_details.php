@@ -44,12 +44,16 @@ if (! isset($_GET['id'])) {
     	
     	if(isset($_GET['acknowledge'])){
     		$staffUuid = $_GET['acknowledge'];
+    	}
+    	if(isset($_POST['acknowledgeID'])){
+    		$staffUuid = trim($_POST['acknowledgeID']);
+    	}
+    	if(isset($staffUuid)){
     		if($eventController->acknowledgeStaffUser($staffUuid)){
-    			$variables['successMessage'] = "Die Wachteilnahme wurde zur Kentniss genommen";
+    			$variables['successMessage'] = "Die Wachteilnahme wurde zur Kenntnis genommen";
     		} else {
-    			$variables['alertMessage'] = "Kentnissnahme nicht möglich";
+    			$variables['alertMessage'] = "Kenntnisnahme nicht möglich";
     		}
-    		
     	}
     	
     	if (isset($_POST['removestaffid'])) {
