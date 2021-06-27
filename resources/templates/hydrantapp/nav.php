@@ -17,10 +17,6 @@ function left_navigation ($currentUser){
 		echo "	</div>
 			</li>";
 		
-		echo "<li class='nav-item'>
-        		<a class='nav-link text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/search'>Hydrantenkarten</a>
-			</li>";
-		
 		if($currentUser->hasPrivilegeByName(Privilege::ENGINEHYDRANTMANANGER) || $currentUser->hasPrivilegeByName(Privilege::HYDRANTADMINISTRATOR)){
 			echo "
 			<li class='dropdown'>

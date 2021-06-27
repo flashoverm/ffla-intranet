@@ -7,11 +7,15 @@ if (! isset($_GET['id'])) {
 
     // Pass variables (as an array) to template
     $variables = array(
-        'title' => 'Wache kann nicht angezeigt werden',
-        'secured' => false,
-        'showFormular' => false,
-        'alertMessage' => "Wache kann nicht angezeigt werden"
+    		'app' => $config["apps"]["guardian"],
+    		'template' => "eventDetails/eventDetails_template.php",
+	        'title' => 'Wache kann nicht angezeigt werden',
+	        'secured' => false,
+	        'showFormular' => false,
+	        'alertMessage' => "Wache kann nicht angezeigt werden"
     );
+    $variables = checkPermissions($variables);
+    
 } else {
     $uuid = trim($_GET['id']);
     $event = $eventDAO->getEvent($uuid);
@@ -31,12 +35,15 @@ if (! isset($_GET['id'])) {
     	
     	// Pass variables (as an array) to template
     	$variables = array(
+    			'app' => $config["apps"]["guardian"],
+    			'template' => "eventDetails/eventDetails_template.php",
     			'title' => $event->getType()->getType(),
     			'secured' => false,
     			'showFormular' => true,
     	        'isCreator' => $isCreator,
     	        'otherEngine' => $otherEngine
     	);
+    	$variables = checkPermissions($variables);
     	
     	if($event->getTypeOther() != null){
     		$variables['subtitle'] = $event->getTypeOther();
@@ -108,22 +115,28 @@ if (! isset($_GET['id'])) {
     } else {
     	// Pass variables (as an array) to template
     	$variables = array(
+    			'app' => $config["apps"]["guardian"],
+    			'template' =>"eventDetails/eventDetails_template.php",
     			'title' => 'Wache nicht gefunden',
     			'secured' => false,
     			'showFormular' => false,
     			'alertMessage' => "Wache nicht gefunden"
     	);
+    	$variables = checkPermissions($variables);
+    	
     }
 }
 
 if(isset($_GET['print'])){
 	
+	$variables['app'] = $config["apps"]["guardian"];
+	$variables['template'] = "eventDetails/eventPrint_template.php";
 	$variables['showFormular'] = true;
 	$variables['orientation'] = 'portrait';
 	$variables['print'] = true;
-	renderPrintContentFile($config["apps"]["guardian"], "eventDetails/eventPrint_template.php", $variables);
+	renderPrintContentFile($variables);
 
 } else {
-	renderLayoutWithContentFile($config["apps"]["guardian"], "eventDetails/eventDetails_template.php", $variables);
+	renderLayoutWithContentFile($variables);
 }
 ?>

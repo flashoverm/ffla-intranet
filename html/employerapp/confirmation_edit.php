@@ -5,9 +5,12 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 
 // Pass variables (as an array) to template
 $variables = array(
+		'app' => $config["apps"]["employer"],
+		'template' => "confirmationEdit_template.php",
 		'title' => "Arbeitgebernachweis beantragen",
 		'secured' => true,
 );
+$variables = checkPermissions($variables);
 
 $confirmation = new Confirmation();
 if(isset($_GET ['id'])) {
@@ -80,4 +83,4 @@ if( isset($_POST['date']) && isset($_POST['start']) && isset($_POST['end']) ){
 	}
 }
 
-renderLayoutWithContentFile($config["apps"]["employer"], "confirmationEdit_template.php", $variables);
+renderLayoutWithContentFile($variables);

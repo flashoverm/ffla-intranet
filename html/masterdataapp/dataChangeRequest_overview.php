@@ -5,9 +5,12 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 
 // Pass variables (as an array) to template
 $variables = array(
+		'app' => $config["apps"]["masterdata"],
+		'template' => "dataChangeOverview_template.php",
 		'title' => "Eigene Stammdatenänderungen",
 		'secured' => true,
 );
+$variables = checkPermissions($variables);
 
 if( isset( $_POST['withdraw'] ) ){
 	//create logentry
@@ -36,4 +39,4 @@ if( isset( $_GET["done"] ) ){
 	$variables['furtherRequest'] = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::REQUEST, getCurrentUserUUID());
 }
 
-renderLayoutWithContentFile($config["apps"]["masterdata"], "dataChangeOverview_template.php", $variables);
+renderLayoutWithContentFile($variables);

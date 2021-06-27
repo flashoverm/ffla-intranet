@@ -5,10 +5,13 @@ require_once LIBRARY_PATH . "/file_create.php";
 
 // Pass variables (as an array) to template
 $variables = array(
+		'app' => $config["apps"]["employer"],
+		'template' => "confirmationPrint_template.php",
 		'title' => "Arbeitgeberbestätigung",
 		'secured' => true,
 		'orientation' => 'portrait'
 );
+$variables = checkPermissions($variables);
 
 if (isset($_GET['id'])) {
 	
@@ -19,7 +22,8 @@ if (isset($_GET['id'])) {
 if(isset($_GET['print'])){
 	
 	$variables['orientation'] = 'portrait';
-	renderPrintContentFile($config["apps"]["employer"], "confirmationPrint_template.php", $variables, true);
+	$variables['noHeader'] = 'true';
+	renderPrintContentFile($variables);
 	
 } else if( isset($_GET['id']) && isset($_GET['file']) ) {
 	

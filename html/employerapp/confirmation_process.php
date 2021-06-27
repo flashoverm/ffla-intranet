@@ -6,10 +6,13 @@ require_once LIBRARY_PATH . "/file_create.php";
 
 // Pass variables (as an array) to template
 $variables = array(
+		'app' => $config["apps"]["employer"],
+		'template' => "confirmationProcess_template.php",
 		'title' => "Arbeitgebernachweise bearbeiten",
 		'secured' => true,
 		'privilege' => Privilege::FFADMINISTRATION
 );
+$variables = checkPermissions($variables);
 
 if( isset($_POST['confirmation']) ){
 	$confirmationUuid = trim ( $_POST['confirmation'] );
@@ -59,4 +62,4 @@ if( isset( $_GET["accepted"] ) ){
 	
 }
 
-renderLayoutWithContentFile($config["apps"]["employer"], "confirmationProcess_template.php", $variables);
+renderLayoutWithContentFile($variables);

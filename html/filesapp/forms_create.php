@@ -4,10 +4,13 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Formular hochladen",
-    'secured' => true,
-	'privilege' => Privilege::FILEADMIN
+		'app' => $config["apps"]["files"],
+		'template' => "formsCreate_template.php",
+	    'title' => "Formular hochladen",
+	    'secured' => true,
+		'privilege' => Privilege::FILEADMIN
 );
+$variables = checkPermissions($variables);
 
 if(isset($_FILES['upload']) && isset($_POST['description'])){
     
@@ -38,4 +41,4 @@ if(isset($_FILES['upload']) && isset($_POST['description'])){
     }
 }
 
-renderLayoutWithContentFile($config["apps"]["files"], "formsCreate_template.php", $variables);
+renderLayoutWithContentFile($variables);

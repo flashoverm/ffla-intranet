@@ -16,7 +16,6 @@ class EngineDAO extends BaseDAO{
 		if ($result) {
 			return true;
 		} else {
-			//echo "Error: " . $query . "<br>" . $db->error . "<br><br>";
 			return false;
 		}
 	}
@@ -90,7 +89,6 @@ class EngineDAO extends BaseDAO{
 			$this->initializeEngines();
 			return true;
 		} else {
-			// echo "Error: " . $this->db->error . "<br><br>";
 			return false;
 		}
 	}

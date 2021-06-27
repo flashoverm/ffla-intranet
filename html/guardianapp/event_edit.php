@@ -10,11 +10,14 @@ $engines = $engineDAO->getEngines();
 
 // Pass variables (as an array) to template
 $variables = array (
+		'app' => $config["apps"]["guardian"],
+		'template' => "eventEdit_template.php",
 		'secured' => true,
 		'eventtypes' => $eventtypes,
         'staffpositions' => $staffpositions,
         'engines' => $engines,
 );
+$variables = checkPermissions($variables);
 
 //Display event if uuid is parameter
 if (isset($_GET['id'])) {
@@ -184,5 +187,5 @@ if (isset ( $_POST ['type'] ) ) {
 	}
 }
 
-renderLayoutWithContentFile ($config["apps"]["guardian"], "eventEdit_template.php", $variables );
+renderLayoutWithContentFile ($variables );
 ?>

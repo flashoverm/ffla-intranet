@@ -10,12 +10,15 @@ $engines = $engineDAO->getEngines();
 
 // Pass variables (as an array) to template
 $variables = array (
+		'app' => $config["apps"]["guardian"],
+		'template' => "reportEdit/reportEdit_template.php",
 		'secured' => false,
 		'eventtypes' => $eventtypes,
 		'staffpositions' => $staffpositions,
 		'engines' => $engines,
         'title' => "Wachbericht erstellen",
 );
+$variables = checkPermissions($variables);
 
 $eventReport = NULL;
 
@@ -182,6 +185,6 @@ if (isset($_POST) && isset($_POST ['start'])) {
     }
 }
 
-renderLayoutWithContentFile ($config["apps"]["guardian"], "reportEdit/reportEdit_template.php", $variables );
+renderLayoutWithContentFile ( $variables );
 
 ?>

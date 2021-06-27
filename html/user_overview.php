@@ -5,10 +5,13 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 
 // Pass variables (as an array) to template
 $variables = array (
+		'app' => $config["apps"]["landing"],
+		'template' => "userOverview_template.php",
 		'title' => "Übersicht Benutzer",
 		'secured' => true,
 		'privilege' => Privilege::PORTALADMIN
 );
+$variables = checkPermissions($variables);
 
 if (isset ( $_POST ['disable'] )) {
 	$uuid = trim ( $_POST ['disable'] );
@@ -87,6 +90,6 @@ $variables ['user'] = $user;
 $variables ['deletedUser'] = $userDAO->getDeletedUsers();
 
 
-renderLayoutWithContentFile ($config["apps"]["landing"], "userOverview_template.php", $variables );
+renderLayoutWithContentFile ($variables );
 
 ?>

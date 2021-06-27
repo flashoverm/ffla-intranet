@@ -231,7 +231,6 @@
 		</div>
     </div>
 </form>
-<script>
 
 <script>
 	if(!isDateSupported()){
@@ -243,7 +242,6 @@
 
         dateElement.value = dateString;
 	}
-</script>
 
 <?php  
 if(isset($inspection)) {

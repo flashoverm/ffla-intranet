@@ -4,9 +4,12 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array (
+		'app' => $config["apps"]["landing"],
+		'template' => "index_template.php",
 		'title' => 'Intranet',
 		'subtitle' => 'der Freiwilligen Feuerwehr der Stadt Landshut',
 		'secured' => false,
 );
+$variables = checkPermissions($variables);
 
-renderLayoutWithContentFile ($config["apps"]["landing"], "index_template.php", $variables );
+renderLayoutWithContentFile ($variables);

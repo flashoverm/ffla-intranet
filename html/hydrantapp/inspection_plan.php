@@ -4,9 +4,15 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-		'title' => "Hydrantenprüfung Karte",
+		'app' => $config["apps"]["hydrant"],
+		'template' => "inspectionPlan_template.php",
+		'title' => "Prüfbericht",
 		'secured' => true,
+		'privilege' => Privilege::ENGINEHYDRANTMANANGER,
+		'criteria' => InspectedHydrant::HYDRANTCRITERIA,
+		'orientation' => 'landscape'
 );
+$variables = checkPermissions($variables);
 
 $hydrants = array();
 
@@ -15,16 +21,8 @@ if(isset($_POST['hydrants'])){
 		$hydrants[] = $hydrantDAO->getHydrantByHy($_POST['hydrants'][$i]);
 	}
 }
+$variables['hydrants'] = $hydrants;
 
-$variables = array(
-		'title' => "Prüfbericht",
-		'secured' => true,
-		'privilege' => Privilege::ENGINEHYDRANTMANANGER,
-		'criteria' => InspectedHydrant::HYDRANTCRITERIA,
-		'hydrants' => $hydrants,
-		'orientation' => 'landscape'
-);
-
-renderPrintContentFile($config["apps"]["hydrant"], "inspectionPlan_template.php", $variables);
+renderPrintContentFile($variables);
 
 ?>

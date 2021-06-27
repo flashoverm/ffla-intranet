@@ -4,8 +4,11 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array (
-    'title' => 'Anleitung',
-    'secured' => false,
+		'app' => $config["apps"]["guardian"],
+		'template' => "manual_template.php",
+	    'title' => 'Anleitung',
+	    'secured' => false,
 );
+$variables = checkPermissions($variables);
 
-renderLayoutWithContentFile ( "manual_template.php", $variables );
+renderLayoutWithContentFile ( $variables );

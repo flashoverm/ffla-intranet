@@ -5,9 +5,12 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 
 // Pass variables (as an array) to template
 $variables = array(
+		'app' => $config["apps"]["employer"],
+		'template' => "confirmationOverview_template.php",
 		'title' => "Eigene Arbeitgebernachweise",
 		'secured' => true,
 );
+$variables = checkPermissions($variables);
 
 if( isset( $_POST['withdraw'] ) ){
 	//create logentry
@@ -32,4 +35,4 @@ if( isset( $_GET["accepted"] ) ){
 	$variables['declined'] = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::DECLINED, getCurrentUserUUID());
 }
 
-renderLayoutWithContentFile($config["apps"]["employer"], "confirmationOverview_template.php", $variables);
+renderLayoutWithContentFile($variables);

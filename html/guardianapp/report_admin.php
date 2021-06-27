@@ -4,11 +4,13 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array (
-    'title' => "Übersicht Wachberichte",
-    'secured' => true,
+		'app' => $config["apps"]["guardian"],
+		'template' => "reportOverview_template.php",
+	    'title' => "Übersicht Wachberichte",
+	    'secured' => true,
 		'privilege' => Privilege::EVENTADMIN
 );
-
+$variables = checkPermissions($variables);
   
 if (isset ( $_POST ['delete'] )) {
 	$delete_report_uuid = trim ( $_POST ['delete'] );
@@ -23,6 +25,6 @@ if (isset ( $_POST ['delete'] )) {
 
 $variables ['reports'] = $reportDAO->getReports();
 
-renderLayoutWithContentFile ($config["apps"]["guardian"], "reportOverview_template.php", $variables );
+renderLayoutWithContentFile ( $variables );
 
 ?>

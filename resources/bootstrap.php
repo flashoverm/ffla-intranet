@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+session_start ();
+
 require_once realpath ( dirname ( __FILE__ ) . "/config/config.php" );
 
 foreach (glob( MODELS_PATH . "/*.php") as $filename) {
@@ -62,3 +65,6 @@ $hydrantController = new HydrantController($hydrantDAO);
 
 $confirmationController = new ConfirmationController($confirmationDAO);
 $dataChangeRequestController = new DataChangeRequestController($dataChangeRequestDAO);
+
+//Load current user
+$currentUser = $userController->getCurrentUser();

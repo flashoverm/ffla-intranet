@@ -1,8 +1,6 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 
-session_start ();
-
 if(! userLoggedIn()){
     http_response_code(401);
 } else {

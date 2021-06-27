@@ -2,8 +2,6 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once LIBRARY_PATH . "/util.php";
 
-session_start ();
-
 if(	userLoggedIn() ){
     
     $fullpath = $config["paths"]["maps"] . basename($_GET['hydrant']) . ".png";

@@ -4,11 +4,14 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Prüfbericht erstellen",
-    'secured' => true,
-    'privilege' => Privilege::ENGINEHYDRANTMANANGER
+		'app' => $config["apps"]["hydrant"],
+		'template' => "inspectionAssist/inspectionAssist_template.php",
+	    'title' => "Prüfbericht erstellen",
+	    'secured' => true,
+	    'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
+$variables = checkPermissions($variables);
 
 $variables['criteria'] = InspectedHydrant::HYDRANTCRITERIA;
 
-renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionAssist/inspectionAssist_template.php", $variables);
+renderLayoutWithContentFile($variables);

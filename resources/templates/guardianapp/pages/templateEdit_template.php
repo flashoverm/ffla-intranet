@@ -42,8 +42,8 @@
 					
 					<?php
 					$staffId = 0;
-					if( isset($template) ){
-						foreach ( $template->getStaffPositions() as $position ) {
+					if( isset($staffTemplate) ){
+						foreach ( $staffTemplate->getStaffPositions() as $position ) {
 							$staffId = $staffId +1;
 							?>
 							<tr id="staffEntry<?= $staffId; ?>">

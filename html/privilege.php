@@ -4,10 +4,13 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array (
+		'app' => $config["apps"]["landing"],
+		'template' => "privilege_template.php",
 		'secured' => true,
 		'privilege' => Privilege::PORTALADMIN,
 		'title' => "Berechtigungen",
 		'privileges' => $privilegeDAO->getPrivileges(),
 );
-	
-renderLayoutWithContentFile ($config["apps"]["landing"], "privilege_template.php", $variables );
+$variables = checkPermissions($variables);
+
+renderLayoutWithContentFile ( $variables );

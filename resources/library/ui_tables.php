@@ -337,7 +337,7 @@ function renderDataChangeRow($dataChangeRequest, $options = array()){
 								<div class='modal-body'>
 									<div class="form-group">
 										<input type="text" required="required" placeholder="Rückfrage eingeben" class="form-control" 
-										name="requesttext" id="requesttest" >
+										name="requesttext" id="requesttext" >
 									</div>
 								</div>
 								<div class='modal-footer'>

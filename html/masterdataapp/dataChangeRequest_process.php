@@ -6,10 +6,13 @@ require_once LIBRARY_PATH . "/file_create.php";
 
 // Pass variables (as an array) to template
 $variables = array(
+		'app' => $config["apps"]["masterdata"],
+		'template' => "dataChangeProcess_template.php",
 		'title' => "Stammdatenänderungen bearbeiten",
 		'secured' => true,
 		'privilege' => Privilege::MASTERDATAADMIN
 );
+$variables = checkPermissions($variables);
 
 if( isset($_POST['datachangerequest']) ){
 	$dataChangeRequestUuid = trim ( $_POST['datachangerequest'] );
@@ -75,4 +78,4 @@ if( isset( $_GET["done"] ) ){
 	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::OPEN);
 }
 
-renderLayoutWithContentFile($config["apps"]["masterdata"], "dataChangeProcess_template.php", $variables);
+renderLayoutWithContentFile($variables);

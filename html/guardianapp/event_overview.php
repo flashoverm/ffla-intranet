@@ -5,9 +5,12 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 
 // Pass variables (as an array) to template
 $variables = array (
-    'title' => "Übersicht Wachen",
-    'secured' => true,
+		'app' => $config["apps"]["guardian"],
+		'template' => "eventOverview_template.php",
+	    'title' => "Übersicht Wachen",
+	    'secured' => true,
 );
+$variables = checkPermissions($variables);
 
 if (isset ( $_POST ['delete'] )) {
 	$delete_event_uuid = trim ( $_POST ['delete'] );
@@ -21,7 +24,6 @@ if (isset ( $_POST ['delete'] )) {
 }
 
 if(userLoggedIn()){
-	$currentUser = $userController->getCurrentUser();
 	
 	if( isset( $_GET["past"] ) ){
 		$variables ['tab'] = 'past';
@@ -48,5 +50,5 @@ if(userLoggedIn()){
 	}
 }
 
-renderLayoutWithContentFile ($config["apps"]["guardian"], "eventOverview_template.php", $variables );
+renderLayoutWithContentFile ($variables );
 ?>

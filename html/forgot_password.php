@@ -4,9 +4,12 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
+		'app' => $config["apps"]["landing"],
+		'template' => "forgotPassword_template.php",
 		'title' => "Passwort vergessen",
 		'secured' => false,
 );
+$variables = checkPermissions($variables);
 
 if( userLoggedIn() ){
 	header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects
@@ -30,4 +33,4 @@ if (isset($_POST['email']) ) {
 
 }
 	
-renderLayoutWithContentFile ($config["apps"]["landing"], "forgotPassword_template.php", $variables );
+renderLayoutWithContentFile ($variables );

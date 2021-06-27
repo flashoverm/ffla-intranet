@@ -6,11 +6,14 @@ $privileges = $privilegeDAO->getPrivileges();
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Rechte bearbeiten",
-    'secured' => true,
-	'privilege' => Privilege::PORTALADMIN,	
+		'app' => $config["apps"]["landing"],
+		'template' => "privilegeEdit_template.php",
+	    'title' => "Rechte bearbeiten",
+	    'secured' => true,
+		'privilege' => Privilege::PORTALADMIN,	
 		'privileges' => $privileges,
 );
+$variables = checkPermissions($variables);
 
 if( isset( $_GET["user"] ) ) {
 	
@@ -93,4 +96,4 @@ if( isset( $_GET["user"] ) ) {
 	//Fehler: Kein Benutzer ausgewählt
 }
 
-renderLayoutWithContentFile ($config["apps"]["landing"], "privilegeEdit_template.php", $variables );
+renderLayoutWithContentFile ($variables );

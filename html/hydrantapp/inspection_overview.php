@@ -4,10 +4,13 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Hydrantenprüfungen",
-    'secured' => true,
-	'privilege' => Privilege::ENGINEHYDRANTMANANGER
+		'app' => $config["apps"]["hydrant"],
+		'template' => "inspectionOverview_template.php",
+	    'title' => "Hydrantenprüfungen",
+	    'secured' => true,
+		'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
+$variables = checkPermissions($variables);
 
 $engine = $userController->getCurrentUser()->getEngine();
 
@@ -27,4 +30,4 @@ if($userController->hasCurrentUserPrivilege(Privilege::HYDRANTADMINISTRATOR)){
 	$variables ['inspections'] =  $inspectionDAO->getInspectionsByEngine($engine->getUuid());
 }
 
-renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionOverview_template.php", $variables);
+renderLayoutWithContentFile($variables);

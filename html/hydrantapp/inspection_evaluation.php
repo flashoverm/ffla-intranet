@@ -4,12 +4,13 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Auswertung Hydrantenprüfungen",
-    'secured' => true,
-	'privilege' => Privilege::HYDRANTADMINISTRATOR
+		'app' => $config["apps"]["hydrant"],
+		'template' => "inspectionEvaluation_template.php",
+	    'title' => "Auswertung Hydrantenprüfungen",
+	    'secured' => true,
+		'privilege' => Privilege::HYDRANTADMINISTRATOR
 );
-
-
+$variables = checkPermissions($variables);
 
 $variables['years'] = $inspectionDAO->getInspectionYears();
 
@@ -22,4 +23,4 @@ if(isset($_GET['year'])){
 	$variables['engineEntries'] = $inspectionDAO->getHydrantsByYear($variables['year']);
 }
 
-renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionEvaluation_template.php", $variables);
+renderLayoutWithContentFile($variables);

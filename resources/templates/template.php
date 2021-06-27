@@ -2,16 +2,53 @@
 require_once LIBRARY_PATH . '/util.php';
 require_once LIBRARY_PATH . "/ui_util.php";
 
-session_start ();
+function checkPermissions($variables = array()){
+	global $currentUser;
+	
+	$variables['currentUser'] = $currentUser;
+	
+	$localhostRequest = localhostRequest();
+	$localhostRequest = false;
+	
+	if($localhostRequest){
+		//skip privilege check on localhost-request
+		return $variables;
+	}
+	
+	//check if logged in user is required
+	if ($variables['secured'] && (! isset($currentUser) || ! $currentUser) ) {
+		goToLogin();
+	}
+	
+	// check privileges
+	if(isset($variables['privilege'])){
+		
+		if(isset($currentUser) && $currentUser){
+			
+			if( $currentUser->hasPrivilegeByName($variables['privilege']) ){
+				//User has required privilege -> OK
+				return $variables;
+			}
+		}
+	} else {
+		//case: no privilege required -> OK
+		return $variables;
+	}
+	
+	//required privilege missing -> not OK
+	$variables['alertMessage'] = "Sie haben keine Berechtigung diese Seite anzuzeigen";
+	$variables['showFormular'] = false;
+	
+	renderLayoutWithContentFile($variables);
+	//stop processing because of missing privilege
+	exit();
+	
+}
 
-function renderPrintContentFile($app, $contentFile, $variables = array(), $noHeader = false){
+function renderPrintContentFile($variables = array()){
 	global $config, $userController, $userDAO, $engineDAO, $guardianUserController, 
 	$eventTypeDAO, $logbookDAO, $mailLogDAO, $staffPositionDAO, $hydrantDAO, $eventController;
-    
-    $contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $contentFile;
-    
-    // making sure passed in variables are in scope of the template
-    // each key in the $variables array will become a variable
+
     if (count ( $variables ) > 0) {
         foreach ( $variables as $key => $value ) {
             if (strlen ( $key ) > 0) {
@@ -20,22 +57,9 @@ function renderPrintContentFile($app, $contentFile, $variables = array(), $noHea
         }
     }
     
-   
-    $currentUser = $userController->getCurrentUser();
-    $localhostRequest = localhostRequest();
+    $contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $template;
     
-    if ( isset($secured) && $secured && ! $currentUser && ! $localhostRequest) {
-    	showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
-    	return;
-    }
-    
-        
     require_once (TEMPLATES_PATH . "/header_print.php");
-    
-    if( ! $localhostRequest && isset($privilege) && (! $currentUser || ! $currentUser->hasPrivilegeByName($privilege) ) ){
-    	showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
-    	$showFormular = false;
-    }
     
     if(isset($alertMessage)){
     	showAlert($alertMessage);
@@ -64,16 +88,10 @@ function renderPrintContentFile($app, $contentFile, $variables = array(), $noHea
     </html>";
 }
 
-
-
-function renderLayoutWithContentFile($app, $contentFile, $variables = array()) {
+function renderLayoutWithContentFile($variables = array()) {
 	global $config, $userController, $userDAO, $engineDAO, $guardianUserController, 
 	$eventTypeDAO, $logbookDAO, $mailLogDAO, $staffPositionDAO, $hydrantDAO, $eventController;
 
-	$contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $contentFile;
-
-	// making sure passed in variables are in scope of the template
-	// each key in the $variables array will become a variable
 	if (count ( $variables ) > 0) {
 		foreach ( $variables as $key => $value ) {
 			if (strlen ( $key ) > 0) {
@@ -81,21 +99,12 @@ function renderLayoutWithContentFile($app, $contentFile, $variables = array()) {
 			}
 		}
 	}
-
-	$currentUser = $userController->getCurrentUser();
 	
-	if ($secured && ! $currentUser) {
-        goToLogin();		
-	}
-		
+	$contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $template;
+	
 	require_once (TEMPLATES_PATH . "/header.php");
 
 	echo "<div class=\"container\" id=\"container\">\n" . "\t<div id=\"content\">\n";
-
-	if(isset($privilege) && (! $currentUser || ! $currentUser->hasPrivilegeByName($privilege) ) ){
-		showAlert("Sie haben keine Berechtigung diese Seite anzuzeigen");
-		$showFormular = false;
-	}
 
 	if(isset($alertMessage)){
 		showAlert($alertMessage);

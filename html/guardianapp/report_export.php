@@ -6,11 +6,14 @@ $eventtypes = $eventTypeDAO->getEventTypes();
 
 // Pass variables (as an array) to template
 $variables = array (
-    'title' => "Export Wachberichte",
-    'secured' => true,
-    'eventtypes' => $eventtypes,
+		'app' => $config["apps"]["guardian"],
+		'template' => "reportExport_template.php",
+	    'title' => "Export Wachberichte",
+	    'secured' => true,
+	    'eventtypes' => $eventtypes,
 		'privilege' => Privilege::EVENTMANAGER,
 );
+$variables = checkPermissions($variables);
 
 $type = -1;
 $from = date('Y-m-01');
@@ -68,7 +71,7 @@ if((isset($_POST['csv']) || isset($_POST['invoice'])) && $userController->hasCur
     return;
 }
 
-renderLayoutWithContentFile ($config["apps"]["guardian"], "reportExport_template.php", $variables );
+renderLayoutWithContentFile ( $variables );
 
 function reportsToCSV($reports, $head = ""){
 	global $config;

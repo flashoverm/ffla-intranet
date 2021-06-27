@@ -2,15 +2,18 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
 
-// Pass variables (as an array) to template
-$variables = array(
-    'title' => "Passwort zurücksetzen",
-	'secured' => false,
-);
-
 if( userLoggedIn() ){
 	header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects
 }
+
+// Pass variables (as an array) to template
+$variables = array(
+		'app' => $config["apps"]["landing"],
+		'template' => "resetPassword_template.php",
+	    'title' => "Passwort zurücksetzen",
+		'secured' => false,
+);
+$variables = checkPermissions($variables);
 
 $token = null;
 if( ! isset($_GET['token']) ) {
@@ -53,6 +56,6 @@ if ( isset($_GET['token']) && isset($_POST['password']) && isset($_POST['passwor
     }
 }
 
-renderLayoutWithContentFile($config["apps"]["landing"], "resetPassword_template.php", $variables);
+renderLayoutWithContentFile($variables);
 
 ?>

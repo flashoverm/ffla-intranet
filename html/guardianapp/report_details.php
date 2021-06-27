@@ -6,10 +6,13 @@ require_once LIBRARY_PATH . "/file_create.php";
 
 // Pass variables (as an array) to template
 $variables = array(
+		'app' => $config["apps"]["guardian"],
+		'template' => "reportDetails/reportDetails_template.php",
 		'title' => 'Wachbericht',
 		'secured' => true,
 		'showFormular' => false,
 );
+$variables = checkPermissions($variables);
 
 if (! isset($_GET['id'])) {
 	
@@ -27,7 +30,6 @@ if (! isset($_GET['id'])) {
 				
 		if(userLoggedIn()){
         	
-			$currentUser = $userController->getCurrentUser();
 			if( $guardianUserController->isUserAllowedToEditReport($currentUser, $uuid) ){
 	            
 	        	$variables['showFormular'] = true;
@@ -102,9 +104,11 @@ if (! isset($_GET['id'])) {
 
 if(isset($_GET['print'])){
 	
+	$variables['app'] = $config["apps"]["guardian"];
+	$variables['template'] = "reportDetails/reportPDF_template.php";
 	$variables['showFormular'] = true;
 	$variables['orientation'] = 'portrait';
-	renderPrintContentFile($config["apps"]["guardian"], "reportDetails/reportPDF_template.php", $variables);
+	renderPrintContentFile($variables);
 	
 } else if( isset($_GET['id']) && isset($_GET['file']) ) {
 	
@@ -115,6 +119,6 @@ if(isset($_GET['print'])){
 	
 } else {
 	
-	renderLayoutWithContentFile($config["apps"]["guardian"], "reportDetails/reportDetails_template.php", $variables);
+	renderLayoutWithContentFile($variables);
 	
 }

@@ -5,9 +5,12 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 
 // Pass variables (as an array) to template
 $variables = array(
+		'app' => $config["apps"]["masterdata"],
+		'template' => "dataChangeEdit_template.php",
 		'title' => "Stammdatenänderung beantragen",
 		'secured' => true,
 );
+$variables = checkPermissions($variables);
 
 $dataChangeRequest = new DataChangeRequest();
 if(isset($_GET ['id'])) {
@@ -86,4 +89,4 @@ if( isset($_POST['datatype']) && isset($_POST['newvalue']) ){
 }
 	
 
-renderLayoutWithContentFile($config["apps"]["masterdata"], "dataChangeEdit_template.php", $variables);
+renderLayoutWithContentFile($variables);

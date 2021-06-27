@@ -4,9 +4,12 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Hydrantenabfrage",
-    'secured' => true
+		'app' => $config["apps"]["hydrant"],
+		'template' => "hydrantRequest_template.php",
+	    'title' => "Hydrantenabfrage",
+	    'secured' => true
 );
+$variables = checkPermissions($variables);
 
 $variables ['engines'] = $engineDAO->getEngines();
 
@@ -45,6 +48,6 @@ if (isset($_POST['hy'])) {
     
 }
 
-renderLayoutWithContentFile($config["apps"]["hydrant"], "hydrantRequest_template.php", $variables);
+renderLayoutWithContentFile($variables);
 
 ?>

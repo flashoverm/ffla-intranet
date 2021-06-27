@@ -5,9 +5,11 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 
 // Pass variables (as an array) to template
 $variables = array (
-	'secured' => true,
-	'engines' => $engineDAO->getEngines(),
-	'privileges' => $privilegeDAO->getPrivileges(),
+		'app' => $config["apps"]["landing"],
+		'template' => "userEdit/userEdit_template.php",
+		'secured' => true,
+		'engines' => $engineDAO->getEngines(),
+		'privileges' => $privilegeDAO->getPrivileges(),
 );
 
 if( isset($_GET['self']) ){
@@ -32,8 +34,7 @@ if( isset($_GET['self']) ){
 		$variables['secured'] = false;
 	}
 }
-
-
+$variables = checkPermissions($variables);
 
 if (isset ( $_POST ['useremail'] ) ) {
 
@@ -149,5 +150,5 @@ if (isset ( $_POST ['useremail'] ) ) {
 	}
 }
 
-renderLayoutWithContentFile ($config["apps"]["landing"], "userEdit/userEdit_template.php", $variables );
+renderLayoutWithContentFile ($variables );
 ?>

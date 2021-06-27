@@ -4,10 +4,14 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array (
-    'secured' => true,
-    'showFormular' => true,
-    'privilege' => Privilege::HYDRANTADMINISTRATOR
+		'app' => $config["apps"]["hydrant"],
+		'template' => "hydrantEdit_template.php",
+		'title' => "Hydrant anlegen/bearbeiten",
+	    'secured' => true,
+	    'showFormular' => true,
+	    'privilege' => Privilege::HYDRANTADMINISTRATOR
 );
+$variables = checkPermissions($variables);
 
 $variables ['engines'] = $engineDAO->getEngines();
 
@@ -89,5 +93,5 @@ if(isset($_POST ['fid'])){
     }    
 }
 
-renderLayoutWithContentFile ($config["apps"]["hydrant"], "hydrantEdit_template.php", $variables );
+renderLayoutWithContentFile ( $variables );
 ?>

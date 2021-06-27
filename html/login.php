@@ -8,10 +8,13 @@ if (userLoggedIn()) {
 
 // Pass variables (as an array) to template
 $variables = array (
+		'app' => $config["apps"]["landing"],
+		'template' => "login_template.php",
 		'title' => "Intranet",
 		'subtitle' => "der Freiwilligen Feuerwehr der Stadt Landshut",
 		'secured' => false
 );
+$variables = checkPermissions($variables);
 
 if(isset($_SESSION["ref"])){
 	$variables ['infoMessage'] = "Bitte zuerst einloggen";
@@ -53,9 +56,8 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserLoginFailed, $user->getUuid()));
 		}
 	}
-
 }
 
-renderLayoutWithContentFile ($config["apps"]["landing"], "login_template.php", $variables );
+renderLayoutWithContentFile ($variables );
 
 ?>

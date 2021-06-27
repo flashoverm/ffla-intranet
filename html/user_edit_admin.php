@@ -7,11 +7,14 @@ $privileges = $privilegeDAO->getPrivileges();
 
 // Pass variables (as an array) to template
 $variables = array (
-	'secured' => true,
-	'privilege' => Privilege::PORTALADMIN,
-	'engines' => $engineDAO->getEngines(),
-	'privileges' => $privileges,
+		'app' => $config["apps"]["landing"],
+		'template' => "userEdit/userEditAdmin_template.php",
+		'secured' => true,
+		'privilege' => Privilege::PORTALADMIN,
+		'engines' => $engineDAO->getEngines(),
+		'privileges' => $privileges,
 );
+$variables = checkPermissions($variables);
 
 if( isset($_GET['uuid']) ){
 	// edit by admin
@@ -177,5 +180,5 @@ if (isset ( $_POST ['useremail'] ) ) {
 	}
 }
 
-renderLayoutWithContentFile ($config["apps"]["landing"], "userEdit/userEditAdmin_template.php", $variables );
+renderLayoutWithContentFile ($variables );
 ?>

@@ -9,7 +9,7 @@
 ?>
 <body class='page <?php if( isset($orientation) ) { echo $orientation; } ?>' style="margin-bottom: 0px;" >
 	<?php
-	if(! $noHeader ){
+	if( ! isset($noHeader) || ! $noHeader ){
 	?>
  	<header>
 	 	<div class="row">

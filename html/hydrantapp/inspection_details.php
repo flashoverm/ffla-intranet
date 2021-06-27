@@ -5,10 +5,13 @@ require_once LIBRARY_PATH . "/file_create.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Prüfbericht",
-    'secured' => true,
+		'app' => $config["apps"]["hydrant"],
+		'template' => "inspectionDetails/inspectionDetails_template.php",
+	    'title' => "Prüfbericht",
+	    'secured' => true,
 		'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
+$variables = checkPermissions($variables);
 
 if(isset($_GET['inspection'])){
     
@@ -29,8 +32,10 @@ $variables['criteria'] = InspectedHydrant::HYDRANTCRITERIA;
 
 if(isset($_GET['print'])){
 	
+	$variables['app'] = $config["apps"]["hydrant"];
+	$variables['template'] = "inspectionDetails/inspectionPDF_template.php";
 	$variables['orientation'] = 'landscape';
-	renderPrintContentFile($config["apps"]["hydrant"], "inspectionDetails/inspectionPDF_template.php", $variables);
+	renderPrintContentFile($variables);
 	
 } else if( isset($_GET['inspection']) && isset($_GET['file']) ) {
 	
@@ -40,7 +45,6 @@ if(isset($_GET['print'])){
 	getFileResponse($fullpath, "createInspectionFile", $uuid, $dl_filename);
 	
 } else {
-	
-	renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionDetails/inspectionDetails_template.php", $variables);
+	renderLayoutWithContentFile($variables);
 }
 

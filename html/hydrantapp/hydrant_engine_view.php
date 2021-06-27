@@ -4,9 +4,12 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Zug nicht festgelegt",
-    'secured' => true
+		'app' => $config["apps"]["hydrant"],
+		'template' => "hydrantEngineView_template.php",
+	    'title' => "Zug nicht festgelegt",
+	    'secured' => true
 );
+$variables = checkPermissions($variables);
 
 if (isset($_GET['engine'])) {
 
@@ -42,4 +45,4 @@ if (isset($_GET['engine'])) {
     $variables ['alertMessage'] = "Zug nicht festgelegt";
 }
   
-renderLayoutWithContentFile($config["apps"]["hydrant"], "hydrantEngineView_template.php", $variables);
+renderLayoutWithContentFile($variables);

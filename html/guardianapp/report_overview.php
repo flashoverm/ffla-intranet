@@ -4,13 +4,14 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array (
-    'title' => "Übersicht Wachberichte",
-    'secured' => true,
+		'app' => $config["apps"]["guardian"],
+		'template' => "reportOverview_template.php",
+	    'title' => "Übersicht Wachberichte",
+	    'secured' => true,
 		'privilege' => Privilege::EVENTMANAGER,
 );
+$variables = checkPermissions($variables);
 
-if(userLoggedIn()){
-    
     if (isset ( $_POST ['emsEntry'] )) {
         if($reportController->setEmsEntry($_POST ['emsEntry'])){
         	$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportEMSSet, $_POST ['emsEntry']));
@@ -26,8 +27,7 @@ if(userLoggedIn()){
     	$variables ['reports'] = $reportDAO->getReportsByEngine($userController->getCurrentUser()->getEngine()->getUuid());
         $variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die Ihrem Zug zugewiesen wurden";
     }
-}
 
-renderLayoutWithContentFile ($config["apps"]["guardian"], "reportOverview_template.php", $variables );
+renderLayoutWithContentFile ( $variables );
 
 ?>

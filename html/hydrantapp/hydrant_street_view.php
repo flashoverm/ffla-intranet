@@ -4,9 +4,12 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Straße nicht festgelegt",
-    'secured' => true
+		'app' => $config["apps"]["hydrant"],
+		'template' => "hydrantStreetView_template.php",
+	    'title' => "Straße nicht festgelegt",
+	    'secured' => true
 );
+$variables = checkPermissions($variables);
 
 if (isset($_GET['street'])) {
 
@@ -41,4 +44,4 @@ if (isset($_GET['street'])) {
     $variables ['alertMessage'] = "Straße nicht festgelegt";
 }
   
-renderLayoutWithContentFile($config["apps"]["hydrant"], "hydrantStreetView_template.php", $variables);
+renderLayoutWithContentFile($variables);

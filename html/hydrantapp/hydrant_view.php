@@ -4,9 +4,12 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Hydrant",
-    'secured' => true
+		'app' => $config["apps"]["hydrant"],
+		'template' => "hydrantView_template.php",
+	    'title' => "Hydrant",
+	    'secured' => true
 );
+$variables = checkPermissions($variables);
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         
@@ -71,6 +74,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $variables ['alertMessage'] = "Hydrant-ID nicht festgelegt";
 }
 
-renderLayoutWithContentFile($config["apps"]["hydrant"], "hydrantView_template.php", $variables);
+renderLayoutWithContentFile($variables);
 
 ?>

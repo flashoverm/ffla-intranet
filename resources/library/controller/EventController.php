@@ -27,7 +27,6 @@ class EventController extends BaseController{
 		
 		//inform deleted user and delete entries
 		foreach($deletedStaffUuids as $deletedStaffUuid){
-			echo $deletedStaffUuid . "<br>";
 			$staff = $this->staffDAO->getEventStaffEntry($deletedStaffUuid);
 			if($staff->getUser() != NULL){
 				mail_remove_staff_user($staff->getUuid(), $event->getUuid());

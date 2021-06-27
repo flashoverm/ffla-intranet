@@ -5,10 +5,13 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
+		'app' => $config["apps"]["hydrant"],
+		'template' => "inspectionPrepare_template.php",
 		'title' => "Hydrantenprüfung planen",
 		'secured' => true,
 		'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
+$variables = checkPermissions($variables);
 
 //get hydrants by engine with last checkup not set or older than 6 years
 $hydrants = $hydrantDAO->getUncheckedHydrantsOfEngine($userController->getCurrentUser()->getEngine()->getUuid());
@@ -28,4 +31,4 @@ foreach ( $hydrants as $hydrant ) {
 $variables ['mapURL'] = $mapUrl;
 $variables ['hydrants'] = $hydrants;
 
-renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionPrepare_template.php", $variables);
+renderLayoutWithContentFile($variables);

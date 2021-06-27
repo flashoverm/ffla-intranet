@@ -4,10 +4,13 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Passwort ändern",
-    'secured' => true,
-	'privilege' => Privilege::EDITUSER,	
+		'app' => $config["apps"]["landing"],
+		'template' => "changePassword_template.php",
+	    'title' => "Passwort ändern",
+	    'secured' => true,
+		'privilege' => Privilege::EDITUSER,	
 );
+$variables = checkPermissions($variables);
 
 if (isset($_POST['password_old']) && isset($_POST['password']) && isset($_POST['password2']) && userLoggedIn()) {
 
@@ -31,6 +34,6 @@ if (isset($_POST['password_old']) && isset($_POST['password']) && isset($_POST['
     }
 }
 
-renderLayoutWithContentFile($config["apps"]["landing"], "changePassword_template.php", $variables);
+renderLayoutWithContentFile($variables);
 
 ?>

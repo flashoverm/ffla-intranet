@@ -4,10 +4,13 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
+		'app' => $config["apps"]["hydrant"],
+		'template' => "hydrantInspectedView_template.php",
 		'title' => "Geprüfte Hydranten",
 		'secured' => true,
 		'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
+$variables = checkPermissions($variables);
 
 $engine = $userController->getCurrentUser()->getEngine();
 
@@ -17,4 +20,4 @@ if($userController->hasCurrentUserPrivilege(Privilege::HYDRANTADMINISTRATOR)){
 	$variables ['hydrants'] =  $hydrantDAO->getHydrantsOfEngine($engine->getUuid());
 }
   
-renderLayoutWithContentFile($config["apps"]["hydrant"], "hydrantInspectedView_template.php", $variables);
+renderLayoutWithContentFile($variables);

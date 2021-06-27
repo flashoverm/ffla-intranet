@@ -4,11 +4,13 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Formular-Verwaltung",
-    'secured' => true,
-	'privilege' => Privilege::FILEADMIN
+		'app' => $config["apps"]["files"],
+		'template' => "formsAdmin_template.php",
+	    'title' => "Formular-Verwaltung",
+	    'secured' => true,
+		'privilege' => Privilege::FILEADMIN
 );
-
+$variables = checkPermissions($variables);
 
 if (isset($_POST['delete'])) {
     
@@ -36,7 +38,7 @@ if (isset($_POST['delete'])) {
 
 $variables ['files'] = $fileDAO->getFiles();
 
-renderLayoutWithContentFile($config["apps"]["files"], "formsAdmin_template.php", $variables);
+renderLayoutWithContentFile($variables);
 
 function delete_file_fs(File $file){
     global $config;

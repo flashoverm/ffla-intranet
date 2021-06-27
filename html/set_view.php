@@ -4,15 +4,14 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Ansicht festlegen",
-    'secured' => true,	
+		'app' => $config["apps"]["landing"],
+		'template' => "setView_template.php",
+	    'title' => "Ansicht festlegen",
+	    'secured' => true,	
 );
+$variables = checkPermissions($variables);
 
 $redirect = false;
-
-$currentUser = $userController->getCurrentUser();
-
-//echo parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH);
 
 if(isset($_POST["ref"]) && ! isset($_SESSION["ref"])){
 	$_SESSION["ref"] = $_POST["ref"];
@@ -41,4 +40,4 @@ if($redirect){
 
 $variables['additionalEngines'] = $currentUser->getAdditionalEngines();
 
-renderLayoutWithContentFile($config["apps"]["landing"], "setView_template.php", $variables);
+renderLayoutWithContentFile($variables);

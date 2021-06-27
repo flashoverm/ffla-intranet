@@ -8,11 +8,14 @@ $engines = $engineDAO->getEngines();
 
 // Pass variables (as an array) to template
 $variables = array (
+		'app' => $config["apps"]["landing"],
+		'template' => "userImport_template.php",
 		'title' => "Daten-Import",
 		'secured' => true,
-		'privilege' => Privilege::EVENTADMIN,
+		'privilege' => Privilege::PORTALADMIN,
 		'engines' => $engines,
 );
+$variables = checkPermissions($variables);
 
 if(isset($_POST['engine'])){
 	
@@ -84,7 +87,7 @@ if(isset($_POST['engine'])){
 	}
 }
 
-renderLayoutWithContentFile ($config["apps"]["landing"], "userImport_template.php", $variables );
+renderLayoutWithContentFile ($variables );
 
 function col_to_string($columns){
 	return $columns[0] . " " . $columns[1] . " - " . $columns[2];

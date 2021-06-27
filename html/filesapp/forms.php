@@ -4,12 +4,15 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Formulare",
-    'secured' => true
+		'app' => $config["apps"]["files"],
+		'template' => "forms_template.php",
+	    'title' => "Formulare",
+	    'secured' => true
 );
+$variables = checkPermissions($variables);
 
 $variables ['files'] = $fileDAO->getFiles();
 
-renderLayoutWithContentFile($config["apps"]["files"], "forms_template.php", $variables);
+renderLayoutWithContentFile($variables);
 
 ?>

@@ -5,10 +5,13 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 
 // Pass variables (as an array) to template
 $variables = array (
-    'title' => 'Wache/Position nicht vorhanden',
-    'secured' => true,
-    'showFormular' => false
+		'app' => $config["apps"]["guardian"],
+		'template' => "eventSubscribe_template.php",
+	    'title' => 'Wache/Position nicht vorhanden',
+	    'secured' => true,
+	    'showFormular' => false
 );
+$variables = checkPermissions($variables);
 
 if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 
@@ -94,5 +97,5 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     $variables ['alertMessage'] = "Fehlende Parameter";
 }
 
-renderLayoutWithContentFile ($config["apps"]["guardian"], "eventSubscribe_template.php", $variables );
+renderLayoutWithContentFile ( $variables );
 ?>

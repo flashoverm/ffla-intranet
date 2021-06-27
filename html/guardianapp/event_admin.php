@@ -5,10 +5,13 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 
 // Pass variables (as an array) to template
 $variables = array (
-    'title' => "Admin-Übersicht Wachen",
-    'secured' => true,
+		'app' => $config["apps"]["guardian"],
+		'template' => "eventAdmin_template.php",
+	    'title' => "Admin-Übersicht Wachen",
+	    'secured' => true,
 		'privilege' => Privilege::EVENTADMIN
 );
+$variables = checkPermissions($variables);
 
 if (isset ( $_POST ['delete'] )) {
 	$delete_event_uuid = trim ( $_POST ['delete'] );
@@ -35,5 +38,5 @@ $variables ['events'] = $eventDAO->getActiveEvents();
 $variables ['pastEvents'] = $eventDAO->getPastEvents();
 $variables ['deletedEvents'] = $eventDAO->getDeletedEvents();
 
-renderLayoutWithContentFile ($config["apps"]["guardian"], "eventAdmin_template.php", $variables );
+renderLayoutWithContentFile($variables);
 ?>

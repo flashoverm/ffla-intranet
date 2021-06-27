@@ -6,11 +6,14 @@ require_once LIBRARY_PATH . "/file_create.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-    'title' => "Prüfbericht erstellen",
-    'secured' => true,
-	'privilege' => Privilege::ENGINEHYDRANTMANANGER,
-	'criteria' => InspectedHydrant::HYDRANTCRITERIA,
+		'app' => $config["apps"]["hydrant"],
+		'template' => "inspectionEdit_template.php",
+	    'title' => "Prüfbericht erstellen",
+	    'secured' => true,
+		'privilege' => Privilege::ENGINEHYDRANTMANANGER,
+		'criteria' => InspectedHydrant::HYDRANTCRITERIA,
 );
+$variables = checkPermissions($variables);
 
 if(isset($_GET['inspection'])){
     
@@ -154,4 +157,4 @@ if(isset($_POST['maxidx'])){
     }
 }
 
-renderLayoutWithContentFile($config["apps"]["hydrant"], "inspectionEdit_template.php", $variables);
+renderLayoutWithContentFile($variables);

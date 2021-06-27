@@ -5,9 +5,12 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 
 // Pass variables (as an array) to template
 $variables = array (
-    'title' => "Öffentliche Wachen",
-    'secured' => false,
+		'app' => $config["apps"]["guardian"],
+		'template' => "eventPublic_template.php",
+	    'title' => "Öffentliche Wachen",
+	    'secured' => false,
 );
+$variables = checkPermissions($variables);
 
 if($config["settings"]["publicevents"]){
 	$variables ['events'] =  $eventDAO->getPublicEvents();
@@ -16,5 +19,5 @@ if($config["settings"]["publicevents"]){
 }
 
 
-renderLayoutWithContentFile ($config["apps"]["guardian"], "eventPublic_template.php", $variables );
+renderLayoutWithContentFile ($variables );
 ?>

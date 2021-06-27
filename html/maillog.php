@@ -4,10 +4,13 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array (
+		'app' => $config["apps"]["landing"],
+		'template' => "maillog_template.php",
 		'title' => "Mail Log",
 		'secured' => true,
 		'privilege' => Privilege::PORTALADMIN
 );
+$variables = checkPermissions($variables);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if( isset($_POST['purge']) ){
@@ -31,5 +34,5 @@ if(isset($_GET['page'])){
 	$variables ['mails'] = $mailLogDAO->getMailLogs(1, $variables ['resultSize']);
 }
 
-renderLayoutWithContentFile ($config["apps"]["landing"], "maillog_template.php", $variables );
+renderLayoutWithContentFile ($variables );
  
