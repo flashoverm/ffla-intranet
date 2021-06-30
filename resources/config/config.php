@@ -27,6 +27,8 @@ $config = array (
 			"masterdata" => "masterdataapp"
 	),
 	"urls" => array (
+			'url_prefix' => $url_prefix,
+			
 			"intranet_home" => $url_prefix . "",
 			"filesapp_home" => $url_prefix . "/files",
 			"hydrantapp_home" => $url_prefix . "/hydrant",

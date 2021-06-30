@@ -46,7 +46,9 @@ function createFile($portrait, $urlpath, $outputfile){
 	}
 	$jsPath = LIBRARY_PATH . "/puppeteer/" . $jsfile;
 	
-	$url = $config["urls"]["base_url"] . $urlpath;
+	$urlpath = substr($urlpath, strlen($config['urls']['url_prefix']) );
+	
+	$url = "http://127.0.0.1" . $urlpath;
 	
 	//echo $nodePath . " " . $jsPath . " " . $url . " " . $outputfile;
 	$error = exec($nodePath . " " . $jsPath . " " . $url . " " . $outputfile);
