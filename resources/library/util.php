@@ -25,7 +25,12 @@ function stopImitating(){
 
 
 function localhostRequest(){
-    return $_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1' || startsWith($_SERVER['REMOTE_ADDR'], '192.168') ;
+    return 
+    //$_SERVER['REMOTE_ADDR'] == '127.0.0.1' 
+    	//|| $_SERVER['REMOTE_ADDR'] == '::1' 
+    	//|| startsWith($_SERVER['REMOTE_ADDR'], '192.168') 
+    	strpos($_SERVER["HTTP_USER_AGENT"], "HeadlessChrome")
+    ;
 }
 
 function goToLogin(){
