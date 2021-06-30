@@ -8,7 +8,6 @@ function checkPermissions($variables = array()){
 	$variables['currentUser'] = $currentUser;
 	
 	$localhostRequest = localhostRequest();
-	$localhostRequest = false;
 	
 	if($localhostRequest){
 		//skip privilege check on localhost-request
