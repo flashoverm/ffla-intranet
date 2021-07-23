@@ -131,6 +131,9 @@ function renderConfirmationTable($confirmations, $options = array()) {
 					<?php if(!empty($options['showReason'])){ ?>
 						<th data-sortable="true" class="text-center">Grund für Ablehnung</th>
 					<?php } ?>
+					<?php if(!empty($options['showLastUpdate'])){ ?>
+						<th data-sortable="true" class="text-center">Geändert</th>
+					<?php } ?>
 					<?php if(!empty($options['showUserOptions'])){ ?>
 						<th></th>
 						<th></th>
@@ -167,6 +170,15 @@ function renderConfirmationRow($confirmation, $options = array()){
 		<?php if(!empty($options['showReason'])){ ?>
 			<td><?= $confirmation->getReason() ?></td>
 		<?php } ?>
+		<?php if(!empty($options['showLastUpdate'])){
+			if($confirmation->getLastUpdate() == NULL){
+				echo '<td class="text-center"><span class="d-none">0</span>-</td>';
+			} else {
+		?>
+			<td class="text-center"><span class='d-none'><?= strtotime($confirmation->getLastUpdate()) ?></span><?= date($config ["formats"] ["date"], strtotime($confirmation->getLastUpdate())); ?></td>
+		<?php
+			}
+		} ?>
 		<?php if(!empty($options['showUserOptions'])){ ?>
 			<td class="text-center">
 				<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/" . $confirmation->getUuid() . "/edit" ?>">Bearbeiten</a>
@@ -243,7 +255,14 @@ function renderDataChangeTable($dataChangeRequests, $options = array()) {
 						<th data-sortable="true" class="text-center">Antragsteller</th>
 						<th data-sortable="true" class="text-center">Löschzug</th>
 					<?php } ?>
-					<th class="text-center">Anmerkungen</th>
+					<?php if(!empty($options['showLastUpdate'])){ ?>
+						<th data-sortable="true" class="text-center">Geändert</th>
+					<?php } ?>
+					<th class="text-center">
+						Anmerkungen<?php if(!empty($options['showRequest'])){
+							echo "/Rückfrage";
+						}?>
+					</th>
 					<?php if(!empty($options['showUserOptions'])){ ?>
 						<th></th>
 						<th></th>
@@ -264,7 +283,7 @@ function renderDataChangeTable($dataChangeRequests, $options = array()) {
 <?php
 }
 
-function renderDataChangeRow($dataChangeRequest, $options = array()){
+function renderDataChangeRow(DataChangeRequest $dataChangeRequest, $options = array()){
 	global $config;
 ?>
 	<tr>
@@ -285,6 +304,16 @@ function renderDataChangeRow($dataChangeRequest, $options = array()){
 			<td><?= $dataChangeRequest->getUser()->getFullName() ?></td>
 			<td><?= $dataChangeRequest->getUser()->getEngine()->getName() ?></td>
 		<?php } ?>
+		
+		<?php if(!empty($options['showLastUpdate'])){
+			if($dataChangeRequest->getLastUpdate() == NULL){
+				echo '<td class="text-center"><span class="d-none">0</span>-</td>';
+			} else {
+		?>
+			<td class="text-center"><span class='d-none'><?= strtotime($dataChangeRequest->getLastUpdate()) ?></span><?= date($config ["formats"] ["date"], strtotime($dataChangeRequest->getLastUpdate())); ?></td>
+		<?php
+			}
+		} ?>
 		<td class="text-center">
 			<?php 
 			if($dataChangeRequest->getComment() != null){
@@ -293,7 +322,17 @@ function renderDataChangeRow($dataChangeRequest, $options = array()){
 			<?php
 				createDialog('showComment' . $dataChangeRequest->getUuid(), "Anmerkungen", null, null, null, null, "Schließen", nl2br($dataChangeRequest->getComment()));
 			} else {
-				echo "Keine";
+				echo "Keine<br>";
+			}
+			if(!empty($options['showRequest'])){
+				if($dataChangeRequest->getFurtherRequest() != null){
+				?>
+					<button type="button" class="btn btn-outline-primary btn-sm mt-1" data-toggle="modal" data-target="#showRequest<?= $dataChangeRequest->getUuid()?>">Rückfrage</button><br>
+				<?php
+					createDialog('showRequest' . $dataChangeRequest->getUuid(), "Rückfrage", null, null, null, null, "Schließen", nl2br($dataChangeRequest->getFurtherRequest()));
+				} else {
+					echo "Keine";
+				}
 			}
 			?>
 		</td>

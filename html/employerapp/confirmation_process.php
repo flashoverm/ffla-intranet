@@ -59,9 +59,6 @@ if( isset( $_GET["accepted"] ) ){
 } else if ( isset( $_GET["declined"] ) ){
 	$variables ['tab'] = 'declined';
 	$variables['confirmations'] = $confirmationDAO->getConfirmationsByState(Confirmation::DECLINED);
-} else if ( isset( $_GET["all"] ) ){
-	$variables ['tab'] = 'all';
-	$variables['confirmations'] = $confirmationDAO->getConfirmations();
 } else {
 	$variables ['tab'] = 'open';
 	$variables['confirmations'] = $confirmationDAO->getConfirmationsByState(Confirmation::OPEN);

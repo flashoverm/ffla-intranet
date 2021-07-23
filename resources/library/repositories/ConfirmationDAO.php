@@ -77,11 +77,11 @@ class ConfirmationDAO extends BaseDAO {
 		$uuid = $this->generateUuid();
 		$confirmation->setUuid($uuid);
 		
-		$statement = $this->db->prepare("INSERT INTO confirmation (uuid, date, start_time, end_time, description, state, user)
-		VALUES (?, ?, ?, ?, ?, ?, ?)");
+		$statement = $this->db->prepare("INSERT INTO confirmation (uuid, date, start_time, end_time, description, state, user, last_update)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		
 		$result = $statement->execute(array($uuid, $confirmation->getDate(), $confirmation->getStartTime(), $confirmation->getEndTime(),
-				$confirmation->getDescription(), $confirmation->getState(), $confirmation->getUser()->getUuid()
+				$confirmation->getDescription(), $confirmation->getState(), $confirmation->getUser()->getUuid(), date('Y-m-d H:i:s')
 		));
 		
 		if ($result) {
@@ -99,12 +99,12 @@ class ConfirmationDAO extends BaseDAO {
 		}
 				
 		$statement = $this->db->prepare("UPDATE confirmation 
-		SET date = ?, start_time = ?, end_time = ?, description = ?, state = ?, reason = ?, user = ?, last_advisor = ?
+		SET date = ?, start_time = ?, end_time = ?, description = ?, state = ?, reason = ?, user = ?, last_advisor = ?, last_update = ?
 		WHERE uuid= ?");
 		
 		$result = $statement->execute(array($confirmation->getDate(), $confirmation->getStartTime(), $confirmation->getEndTime(),
 				$confirmation->getDescription(), $confirmation->getState(), $confirmation->getReason(), 
-				$confirmation->getUser()->getUuid(), $lastAdvisorUuid, $confirmation->getUuid()
+				$confirmation->getUser()->getUuid(), $lastAdvisorUuid, date('Y-m-d H:i:s'), $confirmation->getUuid()
 		));
 		
 		if ($result) {
@@ -124,6 +124,7 @@ class ConfirmationDAO extends BaseDAO {
 		$object->setState($result['state']);
 		$object->setReason($result['reason']);
 		$object->setUser($this->userDAO->getUserByUUID($result['user']));
+		$object->setLastUpdate($result['last_update']);
 		if($result['last_advisor'] != NULL){
 			$object->setLastAdvisor($this->userDAO->getUserByUUID($result['last_advisor']));
 		}
@@ -141,6 +142,7 @@ class ConfirmationDAO extends BaseDAO {
 						  state TINYINT NOT NULL,
 						  reason VARCHAR(255),
 						  last_advisor CHARACTER(36),
+						  last_update DATE,
                           PRIMARY KEY  (uuid),
 						  FOREIGN KEY (user) REFERENCES user(uuid),
 						  FOREIGN KEY (last_advisor) REFERENCES user(uuid)

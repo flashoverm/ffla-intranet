@@ -73,6 +73,10 @@ if( isset( $_GET["done"] ) ){
 	$variables ['tab'] = 'declined';
 	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::DECLINED);
 	
+} else if (isset( $_GET["request"] ) ){
+	$variables ['tab'] = 'request';
+	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::REQUEST);
+	
 } else {
 	$variables ['tab'] = 'open';
 	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::OPEN);

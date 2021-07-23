@@ -46,6 +46,7 @@ RewriteRule ^(.*)masterdata/datachangerequests/new/?$			$1/masterdataapp/dataCha
 RewriteRule ^(.*)masterdata/datachangerequests/process/?$ 		$1/masterdataapp/dataChangeRequest_process.php 
 RewriteRule ^(.*)masterdata/datachangerequests/process/done?$ 	$1/masterdataapp/dataChangeRequest_process.php?done
 RewriteRule ^(.*)masterdata/datachangerequests/process/declined?$ 	$1/masterdataapp/dataChangeRequest_process.php?declined
+RewriteRule ^(.*)masterdata/datachangerequests/process/request?$ 	$1/masterdataapp/dataChangeRequest_process.php?request
 RewriteRule ^(.*)masterdata/datachangerequests/done?$ 			$1/masterdataapp/dataChangeRequest_overview.php?done
 RewriteRule ^(.*)masterdata/datachangerequests/declined?$ 		$1/masterdataapp/dataChangeRequest_overview.php?declined
 RewriteRule ^(.*)masterdata/datachangerequests/([^/]+)/edit/?$ 	$1/masterdataapp/dataChangeRequest_edit.php?id=$2

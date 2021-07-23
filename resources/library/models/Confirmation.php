@@ -56,6 +56,8 @@ class Confirmation extends BaseModel {
 	 */
 	protected ?User $lastAdvisor;
 	
+	protected $lastUpdate;
+	
 	/**
 	 * @return mixed
 	 */
@@ -117,6 +119,10 @@ class Confirmation extends BaseModel {
 	 */
 	public function getLastAdvisor() : ?User {
 		return $this->lastAdvisor;
+	}
+	
+	public function getLastUpdate() {
+		return $this->lastUpdate;
 	}
 
 	/**
@@ -181,6 +187,10 @@ class Confirmation extends BaseModel {
 	public function setLastAdvisor(?User $lastAdvisor) {
 		$this->lastAdvisor = $lastAdvisor;
 	}
+	
+	public function setLastUpdate($lastUpdate) {
+		$this->lastUpdate = $lastUpdate;
+	}
 
 	/*
 	 **************************************************
@@ -198,6 +208,7 @@ class Confirmation extends BaseModel {
 		$this->reason = NULL;
 		$this->state = 0;
 		$this->user = NULL;
+		$this->lastUpdate = NULL;
 	}
 	
 	/*

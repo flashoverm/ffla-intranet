@@ -1,6 +1,10 @@
+
 <ul class="nav nav-tabs mb-3">
 	<li class="nav-item">
 		<a class="nav-link <?php if($tab == 'open'){ echo "active"; } ?>" href="<?= $config["urls"]["masterdataapp_home"] ?>/datachangerequests/process">Offene Anfragen</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link <?php if($tab == 'request'){ echo "active"; } ?>" href="<?= $config["urls"]["masterdataapp_home"] ?>/datachangerequests/process/request">Rückfragen</a>
 	</li>
 	<li class="nav-item">
 		<a class="nav-link <?php if($tab == 'done'){ echo "active"; } ?>" href="<?= $config["urls"]["masterdataapp_home"] ?>/datachangerequests/process/done">Abgeschlossene Anfragen</a>
@@ -21,17 +25,20 @@ if ( ! count ( $dataChangeRequests ) ) {
 			'showUserData' => true,
 			'showAdminOptions' => true,
 		);
-		
-		renderDataChangeTable($dataChangeRequests, $options);
-		
+
+	} else if($tab == 'request'){
+		$options = array(
+				'showUserData' => true,
+				'showLastUpdate' => true,
+				'showRequest' => true,
+		);
 	} else {
 		$options = array(
 				'showUserData' => true,
+				'showLastUpdate' => true,
 		);
-		
-		renderDataChangeTable($dataChangeRequests, $options);
-		
 	}
+	renderDataChangeTable($dataChangeRequests, $options);
 }
 ?>
 

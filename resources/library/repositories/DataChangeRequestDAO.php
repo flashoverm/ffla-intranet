@@ -69,14 +69,14 @@ class DataChangeRequestDAO extends BaseDAO {
 		$dataChangeRequest->setUuid($uuid);
 		
 		$statement = $this->db->prepare("INSERT INTO datachangerequest 
-		(uuid, createdate, datatype, newvalue, comment, state, person, user, last_advisor)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		(uuid, createdate, datatype, newvalue, comment, state, person, user, last_advisor, last_update)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		
 		$result = $statement->execute(array($uuid, $dataChangeRequest->getCreateDate(),
 				$dataChangeRequest->getDatatype(), $dataChangeRequest->getNewValue(), 
 				$dataChangeRequest->getComment(), $dataChangeRequest->getState(), 
 				$dataChangeRequest->getPerson(), 
-				$dataChangeRequest->getUser()->getUuid(), null
+				$dataChangeRequest->getUser()->getUuid(), null, date('Y-m-d H:i:s')
 		));
 		
 		if ($result) {
@@ -95,13 +95,13 @@ class DataChangeRequestDAO extends BaseDAO {
 		
 		$statement = $this->db->prepare("UPDATE datachangerequest
 		SET createdate = ?, datatype = ?, newvalue = ?, comment = ?, state = ?, person = ?, user = ?, 
-		last_advisor = ?, further_request = ?
+		last_advisor = ?, further_request = ?, last_update = ?
 		WHERE uuid= ?");
 		
 		$result = $statement->execute(array( $dataChangeRequest->getCreateDate(),$dataChangeRequest->getDatatype(), 
 				$dataChangeRequest->getNewValue(), $dataChangeRequest->getComment(), $dataChangeRequest->getState(),
 				$dataChangeRequest->getPerson(), $dataChangeRequest->getUser()->getUuid(), $lastAdvisorUuid, 
-				$dataChangeRequest->getFurtherRequest(), $dataChangeRequest->getUuid()
+				$dataChangeRequest->getFurtherRequest(), date('Y-m-d H:i:s'), $dataChangeRequest->getUuid()
 		));
 		
 		if ($result) {
@@ -122,6 +122,7 @@ class DataChangeRequestDAO extends BaseDAO {
 		$object->setUser($this->userDAO->getUserByUUID($result['user']));
 		$object->setPerson($result['person']);
 		$object->setFurtherRequest($result['further_request']);
+		$object->setLastUpdate($result['last_update']);
 		
 		if($result['last_advisor'] != NULL){
 			$object->setLastAdvisor($this->userDAO->getUserByUUID($result['last_advisor']));
@@ -141,6 +142,7 @@ class DataChangeRequestDAO extends BaseDAO {
 						  user CHARACTER(36) NOT NULL,
 						  further_request VARCHAR(255),
 						  last_advisor CHARACTER(36),
+						  last_update DATE,
                           PRIMARY KEY  (uuid),
 						  FOREIGN KEY (user) REFERENCES user(uuid),
 						  FOREIGN KEY (last_advisor) REFERENCES user(uuid)

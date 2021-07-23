@@ -84,6 +84,8 @@ class DataChangeRequest extends BaseModel {
 	protected ?string $furtherRequest;
 	
 	protected ?User $lastAdvisor;
+	
+	protected $lastUpdate;
 
 	
 	/**
@@ -154,6 +156,10 @@ class DataChangeRequest extends BaseModel {
 	 */
 	public function getCreateDate() {
 		return $this->createDate;
+	}
+	
+	public function getLastUpdate() {
+		return $this->lastUpdate;
 	}
 
 	/**
@@ -226,6 +232,10 @@ class DataChangeRequest extends BaseModel {
 		$this->createDate = $createDate;
 	}
 	
+	public function setLastUpdate($lastUpdate) {
+		$this->lastUpdate = $lastUpdate;
+	}
+	
 	
 	/*
 	 **************************************************
@@ -244,6 +254,7 @@ class DataChangeRequest extends BaseModel {
 		$this->uuid = NULL;
 		$this->user = NULL;
 		$this->furtherRequest = NULL;
+		$this->lastUpdate = NULL;
 	}
 	
 	/*
