@@ -11,9 +11,13 @@ Feature: Message board
 UI updates confirmations (more lists)
 Last update timestamp
 
+UPDATE report SET type = '325FF3CA-62BE-3F3E-88D8-A1C932BE600B' WHERE type = '00155A58-8720-29CF-42F0-713895C7BFDA';
+UPDATE event SET type = '325FF3CA-62BE-3F3E-88D8-A1C932BE600B' WHERE type = '00155A58-8720-29CF-42F0-713895C7BFDA';
+DELETE FROM stafftemplate WHERE eventtype = '00155A58-8720-29CF-42F0-713895C7BFDA';
+DELETE FROM eventtype WHERE uuid = '00155A58-8720-29CF-42F0-713895C7BFDA';
+
 ALTER TABLE confirmation ADD last_update DATE NULL AFTER last_advisor; 
 ALTER TABLE datachangerequest ADD last_update DATE NULL AFTER last_advisor; 
-
 
 #### V2.4.1
 
