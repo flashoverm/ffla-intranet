@@ -6,6 +6,15 @@ Release Documentation
 
 Feature: Message board
 
+### V2.4.2
+
+UI updates confirmations (more lists)
+Last update timestamp
+
+ALTER TABLE confirmation ADD last_update DATE NULL AFTER last_advisor; 
+ALTER TABLE datachangerequest ADD last_update DATE NULL AFTER last_advisor; 
+
+
 #### V2.4.1
 
 Feature: Checked hydrants list

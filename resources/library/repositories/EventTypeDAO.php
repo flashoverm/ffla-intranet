@@ -69,7 +69,6 @@ class EventTypeDAO extends BaseDAO{
 	protected function initializeEventTypes(){
 		$this->save(new EventType("325FF3CA-62BE-3F3E-88D8-A1C932BE600B", "Theaterwache", true ));
 		$this->save(new EventType("C5503C1D-E08C-4850-27CB-563302EC9318", "Theaterwache Schüler", true  ));
-		$this->save(new EventType("00155A58-8720-29CF-42F0-713895C7BFDA", "Theaterwache Prantlgarten", true  ));
 		$this->save(new EventType("84D42DC4-0BCD-3DD4-C4D4-7D68CAB559D0", "Residenzwache", false ));
 		$this->save(new EventType("5B3243FF-2D65-A0E6-E92D-0B2B8DC38D32", "Rathauswache", false ));
 		$this->save(new EventType("7C5B9E95-0EC0-DFD5-ED7E-9A736BAD0AD1", "Wache Sparkassenarena", false ));
