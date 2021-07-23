@@ -1,7 +1,5 @@
 RewriteEngine on
 
-#DONT FORGET TO CHANGE htaccess.sample
-
 RewriteRule ^(.*)hydrant/inspection/evaluation/([^/]+)?$ 		$1/hydrantapp/inspection_evaluation.php?year=$2
 RewriteRule ^(.*)hydrant/inspection/evaluation/?$ 		$1/hydrantapp/inspection_evaluation.php
 RewriteRule ^(.*)hydrant/inspection/plan/?$ 		$1/hydrantapp/inspection_plan.php
@@ -36,6 +34,8 @@ RewriteRule ^(.*)employer/confirmations/new/?$			$1/employerapp/confirmation_edi
 RewriteRule ^(.*)employer/confirmations/accepted/?$			$1/employerapp/confirmation_overview.php?accepted
 RewriteRule ^(.*)employer/confirmations/process/?$ 		$1/employerapp/confirmation_process.php 
 RewriteRule ^(.*)employer/confirmations/process/accepted/?$ 		$1/employerapp/confirmation_process.php?accepted
+RewriteRule ^(.*)employer/confirmations/process/declined/?$ 		$1/employerapp/confirmation_process.php?declined
+RewriteRule ^(.*)employer/confirmations/process/all/?$ 		$1/employerapp/confirmation_process.php?all
 RewriteRule ^(.*)employer/confirmations/([^/]+)/edit/?$ 			$1/employerapp/confirmation_edit.php?id=$2
 RewriteRule ^(.*)employer/confirmations/([^/]+)/print/?$ 			$1/employerapp/confirmation.php?id=$2&print=true
 RewriteRule ^(.*)employer/confirmations/([^/]+)/file([^/]+)/?$ 		$1/employerapp/confirmation.php?id=$2&file=true$3

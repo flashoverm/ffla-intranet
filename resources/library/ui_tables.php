@@ -117,7 +117,7 @@ function renderEventRow($event, $options = array()){
 function renderConfirmationTable($confirmations, $options = array()) {
 ?>
 	<div class="table-responsive">
-		<table class="table table-hover table-striped" data-toggle="table" data-pagination="true">
+		<table class="table table-hover table-striped" data-toggle="table" data-pagination="true" data-search="true">
 			<thead>
 				<tr>
 					<th data-sortable="true" class="text-center">Datum</th>

@@ -33,6 +33,15 @@ class ConfirmationDAO extends BaseDAO {
 		return false;
 	}
 	
+	function getConfirmations(){
+		$statement = $this->db->prepare("SELECT * FROM confirmation ORDER BY date DESC, start_time DESC");
+		
+		if ($statement->execute()) {
+			return $this->handleResult($statement, true);
+		}
+		return false;
+	}
+	
 	function getConfirmationsByState($state){
 		$statement = $this->db->prepare("SELECT * FROM confirmation WHERE state = ? ORDER BY date DESC, start_time DESC");
 		
