@@ -39,18 +39,17 @@ test is merged into master with a new version number
 
 ## Usage
 
-New installation
+New installation:
 
 Clone repository in webserver folder (e.g. /var/www/)
 
-Install composer: https://getcomposer.org/download/
-
-
+Create new database and fill with the data (hydrants)
 
 Replace and adapt config sample
 
-Create new database and fill with the data
-(hydrants)
+Install composer: https://getcomposer.org/download/
+
+Run composer install (or php composer.phar install) in /resources/ folder
 
 apt install zip
 
