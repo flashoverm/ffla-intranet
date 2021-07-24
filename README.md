@@ -43,6 +43,10 @@ New installation
 
 Clone repository in webserver folder (e.g. /var/www/)
 
+Install composer: https://getcomposer.org/download/
+
+
+
 Replace and adapt config sample
 
 Create new database and fill with the data

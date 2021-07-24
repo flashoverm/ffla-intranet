@@ -2,6 +2,8 @@
 
 session_start ();
 
+require __DIR__ . '/vendor/autoload.php';
+
 require_once realpath ( dirname ( __FILE__ ) . "/config/config.php" );
 
 foreach (glob( MODELS_PATH . "/*.php") as $filename) {
