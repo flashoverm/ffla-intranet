@@ -86,6 +86,8 @@ RewriteRule ^(.*)guardian/user/?$ 				$1/guardianapp/user_overview.php
 RewriteRule ^(.*)guardian/templates/?$ 			$1/guardianapp/stafftemplate_edit.php
 RewriteRule ^(.*)guardian/templates/([^/]+)/?$ 	$1/guardianapp/stafftemplate_edit.php?eventtype=$2
 
+RewriteRule ^(.*)guardian/manual$ 					$1/guardianapp/manual.php 
+
 RewriteRule ^(.*)guardian/$ 					$1/guardianapp/index.php 
 
 RewriteRule ^(.*)ajax/hy/([^.]+)/field/([^.]+)/?$ 	$1/ajax/hy_request.php?fid=$2&fieldid=$3 

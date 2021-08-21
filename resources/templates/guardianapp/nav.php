@@ -51,6 +51,12 @@ function middle_navigation ($currentUser){
 function right_navigation ($currentUser){
 	global $config;
 	
+	?>
+	<li class='nav-item'>
+		<a class='nav-link text-light' href="<?= $config["urls"]["guardianapp_home"]?>/manual" data-toggle="tooltip" title="Anleitung">&#9432;</a>
+	</li>
+	<?php 
+	
 	if ($currentUser && $currentUser->hasPrivilegeByName(Privilege::EVENTADMIN)) {
 		echo "<li class='nav-item dropdown'>
         			<a class='nav-link dropdown-toggle text-light mx-1' data-toggle='dropdown' href='#'>Administration</a>
