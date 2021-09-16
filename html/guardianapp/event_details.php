@@ -79,13 +79,19 @@ if (! isset($_GET['id'])) {
     	if (isset($_POST['removestaffbyuserid'])) {
     		// Remove by user itself
     		$staff_uuid = trim($_POST['removestaffbyuserid']);
-    		mail_unscribe_staff_user($staff_uuid, $uuid);
-    		$log = LogbookEntry::fromAction(LogbookActions::EventUnscribedByUser, $staff_uuid);
-    		if($eventController->removeUser($staff_uuid)){
-    			$logbookDAO->save($log);
-    			$variables['successMessage'] = "Personal-Eintrag entfernt";
+    		$staffEntry = $staffDAO->getEventStaffEntry($staff_uuid);
+    		
+    		if($staffEntry->getUser() != null && getCurrentUserUUID() == $staffEntry->getUser()->getUuid()){
+    			$log = LogbookEntry::fromAction(LogbookActions::EventUnscribedByUser, $staff_uuid);
+    			if($eventController->removeUser($staff_uuid)){
+    				mail_unscribe_staff_user($staff_uuid, $uuid);
+    				$logbookDAO->save($log);
+    				$variables['successMessage'] = "Personal-Eintrag entfernt";
+    			} else {
+    				$variables['alertMessage'] = "Eintrag konnte nicht entfernt werden";
+    			}
     		} else {
-    			$variables['alertMessage'] = "Eintrag konnte nicht entfernt werden";
+    			$variables['alertMessage'] = "Eintrag konnte nicht entfernt werden - Andere Benutzer können nicht entfernt werden";
     		}
     	}
     	
