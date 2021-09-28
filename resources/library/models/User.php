@@ -52,6 +52,8 @@ class User extends BaseModel {
 	 */
 	protected bool $deleted;
 	
+	protected $lastLogin;
+		
 	/**
 	 * @ORM\Column(name="employer_address", type="string")
 	 */
@@ -137,6 +139,13 @@ class User extends BaseModel {
 	public function getDeleted() : bool {
 		return $this->deleted;
 	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getLastLogin() {
+		return $this->lastLogin;
+	}
 
 	/**
 	 * @return NULL
@@ -221,6 +230,13 @@ class User extends BaseModel {
 	public function setDeleted(bool $deleted) {
 		$this->deleted = $deleted;
 	}
+	
+	/**
+	 * @param mixed $lastLogin
+	 */
+	public function setLastLogin($lastLogin) {
+		$this->lastLogin = $lastLogin;
+	}
 
 	/**
 	 * @param NULL $employerAddress
@@ -254,6 +270,7 @@ class User extends BaseModel {
 		$this->additionalEngines = array();
 		$this->locked = false;
 		$this->deleted = false;
+		$this->lastLogin = NULL;
 		$this->employerAddress = NULL;
 		$this->employerMail = NULL;
 		$this->privileges = array();

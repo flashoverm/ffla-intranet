@@ -203,10 +203,10 @@ class UserDAO extends BaseDAO {
 		$emailLower = strtolower($user->getEmail());
 				
 		$statement = $this->db->prepare("UPDATE user 
-			SET firstname = ?, lastname = ?, email = ?, password = ?, engine = ?, locked = ?, deleted = ?, employer_address = ?, employer_mail = ? WHERE uuid= ?");
+			SET firstname = ?, lastname = ?, email = ?, password = ?, engine = ?, locked = ?, deleted = ?, last_login = ?, employer_address = ?, employer_mail = ? WHERE uuid= ?");
 		
 		$result = $statement->execute(array($user->getFirstname(), $user->getLastname(), $emailLower, 
-				$user->getPassword(), $user->getEngine()->getUuid(), $user->getLocked(), $user->getDeleted(), 
+				$user->getPassword(), $user->getEngine()->getUuid(), $user->getLocked(), $user->getDeleted(), $user->getLastLogin(),
 				$user->getEmployerAddress(), $user->getEmployerMail(), $user->getUuid()
 		));
 		
@@ -225,6 +225,7 @@ class UserDAO extends BaseDAO {
 		$object->setLastname($result['lastname']);
 		$object->setLocked($result['locked']);
 		$object->setDeleted($result['deleted']);
+		$object->setLastLogin($result['last_login']);
 		$object->setEmployerAddress($result['employer_address']);
 		$object->setEmployerMail($result['employer_mail']);
 		$object->setEngine($this->engineDAO->getEngine($result['engine']));
@@ -281,6 +282,7 @@ class UserDAO extends BaseDAO {
 						  engine CHARACTER(36) NOT NULL,
 						  locked BOOLEAN NOT NULL,
 						  deleted BOOLEAN NOT NULL,
+						  last_login DATETIME NULL,
 						  employer_address VARCHAR(255),
 						  employer_mail VARCHAR(255),
                           PRIMARY KEY  (uuid),

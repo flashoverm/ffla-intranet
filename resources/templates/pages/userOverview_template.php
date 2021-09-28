@@ -13,6 +13,7 @@ if (! count ( $user )) {
 				<th data-sortable="true" class="text-center">Löschzug</th>
 				<th data-sortable="true" class="text-center">E-Mail</th>
 				<th data-sortable="true" class="text-center">Anmeldung</th>
+				<th data-sortable="true" class="text-center">Letzte Anmeldung</th>
 				<th class="text-center"></th>
 			</tr>
 		</thead>
@@ -39,6 +40,13 @@ if (! count ( $user )) {
 					?>
 				</td>
 				<td class="text-center">
+					<?php if( $row->getLastLogin() != null ) { ?>
+						<span class='d-none'><?= strtotime($row->getLastLogin()) ?></span><?= date($config ["formats"] ["datetime"], strtotime($row->getLastLogin())); ?>
+					<?php } else {
+						echo "Nie";
+					} ?>
+				</td>
+				<td>
 					<div class="dropdown">
 						<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Optionen</button>
 						<div class="dropdown-menu">

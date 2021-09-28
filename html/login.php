@@ -31,6 +31,8 @@ if (isset ( $_POST ['email'] ) && isset ( $_POST ['password'] )) {
 		$uuid = $userController->checkPassword( $user, $password );
 		if ($uuid) {
 			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserLogedIn, $uuid));
+			$user->setLastLogin(date('Y-m-d H:i:s'));
+			$userDAO->save($user);
 			
 			setCurrentUserUUID($uuid);
 			

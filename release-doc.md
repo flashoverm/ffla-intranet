@@ -6,6 +6,10 @@ Release Documentation
 
 Feature: Message board
 
+### V2.4.3
+
+ALTER TABLE user ADD last_login DATETIME NULL AFTER deleted; 
+
 ### V2.4.2
 
 UI updates confirmations (more lists)
