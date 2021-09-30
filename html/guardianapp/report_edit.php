@@ -12,7 +12,7 @@ $engines = $engineDAO->getEngines();
 $variables = array (
 		'app' => $config["apps"]["guardian"],
 		'template' => "reportEdit/reportEdit_template.php",
-		'secured' => false,
+		'secured' => true,
 		'eventtypes' => $eventtypes,
 		'staffpositions' => $staffpositions,
 		'engines' => $engines,
@@ -40,9 +40,9 @@ if(isset($_GET['id'])){
 	if($event){
 		
 		if(userLoggedIn()){
-			$creator = $userController->getCurrentUser()->getFullName();
+			$creator = $userController->getCurrentUser();
 		} else {
-			$creator = "";
+			$creator = null;
 		}
 		
 		$eventReport = new Report();
@@ -91,7 +91,8 @@ if (isset($_POST) && isset($_POST ['start'])) {
     if (isset ( $_POST ['report'] )) {
     	$reportText = trim ( $_POST ['report'] );
     }
-    $creator = trim ($_POST ['creator']);
+    $creatorUuid = trim ($_POST ['creator']);
+    $creator = $userDAO->getUserByUUID($creatorUuid);
         
     if( $eventReport == NULL ){
     	$eventReport = new Report();

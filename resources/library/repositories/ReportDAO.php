@@ -7,12 +7,14 @@ class ReportDAO extends BaseDAO{
 	protected $engineDAO;
 	protected $eventTypeDAO;
 	protected $reportUnitDAO;
+	protected $userDAO;
 	
-	function __construct(PDO $pdo, EngineDAO $engineDAO, EventTypeDAO $eventTypeDAO, ReportUnitDAO $reportUnitDAO) {
+	function __construct(PDO $pdo, EngineDAO $engineDAO, EventTypeDAO $eventTypeDAO, ReportUnitDAO $reportUnitDAO, UserDAO $userDAO) {
 		parent::__construct($pdo, "report");
 		$this->engineDAO = $engineDAO;
 		$this->eventTypeDAO = $eventTypeDAO;
 		$this->reportUnitDAO = $reportUnitDAO;
+		$this->userDAO = $userDAO;
 	}
 	
 	function save(Report $report){
@@ -92,7 +94,7 @@ class ReportDAO extends BaseDAO{
 		$object->setTypeOther($result['type_other']);
 		$object->setTitle($result['title']);
 		$object->setEngine($this->engineDAO->getEngine($result['engine']));
-		$object->setCreator($result['creator']);
+		$object->setCreator($this->userDAO->getUserByUUID($result['creator']));
 		$object->setNoIncidents($result['noIncidents']);
 		$object->setIlsEntry($result['ilsEntry']);
 		$object->setEmsEntry($result['emsEntry']);
@@ -106,6 +108,11 @@ class ReportDAO extends BaseDAO{
 		$uuid = $this->generateUuid();
 		$report->setUuid($uuid);
 		
+		$creator = null;
+		if($report->getCreator() != null){
+		    $creator = $report->getCreator()->getUuid();
+		}
+		
 		$statement = $this->db->prepare("INSERT INTO report (uuid, event, date, start_time, 
 			end_time, type, type_other, title, engine, creator, noIncidents, ilsEntry, 
 			report, emsEntry, managerApproved)
@@ -116,7 +123,7 @@ class ReportDAO extends BaseDAO{
 				$report->getStartTime(), $report->getEndTime(),
 				$report->getType()->getUuid(), $report->getTypeOther(),
 				$report->getTitle(), $report->getEngine()->getUuid(),
-				$report->getCreator(), $report->getNoIncidents(),
+		        $creator, $report->getNoIncidents(),
 				$report->getIlsEntry(), $report->getReportText(),
 				$report->getEmsEntry(), $report->getManagerApproved()
 		));
@@ -154,6 +161,11 @@ class ReportDAO extends BaseDAO{
 	}
 	
 	function updateReportOnly(Report $report){
+	    $creator = null;
+	    if($report->getCreator() != null){
+	        $creator = $report->getCreator()->getUuid();
+	    }
+	    
 		$statement = $this->db->prepare("UPDATE report
 		SET event = ?, date = ?, start_time = ?, end_time = ?, type = ?, type_other = ?,
 		title = ?, engine = ?, creator = ?, noIncidents = ?, ilsEntry = ?, report = ?,
@@ -164,7 +176,7 @@ class ReportDAO extends BaseDAO{
 				$report->getStartTime(), $report->getEndTime(),
 				$report->getType()->getUuid(), $report->getTypeOther(),
 				$report->getTitle(), $report->getEngine()->getUuid(),
-				$report->getCreator(), $report->getNoIncidents(),
+		        $creator, $report->getNoIncidents(),
 				$report->getIlsEntry(), $report->getReportText(),
 				$report->getEmsEntry(), $report->getManagerApproved(),
 				$report->getUuid()

@@ -34,7 +34,7 @@ class Report extends BaseModel {
 	
 	protected ?Engine $engine;
 	
-	protected ?string $creator;
+	protected ?User $creator;
 	
 	/**
 	 * @ORM\Column(type="smallint")
@@ -129,7 +129,7 @@ class Report extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getCreator() : ?string {
+	public function getCreator() : ?User {
 		return $this->creator;
 	}
 
@@ -241,7 +241,7 @@ class Report extends BaseModel {
 	/**
 	 * @param mixed $creator
 	 */
-	public function setCreator(?string $creator) {
+	public function setCreator(?User $creator) {
 		$this->creator = $creator;
 	}
 
@@ -334,7 +334,7 @@ class Report extends BaseModel {
 	
 	function setReportData($date, $start_time, $end_time, EventType $type, ?string $type_other,
 			?string $title, Engine $engine, bool $noIncidents, ?string $report, 
-			?string $creator, bool $ilsEntry) {
+			?User $creator, bool $ilsEntry) {
 		
 		$this->setDate($date);
 		$this->setStartTime($start_time);

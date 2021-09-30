@@ -113,13 +113,25 @@
 	
 	<div class="form-group">
 		<label>Ersteller:</label> <input type="text" required="required"
-			class="form-control" name="creator" id="creator"
+			class="form-control"
 			<?php
 			if(isset($report)){
-				echo "value='" . $report->getCreator() . "'";
+				echo "value='" . $report->getCreator()->getFullName() . "'";
+			} else if(isset($currentUser)) {
+			     "value='" + $currentUser->getFullName() + "'";
 			}?>
-			placeholder="Namen eintragen">
+			name="creatorName" id="creatorName" disabled>
 	</div>
+	<input type="hidden" class="form-control"
+		<?php
+		if(isset($report)){
+		    echo "value='" + $report->getCreator()->getUuid() + "'";
+		} else if(isset($currentUser)) {
+		    echo "value='" + $currentUser->getUuid() + "'";
+		}
+		?>
+		name="creator" id="creator">
+	
 	<p class="h6">Wachpersonal hinzufügen:</p>
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUnitModal" onClick="initializeModal()">Ohne Fahrzeug</button>
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUnitModal" onClick="initializeModalVehicle()">Mit Fahrzeug</button>

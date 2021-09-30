@@ -6,6 +6,14 @@ Release Documentation
 
 Feature: Message board
 
+### V2.4.4
+
+SELECT report.creator, user.firstname, user.lastname, user.uuid
+FROM report, user 
+WHERE report.creator LIKE CONCAT('%',user.lastname,'%')
+AND report.creator LIKE CONCAT('%',user.firstname,'%')
+ORDER BY user.lastname
+
 ### V2.4.3
 
 ALTER TABLE user ADD last_login DATETIME NULL AFTER deleted; 
