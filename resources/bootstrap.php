@@ -53,7 +53,7 @@ $staffTemplateDAO = new StaffTemplateDAO($db, $staffPositionDAO, $eventTypeDAO);
 $staffDAO = new StaffDAO($db, $userDAO, $staffPositionDAO);
 $eventDAO = new EventDAO($db, $userDAO, $engineDAO, $eventTypeDAO, $staffDAO);
 $reportUnitDAO = new ReportUnitDAO($db, $engineDAO, $staffPositionDAO);
-$reportDAO = new ReportDAO($db, $engineDAO, $eventTypeDAO, $reportUnitDAO);
+$reportDAO = new ReportDAO($db, $engineDAO, $eventTypeDAO, $reportUnitDAO, $userDAO);
 
 //Controller
 
