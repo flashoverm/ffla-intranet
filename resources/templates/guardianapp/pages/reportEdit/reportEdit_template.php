@@ -118,7 +118,7 @@
 			if(isset($report)){
 				echo "value='" . $report->getCreator()->getFullName() . "'";
 			} else if(isset($currentUser)) {
-			     "value='" . $currentUser->getFullName() . "'";
+			     echo "value='" . $currentUser->getFullName() . "'";
 			}?>
 			name="creatorName" id="creatorName" disabled>
 	</div>
