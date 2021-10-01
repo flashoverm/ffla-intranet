@@ -14,6 +14,13 @@ WHERE report.creator LIKE CONCAT('%',user.lastname,'%')
 AND report.creator LIKE CONCAT('%',user.firstname,'%')
 ORDER BY user.lastname
 
+Run replace_report_creator.php
+
+ALTER TABLE report CHANGE creator creator CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL; 
+ALTER TABLE report ADD CONSTRAINT report_ibfk_3 FOREIGN KEY (creator) REFERENCES user(uuid) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+Deployment Code 
+
 ### V2.4.3
 
 ALTER TABLE user ADD last_login DATETIME NULL AFTER deleted; 
