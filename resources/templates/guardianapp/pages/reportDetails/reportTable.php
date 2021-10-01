@@ -102,7 +102,7 @@
 			</tr>
 			<tr>
 				<th>Ersteller</th>
-				<td><?= $report->getCreator() ?></td>
+				<td><?= $report->getCreator()->getFullName() ?></td>
 			</tr>
 		</tbody>
 	</table>

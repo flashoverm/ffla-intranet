@@ -60,7 +60,7 @@ function createDialog($id, $title, $name, $additionalValueName = null, $addition
 }
 
 
-function createHydrantGoogleMap($hydrants, $visable, $markerListener = true, $height, $width, $replaceWithImage = false){
+function createHydrantGoogleMap($hydrants, $visable, $markerListener, $height, $width, $replaceWithImage = false){
 	global $config;
 	?>
 	<div class="dynamic-map rounded mx-auto" id="dynamic-map" 

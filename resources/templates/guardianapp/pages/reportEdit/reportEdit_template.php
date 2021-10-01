@@ -118,16 +118,16 @@
 			if(isset($report)){
 				echo "value='" . $report->getCreator()->getFullName() . "'";
 			} else if(isset($currentUser)) {
-			     "value='" + $currentUser->getFullName() + "'";
+			     "value='" . $currentUser->getFullName() . "'";
 			}?>
 			name="creatorName" id="creatorName" disabled>
 	</div>
 	<input type="hidden" class="form-control"
 		<?php
 		if(isset($report)){
-		    echo "value='" + $report->getCreator()->getUuid() + "'";
+		    echo "value='" . $report->getCreator()->getUuid() . "'";
 		} else if(isset($currentUser)) {
-		    echo "value='" + $currentUser->getUuid() + "'";
+		    echo "value='" . $currentUser->getUuid() . "'";
 		}
 		?>
 		name="creator" id="creator">
