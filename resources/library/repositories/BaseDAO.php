@@ -62,6 +62,42 @@ abstract class BaseDAO {
 
 	abstract protected function resultToObject($result);
 	
+	function executeQuery(string $query, ?array $parameter, $page=-1, $pagesize=-1){
+		
+		$execQuery = $query;
+		
+		if($page != -1 && $pagesize != -1){
+			$this->db->query("SET @row_number = 0;");
+			
+			$fromRowNumber = (($page-1)*$pagesize)+1;
+			$toRowNumber = $fromRowNumber+$pagesize;
+			
+			$fromPos = strpos($query, "FROM");
+			$rowNumQuery = substr_replace($query, ", (@row_number:=@row_number + 1) AS RowNum FROM", $fromPos, strlen("FROM"));
+			
+			$execQuery = "SELECT * FROM ( " . $rowNumQuery . " ) as Data WHERE RowNum >= ? AND RowNum < ? ORDER BY RowNum";
+			
+			$parameter[] = $fromRowNumber;
+			$parameter[] = $toRowNumber;
+		}
+		
+		$statement = $this->db->prepare($execQuery);
+	
+		if ($statement->execute($parameter)) {
+			return $this->handleResult($statement, true);
+		}
+		return false;
+	}
+	
+	function getEntryCount(){
+		$statement = $this->db->prepare("SELECT count(*) AS count FROM " . $this->tableName);
+		
+		if ($statement->execute()) {
+			return $statement->fetchColumn();
+		}
+		return false;
+	}
+	
 	protected function uuidExists($uuid, $tableName){
 		if($uuid == NULL){
 			return false;
