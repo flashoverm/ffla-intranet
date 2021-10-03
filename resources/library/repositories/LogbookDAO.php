@@ -25,10 +25,10 @@ class LogbookDAO extends BaseDAO{
 		}
 	}
 
-	function getLogbookPage($page, $resultSize = 20){
+	function getLogbookPage($page, $pagesize = 10){
 		$query = "SELECT * FROM logbook ORDER BY timestamp DESC";
 		
-		return $this->executeQuery($query, null, $page, $resultSize);
+		return $this->executeQuery($query, null, $page, $pagesize);
 	}
 	
 	function getLogbookEntryCount(){

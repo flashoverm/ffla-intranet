@@ -41,28 +41,10 @@ if ( ! isset($logbook) || ! count ( $logbook )) {
 		</tbody>
 	</table>
 </div>
-<nav>
-	<ul class="pagination justify-content-center">
-  	<?php
-  	$pages = ceil ($logbookDAO->getLogbookEntryCount()/$resultSize);
-  	if($currentPage > 1){
-  		echo '<li class="page-item"><a class="page-link" href="' . $config["urls"]["intranet_home"] . '/logbook/page/' . ($currentPage-1) . '"><</a></li>';
-  	}
-  	for($i=max(1, $currentPage-9);  ($i<=( $pages ) && $i<=($currentPage+9) ); $i++){    	
-    	echo '<li class="page-item';
-    	if($i == $currentPage){
-    		echo ' active';
-    	}
-    	echo '"><a class="page-link" href="' . $config["urls"]["intranet_home"] . '/logbook/page/' . $i . '">' . $i . '</a></li>';
-  	}
-  	if($currentPage < $pages){
-  		echo '<li class="page-item"><a class="page-link" href="' . $config["urls"]["intranet_home"] . '/logbook/page/' . ($currentPage+1) . '">></a></li>';
-  	}
-  	?>
-	</ul>
-</nav>
+<?php 
+$pageLink = $config["urls"]["intranet_home"] . '/logbook/page/';
+renderPagination($pageLink, $logbookDAO->getLogbookEntryCount(), $currentPage, $resultSize);
 
-<?php
 }
 ?>
 

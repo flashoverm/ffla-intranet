@@ -42,13 +42,19 @@ class ConfirmationDAO extends BaseDAO {
 		return false;
 	}
 	
-	function getConfirmationsByStateAndUser($state, $userUuid){
+	function getConfirmationsByStateAndUser($state, $userUuid, $page = -1, $pagesize = 10){
+		$query = "SELECT * FROM confirmation WHERE user = ? AND state = ? ORDER BY date DESC, start_time DESC";
+		
+		return $this->executeQuery($query, array($userUuid, $state), $page, $pagesize);
+		
+		/*
 		$statement = $this->db->prepare("SELECT * FROM confirmation WHERE user = ? AND state = ? ORDER BY date DESC, start_time DESC");
 		
 		if ($statement->execute(array($userUuid, $state))) {
 			return $this->handleResult($statement, true);
 		}
 		return false;
+		*/
 	}
 	
 	function deleteConfirmation($uuid){

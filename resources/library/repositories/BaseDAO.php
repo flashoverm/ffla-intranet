@@ -66,7 +66,7 @@ abstract class BaseDAO {
 		
 		$execQuery = $query;
 		
-		if($page != -1 && $pagesize != -1){
+		if($page != -1){
 			$this->db->query("SET @row_number = 0;");
 			
 			$fromRowNumber = (($page-1)*$pagesize)+1;
@@ -89,6 +89,18 @@ abstract class BaseDAO {
 		return false;
 	}
 	
+	function getQueryResultCount(string $query, ?array $parameter){
+		$fromPos = strpos($query, "FROM");
+		$countingQuery = substr_replace($query, "SELECT count(*) FROM", 0, $fromPos);
+		
+		$statement = $this->db->prepare($countingQuery);
+		
+		if ($statement->execute($parameter)) {
+			return $statement->fetchColumn();
+		}
+		return false;
+		
+	}
 	function getEntryCount(){
 		$statement = $this->db->prepare("SELECT count(*) AS count FROM " . $this->tableName);
 		
