@@ -24,8 +24,8 @@ if ( ! ( count ( $confirmations ) || ( isset($declined) && count ( $declined ) )
 					'showUserOptions' => true,
 			);
 			
-			renderConfirmationTable($declined, $options);
-			
+			render(TEMPLATES_PATH . "/employerapp/elements/confirmation_table.php", $declined, $options);
+						
 			if(count ( $confirmations ) ){
 				echo '<h4 class="my-3">Offene Anfragen</h4>';
 			}
@@ -37,7 +37,7 @@ if ( ! ( count ( $confirmations ) || ( isset($declined) && count ( $declined ) )
 					'showUserOptions' => true,
 			);
 			
-			renderConfirmationTable($confirmations, $options);
+			render(TEMPLATES_PATH . "/employerapp/elements/confirmation_table.php", $confirmations, $options);
 		}
 		
 	} else {
@@ -45,7 +45,7 @@ if ( ! ( count ( $confirmations ) || ( isset($declined) && count ( $declined ) )
 				'showViewConfirmation' => true,
 		);
 		
-		renderConfirmationTable($confirmations, $options);
+		render(TEMPLATES_PATH . "/employerapp/elements/confirmation_table.php", $confirmations, $options);
 	}
 }
     

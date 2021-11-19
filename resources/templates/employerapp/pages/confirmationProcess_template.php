@@ -35,7 +35,7 @@ if ( ! count ( $confirmations ) ) {
 		);
 	}
 
-	renderConfirmationTable($confirmations, $options);
+	render(TEMPLATES_PATH . "/employerapp/elements/confirmation_table.php", $confirmations, $options);
 }
 
     

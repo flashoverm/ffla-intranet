@@ -27,7 +27,7 @@ if ( ! ( count ( $dataChangeRequests ) || ( isset($furtherRequest) && count ( $f
 				'showUserOptions' => true,
 			);
 			
-			renderDataChangeTable($furtherRequest, $options);
+			render(TEMPLATES_PATH . "/masterdataapp/elements/dataChange_table.php", $furtherRequest, $options);
 			
 			if( count ( $dataChangeRequests ) ){
 				echo '<h4 class="my-3">Offene Anfragen</h4>';
@@ -40,13 +40,13 @@ if ( ! ( count ( $dataChangeRequests ) || ( isset($furtherRequest) && count ( $f
 					'showUserOptions' => true,
 			);
 			
-			renderDataChangeTable($dataChangeRequests, $options);
+			render(TEMPLATES_PATH . "/masterdataapp/elements/dataChange_table.php", $dataChangeRequests, $options);
 		}
 		
 	} else {
 		$options = array();
 		
-		renderDataChangeTable($dataChangeRequests, $options);
+		render(TEMPLATES_PATH . "/masterdataapp/elements/dataChange_table.php", $dataChangeRequests, $options);
 		
 	}
 }

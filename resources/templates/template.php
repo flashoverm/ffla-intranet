@@ -1,6 +1,7 @@
 <?php
 require_once LIBRARY_PATH . '/util.php';
 require_once LIBRARY_PATH . "/ui_util.php";
+require_once LIBRARY_PATH . "/ui_render.php";
 
 function checkPermissions($variables = array()){
 	global $currentUser;

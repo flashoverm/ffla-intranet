@@ -23,7 +23,7 @@ if (!isset($events) || ! count ( $events ) ) {
 				'showPublic' => true,
 		);
 	}
-
-	renderEventTable($events, $options);
+	
+	render(TEMPLATES_PATH . "/guardianapp/elements/event_table.php", $events, $options);
 }
 ?>
