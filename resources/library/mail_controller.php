@@ -28,7 +28,7 @@ function mail_send_inspection_report_update($report_uuid){
 
 function get_inspection_link($inspection_uuid){
 	global $config;
-	return $config ["urls"] ["base_url"] . $config ["urls"] ["hydrantapp_home"] . "/inspection/" . $inspection_uuid;
+	return $config ["urls"] ["base_url"] . $config ["urls"] ["hydrantapp_home"] . "/inspection/view/" . $inspection_uuid;
 }
 
 
@@ -312,7 +312,7 @@ function mail_remove_staff_user($staff_uuid, $event_uuid) {
 
 function get_event_link($event_uuid){
 	global $config;
-	return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event_uuid;
+	return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/view/" . $event_uuid;
 }
 
 function get_staff_acknowledge_link($event_uuid, $staff_uuid){
@@ -327,7 +327,7 @@ function get_report_create_link($event_uuid){
 
 function get_report_link($report_uuid){
 	global $config;
-	return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/" . $report_uuid;
+	return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/view/" . $report_uuid;
 }
 
 function event_subject($event_uuid){
@@ -451,7 +451,7 @@ function mail_send_confirmation_declined($confirmation){
 	global $config, $bodies;
 		
 	$subject = "Angefragte Arbeitgeberbestätigung abgelehnt";
-	$body = $bodies["confirmation_declined"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations";
+	$body = $bodies["confirmation_declined"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations/overview";
 	
 	return send_mail ( $confirmation->getUser()->getEmail(), $subject, $body );
 }
@@ -468,7 +468,7 @@ function mail_send_confirmation($confirmation){
 	$files[] = $config["paths"]["confirmations"] . $confirmation->getUuid() . ".pdf";
 	$files[] = $config["paths"]["files"] . "Lohnerstattung-Verdienstausfall.pdf";
 	$subject = "Arbeitgebernachweis für Einsatztätigkeit";
-	$body = $bodies["confirmation_accepted"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations";
+	$body = $bodies["confirmation_accepted"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations/accepted";
 	
 	if($confirmation->getUser()->getEmployerMail()){
 		if( $employer_informed ){
@@ -544,7 +544,7 @@ function mail_send_datachange_status(DataChangeRequest $datachangerequest){
 	} else {
 		return false;
 	}
-	$body = $body . $config ["urls"] ["base_url"] . $config["urls"]["masterdataapp_home"] . "/datachangerequests/";
+	$body = $body . $config ["urls"] ["base_url"] . $config["urls"]["masterdataapp_home"] . "/datachangerequests/overview";
 	
 	return send_mail ( $datachangerequest->getUser()->getEmail(), $subject, $body );
 }

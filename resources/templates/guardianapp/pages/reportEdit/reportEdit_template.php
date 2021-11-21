@@ -153,7 +153,7 @@
 	<p>
 	<div>
 	    <?php if(isset($report) && $report->getUuid() != null){
-	    	echo '<a class="btn btn-outline-primary" href=' . $config["urls"]["guardianapp_home"] . '/reports/' . $report->getUuid() . ">Zurück</a>";
+	    	echo '<a class="btn btn-outline-primary" href=' . $config["urls"]["guardianapp_home"] . '/reports/view/' . $report->getUuid() . ">Zurück</a>";
     	}
     	
     	if(isset($report) && $report->getUuid() != null){

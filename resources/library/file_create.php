@@ -3,7 +3,7 @@
 function createReportFile($uuid){
 	global $config;
 	
-	$urlpath = $config ["urls"] ["guardianapp_home"] . "/reports/" . $uuid . "/print";
+	$urlpath = $config ["urls"] ["guardianapp_home"] . "/reports/view/" . $uuid . "/print";
 	
 	$outfile = $config["paths"]["reports"] . "/" . $uuid . '.pdf';
 	
@@ -13,7 +13,7 @@ function createReportFile($uuid){
 function createInspectionFile($uuid){
 	global $config;
 	
-	$urlpath = $config['urls']['hydrantapp_home'] . "/inspection/" . $uuid . "/print";
+	$urlpath = $config['urls']['hydrantapp_home'] . "/inspection/view/" . $uuid . "/print";
 	
 	$outfile = $config["paths"]["inspections"] . "/" . $uuid . '.pdf';
 
@@ -23,7 +23,7 @@ function createInspectionFile($uuid){
 function createConfirmationFile($uuid){
 	global $config;
 	
-	$urlpath = $config['urls']['employerapp_home'] . "/confirmations/" . $uuid . "/print";
+	$urlpath = $config['urls']['employerapp_home'] . "/confirmations/view/" . $uuid . "/print";
 	
 	$outfile = $config["paths"]["confirmations"] . "/" . $uuid . '.pdf';
 	

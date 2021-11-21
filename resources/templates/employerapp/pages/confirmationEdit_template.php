@@ -65,7 +65,7 @@
 		}
 	}
 	?>
-	<a class="btn btn-outline-primary" href="<?= $config ["urls"] ["employerapp_home"] ?>/confirmations/">Zurück</a>
+	<a class="btn btn-outline-primary" href="<?= $config ["urls"] ["employerapp_home"] ?>/confirmations/overview">Zurück</a>
 	
 	<input type="submit" class="btn btn-primary" id="submitConfirmation" 
 	<?php

@@ -22,7 +22,7 @@ if (! count ( $files )) {
 				<td class="text-center"><span class='d-none'><?= strtotime($row->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($row->getDate())); ?></td>
 
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config ["urls"] ["files"] . "/" . $row->getFilename(); ?>">Anzeigen</a>
+					<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config ["urls"] ["files"] . "/view/" . $row->getFilename(); ?>">Anzeigen</a>
 				</td>
 			</tr>
 <?php

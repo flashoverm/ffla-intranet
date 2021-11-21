@@ -14,6 +14,6 @@
     	<input type="file" class="form-control-file" name="import" id="import" required="required">
 	</div>
 	<p>*Kein Header - Format Zeile: Vorname; Nachname; E-Mail</p>
-	<a href='<?= $config["urls"]["intranet_home"]?>/users' class="btn btn-outline-primary">Zurück</a>
+	<a href='<?= $config["urls"]["intranet_home"]?>/users/overview' class="btn btn-outline-primary">Zurück</a>
 	<input class="btn btn-primary" type="submit" value="Importieren">
 </form>

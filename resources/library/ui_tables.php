@@ -92,7 +92,7 @@ function renderEventRow($event, $options = array()){
 		}
 		?>
 		<td class="text-center">
-			<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$event->getUuid() ?>">Anzeigen</a>
+			<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/view/".$event->getUuid() ?>">Anzeigen</a>
 		</td>
 		<?php
 		if( !empty($options['showDelete']) && 
@@ -181,7 +181,7 @@ function renderConfirmationRow($confirmation, $options = array()){
 		} ?>
 		<?php if(!empty($options['showUserOptions'])){ ?>
 			<td class="text-center">
-				<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/" . $confirmation->getUuid() . "/edit" ?>">Bearbeiten</a>
+				<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/edit/" . $confirmation->getUuid() ?>">Bearbeiten</a>
 			</td>
 			<td class="text-center">
 				<form method="post" action="" class="mb-0">
@@ -231,7 +231,7 @@ function renderConfirmationRow($confirmation, $options = array()){
 		<?php } ?>
 		<?php if(!empty($options['showViewConfirmation'])){ ?>
 			<td class="text-center">
-				<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$confirmation->getUuid() ."/file" ?>">Nachweis anzeigen</a>
+				<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/view/".$confirmation->getUuid() ."/file" ?>">Nachweis anzeigen</a>
 			</td>
 		<?php } ?>
 	</tr>
@@ -338,7 +338,7 @@ function renderDataChangeRow(DataChangeRequest $dataChangeRequest, $options = ar
 		</td>
 		<?php if(!empty($options['showUserOptions'])){ ?>
 			<td class="text-center">
-				<a class="btn btn-primary btn-sm mr-1" href="<?= $config["urls"]["masterdataapp_home"] . "/datachangerequests/".$dataChangeRequest->getUuid() ."/edit" ?>">Bearbeiten</a>
+				<a class="btn btn-primary btn-sm mr-1" href="<?= $config["urls"]["masterdataapp_home"] . "/datachangerequests/edit/".$dataChangeRequest->getUuid() ?>">Bearbeiten</a>
 			</td>
 			<td class="text-center">
 				<form method="post" action="" class="mb-0">

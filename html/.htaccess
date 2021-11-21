@@ -1,123 +1,79 @@
 RewriteEngine on
 
-RewriteRule ^(.*)hydrant/inspection/evaluation/([^/]+)?$ 		$1/hydrantapp/inspection_evaluation.php?year=$2
-RewriteRule ^(.*)hydrant/inspection/evaluation/?$ 		$1/hydrantapp/inspection_evaluation.php
-RewriteRule ^(.*)hydrant/inspection/plan/?$ 		$1/hydrantapp/inspection_plan.php
-RewriteRule ^(.*)hydrant/inspection/prepare/?$ 		$1/hydrantapp/inspection_prepare.php
-RewriteRule ^(.*)hydrant/inspection/assist/?$ 			$1/hydrantapp/inspection_assist.php
-RewriteRule ^(.*)hydrant/inspection/([^/]+)/print/?$ 	$1/hydrantapp/inspection_details.php?inspection=$2&print=true
-RewriteRule ^(.*)hydrant/inspection/([^/]+)/file([^/]+)/?$ 		$1/hydrantapp/inspection_details.php?inspection=$2&file=true$3
-RewriteRule ^(.*)hydrant/inspection/edit/([^/]+)/?$ 	$1/hydrantapp/inspection_edit.php?inspection=$2
-RewriteRule ^(.*)hydrant/inspection/edit/?$ 			$1/hydrantapp/inspection_edit.php
-RewriteRule ^(.*)hydrant/inspection/([^/]+)/?$ 		$1/hydrantapp/inspection_details.php?inspection=$2
-RewriteRule ^(.*)hydrant/inspection/?$ 				$1/hydrantapp/inspection_overview.php
+### Legacy
 
-RewriteRule ^(.*)hydrant/manual/?$ 			$1/hydrantapp/manual.php 
-RewriteRule ^(.*)hydrant/new/?$ 			$1/hydrantapp/hydrant_edit.php 
-RewriteRule ^(.*)hydrant/search/?$ 			$1/hydrantapp/hydrant_request.php
-RewriteRule ^(.*)hydrant/all/?$ 			$1/hydrantapp/hydrant_overview.php
-RewriteRule ^(.*)hydrant/inspected/?$ 		$1/hydrantapp/hydrant_inspected_view.php
-RewriteRule ^(.*)hydrant/street/([^/]+)/?$ 	$1/hydrantapp/hydrant_street_view.php?street=$2
-RewriteRule ^(.*)hydrant/engine/([^/]+)/?$ 	$1/hydrantapp/hydrant_engine_view.php?engine=$2
-RewriteRule ^(.*)hydrant/([^/]+)/map/?$ 	$1/hydrantapp/maps.php?hydrant=$2
-RewriteRule ^(.*)hydrant/([^/]+)/edit/?$ 	$1/hydrantapp/hydrant_edit.php?hydrant=$2 
-RewriteRule ^(.*)hydrant/([^/]+)/?$ 		$1/hydrantapp/hydrant_view.php?id=$2
-RewriteRule ^(.*)hydrant/$ 					$1/hydrantapp/index.php 
+RewriteRule ^(.*)confirmations/([A-z0-9\-]{36})/file([^/]*)/?$ 		$1/confirmations/view.php?id=$2&file=true$3 
+RewriteRule ^(.*)confirmations/([A-z0-9\-]{36})/edit/?$ 			$1/confirmations/edit.php?id=$2
+RewriteRule ^(.*)confirmations/([A-z0-9\-]{36})/print/?$ 			$1/confirmations/view.php?id=$2&print=true
+RewriteRule ^(.*)guardian/events/([A-z0-9\-]{36})/?$ 				$1/guardian/events/view/$2 [L,R=301]
+RewriteRule ^(.*)guardian/reports/([A-z0-9\-]{36})/?$ 				$1/guardian/reports/view/$2 [L,R=301]
+RewriteRule ^(.*)inspection/([A-z0-9\-]{36})/file([^/]+)/?$ 		$1/inspection/view.php?inspection=$2&file=true$3
+RewriteRule ^(.*)files/([^/]+).pdf$ 								$1/files/view/$2.pdf [L,R=301]
+RewriteRule ^(.*)hydrant/all/?$ 									$1/hydrant/overview [L,R=301]
 
-RewriteRule ^(.*)files/forms/admin/?$ 	$1/filesapp/forms_admin.php 
-RewriteRule ^(.*)files/forms/new/?$		$1/filesapp/forms_create.php 
-RewriteRule ^(.*)files/forms/?$ 		$1/filesapp/forms.php 
-RewriteRule ^(.*)files/([^/]+)/?$ 		$1/filesapp/file.php?file=$2
-RewriteRule ^(.*)files/$ 				$1/filesapp/index.php 
 
-RewriteRule ^(.*)employer/confirmations/new/?$			$1/employerapp/confirmation_edit.php
-RewriteRule ^(.*)employer/confirmations/accepted/?$			$1/employerapp/confirmation_overview.php?accepted
-RewriteRule ^(.*)employer/confirmations/process/?$ 		$1/employerapp/confirmation_process.php 
-RewriteRule ^(.*)employer/confirmations/process/accepted/?$ 		$1/employerapp/confirmation_process.php?accepted
-RewriteRule ^(.*)employer/confirmations/process/declined/?$ 		$1/employerapp/confirmation_process.php?declined
-RewriteRule ^(.*)employer/confirmations/process/all/?$ 		$1/employerapp/confirmation_process.php?all
-RewriteRule ^(.*)employer/confirmations/([^/]+)/edit/?$ 			$1/employerapp/confirmation_edit.php?id=$2
-RewriteRule ^(.*)employer/confirmations/([^/]+)/print/?$ 			$1/employerapp/confirmation.php?id=$2&print=true
-RewriteRule ^(.*)employer/confirmations/([^/]+)/file([^/]+)/?$ 		$1/employerapp/confirmation.php?id=$2&file=true$3
-RewriteRule ^(.*)employer/confirmations/?$ 				$1/employerapp/confirmation_overview.php 
-RewriteRule ^(.*)employer/$ 							$1/employerapp/index.php 
+### Specific rules
 
-RewriteRule ^(.*)masterdata/datachangerequests/new/?$			$1/masterdataapp/dataChangeRequest_edit.php
-RewriteRule ^(.*)masterdata/datachangerequests/process/?$ 		$1/masterdataapp/dataChangeRequest_process.php 
-RewriteRule ^(.*)masterdata/datachangerequests/process/done?$ 	$1/masterdataapp/dataChangeRequest_process.php?done
-RewriteRule ^(.*)masterdata/datachangerequests/process/declined?$ 	$1/masterdataapp/dataChangeRequest_process.php?declined
-RewriteRule ^(.*)masterdata/datachangerequests/process/request?$ 	$1/masterdataapp/dataChangeRequest_process.php?request
-RewriteRule ^(.*)masterdata/datachangerequests/done?$ 			$1/masterdataapp/dataChangeRequest_overview.php?done
-RewriteRule ^(.*)masterdata/datachangerequests/declined?$ 		$1/masterdataapp/dataChangeRequest_overview.php?declined
-RewriteRule ^(.*)masterdata/datachangerequests/([^/]+)/edit/?$ 	$1/masterdataapp/dataChangeRequest_edit.php?id=$2
-RewriteRule ^(.*)masterdata/datachangerequests/?$ 				$1/masterdataapp/dataChangeRequest_overview.php 
-RewriteRule ^(.*)masterdata/$ 									$1/masterdataapp/index.php 
+# Confirmations and DataChangeRequests
 
-RewriteRule ^(.*)guardian/events/new/?$					$1/guardianapp/event_edit.php
-RewriteRule ^(.*)guardian/events/public/?$ 				$1/guardianapp/event_public.php
-RewriteRule ^(.*)guardian/events/admin/?$ 				$1/guardianapp/event_admin.php
-RewriteRule ^(.*)guardian/events/past/?$ 				$1/guardianapp/event_overview.php?past
-RewriteRule ^(.*)guardian/events/([^/]+)/print?$ 		$1/guardianapp/event_details.php?id=$2&print=true
-RewriteRule ^(.*)guardian/events/([^/]+)/calender?$ 	$1/guardianapp/calender.php?id=$2
+RewriteRule ^(.*)process/accepted/?$ 	$1/process.php?accepted
+RewriteRule ^(.*)process/declined/?$ 	$1/process.php?declined
+RewriteRule ^(.*)process/request/?$ 	$1/process.php?request
+RewriteRule ^(.*)process/done/?$ 		$1/process.php?done
+RewriteRule ^(.*)accepted/?$			$1/overview.php?accepted
+RewriteRule ^(.*)declined/?$			$1/overview.php?declined
+RewriteRule ^(.*)done/?$				$1/overview.php?done
 
-RewriteRule ^(.*)guardian/events/([^/]+)/edit/?$ 		$1/guardianapp/event_edit.php?id=$2
-RewriteRule ^(.*)guardian/events/([^/]+)/assign/?([^/]+)/?$		$1/guardianapp/event_assign.php?id=$2&staffid=$3
-RewriteRule ^(.*)guardian/events/([^/]+)/subscribe/?([^/]+)/?$ 	$1/guardianapp/event_subscribe.php?id=$2&staffid=$3
-RewriteRule ^(.*)guardian/events/([^/]+)/acknowledge/?([^/]+)/?$ 	$1/guardianapp/event_details.php?id=$2&acknowledge=$3
-RewriteRule ^(.*)guardian/events/([^/]+)/?$ 			$1/guardianapp/event_details.php?id=$2
-RewriteRule ^(.*)guardian/events/?$ 					$1/guardianapp/event_overview.php
+# Hydrants and Inspections
 
-RewriteRule ^(.*)guardian/reports/export/?$ 		$1/guardianapp/report_export.php
-RewriteRule ^(.*)guardian/reports/admin/?$ 			$1/guardianapp/report_admin.php
-RewriteRule ^(.*)guardian/reports/new/?$ 			$1/guardianapp/report_edit.php
-RewriteRule ^(.*)guardian/reports/new/([^/]+)/?$ 			$1/guardianapp/report_edit.php?event=$2
-RewriteRule ^(.*)guardian/reports/([^/]+)/print/?$ 			$1/guardianapp/report_details.php?id=$2&print=true
-RewriteRule ^(.*)guardian/reports/([^/]+)/file([^/]+)/?$ 	$1/guardianapp/report_details.php?id=$2&file=true$3
-RewriteRule ^(.*)guardian/reports/([^/]+)/edit/?$ 			$1/guardianapp/report_edit.php?id=$2
-RewriteRule ^(.*)guardian/reports/([^/]+)/?$ 		$1/guardianapp/report_details.php?id=$2
-RewriteRule ^(.*)guardian/reports/?$ 				$1/guardianapp/report_overview.php
+RewriteRule ^(.*)evaluation/([^/]+)?$ 	$1/evaluation.php?year=$2
+RewriteRule ^(.*)street/([^/]+)/?$ 		$1/street_view.php?street=$2
+RewriteRule ^(.*)engine/([^/]+)/?$ 		$1/engine_view.php?engine=$2
+RewriteRule ^(.*)inspected/?$ 			$1/inspected_view.php
+RewriteRule ^(.*)map/([^/]+)/?$ 		$1/maps.php?hydrant=$2
 
-RewriteRule ^(.*)guardian/manager/new/?$ 		$1/guardianapp/manager_create.php
-RewriteRule ^(.*)guardian/manager/?$ 			$1/guardianapp/manager_overview.php
+# Events and Reports
 
-RewriteRule ^(.*)guardian/user/import/?$ 		$1/guardianapp/user_import.php
-RewriteRule ^(.*)guardian/user/?$ 				$1/guardianapp/user_overview.php
+RewriteRule ^(.*)past/?$ 									$1/overview.php?past
+RewriteRule ^(.*)calender/([^/]+)?$ 						$1/calender.php?id=$2
+RewriteRule ^(.*)events/([^/]+)/assign/?([^/]+)/?$			$1/events/assign.php?id=$2&staffid=$3
+RewriteRule ^(.*)events/([^/]+)/subscribe/?([^/]+)/?$ 		$1/events/subscribe.php?id=$2&staffid=$3
+RewriteRule ^(.*)events/([^/]+)/acknowledge/?([^/]+)/?$ 	$1/events/details.php?id=$2&acknowledge=$3
+RewriteRule ^(.*)reports/new/([^/]+)/?$ 					$1/reports/edit.php?event=$2
+RewriteRule ^(.*)templates/([^/]+)/?$ 						$1/templates.php?eventtype=$2
 
-RewriteRule ^(.*)guardian/templates/?$ 			$1/guardianapp/stafftemplate_edit.php
-RewriteRule ^(.*)guardian/templates/([^/]+)/?$ 	$1/guardianapp/stafftemplate_edit.php?eventtype=$2
+# Users etc.
 
-RewriteRule ^(.*)guardian/manual$ 					$1/guardianapp/manual.php 
+RewriteRule ^(.*)reset/([^.]+)/?$ 						$1/reset.php?token=$2
+RewriteRule ^(.*)register/?$ 							$1/edit.php
+RewriteRule ^(.*)admin/([^/]+)/?$ 						$1/admin.php?id=$2
+RewriteRule ^(.*)users/([^/]+)/privilege/([^/]+)/?$ 	$1/users/privilege.php?user=$2&engine=$3
+RewriteRule ^(.*)users/([^/]+)/privilege/?$ 			$1/users/privilege.php?user=$2
+RewriteRule ^(.*)users/filter/([^.]+)/?$ 				$1/users/overview.php?filter=$2 
+RewriteRule ^(.*)setView/([^.]+)/?$						$1/setView.php?engine=$2
 
-RewriteRule ^(.*)guardian/$ 					$1/guardianapp/index.php 
+# Administrative
+
+RewriteRule ^(.*)logbook/page/([^.]+)/?$	$1/logbook.php?page=$2
+RewriteRule ^(.*)maillog/page/([^.]+)/?$	$1/maillog.php?page=$2
+
+# Ajax
 
 RewriteRule ^(.*)ajax/hy/([^.]+)/field/([^.]+)/?$ 	$1/ajax/hy_request.php?fid=$2&fieldid=$3 
 RewriteRule ^(.*)ajax/templates/([^/]+)/?$ 			$1/ajax/staff_template.php?uuid=$2
 RewriteRule ^(.*)ajax/user/([^/]+)/?$				$1/ajax/user.php?uuid=$2
 RewriteRule ^(.*)ajax/privileges/([^/]+)/?$			$1/ajax/privileges.php?uuid=$2
 
-RewriteRule ^(.*)users/password/forgot/?$ 			$1/forgot_password.php
-RewriteRule ^(.*)users/password/change/?$ 			$1/change_password.php
-RewriteRule ^(.*)users/password/reset/([^.]+)/?$ 	$1/reset_password.php?token=$2
 
-RewriteRule ^(.*)users/register/?$ 			$1/user_edit.php
-RewriteRule ^(.*)users/new/?$ 				$1/user_edit_admin.php 
-RewriteRule ^(.*)users/edit/?$				$1/user_edit.php?self=true 
-RewriteRule ^(.*)users/([^/]+)/edit/?$		$1/user_edit_admin.php?uuid=$2
-RewriteRule ^(.*)users/([^/]+)/privilege/([^/]+)/?$ 	$1/privilege_edit.php?user=$2&engine=$3
-RewriteRule ^(.*)users/([^/]+)/privilege/?$ 			$1/privilege_edit.php?user=$2
+### Generic Rules
 
-RewriteRule ^(.*)users/import/?$ 			$1/user_import.php
-RewriteRule ^(.*)users/filter/([^.]+)/?$ 	$1/user_overview.php?filter=$2 
-RewriteRule ^(.*)users/?$ 					$1/user_overview.php 
+RewriteRule ^(.*)view/([^/]+)/?$ 				$1/view.php?id=$2
+RewriteRule ^(.*)view/([^/]+)/print?$ 			$1/view.php?id=$2&print=true
+RewriteRule ^(.*)view/([^/]+)/file([^/]+)?$ 	$1/view.php?id=$2&file=true$3
 
-RewriteRule ^(.*)logbook/page/([^.]+)/?$	$1/logbook.php?page=$2
-RewriteRule ^(.*)logbook/?$ 				$1/logbook.php 
+RewriteRule ^(.*)new/?$					$1/edit.php
+RewriteRule ^(.*)edit/([^/]+)/?$ 		$1/edit.php?id=$2
 
-RewriteRule ^(.*)maillog/page/([^.]+)/?$	$1/maillog.php?page=$2
-RewriteRule ^(.*)maillog/?$ 				$1/maillog.php 
-
-RewriteRule ^(.*)setView/([^.]+)/?$			$1/set_view.php?engine=$2
-RewriteRule ^(.*)setView/?$					$1/set_view.php
 
 #If request does not end with .php -> add .php
 RewriteCond %{THE_REQUEST} "!^[^ ]* .*?\.php[? ].*$"

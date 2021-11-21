@@ -4,7 +4,7 @@ function left_navigation ($currentUser){
 	global $config;
 	?>
         <li class='nav-item'><a class='nav-link text-light'
-			href='<?= $config["urls"]["employerapp_home"] ?>/confirmations/'>Antragsübersicht</a>
+			href='<?= $config["urls"]["employerapp_home"] ?>/confirmations/overview'>Antragsübersicht</a>
 		</li>
 		<li class='nav-item'><a class='nav-link text-light'
 			href='<?= $config["urls"]["employerapp_home"] ?>/confirmations/new'>Antrag erstellen</a>

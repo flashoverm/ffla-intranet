@@ -10,7 +10,7 @@ function left_navigation ($currentUser){
 						Wachen
 					</a>
         			<div class='dropdown-menu bg-dark'>";
-		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/events'>Wachübersicht</a>";
+		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/events/overview'>Wachübersicht</a>";
 		if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
 			echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/events/new'>Wache anlegen</a>";
 		}
@@ -22,7 +22,7 @@ function left_navigation ($currentUser){
 					</a>
         			<div class='dropdown-menu bg-dark'>";
 		if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
-			echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports'>Berichtsübersicht</a>";
+			echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/overview'>Berichtsübersicht</a>";
 		}
 		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/new'>Bericht anlegen</a>";
 		if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){

@@ -63,7 +63,7 @@
 		}
 	}
 	?>
-	<a class="btn btn-outline-primary" href="<?= $config["urls"]["masterdataapp_home"] ?>/datachangerequests/">Zurück</a>
+	<a class="btn btn-outline-primary" href="<?= $config["urls"]["masterdataapp_home"] ?>/datachangerequests/overview">Zurück</a>
 	<input type="submit" class="btn btn-primary" id="submitDataChangeRequest" 
 	<?php
 	if(isset($dataChangeRequest) 

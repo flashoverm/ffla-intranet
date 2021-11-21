@@ -51,7 +51,7 @@ if (! count ( $user )) {
 						<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Optionen</button>
 						<div class="dropdown-menu">
 
-							<a class="dropdown-item" href="<?= $config["urls"]["intranet_home"] . "/users/" . $row->getUuid() . "/edit"?>">Bearbeiten</a>
+							<a class="dropdown-item" href="<?= $config["urls"]["intranet_home"] . "/users/admin/" . $row->getUuid() ?>">Bearbeiten</a>
 							<div class="dropdown-divider"></div>
 							<?php
 							if($row->getPassword() != null){

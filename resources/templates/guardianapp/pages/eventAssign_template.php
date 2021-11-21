@@ -49,7 +49,7 @@
 	
 	<?php
 	if (isset ( $event )) {
-		echo "<a href='" . $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() . "' class=\"btn btn-outline-primary\">Zurück</a>";
+		echo "<a href='" . $config["urls"]["guardianapp_home"] . "/events/view/" . $event->getUuid() . "' class=\"btn btn-outline-primary\">Zurück</a>";
 	}
 	?>
 	<input type="submit" value="Einteilen" class="btn btn-primary">

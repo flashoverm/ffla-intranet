@@ -97,8 +97,8 @@
 						<li class='nav-item dropdown'>
 							<a class='nav-link dropdown-toggle text-light' data-toggle='dropdown' href='#'>Portaladministration</a>
         					<div class='dropdown-menu bg-dark'>
-								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users'>Benutzerverwaltung</a>
-								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users/new'>Benutzer anlegen</a>
+								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users/overview'>Benutzerverwaltung</a>
+								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users/admin'>Benutzer anlegen</a>
 								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users/import'>Benutzer importieren</a>
 								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/privilege'>Berechtigungen</a>
 								<div class='dropdown-divider'></div>

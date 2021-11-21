@@ -276,7 +276,7 @@
 					</div>";
 		}
 		if(isset($event)){
-			echo '<a class="btn btn-outline-primary" href=' . $config["urls"]["guardianapp_home"] . '/events/' . $event->getUuid() . ">Zurück</a>";
+			echo '<a class="btn btn-outline-primary" href=' . $config["urls"]["guardianapp_home"] . '/events/view/' . $event->getUuid() . ">Zurück</a>";
 		}
 		?>
 				

@@ -40,7 +40,7 @@
 	<?php
 	if($currentUser->hasPrivilegeByName(Privilege::PORTALADMIN)){
 	?>
-		<a class="btn btn-outline-primary" href="<?= $config["urls"]["intranet_home"] ?>/users/">Zurück</a>
+		<a class="btn btn-outline-primary" href="<?= $config["urls"]["intranet_home"] ?>/users/overview">Zurück</a>
 	<?php 
 	} 
 	?>

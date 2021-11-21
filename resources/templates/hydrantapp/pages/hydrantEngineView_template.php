@@ -32,11 +32,11 @@ if (! count ( $hydrants )) {
 				<td class="text-center"><?= $row->getType(); ?></td>
 
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/". $row->getHy(); ?>">Anzeigen</a>
+					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/view/". $row->getHy(); ?>">Anzeigen</a>
 				</td>
 				<?php if($currentUser->hasPrivilegeByName(Privilege::HYDRANTADMINISTRATOR)){
 				    echo '<td>
-                            <a class="btn btn-primary btn-sm" href="' . $config["urls"]["hydrantapp_home"] . "/". $row->getHy() . '/edit">Bearbeiten</a>
+                            <a class="btn btn-primary btn-sm" href="' . $config["urls"]["hydrantapp_home"] . "/edit/". $row->getHy() . '">Bearbeiten</a>
                          </td>';
 				}?>
 			</tr>
