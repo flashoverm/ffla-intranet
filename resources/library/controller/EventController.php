@@ -82,6 +82,7 @@ class EventController extends BaseController{
 		if($staff->getUser() == NULL){
 			$staff->setUser($user);
 			$staff->setUserAcknowledged(true);
+			$staff->setUnconfirmed(true);
 			return $this->staffDAO->save($staff);
 		}
 		return -1;

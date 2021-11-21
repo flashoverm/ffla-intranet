@@ -56,5 +56,5 @@
 		</div>
 	</div>
 	<input type="submit" class="btn btn-primary" value='Speichern' id='save'>
-	<a class="btn btn-outline-primary" href="<?= $config["urls"]["intranet_home"] ?>/users/<?= $user->getUuid() ?>/edit/">Zurück</a>
+	<a class="btn btn-outline-primary" href="<?= $config["urls"]["intranet_home"] ?>/users/admin/<?= $user->getUuid() ?>">Zurück</a>
 </form>

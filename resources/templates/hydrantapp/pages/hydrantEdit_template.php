@@ -118,7 +118,7 @@
 		</div>
 	</div>
 	
-	<a class="btn btn-outline-primary" href="<?= $config ["urls"] ["hydrantapp_home"] ?>/all">Zurück</a>
+	<a class="btn btn-outline-primary" href="<?= $config ["urls"] ["hydrantapp_home"] ?>/search">Zurück</a>
 
 	<input type="submit" class="btn btn-primary"
 	<?php if(isset($hydrant)){

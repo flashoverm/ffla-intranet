@@ -28,19 +28,19 @@ require_once 'reportTable.php';
 			<?php if($report->getEventUuid() != NULL){ ?>
 			<tr>
 				<th>Aus Wache generiert</th>
-				<td><a href="<?= $config["urls"]["guardianapp_home"] . "/events/".$report->getEventUuid() ?>">Zur Wache</a></td>
+				<td><a href="<?= $config["urls"]["guardianapp_home"] . "/events/view/".$report->getEventUuid() ?>">Zur Wache</a></td>
 			</tr>	
 			<?php } ?>
 		</tbody>
 	</table>
 </div>
 
-<a href='<?=$config["urls"]["guardianapp_home"] ?>/reports' class='btn btn-outline-primary'>Zurück</a>
+<a href='<?=$config["urls"]["guardianapp_home"] ?>/reports/overview' class='btn btn-outline-primary'>Zurück</a>
 <div class="dropdown float-right">
 	<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Berichts-Optionen</button>
 	<div class="dropdown-menu">
-		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/". $report->getUuid() . "/file"; ?>">PDF anzeigen</a>
-		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/". $report->getUuid() . "/file&force=true"; ?>">PDF neu erzeugen</a>
+		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/view/". $report->getUuid() . "/file"; ?>">PDF anzeigen</a>
+		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/view/". $report->getUuid() . "/file&force=true"; ?>">PDF neu erzeugen</a>
 		<div class="dropdown-divider"></div>
 	
 	<?php if(!$report->getEmsEntry()){ ?>
@@ -55,7 +55,7 @@ require_once 'reportTable.php';
 		<a href="#" class="dropdown-item" data-toggle='modal' data-target='#managerApproveRemove'>Freigabe entfernen</a>
 	<?php } ?>
 		<div class="dropdown-divider"></div>
-		<a class="dropdown-item" href="<?= $config["urls"]["guardianapp_home"] . "/reports/". $report->getUuid() . "/edit"; ?>">Bearbeiten</a>
+		<a class="dropdown-item" href="<?= $config["urls"]["guardianapp_home"] . "/reports/edit/". $report->getUuid(); ?>">Bearbeiten</a>
 		<a href="#" class="dropdown-item" data-toggle='modal' data-target='#confirmDelete'>Löschen</a>
 	</div>
 </div>

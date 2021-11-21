@@ -67,7 +67,7 @@
 	
 	<?php
 	if ($event->getUuid()) {
-		echo "<a href='" . $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() . "' class=\"btn btn-outline-primary\">Zurück</a>";
+		echo "<a href='" . $config["urls"]["guardianapp_home"] . "/events/view/" . $event->getUuid() . "' class=\"btn btn-outline-primary\">Zurück</a>";
 	}
 	?>
 	<input type="submit" value="Eintragen" class="btn btn-primary">

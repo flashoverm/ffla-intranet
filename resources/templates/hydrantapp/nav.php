@@ -32,7 +32,7 @@ function left_navigation ($currentUser){
 			<li class='dropdown'>
 				<a class='nav-link dropdown-toggle text-light mx-1' data-toggle='dropdown' href='#'>Prüfungen verwalten</a>
         		<div class='dropdown-menu bg-dark'>
-		        	<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/inspection'>Prüfungsübersicht</a>
+		        	<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/inspection/overview'>Prüfungsübersicht</a>
 					<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/inspected'>Geprüfte Hydranten</a>";
 			if($currentUser->hasPrivilegeByName(Privilege::HYDRANTADMINISTRATOR)){
 				echo "<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/inspection/evaluation'>Jahres-Auswertung</a>";

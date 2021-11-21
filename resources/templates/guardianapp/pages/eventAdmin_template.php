@@ -57,7 +57,7 @@ if (!isset($events) || ! count ( $events ) ) {
 				</td>
 				<td class="text-center"><?= $row->getEngine()->getName() ?></td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->getUuid() ?>">Details</a>
+					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/view/".$row->getUuid() ?>">Details</a>
 				</td>
 				<td class="text-center">
 					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDeleteDB<?= $row->getUuid(); ?>">Löschen (DB)</button>
@@ -126,7 +126,7 @@ if ( isset($pastEvents) && count ( $pastEvents )) {
 				</td>
 				<td class="text-center"><?= $row->getEngine()->getName();?></td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$row->getUuid() ?>">Details</a>
+					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/view/".$row->getUuid() ?>">Details</a>
 				</td>
 				<td class="text-center">
 					<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDelete<?= $row->getUuid(); ?>">Löschen</button>
@@ -202,7 +202,7 @@ if ( isset($deletedEvents) && count ( $deletedEvents )) {
 				<td class="text-center"><?= $row->getEngine()->getName(); ?></td>
 				<td class="text-center"><?= $row->getDeletedBy()->getEmail(); ?></td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/" . $row->getUuid() ?>">Details</a>
+					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/view/" . $row->getUuid() ?>">Details</a>
 				</td>
 
 				<td class="text-center">

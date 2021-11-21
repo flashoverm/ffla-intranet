@@ -4,7 +4,7 @@ function left_navigation ($currentUser){
 	global $config;
 	?>
         <li class='nav-item'><a class='nav-link text-light'
-			href='<?= $config["urls"]["masterdataapp_home"] ?>/datachangerequests/'>Antragsübersicht</a>
+			href='<?= $config["urls"]["masterdataapp_home"] ?>/datachangerequests/overview'>Antragsübersicht</a>
 		</li>
 		<li class='nav-item'><a class='nav-link text-light'
 			href='<?= $config["urls"]["masterdataapp_home"] ?>/datachangerequests/new'>Änderungsantrag erstellen</a>

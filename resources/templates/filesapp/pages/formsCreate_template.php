@@ -8,5 +8,5 @@
     	<input type="file" class="form-control-file" name="upload" id="upload" required="required">
 	</div>
 	<input class="btn btn-primary" type="submit" value="Hochladen">
-	<a href='<?= $config["urls"]["filesapp_home"]?>/forms/admin' class="btn btn-primary">Zurück</a>
+	<a href='<?= $config["urls"]["filesapp_home"]?>/admin' class="btn btn-primary">Zurück</a>
 </form>

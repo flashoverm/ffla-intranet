@@ -205,7 +205,7 @@
     }
     ?>
     >
-	<a class="btn btn-primary" href="<?= $config ["urls"] ["hydrantapp_home"] ?>/inspection">Zurück</a>
+	<a class="btn btn-primary" href="<?= $config ["urls"] ["hydrantapp_home"] ?>/inspection/overview">Zurück</a>
     <div class="float-right">
         <button type="button" class="btn btn-primary"  onclick="addHydrantOverview()">Hydrant hinzufügen</button>
         

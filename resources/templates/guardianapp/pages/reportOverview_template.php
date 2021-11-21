@@ -67,7 +67,7 @@ if (! count ( $reports )) {
 					?>
 				</td>
 				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/" . $row->getUuid() ?>">Anzeigen</a>
+					<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/view/" . $row->getUuid() ?>">Anzeigen</a>
 				</td>
 			</tr>
 	<?php
