@@ -5,7 +5,7 @@ require_once LIBRARY_PATH . "/mail_controller.php";
 
 // Pass variables (as an array) to template
 $variables = array (
-		'app' => $config["apps"]["landing"],
+		'app' => $config["apps"]["users"],
 		'template' => "userEdit/userEdit_template.php",
 		'secured' => true,
 		'engines' => $engineDAO->getEngines(),

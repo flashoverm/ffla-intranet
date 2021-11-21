@@ -4,7 +4,7 @@ require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array(
-		'app' => $config["apps"]["landing"],
+		'app' => $config["apps"]["users"],
 		'template' => "changePassword_template.php",
 	    'title' => "Passwort ändern",
 	    'secured' => true,

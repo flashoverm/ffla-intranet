@@ -75,6 +75,16 @@ RewriteRule ^(.*)new/?$					$1/edit.php
 RewriteRule ^(.*)edit/([^/]+)/?$ 		$1/edit.php?id=$2
 
 
+#Append ? (query) if not existing
+RewriteCond %{QUERY_STRING} ^$
+RewriteRule ^(.*)$ $1?
+
+
+#Pagination and Search
+
+
+
+
 #If request does not end with .php -> add .php
 RewriteCond %{THE_REQUEST} "!^[^ ]* .*?\.php[? ].*$"
 RewriteCond %{REQUEST_FILENAME}\.php -f

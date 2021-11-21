@@ -53,7 +53,7 @@ global $config;
 	</td>
 	<?php if(!empty($options['showUserOptions'])){ ?>
 		<td class="text-center">
-			<a class="btn btn-primary btn-sm mr-1" href="<?= $config["urls"]["masterdataapp_home"] . "/datachangerequests/".$data->getUuid() ."/edit" ?>">Bearbeiten</a>
+			<a class="btn btn-primary btn-sm mr-1" href="<?= $config["urls"]["masterdataapp_home"] . "/datachangerequests/edit/" . $data->getUuid() ?>">Bearbeiten</a>
 		</td>
 		<td class="text-center">
 			<form method="post" action="" class="mb-0">

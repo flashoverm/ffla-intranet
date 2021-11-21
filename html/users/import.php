@@ -8,7 +8,7 @@ $engines = $engineDAO->getEngines();
 
 // Pass variables (as an array) to template
 $variables = array (
-		'app' => $config["apps"]["landing"],
+		'app' => $config["apps"]["users"],
 		'template' => "userImport_template.php",
 		'title' => "Daten-Import",
 		'secured' => true,

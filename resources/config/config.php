@@ -25,6 +25,8 @@ if( ! isset( $url_prefix )){
 $config = array (
     "apps" => array(
         "landing" => "",
+    	"administration" => "administrationapp",
+    	"users" => "usersapp",
         "files" => "filesapp",
         "hydrant" => "hydrantapp",
         "guardian" => "guardianapp",

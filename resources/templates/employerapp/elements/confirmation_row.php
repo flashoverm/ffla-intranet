@@ -1,6 +1,3 @@
-<?php
-global $config;
-?>
 <tr>
 	<td class="text-center"><span class='d-none'><?= strtotime($data->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($data->getDate())); ?></td>
 	<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($data->getStartTime())); ?></td>
@@ -25,7 +22,7 @@ global $config;
 	} ?>
 	<?php if(!empty($options['showUserOptions'])){ ?>
 		<td class="text-center">
-			<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/" . $data->getUuid() . "/edit" ?>">Bearbeiten</a>
+			<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/edit/" . $data->getUuid() ?>">Bearbeiten</a>
 		</td>
 		<td class="text-center">
 			<form method="post" action="" class="mb-0">
@@ -75,7 +72,7 @@ global $config;
 	<?php } ?>
 	<?php if(!empty($options['showViewConfirmation'])){ ?>
 		<td class="text-center">
-			<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/".$data->getUuid() ."/file" ?>">Nachweis anzeigen</a>
+			<a class="btn btn-primary btn-sm" target="_blank" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/view/".$data->getUuid() ."/file" ?>">Nachweis anzeigen</a>
 		</td>
 	<?php } ?>
 </tr>

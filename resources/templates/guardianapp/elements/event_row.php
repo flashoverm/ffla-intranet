@@ -42,7 +42,7 @@
 		}
 		?>
 		<td class="text-center">
-			<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/".$data->getUuid() ?>">Anzeigen</a>
+			<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["guardianapp_home"] . "/events/view/" . $data->getUuid() ?>">Anzeigen</a>
 		</td>
 		<?php
 		if( !empty($options['showDelete']) && 

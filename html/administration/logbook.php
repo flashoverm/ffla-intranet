@@ -1,10 +1,10 @@
 <?php
-require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
+require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array (
-		'app' => $config["apps"]["landing"],
+		'app' => $config["apps"]["administration"],
 		'template' => "logbook_template.php",
 		'title' => "Logbuch",
 		'secured' => true,
@@ -19,14 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 }
 
-$variables ['resultSize'] = 20;
+$variables ['options']['resultSize'] = 20;
 
 if(isset($_GET['page'])){
-	$variables ['currentPage'] = $_GET['page'];
-	$variables ['logbook'] = $logbookDAO->getLogbookPage($_GET['page'], $variables ['resultSize']);
+	$variables ['options']['currentPage'] = $_GET['page'];
+	$variables ['logbook'] = $logbookDAO->getLogbookPage($_GET['page'], $variables ['options']['resultSize']);
 } else {
-	$variables ['currentPage'] = 1;
-	$variables ['logbook'] = $logbookDAO->getLogbookPage(1, $variables ['resultSize']);
+	$variables ['options']['currentPage'] = 1;
+	$variables ['logbook'] = $logbookDAO->getLogbookPage(1, $variables ['options']['resultSize']);
 }
 
 renderLayoutWithContentFile ($variables );
