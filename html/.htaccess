@@ -1,15 +1,17 @@
 RewriteEngine on
 
+###
+# Important note: Do not use 3xx redirects because the app is located behind a reverse proxy
+###
+
 ### Legacy
 
 RewriteRule ^(.*)confirmations/([A-z0-9\-]{36})/file([^/]*)/?$ 		$1/confirmations/view.php?id=$2&file=true$3 
 RewriteRule ^(.*)confirmations/([A-z0-9\-]{36})/edit/?$ 			$1/confirmations/edit.php?id=$2
 RewriteRule ^(.*)confirmations/([A-z0-9\-]{36})/print/?$ 			$1/confirmations/view.php?id=$2&print=true
-RewriteRule ^(.*)guardian/events/([A-z0-9\-]{36})/?$ 				$1/guardian/events/view/$2 [L,R=301]
-RewriteRule ^(.*)guardian/reports/([A-z0-9\-]{36})/?$ 				$1/guardian/reports/view/$2 [L,R=301]
+RewriteRule ^(.*)guardian/events/([A-z0-9\-]{36})/?$ 				$1/guardian/events/view.php?id=$2
+RewriteRule ^(.*)guardian/reports/([A-z0-9\-]{36})/?$ 				$1/guardian/reports/view.php?id=$2
 RewriteRule ^(.*)inspection/([A-z0-9\-]{36})/file([^/]+)/?$ 		$1/inspection/view.php?inspection=$2&file=true$3
-RewriteRule ^(.*)files/([^/]+).pdf$ 								$1/files/view/$2.pdf [L,R=301]
-RewriteRule ^(.*)hydrant/all/?$ 									$1/hydrant/overview [L,R=301]
 
 
 ### Specific rules
@@ -79,6 +81,11 @@ RewriteRule ^(.*)edit/([^/]+)/?$ 		$1/edit.php?id=$2
 RewriteCond %{THE_REQUEST} "!^[^ ]* .*?\.php[? ].*$"
 RewriteCond %{REQUEST_FILENAME}\.php -f
 RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]
+
+# Add trailing slash if file is not existing to route to subfolder
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_URI} !(.*)/$
+RewriteRule ^(.*)$ $1/ [L]
 
 #If request ends with .php -> 400
 RewriteCond %{THE_REQUEST} "^[^ ]* .*?\.php[? ].*$"
