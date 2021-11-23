@@ -4,6 +4,7 @@ global $logbookDAO;
 if ( ! isset($data) || ! count ( $data )) {
 	showInfo ( "Es ist kein Eintrag vorhanden" );
 } else {
+	renderSearch();
 ?>
 <div class="table-responsive">
 	<table class="table table-striped table-bordered">
@@ -25,8 +26,7 @@ if ( ! isset($data) || ! count ( $data )) {
 	</table>
 </div>
 <?php 
-renderPagination($logbookDAO->getLogbookEntryCount(), $options['currentPage'], $options['resultSize']);
-
+renderPagination($logbookDAO->getLogbookEntryCount(), $options['currentPage']);
 }
 ?>
 

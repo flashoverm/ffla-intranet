@@ -5,6 +5,9 @@ require_once __DIR__ . "/../../bootstrap.php";
 //use Doctrine\ORM\EntityManager;
 
 abstract class BaseDAO {
+		
+	const PAGE_PARAM = "page";
+	const PAGESIZE_PARAM = "pageSize";
 	
 	protected $db;
 	protected $tableName;
@@ -62,11 +65,15 @@ abstract class BaseDAO {
 
 	abstract protected function resultToObject($result);
 	
-	function executeQuery(string $query, ?array $parameter, $page=-1, $pagesize=-1){
+	function executeQuery(string $query, ?array $parameter, array $getParams = null){
+		
+		$options = self::extractPaginationFromGET($getParams);
+		$page = $options[self::PAGE_PARAM];
+		$pagesize = $options[self::PAGESIZE_PARAM];
 		
 		$execQuery = $query;
 		
-		if($page != -1){
+		if($getParams != null){
 			$this->db->query("SET @row_number = 0;");
 			
 			$fromRowNumber = (($page-1)*$pagesize)+1;
@@ -133,5 +140,23 @@ abstract class BaseDAO {
 			$uuid = substr ( $charid, 0, 8 ) . $hyphen . substr ( $charid, 8, 4 ) . $hyphen . substr ( $charid, 12, 4 ) . $hyphen . substr ( $charid, 16, 4 ) . $hyphen . substr ( $charid, 20, 12 );
 			return $uuid;
 		}
+	}
+	
+	static function extractPaginationFromGET(array $getParams){
+		$paginationOptions = [];
+		
+		if(isset($getParams[self::PAGE_PARAM])){
+			$paginationOptions[self::PAGE_PARAM] = $getParams[self::PAGE_PARAM];
+		} else {
+			$paginationOptions[self::PAGE_PARAM] = 1;
+		}
+		
+		if(isset($getParams[self::PAGESIZE_PARAM])){
+			$paginationOptions[self::PAGESIZE_PARAM] = $getParams[self::PAGESIZE_PARAM];
+		} else {
+			$paginationOptions[self::PAGESIZE_PARAM] = 10;
+		}
+		
+		return $paginationOptions;
 	}
 }

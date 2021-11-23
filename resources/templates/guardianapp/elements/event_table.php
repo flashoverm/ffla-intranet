@@ -1,3 +1,6 @@
+<?php
+	global $guardianUserController, $currentUser;
+?>
 	<div class="table-responsive">
 		<table class="table table-hover table-striped" data-toggle="table" data-pagination="true" data-search="true">
 			<thead>
@@ -32,7 +35,7 @@
 			<tbody>
 			<?php 
 			foreach ( $data as $event ) {
-				renderEventRow($event, $options);
+				render(TEMPLATES_PATH . "/guardianapp/elements/event_row.php", $event, $options);
 			}
 			?>
 			</tbody>

@@ -1,3 +1,6 @@
+<?php
+	global $guardianUserController, $currentUser;
+?>
 	<tr>
 		<td class="text-center"><span class='d-none'><?= strtotime($data->getDate()) ?></span><?= date($config ["formats"] ["date"], strtotime($data->getDate())); ?></td>
 		<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($data->getStartTime())); ?></td>

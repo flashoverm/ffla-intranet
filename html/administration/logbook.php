@@ -19,15 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 }
 
-$variables ['options']['resultSize'] = 20;
-
-if(isset($_GET['page'])){
-	$variables ['options']['currentPage'] = $_GET['page'];
-	$variables ['logbook'] = $logbookDAO->getLogbookPage($_GET['page'], $variables ['options']['resultSize']);
-} else {
-	$variables ['options']['currentPage'] = 1;
-	$variables ['logbook'] = $logbookDAO->getLogbookPage(1, $variables ['options']['resultSize']);
-}
+$variables ['logbook'] = $logbookDAO->getLogbookPage($_GET);
 
 renderLayoutWithContentFile ($variables );
 
