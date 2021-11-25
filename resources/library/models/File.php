@@ -102,6 +102,15 @@ class File extends BaseModel {
 	 * Custom Methods
 	 */
 	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'date' => $this->date,
+				'description' => $this->description,
+				'filename' => $this->filename,
+		];
+	}
+	
 	public function setFileData(?string $description, $date, ?string $filename){
 		$this->setDescription($description);
 		$this->setDate($date);

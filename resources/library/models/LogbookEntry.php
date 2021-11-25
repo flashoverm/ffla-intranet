@@ -143,6 +143,17 @@ class LogbookEntry extends BaseModel {
 	 * Custom Methods
 	 */
 	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'action' => $this->action,
+				'message' => $this->message,
+				'object' => $this->object,
+				'timestamp' => $this->timestamp,
+				'user' => $this->user,
+		];
+	}
+	
 	public static function fromAction(int $actionId, ?string $objects){
 		$entry = new LogbookEntry();
 		

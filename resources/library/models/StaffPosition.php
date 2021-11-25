@@ -83,4 +83,12 @@ class StaffPosition extends BaseModel {
 	 **************************************************
 	 * Custom Methods
 	 */
+	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'position' => $this->position,
+				'listIndex' => $this->listIndex,
+		];
+	}
 }

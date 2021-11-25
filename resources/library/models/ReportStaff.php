@@ -115,5 +115,13 @@ class ReportStaff extends BaseModel {
 	 * Custom Methods
 	 */
 
-	
+	public function jsonSerialize() {
+		return [
+				'engine' => $this->engine,
+				'name' => $this->name,
+				'position' => $this->position,
+				'uuid' => $this->uuid,
+				'unitUuid' => $this->unitUuid,
+		];
+	}
 }

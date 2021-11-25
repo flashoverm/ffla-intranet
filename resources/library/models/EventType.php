@@ -83,4 +83,12 @@ class EventType extends BaseModel {
 	 **************************************************
 	 * Custom Methods
 	 */
+	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'type' => $this->type,
+				'isSeries' => $this->isSeries,
+		];
+	}
 }

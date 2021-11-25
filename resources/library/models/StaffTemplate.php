@@ -61,6 +61,13 @@ class StaffTemplate extends BaseModel {
 	 * Custom Methods
 	 */
 	
+	public function jsonSerialize() {
+		return [
+				'eventType' => $this->eventType,
+				'staffPositions' => $this->staffPositions,
+		];
+	}
+	
 	public function addStaffposition(StaffPosition $staffPosition){
 		$this->staffPositions[] = $staffPosition;
 	}

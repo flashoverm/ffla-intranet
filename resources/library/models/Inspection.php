@@ -158,6 +158,18 @@ class Inspection extends BaseModel {
 	 * Custom Methods
 	 */
 	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'date' => $this->date,
+				'engine' => $this->engine,
+				'name' => $this->name,
+				'notes' => $this->notes,
+				'vehicle' => $this->vehicle,
+				'inspectedHydrants' => $this->inspectedHydrants,
+		];
+	}
+	
 	public function addInspectedHydrant(InspectedHydrant $inspectedHydrant){
 		$this->inspectedHydrants[] = $inspectedHydrant;
 	}

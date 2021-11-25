@@ -99,4 +99,12 @@ class Privilege extends BaseModel {
 	 **************************************************
 	 * Custom Methods
 	 */
+	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'privilege' => $this->privilege,
+				'isDefault' => $this->isDefault,
+		];
+	}
 }

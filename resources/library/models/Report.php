@@ -324,6 +324,27 @@ class Report extends BaseModel {
 	 * Custom Methods
 	 */
 	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'creator' => $this->creator,
+				'date' => $this->date,
+				'emsEntry' => $this->emsEntry,
+				'endTime' => $this->endTime,
+				'engine' => $this->engine,
+				'eventUuid' => $this->eventUuid,
+				'ilsEntry' => $this->ilsEntry,
+				'managerApproved' => $this->managerApproved,
+				'noIncidents' => $this->noIncidents,
+				'reportText' => $this->reportText,
+				'startTime' => $this->startTime,
+				'title' => $this->title,
+				'type' => $this->type,
+				'typeOther' => $this->typeOther,
+				'units' => $this->units,
+		];
+	}
+	
 	function addReportUnit(ReportUnit $reportUnit){
 		$this->units[] = $reportUnit;
 	}

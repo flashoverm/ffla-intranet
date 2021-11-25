@@ -126,6 +126,15 @@ class Token extends BaseModel {
 	 * Custom Methods
 	 */
 	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'validUntil' => $this->validUntil,
+				'token' => $this->token,
+				'type' => $this->type,
+		];
+	}
+	
 	function initialize(int $type, $user){
 		$this->type = $type;
 		$this->user = $user;
