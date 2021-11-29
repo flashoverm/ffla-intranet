@@ -1,4 +1,12 @@
 <form onsubmit="showLoader()" action="" method="post">
+	<input type="hidden" class="form-control" name="user_uuid" id="user_uuid"
+		<?php
+		if(isset($currentUser)){
+			echo "value='" . $currentUser->getUuid() . "' readonly";
+		}
+		?>
+		>
+	
 	<div class="form-group">
 		<label>Vorname:</label> <input type="text" class="form-control"
 			required="required" name="firstname" id="firstname"

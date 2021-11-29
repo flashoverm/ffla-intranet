@@ -1,10 +1,13 @@
 <?php
 
 function getCurrentUserUUID(){
-	if(isset($_SESSION ['intranet_doasuser'])){
-		return $_SESSION ['intranet_doasuser'];
+	if(userLoggedIn()){
+		if(isset($_SESSION ['intranet_doasuser'])){
+			return $_SESSION ['intranet_doasuser'];
+		}
+		return $_SESSION ['intranet_userid'];
 	}
-	return $_SESSION ['intranet_userid'];
+	return false;
 }
 
 function setCurrentUserUUID($uuid){

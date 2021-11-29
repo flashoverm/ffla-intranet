@@ -19,28 +19,23 @@
 					
 			<div class="form-group">
 				<label>Vorname:</label> <input type="text" class="form-control"
-					required="required" name="firstname" id="firstname"
-					placeholder="Vorname eingeben">
+					required="required" name="firstname" id="firstname" readOnly
+					placeholder="Person auswählen">
 			</div>
 			<div class="form-group">
 				<label>Nachname:</label> <input type="text" class="form-control"
-					required="required" name="lastname" id="lastname"
-					placeholder="Nachname eingeben">
+					required="required" name="lastname" id="lastname" readOnly
+					placeholder="Person auswählen">
 			</div>
 			<div class="form-group">
 				<label>E-Mail:</label> <input type="email" class="form-control"
-					required="required" name="email" id="email"
-					placeholder="E-Mail eingeben">
+					required="required" name="email" id="email" readOnly
+					placeholder="Person auswählen">
 			</div>
 			<div class="form-group">
-				<label>Löschzug:</label> 
-				<select class="form-control" name="engine" id="engine" required="required" onchange="setEngineHid()">
-					<option value="" disabled selected>Löschzug auswählen</option>
-					<?php foreach ( $engines as $option ) : ?>
-					<option value="<?=  $option->getUuid(); ?>"><?= $option->getName(); ?></option>
-					<?php endforeach; ?>
-				</select>
-				<input type="hidden" class="form-control" name="engine_hid" id="engine_hid">
+				<label>Löschzug:</label> <input type="text" class="form-control"
+					required="required" name="engine" id="engine" readOnly
+					placeholder="Person auswählen">
 			</div>
 	      </div>
 	    </div>
@@ -59,14 +54,6 @@
 <script>
 var xhr = getXmlHttpRequestObject();
 
-//set engine uuid to hidden field because actual engine select is disabled
-function setEngineHid(){
-    var engine_hid = document.getElementById("engine_hid");
-    var engine = document.getElementById("engine");
-
-	engine_hid.value = engine.value;
-}
-
 function clearUser(){
     var user_uuid = document.getElementById("user_uuid");
     var firstname = document.getElementById("firstname");
@@ -78,12 +65,7 @@ function clearUser(){
 	firstname.value = null;
 	lastname.value = null;
 	email.value = null;
-	engine.value = "";
-
-	firstname.readOnly  = false;
-	lastname.readOnly  = false;
-	email.readOnly  = false;
-	engine.disabled  = false;
+	engine.value = null;
 }
 
 function getUser(){
@@ -120,14 +102,7 @@ function setUser(){
         	firstname.value = response.firstname;
         	lastname.value = response.lastname;
         	email.value = response.email;
-        	engine.value = response.engine.uuid;
-
-        	setEngineHid();
-            	
-        	firstname.readOnly  = true;
-        	lastname.readOnly  = true;
-        	email.readOnly  = true;
-        	engine.disabled  = true;
+        	engine.value = response.engine.name;
         	 
     	} else {
 	    	var button = document.getElementById("loadTemplate");

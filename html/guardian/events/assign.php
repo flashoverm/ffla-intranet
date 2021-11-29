@@ -32,30 +32,12 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     	$variables ['subtitle'] = date($config ["formats"] ["date"], strtotime($event->getDate())) 
     	. " - " . date($config ["formats"] ["time"], strtotime($event->getStartTime())) . " " . $staffposition->getPosition()->getPosition();
         		
-    	if (isset ( $_POST ['firstname'] ) and isset ( $_POST ['lastname'] ) && isset ( $_POST ['email'] ) && isset ( $_POST ['engine_hid'] )) {
+    	if (isset ( $_POST ['user_uuid'] ) ) {
     		
-    		$user_uuid = null;
-    		if(isset($_POST ['user_uuid'])){
-    			$user_uuid = $_POST ['user_uuid'];
-    		}
+    		$user_uuid = $_POST ['user_uuid'];
     		
-    		$firstname = trim ( $_POST ['firstname'] );
-    		$lastname = trim ( $_POST ['lastname'] );
-    		$email = strtolower(trim ( $_POST ['email'] ));
-    		$engineUUID = trim ( $_POST ['engine_hid'] );
-    		
-    		if($user_uuid != NULL){
-    			$user = $userDAO->getUserByUUID($user_uuid);
-    		} else {
-    			if(! $guardianUserController->isEmailInUse($email) ){
-    				$engine = $engineDAO->getEngine($engineUUID);
-    				$user = $guardianUserController->insertEventParticipant($firstname, $lastname, $email, $engine);
-    			} else {
-    				$user = $userDAO->getUserByData($firstname, $lastname, $email, $engineUUID);
-    			}
-    		}
+    		$user = $userDAO->getUserByUUID($user_uuid);
 
-    		//if user exists with these name/engine ok - else message: Please select user!
     		if($user){
     			
    				if($user->hasPrivilegeByName(Privilege::EVENTPARTICIPENT)){
@@ -78,9 +60,11 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     		    	$variables ['alertMessage'] = "Eintragen nicht möglich - Person ist nicht für Wachen freigegeben";
     		    }
     		} else {
-    			$variables ['alertMessage'] = "E-Mail-Adresse bereits mit anderem Namen/Zug in Verwendung! Bitte Eingaben kontrollieren oder Auswahl verwenden";
+    			$variables ['alertMessage'] = "Eintragen nicht möglich - Der ausgewählte Benutzer existiert nicht";
     		}
     	}
+	} else {
+		$variables ['alertMessage'] = "Position existiert nicht";
 	}
 } else {
     $variables ['alertMessage'] = "Fehlende Parameter";
