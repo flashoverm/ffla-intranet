@@ -1,44 +1,12 @@
 <?php 
 
-function render($template, $data, $options = array(), $returnContent = false){
+function render($template, $data, $options = array()){
 	global $config;
 
 	include $template;
-	
-	if($returnContent){
-		$content=ob_get_contents();
-		
-		ob_end_clean();
-		
-		return $content;
-	}
 }
 
-
-function renderEntryWithSearch($template, $entry, ResultSet $metaData, $options = array()){
-	$content = render($template, $entry, $options, true);
-
-	if($metaData->isSearch()){
-		$plainContent = strip_tags($content);
-		
-		//Does data contain the search string -> relevant
-		if(strpos($plainContent, $metaData->getSearchTerm())){
-			
-			$position = $metaData->getOverallSize();
-			$metaData->setOverallSize($position+1);
-			
-			//Is result on the current selected page -> display
-			if($metaData->renderOnSearchPagination($position)){
-				return $content;
-			}
-		}
-		return false;
-	}
-	return $content;
-}
-
-
-function renderPagination($resultSet){
+function renderPagination(ResultSet $resultSet){
 		
 	$pageDisplayNumber = 5;
 	$pages = ceil ($resultSet->getOverallSize()/$resultSet->getPageSize());
@@ -118,6 +86,26 @@ function renderSearch(ResultSet $resultSet){
 <?php	
 }
 
+function renderTableDescription(ResultSet $resultSet){
+	if($resultSet->isSearch()){
+	?> 
+		<div>
+			Suchergebnisse: Zurück zur Übersicht
+		</div>
+		<table 
+			class="table table-striped" 
+			data-toggle="table" 
+			data-pagination="true" 
+			data-search="true" 
+			data-show-search-button="true" 
+			data-show-button-text="true"
+			data-search-on-enter-key="true"
+			data-search-text="<?= $resultSet->getSearchTerm() ?>"> 
+	<?php
+	} else {
+		?> <table class="table table-striped table-bordered"> <?php
+	}
+}
 
 function getCurrentUrlWithQueryParam($paramName, $paramValue){
 	return setQueryParam($_SERVER['REQUEST_URI'], $paramName, $paramValue);

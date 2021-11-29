@@ -27,7 +27,7 @@
 		</thead>
 		<tbody>
 		<?php foreach ( $data as $confirmation ) {
-			echo render(TEMPLATES_PATH . "/employerapp/elements/confirmation_row.php", $confirmation, $options, true);
+			render(TEMPLATES_PATH . "/employerapp/elements/confirmation_row.php", $confirmation, $options);
 		}
 		?>
 		</tbody>

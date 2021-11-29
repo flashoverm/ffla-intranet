@@ -1,13 +1,15 @@
 <?php
 global $logbookDAO;
 
-if ( ! isset($data) || ! count ( $data )) {
+if ( ! isset($data) || ! count ( $data->getData() )) {
 	showInfo ( "Es ist kein Eintrag vorhanden" );
 } else {
-	renderSearch();
+	//renderSearch($data);
 ?>
 <div class="table-responsive">
-	<table class="table table-striped table-bordered">
+	<?php 
+	renderTableDescription($data);
+	?>
 		<thead>
 			<tr>
 				<th class="text-center">Datum/Uhrzeit</th>
@@ -18,7 +20,7 @@ if ( ! isset($data) || ! count ( $data )) {
 		</thead>
 		<tbody>
 		<?php
-		foreach ( $data as $row ) {
+		foreach ( $data->getData() as $row ) {
 			render(TEMPLATES_PATH . "/administrationapp/elements/logbook_row.php", $row, $options);
 		}
 		?>
@@ -26,7 +28,7 @@ if ( ! isset($data) || ! count ( $data )) {
 	</table>
 </div>
 <?php 
-renderPagination($logbookDAO->getLogbookEntryCount(), $options['currentPage']);
+renderPagination($data);
 }
 ?>
 

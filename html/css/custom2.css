@@ -97,14 +97,27 @@
 	padding: 0.75rem;
 }
 
+
 /* Other */
 
 .search {
 	width: unset !important;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .btn-search {
 	padding: unset;
 	color: #343a40 !important
+}
+
+.search .btn-secondary {
+	background-color: #9d1006;
+	border-color: #9d1006
+}
+
+.search .btn-secondary:hover {
+	background-color: #780c05;
+	border-color: #6c0b04
 }
 
