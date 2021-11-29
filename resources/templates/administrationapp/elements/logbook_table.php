@@ -4,9 +4,8 @@ global $logbookDAO;
 if ( ! isset($data) || ! count ( $data->getData() )) {
 	showInfo ( "Es ist kein Eintrag vorhanden" );
 } else {
-	//renderSearch($data);
 ?>
-<div class="table-responsive">
+<div class="table-responsive" id="table">
 	<?php 
 	renderTableDescription($data);
 	?>

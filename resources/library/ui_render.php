@@ -7,32 +7,32 @@ function render($template, $data, $options = array()){
 }
 
 function renderPagination(ResultSet $resultSet){
-		
-	$pageDisplayNumber = 5;
-	$pages = ceil ($resultSet->getOverallSize()/$resultSet->getPageSize());
-	?>
-	<nav>
-		<?php renderPageSizeSelection($resultSet) ?>
-		<ul class="pagination justify-content-end">
-	  	<?php
-	  	if($resultSet->getPage() > 1){
-	  		echo '<li class="page-item"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()-1) . '"><</a></li>';
-	  	}
-	  	for($i=max(1, $resultSet->getPage()-$pageDisplayNumber);  ($i<=( $pages ) && $i<=($resultSet->getPage()+$pageDisplayNumber) ); $i++){    	
-	    	echo '<li class="page-item';
-	    	if($i == $resultSet->getPage()){
-	    		echo ' active';
-	    	}
-	    	echo '"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $i) . '">' . $i . '</a></li>';
-	  	}
-	  	if($resultSet->getPage() < $pages){
-	  		echo '<li class="page-item"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()+1) . '">></a></li>';
-	  	}
-	  	?>
-		</ul>
-	</nav>
-
-<?php	
+	if( ! $resultSet->isSearch()){
+		$pageDisplayNumber = 5;
+		$pages = ceil ($resultSet->getOverallSize()/$resultSet->getPageSize());
+		?>
+		<nav>
+			<?php renderPageSizeSelection($resultSet) ?>
+			<ul class="pagination justify-content-end">
+		  	<?php
+		  	if($resultSet->getPage() > 1){
+		  		echo '<li class="page-item"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()-1) . '"><</a></li>';
+		  	}
+		  	for($i=max(1, $resultSet->getPage()-$pageDisplayNumber);  ($i<=( $pages ) && $i<=($resultSet->getPage()+$pageDisplayNumber) ); $i++){    	
+		    	echo '<li class="page-item';
+		    	if($i == $resultSet->getPage()){
+		    		echo ' active';
+		    	}
+		    	echo '"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $i) . '">' . $i . '</a></li>';
+		  	}
+		  	if($resultSet->getPage() < $pages){
+		  		echo '<li class="page-item"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()+1) . '">></a></li>';
+		  	}
+		  	?>
+			</ul>
+		</nav>
+	<?php
+	}
 }
 
 function renderPageSizeSelection(ResultSet $resultSet){
@@ -69,16 +69,8 @@ function renderSearch(ResultSet $resultSet){
 	<form method="GET">
 		<div class="input-group search float-right my-2">
 			<input type="text" class="form-control" id="search" placeholder="Suchen" name="search" value="<?= $resultSet->getSearchTerm() ?>">
-			<?php if($resultSet->isSearch()){ ?>
-			<a class="btn btn-search bg-transparent" style="margin: 4px 6px 4px -40px; z-index: 100;" href="<?= unsetQueryParam(getCurrentUrlWithoutQueryParam(ResultSet::SEARCH_PARAM), ResultSet::PAGE_PARAM); ?>">
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-				  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-				  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-				</svg>
-		    </a>
-		    <?php } ?>
 			<div class="input-group-append">
-				<button class="btn btn-primary" type="button">Suchen</button>
+				<button class="btn btn-primary" type="submit">Suchen</button>
 			</div>
 		</div>	
 	</form>
@@ -89,20 +81,29 @@ function renderSearch(ResultSet $resultSet){
 function renderTableDescription(ResultSet $resultSet){
 	if($resultSet->isSearch()){
 	?> 
-		<div>
-			Suchergebnisse: Zurück zur Übersicht
+		<div class="buttons-toolbar">
+			<a class="btn btn-primary search-reset" href="<?= getCurrentUrlWithoutQueryParam(ResultSet::SEARCH_PARAM) ?>">Suche abbrechen</a>
 		</div>
+		<script>
+		document.body.addEventListener("onload", tableInit, true);
+		
+		function tableInit(){
+			console.log("Done");
+			$('#table').classList.remove("d-none"); 
+		}
+		</script>
 		<table 
 			class="table table-striped" 
 			data-toggle="table" 
 			data-pagination="true" 
 			data-search="true" 
-			data-show-search-button="true" 
-			data-show-button-text="true"
-			data-search-on-enter-key="true"
+			data-toolbar=".buttons-toolbar"
+			data-toolbar-align="right"
+			data-on-load-success="onLoad()"
 			data-search-text="<?= $resultSet->getSearchTerm() ?>"> 
 	<?php
 	} else {
+		renderSearch($resultSet);
 		?> <table class="table table-striped table-bordered"> <?php
 	}
 }
