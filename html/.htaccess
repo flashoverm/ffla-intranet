@@ -14,6 +14,14 @@ RewriteRule ^(.*)hydrant/all/?$ 									$1/hydrant/overview [L,R=301]
 
 ### Specific rules
 
+# Ajax
+
+RewriteRule ^(.*)ajax/hy/([^.]+)/field/([^.]+)/?$ 	$1/ajax/hy_request.php?fid=$2&fieldid=$3 
+RewriteRule ^(.*)ajax/templates/([^/]+)/?$ 			$1/ajax/staff_template.php?uuid=$2
+RewriteRule ^(.*)ajax/user/([^/]+)/?$				$1/ajax/user.php?uuid=$2
+RewriteRule ^(.*)ajax/privileges/([^/]+)/?$			$1/ajax/privileges.php?uuid=$2
+
+
 # Confirmations and DataChangeRequests
 
 RewriteRule ^(.*)process/accepted/?$ 	$1/process.php?accepted
@@ -56,14 +64,6 @@ RewriteRule ^(.*)setView/([^.]+)/?$						$1/setView.php?engine=$2
 
 RewriteRule ^(.*)logbook/page/([^.]+)/?$	$1/logbook.php?page=$2
 RewriteRule ^(.*)maillog/page/([^.]+)/?$	$1/maillog.php?page=$2
-
-# Ajax
-
-RewriteRule ^(.*)ajax/hy/([^.]+)/field/([^.]+)/?$ 	$1/ajax/hy_request.php?fid=$2&fieldid=$3 
-RewriteRule ^(.*)ajax/templates/([^/]+)/?$ 			$1/ajax/staff_template.php?uuid=$2
-RewriteRule ^(.*)ajax/user/([^/]+)/?$				$1/ajax/user.php?uuid=$2
-RewriteRule ^(.*)ajax/privileges/([^/]+)/?$			$1/ajax/privileges.php?uuid=$2
-
 
 ### Generic Rules
 

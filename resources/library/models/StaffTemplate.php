@@ -76,15 +76,4 @@ class StaffTemplate extends BaseModel {
 		$this->staffPositions = array();
 	}
 	
-	public function toJson(): string{
-		$vars = get_object_vars($this);
-		$vars['eventType'] = json_decode($this->eventType->toJson());
-		$staffpositions = array();
-		foreach($this->getStaffPositions() as $position){
-			$staffpositions[] = json_decode($position->toJson());
-		}
-		$vars['staffPositions'] = $staffpositions; 
-		return json_encode($vars, JSON_UNESCAPED_UNICODE);
-	}
-	
 }

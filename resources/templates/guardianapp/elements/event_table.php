@@ -35,7 +35,7 @@
 			<tbody>
 			<?php 
 			foreach ( $data as $event ) {
-				render(TEMPLATES_PATH . "/guardianapp/elements/event_row.php", $event, $options);
+				echo render(TEMPLATES_PATH . "/guardianapp/elements/event_row.php", $event, $options, true);
 			}
 			?>
 			</tbody>

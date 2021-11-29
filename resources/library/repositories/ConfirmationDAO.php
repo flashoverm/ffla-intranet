@@ -19,6 +19,8 @@ class ConfirmationDAO extends BaseDAO {
 			$saved = $this->insertConfirmation($confirmation);
 		}
 		if($saved != null){
+			$this->index(new Search(
+					$saved->getUuid(), $this->tableName, json_encode($saved)));
 			return $saved;
 		}
 		return false;
@@ -29,6 +31,15 @@ class ConfirmationDAO extends BaseDAO {
 		
 		if ($statement->execute(array($uuid))) {
 			return $this->handleResult($statement, false);
+		}
+		return false;
+	}
+	
+	function getConfirmations(){
+		$statement = $this->db->prepare("SELECT * FROM confirmation");
+		
+		if ($statement->execute()) {
+			return $this->handleResult($statement, true);
 		}
 		return false;
 	}

@@ -29,7 +29,7 @@
 		</thead>
 		<tbody>
 		<?php foreach ( $data as $dataChangeRequest ) {
-			render(TEMPLATES_PATH . "/masterdataapp/elements/dataChange_row.php", $dataChangeRequest, $options);
+			echo render(TEMPLATES_PATH . "/masterdataapp/elements/dataChange_row.php", $dataChangeRequest, $options, true);
 		}
 		?>
 		</tbody>

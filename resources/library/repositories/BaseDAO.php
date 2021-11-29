@@ -1,13 +1,13 @@
 <?php 
 
+use Doctrine\DBAL\Platforms\Keywords\ReservedKeywordsValidator;
+
 require_once __DIR__ . "/../../bootstrap.php";
+require_once "util/ResultSet.php";
 
 //use Doctrine\ORM\EntityManager;
 
 abstract class BaseDAO {
-		
-	const PAGE_PARAM = "page";
-	const PAGESIZE_PARAM = "pageSize";
 	
 	protected $db;
 	protected $tableName;
@@ -15,8 +15,14 @@ abstract class BaseDAO {
 	function __construct(PDO $pdo, $tableName) {
 		$this->db = $pdo;
 		$this->tableName = $tableName;
-		$this->createTableIfNotPresent();
+		$this->createTableIfNotPresent($tableName);
+		$this->createTableIfNotPresent("search");
 	}
+	
+	abstract protected function createTable();
+	
+	abstract protected function resultToObject($result);
+	
 	
 	static function getPDO() : PDO {
 		global $config;
@@ -28,16 +34,61 @@ abstract class BaseDAO {
 		$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 		return $db;
 	}
+
 	
-	protected function createTableIfNotPresent(){
-		$exists = $this->db->query("SELECT 1 FROM " . $this->tableName . " LIMIT 1");
+	function executeQuery(string $query, ?array $parameter, array $getParams = null){
+
+		$execQuery = $query;
+		
+		$resultSet = new ResultSet();
+		$resultSet->initializeFromGetParams($getParams);
+					
+		//Not search, do database pagination (default behaviour)
+		if( ! $resultSet->isSearch()){
+			
+			$resultSet->setOverallSize($this->getQueryResultCount($query, $parameter));
+			
+			$this->db->query("SET @row_number = 0;");
+			
+			$fromPos = strpos($query, "FROM");
+			$rowNumQuery = substr_replace($query, ", (@row_number:=@row_number + 1) AS RowNum FROM", $fromPos, strlen("FROM"));
+			
+			$execQuery = "SELECT * FROM ( " . $rowNumQuery . " ) as Data WHERE RowNum >= ? AND RowNum < ? ORDER BY RowNum";
+			
+			$parameter[] = $resultSet->getFrom();
+			$parameter[] = $resultSet->getTo();
+		}
+		
+		//Otherwise apply no database pagination, get all results and do frontend pagination (and search etc.) 
+
+		$statement = $this->db->prepare($execQuery);
+		
+		if ($statement->execute($parameter)) {
+			$result = $this->handleResult($statement, true);
+			
+			$resultSet->setData($result);
+
+			return $resultSet;
+		}
+		return false;
+	}
+	
+	function getEntryCount(){
+		$statement = $this->db->prepare("SELECT count(*) AS count FROM " . $this->tableName);
+		
+		if ($statement->execute()) {
+			return $statement->fetchColumn();
+		}
+		return false;
+	}
+	
+	protected function createTableIfNotPresent($tableName){
+		$exists = $this->db->query("SELECT 1 FROM " . $tableName . " LIMIT 1");
 		if(! $exists){
 			$this->createTable();
 		}
 	}
 	
-	abstract protected function createTable();
-		
 	protected function handleResult($statement, $returnAlwaysArray, $callback = NULL){
 		if($callback == NULL){
 			$callback = "resultToObject";
@@ -62,43 +113,10 @@ abstract class BaseDAO {
 			return call_user_func_array(array($this, $callback), array($statement->fetch()));
 		}
 	}
-
-	abstract protected function resultToObject($result);
 	
-	function executeQuery(string $query, ?array $parameter, array $getParams = null){
-		
-		$options = self::extractPaginationFromGET($getParams);
-		$page = $options[self::PAGE_PARAM];
-		$pagesize = $options[self::PAGESIZE_PARAM];
-		
-		$execQuery = $query;
-		
-		if($getParams != null){
-			$this->db->query("SET @row_number = 0;");
-			
-			$fromRowNumber = (($page-1)*$pagesize)+1;
-			$toRowNumber = $fromRowNumber+$pagesize;
-			
-			$fromPos = strpos($query, "FROM");
-			$rowNumQuery = substr_replace($query, ", (@row_number:=@row_number + 1) AS RowNum FROM", $fromPos, strlen("FROM"));
-			
-			$execQuery = "SELECT * FROM ( " . $rowNumQuery . " ) as Data WHERE RowNum >= ? AND RowNum < ? ORDER BY RowNum";
-			
-			$parameter[] = $fromRowNumber;
-			$parameter[] = $toRowNumber;
-		}
-		
-		$statement = $this->db->prepare($execQuery);
-	
-		if ($statement->execute($parameter)) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
-	}
-	
-	function getQueryResultCount(string $query, ?array $parameter){
+	protected function getQueryResultCount(string $query, ?array $parameter){
 		$fromPos = strpos($query, "FROM");
-		$countingQuery = substr_replace($query, "SELECT count(*) FROM", 0, $fromPos);
+		$countingQuery = substr_replace($query, "SELECT count(*) as count ", 0, $fromPos);
 		
 		$statement = $this->db->prepare($countingQuery);
 		
@@ -108,14 +126,6 @@ abstract class BaseDAO {
 		return false;
 		
 	}
-	function getEntryCount(){
-		$statement = $this->db->prepare("SELECT count(*) AS count FROM " . $this->tableName);
-		
-		if ($statement->execute()) {
-			return $statement->fetchColumn();
-		}
-		return false;
-	}
 	
 	protected function uuidExists($uuid, $tableName){
 		if($uuid == NULL){
@@ -123,9 +133,8 @@ abstract class BaseDAO {
 		}
 		$statement = $this->db->prepare("SELECT * FROM " . $tableName . " WHERE uuid = ?");
 		$statement->execute(array($uuid));   
-		
-		if ($statement->execute()) {
-			return $this->handleResult($statement, false);
+		if ($statement->execute() && $statement->rowCount() > 0) {
+			return true;
 		}
 		return false;
 	}
@@ -141,22 +150,90 @@ abstract class BaseDAO {
 			return $uuid;
 		}
 	}
+
 	
-	static function extractPaginationFromGET(array $getParams){
-		$paginationOptions = [];
-		
-		if(isset($getParams[self::PAGE_PARAM])){
-			$paginationOptions[self::PAGE_PARAM] = $getParams[self::PAGE_PARAM];
+	/*
+	 * Search
+	 */
+	
+	function index(Search $search){
+		$saved = null;
+		if($this->uuidExists($search->getUuid(), "search")){
+			echo "Update search";
+			$saved = $this->updateSearch($search);
 		} else {
-			$paginationOptions[self::PAGE_PARAM] = 1;
+			$saved = $this->insertSearch($search);
 		}
+		if($saved != null){
+			return $saved;
+		}
+		return false;
+	}
+	
+	function searchByTable($search, $tableName){
+		$statement = $this->db->prepare("SELECT * FROM search
+			WHERE tableName = ? AND json LIKE '%?%'");
 		
-		if(isset($getParams[self::PAGESIZE_PARAM])){
-			$paginationOptions[self::PAGESIZE_PARAM] = $getParams[self::PAGESIZE_PARAM];
+		if ($statement->execute(array($tableName, $search))) {
+			return $this->handleResult($statement, true, "resultToSearchObject");
+		}
+		return false;
+	}
+	
+	private function resultToSearchObject($result){
+		$object = new Search();
+		$object->setUuid($result['uuid']);
+		$object->setTableName($result['tableName']);
+		$object->setJson($result['json']);
+		return $object;
+	}
+	
+	private function insertSearch(Search $searchElement){
+		$statement = $this->db->prepare("INSERT INTO search
+			(uuid, tableName, json)
+		VALUES (?, ?, ?)");
+		
+		$result = $statement->execute(array(
+			$searchElement->getUuid(), $searchElement->getTableName(), $searchElement->getJson()
+		));
+		
+		if ($result) {
+			return $searchElement;
+		}
+		return false;
+	}
+	
+	private function updateSearch(Search $search){
+
+		$statement = $this->db->prepare("UPDATE search
+		SET json = ?
+		WHERE uuid = ? AND tableName = ?");
+		
+		$result = $statement->execute(array(
+				$search->getJson(), $search->getUuid(), $search->getTableName()
+		));
+		
+		if ($result) {
+			return $search;
+		}
+
+		return false;
+	}
+	
+	private function createSearchTable() {
+		$statement = $this->db->prepare("CREATE TABLE search (
+                          uuid CHARACTER(36) NOT NULL,
+						  tableName VARCHAR(32) NOT NULL,
+                          json TEXT NOT NULL,
+                          PRIMARY KEY  (uuid, tableName)
+                          )");
+		
+		$result = $statement->execute();
+		
+		if ($result) {
+			return true;
 		} else {
-			$paginationOptions[self::PAGESIZE_PARAM] = 10;
+			return false;
 		}
-		
-		return $paginationOptions;
 	}
 }

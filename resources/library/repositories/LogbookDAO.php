@@ -24,15 +24,17 @@ class LogbookDAO extends BaseDAO{
 			return false;
 		}
 	}
+	
+	function getLogbook(){
+		$query = "SELECT * FROM logbook ORDER BY timestamp DESC";
+		
+		return $this->executeQuery($query, null);
+	}
 
 	function getLogbookPage(array $getParams){
 		$query = "SELECT * FROM logbook ORDER BY timestamp DESC";
 		
 		return $this->executeQuery($query, null, $getParams);
-	}
-	
-	function getLogbookEntryCount(){
-		return $this->getEntryCount();
 	}
 	
 	function clearLogbook(){
