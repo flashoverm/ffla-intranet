@@ -19,9 +19,10 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 	$eventUUID = trim ( $_GET ['id'] );
 	
 	$event = $eventDAO->getEvent($eventUUID);
+	$event = new Event();
 	$staffposition = $staffDAO->getEventStaffEntry($staffUUID);
 	
-	if(isset($event) and isset($staffposition)) {
+	if(isset($event) and isset($staffposition) && $event->getDeletedBy() == null) {
 	    $variables ['showFormular'] = true;
 	    
 	    $variables ['title'] = "In " . $event->getType()->getType() . " eintragen";
