@@ -31,7 +31,7 @@ class EventDAO extends BaseDAO{
 	}
 	
 	function getEvent($eventUuid){
-		$statement = $this->db->prepare("SELECT * FROM event WHERE uuid = ?");
+		$statement = $this->db->prepare("SELECT * FROM event WHERE uuid = ? AND deleted_by IS NULL");
 		
 		if ($statement->execute(array($eventUuid))) {
 			return $this->handleResult($statement, false);
