@@ -6788,8 +6788,8 @@ a.text-dark:hover, a.text-dark:focus {
   .table .thead-dark th {
     color: inherit;
     border-color: #dee2e6; } }
-.navbar {
-  margin-bottom: 2rem; }
+.container {
+  margin-top: 2rem; }
 
 .jumbotron {
   margin-bottom: 0px;
