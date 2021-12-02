@@ -104,8 +104,8 @@ function renderLayoutWithContentFile($variables = array()) {
 	
 	require_once (TEMPLATES_PATH . "/header.php");
 
-	echo "<div class=\"container\" id=\"container\">\n";
-	echo "\t<div id=\"content\" style=\"display:none;\">\n";
+	echo "<div class=\"container content-container\" id=\"container\">\n";
+	echo "\t<div id=\"content\" class=\"content\" style=\"display:none;\">\n";
 
 	if(isset($alertMessage)){
 		showAlert($alertMessage);
