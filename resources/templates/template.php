@@ -103,7 +103,10 @@ function renderLayoutWithContentFile($variables = array()) {
 	$contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $template;
 	
 	require_once (TEMPLATES_PATH . "/header.php");
-
+	
+	//Footer is always added to the bottom so it can be placed before the cotent-container
+	require_once (TEMPLATES_PATH . "/footer.php");
+	
 	echo "<div class=\"container content-container\" id=\"container\">\n";
 	echo "\t<div id=\"content\" class=\"content\" style=\"display:none;\">\n";
 
@@ -133,7 +136,6 @@ function renderLayoutWithContentFile($variables = array()) {
 	// close container div
 	echo "</div>\n";
 
-	require_once (TEMPLATES_PATH . "/footer.php");
 }
 
 ?>
