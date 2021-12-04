@@ -11,10 +11,10 @@ if ( ! isset($data) || ! count ( $data->getData() )) {
 	?>
 		<thead>
 			<tr>
-				<th class="text-center">Datum/Uhrzeit</th>
-				<th class="text-center">Action-Code</th>
-				<th class="text-center">Nachricht</th>
-				<th class="text-center">Angemeldeter Benutzer</th>
+				<?= renderTableHead("Datum/Uhrzeit", $data, LogbookDAO::ORDER_TIMESTAMP)?>
+				<?= renderTableHead("Action-Code", $data, LogbookDAO::ORDER_ACTION)?>
+				<?= renderTableHead("Nachricht", $data)?>
+				<?= renderTableHead("Angemeldeter Benutzer", $data, LogbookDAO::ORDER_USER)?>
 			</tr>
 		</thead>
 		<tbody>

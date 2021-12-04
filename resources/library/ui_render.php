@@ -100,12 +100,71 @@ function renderTableDescription(ResultSet $resultSet){
 			data-toolbar=".buttons-toolbar"
 			data-toolbar-align="right"
 			data-on-load-success="onLoad()"
-			data-search-text="<?= $resultSet->getSearchTerm() ?>"> 
+			data-search-text="<?= $resultSet->getSearchTerm() ?>"
+		> 
 	<?php
 	} else {
 		renderSearch($resultSet);
-		?> <table class="table table-striped table-bordered"> <?php
+	?> 
+		<table 
+			class="table table-striped table-generic"
+			data-toggle="table" 
+		> 
+	<?php
 	}
+}
+
+function renderTableHead(string $label, ResultSet $resultSet, ?string $orderBy=null, ?string $attributes=null){
+	global $config;
+	
+	if($resultSet->isSearch()){
+		echo"<th "; 
+		if($orderBy != null){ echo "data-sortable=\"true\""; }
+		echo " ";
+		if($attributes != null) { echo $attributes; } else { echo "class='text-center'"; }
+		echo " >";
+		echo $label;
+		echo "</th>";
+		return;
+	}
+	
+	$innerClasses = "";
+	$url = "";
+	if($orderBy != null){
+		$innerClasses .= "sortable ";
+		
+		if($resultSet->isSortedBy($orderBy)){
+			
+			if($resultSet->getDesc()){
+				$url = getCurrentUrlWithoutQueryParam(ResultSet::SORTBY_PARAM);
+				$url = unsetQueryParam($url, ResultSet::SORTORDER_PARAM);
+				$innerClasses .= "desc";
+				
+			} else {
+				$url = getCurrentUrlWithQueryParam(ResultSet::SORTBY_PARAM, $orderBy);
+				$url = setQueryParam($url, ResultSet::SORTORDER_PARAM, ResultSet::SORTORDER_DESC);
+				$innerClasses .= "asc";
+			}
+			
+		} else {
+			$url = getCurrentUrlWithQueryParam(ResultSet::SORTBY_PARAM, $orderBy);
+			$url = setQueryParam($url, ResultSet::SORTORDER_PARAM, ResultSet::SORTORDER_ASC);
+			$innerClasses .= "both";
+		}
+	}
+	?>
+	<th <?php if($attributes != null) { echo $attributes; } else { echo "class='text-center'"; } ?>>
+		<?php if($orderBy != null){ ?>
+		<a href="<?= $url ?>">
+		<?php } ?>
+			<div class="<?= $innerClasses ?>">
+				<?= $label ?>
+			</div>
+		<?php if($orderBy != null){ ?>
+		</a>
+		<?php } ?>
+	</th>
+	<?php
 }
 
 function getCurrentUrlWithQueryParam($paramName, $paramValue){

@@ -46,21 +46,41 @@ abstract class BaseDAO {
 		//Not search, do database pagination (default behaviour)
 		if( ! $resultSet->isSearch()){
 			
+			//if order by -> remove current order by clause
+			$orderBy = "";
+			if($resultSet->isSorted()){
+				$orderByPos = strpos(strtolower($execQuery), "order by");
+				if($orderByPos !== false){
+					$execQuery = substr($execQuery, 0, $orderByPos);
+				}
+				$orderBy .= " ORDER BY " . $resultSet->getSortedBy();
+				if($resultSet->getDesc()){
+					$orderBy .= " DESC";
+				} else {
+					$orderBy .= " ASC";
+				}
+			}
+			
 			$resultSet->setOverallSize($this->getQueryResultCount($query, $parameter));
 			
 			$this->db->query("SET @row_number = 0;");
 			
-			$fromPos = strpos($query, "FROM");
-			$rowNumQuery = substr_replace($query, ", (@row_number:=@row_number + 1) AS RowNum FROM", $fromPos, strlen("FROM"));
+			$fromPos = strpos($execQuery, "FROM");
+			
+			//Version for maridb < 10.2 with error in joined tables!
+			//$rowNumQuery = substr_replace($execQuery, ", (@row_number:=@row_number + 1) AS RowNum FROM", $fromPos, strlen("FROM"));
+			$rowNumQuery = substr_replace($execQuery, ", ROW_NUMBER() OVER ( " . $orderBy . " ) AS RowNum FROM", $fromPos, strlen("FROM"));
+			
+			
 			
 			$execQuery = "SELECT * FROM ( " . $rowNumQuery . " ) as Data WHERE RowNum >= ? AND RowNum < ? ORDER BY RowNum";
 			
 			$parameter[] = $resultSet->getFrom();
 			$parameter[] = $resultSet->getTo();
 		}
-		
+				
 		//Otherwise apply no database pagination, get all results and do frontend pagination (and search etc.) 
-
+		
 		$statement = $this->db->prepare($execQuery);
 		
 		if ($statement->execute($parameter)) {

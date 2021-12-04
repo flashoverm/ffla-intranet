@@ -4,6 +4,10 @@ require_once "BaseDAO.php";
 
 class LogbookDAO extends BaseDAO{
 	
+	const ORDER_USER = "firstname";
+	const ORDER_ACTION = "action";
+	const ORDER_TIMESTAMP = "timestamp";
+	
 	function __construct(PDO $pdo) {
 		parent::__construct($pdo, "logbook");
 	}
@@ -32,7 +36,7 @@ class LogbookDAO extends BaseDAO{
 	}
 
 	function getLogbookPage(array $getParams){
-		$query = "SELECT * FROM logbook ORDER BY timestamp DESC";
+		$query = "SELECT logbook.*, user.firstname FROM logbook, user WHERE user.uuid = logbook.user ORDER BY timestamp DESC";
 		
 		return $this->executeQuery($query, null, $getParams);
 	}

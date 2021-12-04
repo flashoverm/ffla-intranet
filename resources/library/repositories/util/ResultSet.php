@@ -5,6 +5,10 @@ class ResultSet {
 	const PAGE_PARAM = "page";
 	const PAGESIZE_PARAM = "pageSize";
 	const SEARCH_PARAM = "search";
+	const SORTBY_PARAM = "sortby";
+	const SORTORDER_PARAM = "sortorder";
+	const SORTORDER_DESC = "DESC";
+	const SORTORDER_ASC = "ASC";
 	
 	protected ?array $data;
 	
@@ -14,7 +18,7 @@ class ResultSet {
 	
 	protected int $page;
 	
-	protected ?string $sorteyBy;
+	protected ?string $sortedBy;
 	protected bool $desc;
 	
 	protected ?string $searchTerm;
@@ -22,8 +26,8 @@ class ResultSet {
 	/**
 	 * @return mixed
 	 */
-	public function getSorteyBy() {
-		return $this->sorteyBy;
+	public function getSortedBy() {
+		return $this->sortedBy;
 	}
 
 	/**
@@ -34,10 +38,10 @@ class ResultSet {
 	}
 
 	/**
-	 * @param mixed $sorteyBy
+	 * @param mixed $sortedBy
 	 */
-	public function setSorteyBy($sorteyBy) {
-		$this->sorteyBy = $sorteyBy;
+	public function setSortedBy($sortedBy) {
+		$this->sortedBy = $sortedBy;
 	}
 
 	/**
@@ -128,6 +132,8 @@ class ResultSet {
 		$this->pageSize = 10;
 		$this->page = 1;
 		$this->searchTerm = null;
+		$this->sortedBy = null;
+		$this->desc = false;
 	}
 	
 	/*
@@ -146,6 +152,16 @@ class ResultSet {
 			if(isset($getParams[self::SEARCH_PARAM])){
 				$this->searchTerm = $getParams[self::SEARCH_PARAM];
 			}
+			if(isset($getParams[self::SORTBY_PARAM])){
+				$this->sortedBy = $getParams[self::SORTBY_PARAM];
+			}
+			if(isset($getParams[self::SORTORDER_PARAM])){
+				if($getParams[self::SORTORDER_PARAM] == self::SORTORDER_DESC){
+					$this->setDesc(true);
+				} else if($getParams[self::SORTORDER_PARAM] == self::SORTORDER_ASC){
+					$this->setDesc(false);
+				}
+			}
 		}
 	}
 	
@@ -163,6 +179,14 @@ class ResultSet {
 	
 	public function isSearch(){
 		return $this->searchTerm != null && $this->searchTerm != "";
+	}
+	
+	public function isSortedBy(string $sortedBy){
+		return $this->sortedBy != null && $this->sortedBy == $sortedBy;
+	}
+	
+	public function isSorted(){
+		return $this->sortedBy != null && $this->sortedBy != "";
 	}
 }
 
