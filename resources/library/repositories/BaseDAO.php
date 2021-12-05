@@ -35,6 +35,14 @@ abstract class BaseDAO {
 		return $db;
 	}
 
+	function setDefaultOrder($getParams, $sortBy, $sortOrder){
+		if( ! isset($getParams[ResultSet::SORTBY_PARAM]) 
+				&& ! isset($getParams[ResultSet::SORTORDER_PARAM])){
+			$getParams[ResultSet::SORTBY_PARAM] = $sortBy;
+			$getParams[ResultSet::SORTORDER_PARAM] = $sortOrder;
+		}
+		return $getParams;
+	}
 	
 	function executeQuery(string $query, ?array $parameter, array $getParams = null){
 
@@ -46,14 +54,17 @@ abstract class BaseDAO {
 		//Not search, do database pagination (default behaviour)
 		if( ! $resultSet->isSearch()){
 			
-			//if order by -> remove current order by clause
 			$orderBy = "";
+			
+			//if order by -> remove current order by from query (to add later to ROW_NUMBER)
+			$orderByPos = strpos(strtolower($execQuery), "order by");
+			if($orderByPos !== false){
+				$orderBy = " " . substr($execQuery, $orderByPos, strlen($execQuery));
+				$execQuery = substr($execQuery, 0, $orderByPos);
+			}
+			
 			if($resultSet->isSorted()){
-				$orderByPos = strpos(strtolower($execQuery), "order by");
-				if($orderByPos !== false){
-					$execQuery = substr($execQuery, 0, $orderByPos);
-				}
-				$orderBy .= " ORDER BY " . $resultSet->getSortedBy();
+				$orderBy = " ORDER BY " . $resultSet->getSortedBy();
 				if($resultSet->getDesc()){
 					$orderBy .= " DESC";
 				} else {
@@ -71,10 +82,8 @@ abstract class BaseDAO {
 			//$rowNumQuery = substr_replace($execQuery, ", (@row_number:=@row_number + 1) AS RowNum FROM", $fromPos, strlen("FROM"));
 			$rowNumQuery = substr_replace($execQuery, ", ROW_NUMBER() OVER ( " . $orderBy . " ) AS RowNum FROM", $fromPos, strlen("FROM"));
 			
-			
-			
 			$execQuery = "SELECT * FROM ( " . $rowNumQuery . " ) as Data WHERE RowNum >= ? AND RowNum < ? ORDER BY RowNum";
-			
+						
 			$parameter[] = $resultSet->getFrom();
 			$parameter[] = $resultSet->getTo();
 		}
@@ -87,7 +96,7 @@ abstract class BaseDAO {
 			$result = $this->handleResult($statement, true);
 			
 			$resultSet->setData($result);
-
+			
 			return $resultSet;
 		}
 		return false;

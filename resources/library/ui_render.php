@@ -6,6 +6,41 @@ function render($template, $data, $options = array()){
 	include $template;
 }
 
+function renderTable($rowTemplate, $columns, $data, $options = array()){
+	if ( ! isset($data) || ! count ( $data->getData() )) {
+		showInfo ( "Es ist kein Eintrag vorhanden" );
+	} else {
+		?>
+	<div class="table-responsive" id="table">
+		<?php 
+		renderTableDescription($data);
+		?>
+		<thead>
+			<tr>
+			<?php
+			foreach ( $columns as $column ) {
+				$sort = isset($column['sort']) ? $column['sort'] : null;
+				renderTableHead($column['label'], $data, $sort);
+			}
+			?>
+			</tr>
+		</thead>
+		<tbody>
+		<?php
+		foreach ( $data->getData() as $row ) {
+			render($rowTemplate, $row, $options);
+		}
+		?>
+		</tbody>
+		<?php
+		renderTableClosing($data);
+		?>
+	</div>
+	<?php 
+	renderPagination($data);
+	}
+}
+
 function renderPagination(ResultSet $resultSet){
 	if( ! $resultSet->isSearch()){
 		$pageDisplayNumber = 5;
@@ -106,17 +141,31 @@ function renderTableDescription(ResultSet $resultSet){
 	} else {
 		renderSearch($resultSet);
 	?> 
-		<table 
-			class="table table-striped table-generic"
-			data-toggle="table" 
-		> 
+		<div class="bootstrap-table">
+			<div class="fixed-table-container">
+				<table 
+					class="table table-striped table-bordered table-generic table-hover"
+				> 
+	<?php
+	}
+}
+
+function renderTableClosing(ResultSet $resultSet){
+	if($resultSet->isSearch()){
+	?>
+		</table>
+	<?php	
+	} else {
+	?>
+				</table>
+			</div>
+		</div>
 	<?php
 	}
 }
 
 function renderTableHead(string $label, ResultSet $resultSet, ?string $orderBy=null, ?string $attributes=null){
-	global $config;
-	
+
 	if($resultSet->isSearch()){
 		echo"<th "; 
 		if($orderBy != null){ echo "data-sortable=\"true\""; }
@@ -157,7 +206,7 @@ function renderTableHead(string $label, ResultSet $resultSet, ?string $orderBy=n
 		<?php if($orderBy != null){ ?>
 		<a href="<?= $url ?>">
 		<?php } ?>
-			<div class="<?= $innerClasses ?>">
+			<div class="th-inner <?= $innerClasses ?>">
 				<?= $label ?>
 			</div>
 		<?php if($orderBy != null){ ?>
