@@ -4,6 +4,11 @@ require_once "BaseDAO.php";
 
 class MailLogDAO extends BaseDAO{
 	
+	const ORDER_SUBJECT = "subject";
+	const ORDER_RECIPIENT = "recipient";
+	const ORDER_TIMESTAMP = "timestamp";
+	const ORDER_STATE = "state";
+	
 	function __construct(PDO $pdo) {
 		parent::__construct($pdo, "maillog");
 	}
@@ -26,31 +31,10 @@ class MailLogDAO extends BaseDAO{
 		}
 	}
 	
-	function getMailLogs($page, $resultSize = 20){
-		$fromRowNumber = (($page-1)*$resultSize)+1;
-		$toRowNumber = $fromRowNumber+$resultSize;
+	function getMailLogs(array $getParams){
+		$query = "SELECT * FROM maillog ORDER BY timestamp DESC";
 		
-		$this->db->query("SET @row_number = 0;");
-		
-		$statement = $this->db->prepare("
-		SELECT  *
-		FROM ( SELECT *, (@row_number:=@row_number + 1) AS RowNum FROM maillog ORDER BY timestamp DESC) AS Data
-		WHERE   RowNum >= ? AND RowNum < ?
-		ORDER BY RowNum");
-		
-		if ($statement->execute(array($fromRowNumber, $toRowNumber))) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
-	}
-	
-	function getMailLogCount(){
-		$statement = $this->db->prepare("SELECT count(*) AS count FROM maillog");
-		
-		if ($statement->execute()) {
-			return $statement->fetchColumn();
-		}
-		return false;
+		return $this->executeQuery($query, null, $getParams);
 	}
 	
 	function clearMailLog(){

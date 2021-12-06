@@ -28,14 +28,8 @@ class LogbookDAO extends BaseDAO{
 			return false;
 		}
 	}
-	
-	function getLogbook(){
-		$query = "SELECT * FROM logbook ORDER BY timestamp DESC";
-		
-		return $this->executeQuery($query, null);
-	}
 
-	function getLogbookPage(array $getParams){
+	function getLogbook(array $getParams){
 		$query = "SELECT logbook.*, user.firstname FROM logbook, user WHERE user.uuid = logbook.user ORDER BY timestamp DESC";
 		
 		return $this->executeQuery($query, null, $getParams);

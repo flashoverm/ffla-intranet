@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 }
 
-$variables ['logbook'] = $logbookDAO->getLogbookPage($_GET);
+$variables ['logbook'] = $logbookDAO->getLogbook($_GET);
 
 renderLayoutWithContentFile ($variables );
 

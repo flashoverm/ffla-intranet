@@ -67,19 +67,19 @@ if( isset($_POST['datachangerequest']) ){
 
 if( isset( $_GET["done"] ) ){
 	$variables ['tab'] = 'done';
-	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::DONE);
+	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::DONE, $_GET);
 	
 } else if (isset( $_GET["declined"] ) ){
 	$variables ['tab'] = 'declined';
-	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::DECLINED);
+	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::DECLINED, $_GET);
 	
 } else if (isset( $_GET["request"] ) ){
 	$variables ['tab'] = 'request';
-	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::REQUEST);
+	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::REQUEST, $_GET);
 	
 } else {
 	$variables ['tab'] = 'open';
-	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::OPEN);
+	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByState(DataChangeRequest::OPEN, $_GET);
 }
 
 renderLayoutWithContentFile($variables);

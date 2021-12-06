@@ -11,7 +11,7 @@
 </ul>
 
 <?php
-if ( ! count ( $confirmations ) ) {
+if ( ! count ( $confirmations->getData() ) ) {
 	showInfo ( "Keine Anträge vorhanden" );
 } else {
 	

@@ -34,15 +34,6 @@ abstract class BaseDAO {
 		$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 		return $db;
 	}
-
-	function setDefaultOrder($getParams, $sortBy, $sortOrder){
-		if( ! isset($getParams[ResultSet::SORTBY_PARAM]) 
-				&& ! isset($getParams[ResultSet::SORTORDER_PARAM])){
-			$getParams[ResultSet::SORTBY_PARAM] = $sortBy;
-			$getParams[ResultSet::SORTORDER_PARAM] = $sortOrder;
-		}
-		return $getParams;
-	}
 	
 	function executeQuery(string $query, ?array $parameter, array $getParams = null){
 
@@ -89,7 +80,6 @@ abstract class BaseDAO {
 		}
 				
 		//Otherwise apply no database pagination, get all results and do frontend pagination (and search etc.) 
-		
 		$statement = $this->db->prepare($execQuery);
 		
 		if ($statement->execute($parameter)) {

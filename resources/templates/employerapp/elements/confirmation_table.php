@@ -1,35 +1,32 @@
-<div class="table-responsive">
-	<table class="table table-hover table-striped" data-toggle="table" data-pagination="true" data-search="true">
-		<thead>
-			<tr>
-				<th data-sortable="true" class="text-center">Datum</th>
-				<th data-sortable="true" class="text-center">Beginn</th>
-				<th data-sortable="true" class="text-center">Ende</th>
-				<th data-sortable="true" class="text-center">Einsatz</th>
-				<?php if(!empty($options['showUserData'])){ ?>
-					<th data-sortable="true" class="text-center">Antragsteller</th>
-					<th data-sortable="true" class="text-center">Löschzug</th>
-				<?php } ?>
-				<?php if(!empty($options['showReason'])){ ?>
-					<th data-sortable="true" class="text-center">Grund für Ablehnung</th>
-				<?php } ?>
-				<?php if(!empty($options['showLastUpdate'])){ ?>
-					<th data-sortable="true" class="text-center">Geändert</th>
-				<?php } ?>
-				<?php if(!empty($options['showUserOptions'])){ ?>
-					<th></th>
-					<th></th>
-				<?php } ?>
-				<?php if(!empty($options['showAdminOptions']) || !empty($options['showViewConfirmation'])){ ?>
-					<th></th>
-				<?php } ?>
-			</tr>
-		</thead>
-		<tbody>
-		<?php foreach ( $data as $confirmation ) {
-			render(TEMPLATES_PATH . "/employerapp/elements/confirmation_row.php", $confirmation, $options);
-		}
-		?>
-		</tbody>
-	</table>
-</div>
+<?php
+$columns = array(
+	array( "label" => "Datum/Uhrzeit", "sort" => ConfirmationDAO::ORDER_DATE),
+	array( "label" => "Beginn", "sort" => ConfirmationDAO::ORDER_START),
+	array( "label" => "Ende", "sort" => ConfirmationDAO::ORDER_END),
+	array( "label" => "Einsatz", "sort" => ConfirmationDAO::ORDER_ALARM),
+);
+if(!empty($options['showUserData'])){
+	$columns[] = array("label" => "Antragsteller", "sort" => ConfirmationDAO::ORDER_USER);
+	$columns[] = array("label" => "Löschzug", "sort" => ConfirmationDAO::ORDER_ENGINE);
+}
+if(!empty($options['showReason'])){
+	$columns[] = array("label" => "Grund für Ablehnung", "sort" => ConfirmationDAO::ORDER_REASON);
+}
+if(!empty($options['showLastUpdate'])){
+	$columns[] = array("label" => "Geändert", "sort" => ConfirmationDAO::ORDER_LASTUPDATE);
+}
+if(!empty($options['showUserOptions'])){
+	$columns[] = array();
+	$columns[] = array();
+}
+if(!empty($options['showAdminOptions']) || !empty($options['showViewConfirmation'])){
+	$columns[] = array();
+}
+
+renderTable(
+		TEMPLATES_PATH . "/employerapp/elements/confirmation_row.php",
+		$columns,
+		$data,
+		$options
+		);
+?>

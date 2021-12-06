@@ -4,6 +4,14 @@ require_once "BaseDAO.php";
 
 class DataChangeRequestDAO extends BaseDAO {
 	
+	const ORDER_DATE = "createdate";
+	const ORDER_TYPE = "datatype";
+	const ORDER_NEWVALUE = "newvalue";
+	const ORDER_PERSON = "person";
+	const ORDER_USER = "firstname";
+	const ORDER_ENGINE = "name";
+	const ORDER_LASTUPDATE = "last_update";
+	
 	protected $userDAO;
 	
 	function __construct(PDO $pdo, UserDAO $userDAO) {
@@ -33,22 +41,20 @@ class DataChangeRequestDAO extends BaseDAO {
 		return false;
 	}
 	
-	function getDataChangeRequestsByState($state){
-		$statement = $this->db->prepare("SELECT * FROM datachangerequest WHERE state = ? ORDER BY createdate DESC");
+	function getDataChangeRequestsByState($state, array $getParams){
+		$query = "SELECT datachangerequest.*, user.firstname, engine.name  FROM datachangerequest, user, engine 
+			WHERE state = ? AND datachangerequest.user = user.uuid AND user.engine = engine.uuid
+			ORDER BY createdate DESC";
 		
-		if ($statement->execute(array($state))) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+		return $this->executeQuery($query, array($state), $getParams);
 	}
 	
-	function getDataChangeRequestsByStateAndUser($state, $userUuid){
-		$statement = $this->db->prepare("SELECT * FROM datachangerequest WHERE user = ? AND state = ? ORDER BY createdate DESC");
+	function getDataChangeRequestsByStateAndUser($state, $userUuid, array $getParams){
+		$query = "SELECT datachangerequest.*, user.firstname, engine.name  FROM datachangerequest, user, engine 
+			WHERE user = ? AND state = ? AND datachangerequest.user = user.uuid AND user.engine = engine.uuid
+			ORDER BY createdate DESC";
 		
-		if ($statement->execute(array($userUuid, $state))) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+		return $this->executeQuery($query, array($userUuid, $state), $getParams);
 	}
 	
 	function deleteDataChangeRequest($uuid){

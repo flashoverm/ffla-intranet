@@ -4,6 +4,15 @@ require_once "BaseDAO.php";
 
 class ConfirmationDAO extends BaseDAO {
 	
+	const ORDER_DATE = "date";
+	const ORDER_START = "start_time";
+	const ORDER_END = "end_time";
+	const ORDER_ALARM = "description";
+	const ORDER_USER = "firstname";
+	const ORDER_ENGINE = "name";
+	const ORDER_REASON = "reason";
+	const ORDER_LASTUPDATE = "last_update";
+	
 	protected $userDAO;
 	
 	function __construct(PDO $pdo, UserDAO $userDAO) {
@@ -35,38 +44,28 @@ class ConfirmationDAO extends BaseDAO {
 		return false;
 	}
 	
-	function getConfirmations(){
-		$statement = $this->db->prepare("SELECT * FROM confirmation");
+	function getConfirmations(array $getParams){
+		$query = "SELECT confirmation.*, user.firstname, engine.name FROM confirmation, user, engine 
+			WHERE confirmation.user = user.uuid AND user.engine = engine.uuid";
 		
-		if ($statement->execute()) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+		return $this->executeQuery($query, null, $getParams);
 	}
 	
-	function getConfirmationsByState($state){
-		$statement = $this->db->prepare("SELECT * FROM confirmation WHERE state = ? ORDER BY date DESC, start_time DESC");
+	function getConfirmationsByState($state, $getParams){
+		$query = "SELECT confirmation.*, user.firstname, engine.name FROM confirmation, user, engine 
+			WHERE state = ? AND confirmation.user = user.uuid AND user.engine = engine.uuid
+			ORDER BY date DESC, start_time DESC";
 		
-		if ($statement->execute(array($state))) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+		return $this->executeQuery($query, array($state), $getParams);
 	}
 	
-	function getConfirmationsByStateAndUser($state, $userUuid, $page = -1, $pagesize = 10){
-		$query = "SELECT * FROM confirmation WHERE user = ? AND state = ? ORDER BY date DESC, start_time DESC";
+	function getConfirmationsByStateAndUser($state, $userUuid, $getParams){
+		$query = "SELECT confirmation.*, user.firstname, engine.name FROM confirmation, user, engine 
+			WHERE user = ? AND state = ? AND confirmation.user = user.uuid AND user.engine = engine.uuid
+			ORDER BY date DESC, start_time DESC";
 		
-		return $this->executeQuery($query, array($userUuid, $state), $page, $pagesize);
-		
-		/*
-		$statement = $this->db->prepare("SELECT * FROM confirmation WHERE user = ? AND state = ? ORDER BY date DESC, start_time DESC");
-		
-		if ($statement->execute(array($userUuid, $state))) {
-			return $this->handleResult($statement, true);
+		return $this->executeQuery($query, array($userUuid, $state), $getParams);
 		}
-		return false;
-		*/
-	}
 	
 	function deleteConfirmation($uuid){
 		$statement = $this->db->prepare("DELETE FROM confirmation WHERE uuid= ?");

@@ -19,8 +19,12 @@ function renderTable($rowTemplate, $columns, $data, $options = array()){
 			<tr>
 			<?php
 			foreach ( $columns as $column ) {
-				$sort = isset($column['sort']) ? $column['sort'] : null;
-				renderTableHead($column['label'], $data, $sort);
+				if(isset($column['label'])){
+					$sort = isset($column['sort']) ? $column['sort'] : null;
+					renderTableHead($column['label'], $data, $sort);
+				} else {
+					echo "<th></th>";
+				}
 			}
 			?>
 			</tr>

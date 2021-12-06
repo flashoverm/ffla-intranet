@@ -15,7 +15,7 @@
 </ul>
 
 <?php
-if ( ! count ( $dataChangeRequests ) ) {
+if ( ! count ( $dataChangeRequests->getData() ) ) {
 	showInfo ( "Keine Stammdatenänderungen vorhanden" );
 } else {
 	

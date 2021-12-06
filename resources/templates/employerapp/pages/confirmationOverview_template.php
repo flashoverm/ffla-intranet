@@ -8,14 +8,14 @@
 </ul>
 
 <?php
-if ( ! ( count ( $confirmations ) || ( isset($declined) && count ( $declined ) ) ) ) {
+if ( ! ( count ( $confirmations->getData() ) || ( isset($declined) && count ( $declined->getData() ) ) ) ) {
 	showInfo ( "Keine Anträge vorhanden" );
 } else {
 	
 	if($tab == 'open'){
 		
 		//Show additional declined table if present
-		if(count ( $declined ) ){
+		if(count ( $declined->getData() ) ){
 			
 			echo '<h4 class="my-3">Abgelehnte Anfragen</h4>';
 			
@@ -26,12 +26,12 @@ if ( ! ( count ( $confirmations ) || ( isset($declined) && count ( $declined ) )
 			
 			render(TEMPLATES_PATH . "/employerapp/elements/confirmation_table.php", $declined, $options);
 						
-			if(count ( $confirmations ) ){
+			if(count ( $confirmations->getData() ) ){
 				echo '<h4 class="my-3">Offene Anfragen</h4>';
 			}
 		}
 		
-		if(count ( $confirmations ) ){
+		if(count ( $confirmations->getData() ) ){
 			
 			$options = array(
 					'showUserOptions' => true,

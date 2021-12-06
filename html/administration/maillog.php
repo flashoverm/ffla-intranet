@@ -24,15 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 }
 
-$variables ['resultSize'] = 20; 
-
-if(isset($_GET['page'])){
-	$variables ['currentPage'] = $_GET['page'];
-	$variables ['mails'] = $mailLogDAO->getMailLogs($_GET['page'], $variables ['resultSize']);
-} else {
-	$variables ['currentPage'] = 1;
-	$variables ['mails'] = $mailLogDAO->getMailLogs(1, $variables ['resultSize']);
-}
+$variables ['mails'] = $mailLogDAO->getMailLogs($_GET);
 
 renderLayoutWithContentFile ($variables );
  
