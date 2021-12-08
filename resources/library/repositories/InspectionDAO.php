@@ -4,6 +4,12 @@ require_once "BaseDAO.php";
 
 class InspectionDAO extends BaseDAO{
 	
+	const ORDER_DATE = "date";
+	const ORDER_ENGINE = "enginename";
+	const ORDER_NAMES = "name";
+	const ORDER_VEHICLE = "vehicle";
+	const ORDER_HYDRANTS = "hydrants";
+	
 	protected $hydrantDAO;
 	protected $engineDAO;
 	
@@ -35,22 +41,25 @@ class InspectionDAO extends BaseDAO{
 		return false;
 	}
 	
-	function getInspections(){
-		$statement = $this->db->prepare("SELECT * FROM inspection ORDER BY date DESC");
+	function getInspections($getParams){
+		$query = "SELECT inspection.*, engine.name as enginename, count(*) as hydrants
+			FROM inspection, engine, hydrant_inspection
+			WHERE inspection.engine = engine.uuid AND inspection.uuid = hydrant_inspection.inspection 
+			GROUP BY hydrant_inspection.inspection 
+			ORDER BY date DESC";
 		
-		if ($statement->execute()) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+		return $this->executeQuery($query, null, $getParams);
 	}
 	
-	function getInspectionsByEngine($engineUuid){
-		$statement = $this->db->prepare("SELECT * FROM inspection WHERE engine = ? ORDER BY date DESC");
+	function getInspectionsByEngine($engineUuid, $getParams){
+		$query = "SELECT inspection.*, engine.name as enginename, count(*) as hydrants 
+			FROM inspection, engine, hydrant_inspection 
+			WHERE engine = ? AND inspection.engine = engine.uuid 
+				AND inspection.uuid = hydrant_inspection.inspection 
+			GROUP BY hydrant_inspection.inspection 
+			ORDER BY date DESC";
 		
-		if ($statement->execute(array($engineUuid))) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+		return $this->executeQuery($query, array($engineUuid), $getParams);
 	}
 	
 	function getInspectedHydrant($inspectionUuid, $hydrantUuid){

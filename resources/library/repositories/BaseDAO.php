@@ -77,7 +77,7 @@ abstract class BaseDAO {
 			$parameter[] = $resultSet->getTo();
 		}
 				
-		//Otherwise apply no database pagination, get all results and do frontend pagination (and search etc.) 
+		//Otherwise apply no database pagination, get all results and do frontend pagination (and search etc.)
 		$statement = $this->db->prepare($execQuery);
 		
 		if ($statement->execute($parameter)) {
@@ -132,8 +132,7 @@ abstract class BaseDAO {
 	}
 	
 	protected function getQueryResultCount(string $query, ?array $parameter){
-		$fromPos = strpos($query, "FROM");
-		$countingQuery = substr_replace($query, "SELECT count(*) as count ", 0, $fromPos);
+		$countingQuery = "SELECT count(*) as count FROM (" . $query . ") as data";
 		
 		$statement = $this->db->prepare($countingQuery);
 		
