@@ -1,7 +1,5 @@
 <?php 
 
-use Doctrine\DBAL\Platforms\Keywords\ReservedKeywordsValidator;
-
 require_once __DIR__ . "/../../bootstrap.php";
 require_once "util/ResultSet.php";
 
@@ -16,7 +14,7 @@ abstract class BaseDAO {
 		$this->db = $pdo;
 		$this->tableName = $tableName;
 		$this->createTableIfNotPresent($tableName);
-		$this->createTableIfNotPresent("search");
+		//$this->createTableIfNotPresent("search");
 	}
 	
 	abstract protected function createTable();
@@ -74,7 +72,7 @@ abstract class BaseDAO {
 			$rowNumQuery = substr_replace($execQuery, ", ROW_NUMBER() OVER ( " . $orderBy . " ) AS RowNum FROM", $fromPos, strlen("FROM"));
 			
 			$execQuery = "SELECT * FROM ( " . $rowNumQuery . " ) as Data WHERE RowNum >= ? AND RowNum < ? ORDER BY RowNum";
-						
+
 			$parameter[] = $resultSet->getFrom();
 			$parameter[] = $resultSet->getTo();
 		}
@@ -175,6 +173,7 @@ abstract class BaseDAO {
 	 * Search
 	 */
 	
+	/*
 	function index(Search $search){
 		$saved = null;
 		if($this->uuidExists($search->getUuid(), "search")){
@@ -255,4 +254,5 @@ abstract class BaseDAO {
 			return false;
 		}
 	}
+	*/
 }

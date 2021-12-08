@@ -1,6 +1,6 @@
 <?php
 
-class ResultSet {
+class ResultSet implements Countable {
 	
 	const PAGE_PARAM = "page";
 	const PAGESIZE_PARAM = "pageSize";
@@ -121,6 +121,9 @@ class ResultSet {
 		$this->page = $page;
 	}
 
+	public function count() {
+	    return count($this->getData());
+	}
 	/*
 	 **************************************************
 	 * Constructor
@@ -166,10 +169,16 @@ class ResultSet {
 	}
 	
 	public function getFrom(){
+	    if($this->pageSize == -1){
+	        return 0;
+	    }
 		return (($this->page -1) * $this->pageSize) + 1;
 	}
 	
 	public function getTo(){
+	    if($this->pageSize == -1){
+	        return PHP_INT_MAX;
+	    }
 		return $this->page * $this->pageSize;
 	}
 	

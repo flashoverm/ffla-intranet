@@ -9,7 +9,7 @@ function left_navigation ($currentUser){
 			<li class='dropdown'>
 				<a class='nav-link dropdown-toggle text-light mx-1' data-toggle='dropdown' href='#'>Hydranten</a>
         		<div class='dropdown-menu bg-dark'>
-        			<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/all'>Alle Hydranten</a>
+        			<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/overview'>Alle Hydranten</a>
 					<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/search'>Hydrantensuche</a>";
 					if($currentUser->hasPrivilegeByName(Privilege::HYDRANTADMINISTRATOR)){
 						echo "<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/new'>Hydrant anlegen</a>";

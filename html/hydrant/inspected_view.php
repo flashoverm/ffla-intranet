@@ -15,9 +15,9 @@ $variables = checkPermissions($variables);
 $engine = $userController->getCurrentUser()->getEngine();
 
 if($userController->hasCurrentUserPrivilege(Privilege::HYDRANTADMINISTRATOR)){
-	$variables ['hydrants'] = $hydrantDAO->getHydrants();
+    $variables ['hydrants'] = $hydrantDAO->getHydrants($_GET);
 } else {
-	$variables ['hydrants'] =  $hydrantDAO->getHydrantsOfEngine($engine->getUuid());
+    $variables ['hydrants'] =  $hydrantDAO->getHydrantsOfEngine($engine->getUuid(), $_GET);
 }
   
 renderLayoutWithContentFile($variables);

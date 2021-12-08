@@ -46,27 +46,35 @@ function renderTable($rowTemplate, $columns, $data, $options = array()){
 }
 
 function renderPagination(ResultSet $resultSet){
-	if( ! $resultSet->isSearch()){
+    if( ! $resultSet->isSearch()){
 		$pageDisplayNumber = 5;
-		$pages = ceil ($resultSet->getOverallSize()/$resultSet->getPageSize());
+		if($resultSet->getPageSize() == -1){
+		    $pages = 1;
+		} else {
+		    $pages = ceil ($resultSet->getOverallSize()/$resultSet->getPageSize());
+		}
+		
 		?>
 		<nav>
-			<?php renderPageSizeSelection($resultSet) ?>
+			<?php 
+			renderPageSizeSelection($resultSet);
+			?>
 			<ul class="pagination justify-content-end">
 		  	<?php
-		  	if($resultSet->getPage() > 1){
-		  		echo '<li class="page-item"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()-1) . '"><</a></li>';
-		  	}
-		  	for($i=max(1, $resultSet->getPage()-$pageDisplayNumber);  ($i<=( $pages ) && $i<=($resultSet->getPage()+$pageDisplayNumber) ); $i++){    	
-		    	echo '<li class="page-item';
-		    	if($i == $resultSet->getPage()){
-		    		echo ' active';
-		    	}
-		    	echo '"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $i) . '">' . $i . '</a></li>';
-		  	}
-		  	if($resultSet->getPage() < $pages){
-		  		echo '<li class="page-item"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()+1) . '">></a></li>';
-		  	}
+		  			  	    
+    		  	if($resultSet->getPage() > 1){
+    		  		echo '<li class="page-item"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()-1) . '"><</a></li>';
+    		  	}
+    		  	for($i=max(1, $resultSet->getPage()-$pageDisplayNumber);  ($i<=( $pages ) && $i<=($resultSet->getPage()+$pageDisplayNumber) ); $i++){    	
+    		    	echo '<li class="page-item';
+    		    	if($i == $resultSet->getPage()){
+    		    		echo ' active';
+    		    	}
+    		    	echo '"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $i) . '">' . $i . '</a></li>';
+    		  	}
+    		  	if($resultSet->getPage() < $pages){
+    		  		echo '<li class="page-item"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()+1) . '">></a></li>';
+    		  	}
 		  	?>
 			</ul>
 		</nav>
@@ -79,13 +87,18 @@ function renderPageSizeSelection(ResultSet $resultSet){
 ?>
 	<div class="float-left pagination-detail">
 		<span class="pagination-info">
-			Zeige Zeile <?= $resultSet->getFrom() ?> bis <?= $resultSet->getTo() ?> von <?= $resultSet->getOverallSize() ?> Zeilen.
+			<?php if($resultSet->getPageSize() == -1){
+			    echo "Zeige alle " . $resultSet->getOverallSize() . " Zeilen";
+			} else {
+			    echo "Zeige Zeile " . $resultSet->getFrom() . " bis " . $resultSet->getTo() . " von " . $resultSet->getOverallSize() . " Zeilen.";
+			}
+			?>
 		</span>
 		<span class="page-list">
 			<span class="btn-group dropdown dropup">
 				<button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
 				<span class="page-size">
-					<?= $resultSet->getPageSize()?>
+					<?= ($resultSet->getPageSize() == -1) ? "Alle" : $resultSet->getPageSize()?>
 				</span>
 				<span class="caret"></span>
 				</button>
@@ -94,6 +107,7 @@ function renderPageSizeSelection(ResultSet $resultSet){
 					<a class="dropdown-item <?php if($resultSet->getPageSize() == 25){ echo "active"; } ?>" href="<?= setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, 25) ?>">25</a>
 					<a class="dropdown-item <?php if($resultSet->getPageSize() == 50){ echo "active"; } ?>" href="<?= setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, 50) ?>">50</a>
 					<a class="dropdown-item <?php if($resultSet->getPageSize() == 100){ echo "active"; } ?>" href="<?= setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, 100) ?>">100</a>
+					<a class="dropdown-item <?php if($resultSet->getPageSize() == -1){ echo "active"; } ?>" href="<?= setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, -1) ?>">Alle</a>
 				</div>
 			</span>
 			Zeilen pro Seite.

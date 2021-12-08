@@ -14,21 +14,10 @@ $variables = array(
 $variables = checkPermissions($variables);
 
 //get hydrants by engine with last checkup not set or older than 6 years
-$hydrants = $hydrantDAO->getUncheckedHydrantsOfEngine($userController->getCurrentUser()->getEngine()->getUuid());
+$params = $_GET;
+$params[ResultSet::PAGESIZE_PARAM] = -1;
+$hydrants = $hydrantDAO->getUncheckedHydrantsOfEngine($userController->getCurrentUser()->getEngine()->getUuid(), $params);
 
-
-$mapUrl = $config["mapView"]["apiUrl"]
-. "?key=" . $config["mapView"]["apiKey"]
-. "&size=" . $config["mapView"]["widewidth"] . "x" . $config["mapView"]["height"]
-. "&scale=" . $config["mapView"]["retina"]
-. "&maptype=" . $config["mapView"]["maptype"]
-. "&markers=color:red|label:H";
-
-foreach ( $hydrants as $hydrant ) {
-    $mapUrl = $mapUrl . "|" . $hydrant->getLat() . "," . $hydrant->getLng() . "";
-}
-
-$variables ['mapURL'] = $mapUrl;
 $variables ['hydrants'] = $hydrants;
 
 renderLayoutWithContentFile($variables);

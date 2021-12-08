@@ -11,7 +11,7 @@ $variables = array(
 );
 $variables = checkPermissions($variables);
 
-$hydrants = $hydrantDAO->getHydrants();
+$hydrants = $hydrantDAO->getHydrants($_GET);
 
 $variables ['hydrants'] = $hydrants;
 

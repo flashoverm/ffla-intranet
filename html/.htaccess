@@ -2,88 +2,76 @@ RewriteEngine on
 
 ### Legacy
 
-RewriteRule ^(.*)confirmations/([A-z0-9\-]{36})/file([^/]*)/?$ 		$1/confirmations/view.php?id=$2&file=true$3 
-RewriteRule ^(.*)confirmations/([A-z0-9\-]{36})/edit/?$ 			$1/confirmations/edit.php?id=$2
-RewriteRule ^(.*)confirmations/([A-z0-9\-]{36})/print/?$ 			$1/confirmations/view.php?id=$2&print=true
-RewriteRule ^(.*)guardian/events/([A-z0-9\-]{36})/?$ 				$1/guardian/events/view/$2 [L,R=301]
-RewriteRule ^(.*)guardian/reports/([A-z0-9\-]{36})/?$ 				$1/guardian/reports/view/$2 [L,R=301]
-RewriteRule ^(.*)inspection/([A-z0-9\-]{36})/file([^/]+)/?$ 		$1/inspection/view.php?inspection=$2&file=true$3
-RewriteRule ^(.*)files/([^/]+).pdf$ 								$1/files/view/$2.pdf [L,R=301]
-RewriteRule ^(.*)hydrant/all/?$ 									$1/hydrant/overview [L,R=301]
+RewriteRule ^(.*)confirmations/([A-z0-9\-]{36})/file([^/]*)/?$ 		$1/confirmations/view.php?id=$2&file=true$3 [QSA]
+RewriteRule ^(.*)confirmations/([A-z0-9\-]{36})/edit/?$ 			$1/confirmations/edit.php?id=$2 [QSA]
+RewriteRule ^(.*)confirmations/([A-z0-9\-]{36})/print/?$ 			$1/confirmations/view.php?id=$2&print=true [QSA]
+RewriteRule ^(.*)guardian/events/([A-z0-9\-]{36})/?$ 				$1/guardian/events/view/$2 [QSA,L,R=301]
+RewriteRule ^(.*)guardian/reports/([A-z0-9\-]{36})/?$ 				$1/guardian/reports/view/$2 [QSA,L,R=301]
+RewriteRule ^(.*)inspection/([A-z0-9\-]{36})/file([^/]+)/?$ 		$1/inspection/view.php?inspection=$2&file=true$3 [QSA]
+RewriteRule ^(.*)files/([^/]+).pdf$ 								$1/files/view/$2.pdf [QSA,L,R=301]
+RewriteRule ^(.*)hydrant/all/?$ 									$1/hydrant/overview [QSA,L,R=301]
 
 
 ### Specific rules
 
 # Ajax
 
-RewriteRule ^(.*)ajax/hy/([^.]+)/field/([^.]+)/?$ 	$1/ajax/hy_request.php?fid=$2&fieldid=$3 
-RewriteRule ^(.*)ajax/templates/([^/]+)/?$ 			$1/ajax/staff_template.php?uuid=$2
-RewriteRule ^(.*)ajax/user/([^/]+)/?$				$1/ajax/user.php?uuid=$2
-RewriteRule ^(.*)ajax/privileges/([^/]+)/?$			$1/ajax/privileges.php?uuid=$2
+RewriteRule ^(.*)ajax/hy/([^.]+)/field/([^.]+)/?$ 	$1/ajax/hy_request.php?fid=$2&fieldid=$3 [QSA]
+RewriteRule ^(.*)ajax/templates/([^/]+)/?$ 			$1/ajax/staff_template.php?uuid=$2 [QSA]
+RewriteRule ^(.*)ajax/user/([^/]+)/?$				$1/ajax/user.php?uuid=$2 [QSA]
+RewriteRule ^(.*)ajax/privileges/([^/]+)/?$			$1/ajax/privileges.php?uuid=$2 [QSA]
 
 
 # Confirmations and DataChangeRequests
 
-RewriteRule ^(.*)process/accepted/?$ 	$1/process.php?accepted
-RewriteRule ^(.*)process/declined/?$ 	$1/process.php?declined
-RewriteRule ^(.*)process/request/?$ 	$1/process.php?request
-RewriteRule ^(.*)process/done/?$ 		$1/process.php?done
-RewriteRule ^(.*)accepted/?$			$1/overview.php?accepted
-RewriteRule ^(.*)declined/?$			$1/overview.php?declined
-RewriteRule ^(.*)done/?$				$1/overview.php?done
+RewriteRule ^(.*)process/accepted/?$ 	$1/process.php?accepted [QSA]
+RewriteRule ^(.*)process/declined/?$ 	$1/process.php?declined [QSA]
+RewriteRule ^(.*)process/request/?$ 	$1/process.php?request [QSA]
+RewriteRule ^(.*)process/done/?$ 		$1/process.php?done [QSA]
+RewriteRule ^(.*)accepted/?$			$1/overview.php?accepted [QSA]
+RewriteRule ^(.*)declined/?$			$1/overview.php?declined [QSA]
+RewriteRule ^(.*)done/?$				$1/overview.php?done [QSA]
 
 # Hydrants and Inspections
 
-RewriteRule ^(.*)evaluation/([^/]+)?$ 	$1/evaluation.php?year=$2
-RewriteRule ^(.*)street/([^/]+)/?$ 		$1/street_view.php?street=$2
-RewriteRule ^(.*)engine/([^/]+)/?$ 		$1/engine_view.php?engine=$2
-RewriteRule ^(.*)inspected/?$ 			$1/inspected_view.php
-RewriteRule ^(.*)map/([^/]+)/?$ 		$1/maps.php?hydrant=$2
+RewriteRule ^(.*)evaluation/([^/]+)?$ 	$1/evaluation.php?year=$2 [QSA]
+RewriteRule ^(.*)street/([^/]+)/?$ 		$1/street_view.php?street=$2 [QSA]
+RewriteRule ^(.*)engine/([^/]+)/?$ 		$1/engine_view.php?engine=$2 [QSA]
+RewriteRule ^(.*)inspected/?$ 			$1/inspected_view.php [QSA]
+RewriteRule ^(.*)map/([^/]+)/?$ 		$1/maps.php?hydrant=$2 [QSA]
 
 # Events and Reports
 
-RewriteRule ^(.*)past/?$ 									$1/overview.php?past
-RewriteRule ^(.*)calender/([^/]+)?$ 						$1/calender.php?id=$2
-RewriteRule ^(.*)events/([^/]+)/assign/?([^/]+)/?$			$1/events/assign.php?id=$2&staffid=$3
-RewriteRule ^(.*)events/([^/]+)/subscribe/?([^/]+)/?$ 		$1/events/subscribe.php?id=$2&staffid=$3
-RewriteRule ^(.*)events/([^/]+)/acknowledge/?([^/]+)/?$ 	$1/events/details.php?id=$2&acknowledge=$3
-RewriteRule ^(.*)reports/new/([^/]+)/?$ 					$1/reports/edit.php?event=$2
-RewriteRule ^(.*)templates/([^/]+)/?$ 						$1/templates.php?eventtype=$2
+RewriteRule ^(.*)past/?$ 									$1/overview.php?past [QSA]
+RewriteRule ^(.*)calender/([^/]+)?$ 						$1/calender.php?id=$2 [QSA]
+RewriteRule ^(.*)events/([^/]+)/assign/?([^/]+)/?$			$1/events/assign.php?id=$2&staffid=$3 [QSA]
+RewriteRule ^(.*)events/([^/]+)/subscribe/?([^/]+)/?$ 		$1/events/subscribe.php?id=$2&staffid=$3 [QSA]
+RewriteRule ^(.*)events/([^/]+)/acknowledge/?([^/]+)/?$ 	$1/events/details.php?id=$2&acknowledge=$3 [QSA]
+RewriteRule ^(.*)reports/new/([^/]+)/?$ 					$1/reports/edit.php?event=$2 [QSA]
+RewriteRule ^(.*)templates/([^/]+)/?$ 						$1/templates.php?eventtype=$2 [QSA]
 
 # Users etc.
 
-RewriteRule ^(.*)reset/([^.]+)/?$ 						$1/reset.php?token=$2
-RewriteRule ^(.*)register/?$ 							$1/edit.php
-RewriteRule ^(.*)admin/([^/]+)/?$ 						$1/admin.php?id=$2
-RewriteRule ^(.*)users/([^/]+)/privilege/([^/]+)/?$ 	$1/users/privilege.php?user=$2&engine=$3
-RewriteRule ^(.*)users/([^/]+)/privilege/?$ 			$1/users/privilege.php?user=$2
-RewriteRule ^(.*)users/filter/([^.]+)/?$ 				$1/users/overview.php?filter=$2 
-RewriteRule ^(.*)setView/([^.]+)/?$						$1/setView.php?engine=$2
-
-# Administrative
-
-RewriteRule ^(.*)logbook/page/([^.]+)/?$	$1/logbook.php?page=$2
-RewriteRule ^(.*)maillog/page/([^.]+)/?$	$1/maillog.php?page=$2
+RewriteRule ^(.*)reset/([^.]+)/?$ 						$1/reset.php?token=$2 [QSA]
+RewriteRule ^(.*)register/?$ 							$1/edit.php [QSA]
+RewriteRule ^(.*)admin/([^/]+)/?$ 						$1/admin.php?id=$2 [QSA]
+RewriteRule ^(.*)users/([^/]+)/privilege/([^/]+)/?$ 	$1/users/privilege.php?user=$2&engine=$3 [QSA] 
+RewriteRule ^(.*)users/([^/]+)/privilege/?$ 			$1/users/privilege.php?user=$2 [QSA]
+RewriteRule ^(.*)users/filter/([^.]+)/?$ 				$1/users/overview.php?filter=$2 [QSA]
+RewriteRule ^(.*)setView/([^.]+)/?$						$1/setView.php?engine=$2 [QSA]
 
 ### Generic Rules
 
-RewriteRule ^(.*)view/([^/]+)/?$ 				$1/view.php?id=$2
-RewriteRule ^(.*)view/([^/]+)/print?$ 			$1/view.php?id=$2&print=true
-RewriteRule ^(.*)view/([^/]+)/file([^/]+)?$ 	$1/view.php?id=$2&file=true$3
+RewriteRule ^(.*)view/([^/]+)/?$ 				$1/view.php?id=$2 [QSA]
+RewriteRule ^(.*)view/([^/]+)/print?$ 			$1/view.php?id=$2&print=true [QSA]
+RewriteRule ^(.*)view/([^/]+)/file([^/]+)?$ 	$1/view.php?id=$2&file=true$3 [QSA]
 
-RewriteRule ^(.*)new/?$					$1/edit.php
-RewriteRule ^(.*)edit/([^/]+)/?$ 		$1/edit.php?id=$2
-
+RewriteRule ^(.*)new/?$					$1/edit.php [QSA]
+RewriteRule ^(.*)edit/([^/]+)/?$ 		$1/edit.php?id=$2 [QSA]
 
 #Append ? (query) if not existing
 RewriteCond %{QUERY_STRING} ^$
 RewriteRule ^(.*)$ $1?
-
-
-#Pagination and Search
-
-
-
 
 #If request does not end with .php -> add .php
 RewriteCond %{THE_REQUEST} "!^[^ ]* .*?\.php[? ].*$"

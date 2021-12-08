@@ -15,7 +15,7 @@ if (isset($_GET['street'])) {
 
 	$street = trim($_GET['street']);
     
-	$hydrants = $hydrantDAO->getHydrantsOfStreet($street);
+	$hydrants = $hydrantDAO->getHydrantsOfStreet($street, $_GET);
     
     $variables ['hydrants'] = $hydrants;
     

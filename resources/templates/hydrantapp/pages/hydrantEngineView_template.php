@@ -1,52 +1,13 @@
 <?php
-if (! count ( $hydrants )) {
+if (! count ( $hydrants->getData() )) {
     showInfo ( "Keine Hydranten für diesen Zug gefunden" );
 } else {
-    ?>
-
-<div class="table-responsive">
-	<table class="table table-striped" data-toggle="table" data-pagination="true"  data-search="true">
-		<thead>
-			<tr>
-				<th data-sortable="true" class="text-center">HY</th>
-				<th data-sortable="true" class="text-center">FID</th>
-				<th data-sortable="true" class="text-center">Straße</th>
-				<th data-sortable="true" class="text-center">Stadtteil</th>
-				<th data-sortable="true" class="text-center">Typ</th>
-				<th></th>
-				<?php if($currentUser->hasPrivilegeByName(Privilege::HYDRANTADMINISTRATOR)){
-				    echo '<th></th>';
-				}?>
-			</tr>
-		</thead>
-		<tbody>
     
-    <?php
-    foreach ( $hydrants as $row ) {
-        ?>
-				<tr>
-				<td class="text-center"><?= $row->getHy(); ?></td>
-				<td class="text-center"><?= $row->getFid(); ?></td>
-				<td class="text-center"><?= $row->getStreet(); ?></td>
-				<td class="text-center"><?= $row->getDistrict(); ?></td>
-				<td class="text-center"><?= $row->getType(); ?></td>
-
-				<td class="text-center">
-					<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/view/". $row->getHy(); ?>">Anzeigen</a>
-				</td>
-				<?php if($currentUser->hasPrivilegeByName(Privilege::HYDRANTADMINISTRATOR)){
-				    echo '<td>
-                            <a class="btn btn-primary btn-sm" href="' . $config["urls"]["hydrantapp_home"] . "/edit/". $row->getHy() . '">Bearbeiten</a>
-                         </td>';
-				}?>
-			</tr>
-<?php
-	}
-
+    $options = array(
+    );
+    
+    render(TEMPLATES_PATH . "/hydrantapp/elements/hydrant_table.php", $hydrants, $options);
 ?>
-		</tbody>
-	</table>
-</div>
 <div class="custom-control custom-checkbox">
   <input type="checkbox" class="custom-control-input" id="toogleMaps" checked>
   <label class="custom-control-label" for="toogleMaps">Verwende Google Maps</label>
@@ -54,12 +15,10 @@ if (! count ( $hydrants )) {
 <br>
 
 <?php 
-
     if($mapURL != null){
         echo "<img id='map' class='rounded mx-auto' width='" . $config["mapView"]["widewidth"] . "' src='" . $mapURL . "' style='display: none;'>";
     }
-    createHydrantGoogleMap($hydrants, true, true, $config["mapView"]["height"] . "px", $config["mapView"]["widewidth"] . "px");
-    
+    createHydrantGoogleMap($hydrants->getData(), true, true, $config["mapView"]["height"] . "px", $config["mapView"]["widewidth"] . "px");
 }
 ?>
 
