@@ -124,14 +124,14 @@ class Hydrant extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getCheckByFF() : bool {
+	public function getCheckByFF() : int {
 		return $this->checkByFF;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getOperating() : bool {
+	public function getOperating() : int {
 		return $this->operating;
 	}
 

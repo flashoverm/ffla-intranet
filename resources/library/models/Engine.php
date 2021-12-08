@@ -46,7 +46,7 @@ class Engine extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getIsAdministration() : bool {
+	public function getIsAdministration() : int {
 		return $this->isAdministration;
 	}
 	

@@ -129,14 +129,14 @@ class User extends BaseModel {
 	/**
 	 * @return boolean
 	 */
-	public function getLocked() : bool {
+	public function getLocked() : int {
 		return $this->locked;
 	}
 
 	/**
 	 * @return boolean
 	 */
-	public function getDeleted() : bool {
+	public function getDeleted() : int {
 		return $this->deleted;
 	}
 	
@@ -311,7 +311,7 @@ class User extends BaseModel {
 		}
 	}
 	
-	public function hasPrivilegeByName(string $privilegeName) : bool{
+	public function hasPrivilegeByName(string $privilegeName) : int{
 		return $this->hasPrivilegeForEngineByName($this->getEngine(), $privilegeName);
 	}
 	

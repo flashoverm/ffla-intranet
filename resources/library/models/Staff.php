@@ -49,14 +49,14 @@ class Staff extends BaseModel {
 	/**
 	 * @return boolean
 	 */
-	public function getUnconfirmed() : bool {
+	public function getUnconfirmed() : int {
 		return $this->unconfirmed;
 	}
 	
 	/**
 	 * @return boolean
 	 */
-	public function getUserAcknowledged() : bool {
+	public function getUserAcknowledged() : int {
 		return $this->userAcknowledged;
 	}
 	

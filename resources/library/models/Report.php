@@ -136,28 +136,28 @@ class Report extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getNoIncidents() : bool {
+	public function getNoIncidents() : int {
 		return $this->noIncidents;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getIlsEntry() : bool {
+	public function getIlsEntry() : int {
 		return $this->ilsEntry;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getEmsEntry() : bool {
+	public function getEmsEntry() : int {
 		return $this->emsEntry;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getManagerApproved() : bool {
+	public function getManagerApproved() : int {
 		return $this->managerApproved;
 	}
 
@@ -323,6 +323,27 @@ class Report extends BaseModel {
 	 **************************************************
 	 * Custom Methods
 	 */
+	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'creator' => $this->creator,
+				'date' => $this->date,
+				'emsEntry' => $this->emsEntry,
+				'endTime' => $this->endTime,
+				'engine' => $this->engine,
+				'eventUuid' => $this->eventUuid,
+				'ilsEntry' => $this->ilsEntry,
+				'managerApproved' => $this->managerApproved,
+				'noIncidents' => $this->noIncidents,
+				'reportText' => $this->reportText,
+				'startTime' => $this->startTime,
+				'title' => $this->title,
+				'type' => $this->type,
+				'typeOther' => $this->typeOther,
+				'units' => $this->units,
+		];
+	}
 	
 	function addReportUnit(ReportUnit $reportUnit){
 		$this->units[] = $reportUnit;

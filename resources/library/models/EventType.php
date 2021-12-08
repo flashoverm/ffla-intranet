@@ -42,7 +42,7 @@ class EventType extends BaseModel {
 	/**
 	 * @return string
 	 */
-	public function getIsSeries() : bool{
+	public function getIsSeries() : int{
 		return $this->isSeries;
 	}
 

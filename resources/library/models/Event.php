@@ -134,14 +134,14 @@ class Event extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getPublished() : bool {
+	public function getPublished() : int {
 		return $this->published;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getStaffConfirmation() : bool {
+	public function getStaffConfirmation() : int {
 		return $this->staffConfirmation;
 	}
 

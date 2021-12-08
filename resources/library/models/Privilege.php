@@ -58,7 +58,7 @@ class Privilege extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getIsDefault() : bool{
+	public function getIsDefault() : int{
 		return $this->isDefault;
 	}
 
