@@ -142,10 +142,13 @@ var cCount = <?php echo sizeof($criteria)?>;
 rotateCorrection();
 
 function rotateCorrection(){
+	hideLoader();
 
 	for(i = -2; i < cCount; i++) {
 		var dc = document.getElementById("dc" + i);
 		var doc = document.getElementById("doc" + i);
+		
+		console.log(dc);
 		
 		doc.style.width = dc.offsetHeight + 'px';
 		doc.style.height = dc.offsetWidth + 'px';

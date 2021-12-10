@@ -42,6 +42,8 @@ RewriteRule ^(.*)map/([^/]+)/?$ 		$1/maps.php?hydrant=$2 [QSA]
 
 # Events and Reports
 
+RewriteRule ^(.*)admin/past?$ 									$1/admin.php?past [QSA]
+RewriteRule ^(.*)admin/deleted?$ 									$1/admin.php?deleted [QSA]
 RewriteRule ^(.*)past/?$ 									$1/overview.php?past [QSA]
 RewriteRule ^(.*)calender/([^/]+)?$ 						$1/calender.php?id=$2 [QSA]
 RewriteRule ^(.*)events/([^/]+)/assign/?([^/]+)/?$			$1/events/assign.php?id=$2&staffid=$3 [QSA]

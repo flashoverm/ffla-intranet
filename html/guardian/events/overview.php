@@ -33,19 +33,15 @@ if(userLoggedIn()){
     
 	if($currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
 		if($variables ['tab'] == 'past'){
-			$variables ['events'] = $eventDAO->getPastEvents();
+			$variables ['events'] = $eventDAO->getPastEvents($_GET);
 		} else {
-			$variables ['events'] = $eventDAO->getActiveEvents();
+			$variables ['events'] = $eventDAO->getActiveEvents($_GET);
 		}
 	} else {
 		if($variables ['tab'] == 'past'){
-			$variables ['events'] = $eventDAO->getUsersPastEvents($currentUser);
+			$variables ['events'] = $eventDAO->getUsersPastEvents($currentUser, $_GET);
 		} else {
-			$publicEvents = $eventDAO->getPublicEvents();
-			$engineEvents = $eventDAO->getUsersActiveEvents($currentUser);
-			$events = array_merge($engineEvents, $publicEvents);
-			
-			$variables ['events'] = $events;
+			$variables ['events'] = $eventDAO->getUsersActiveEvents($currentUser, $_GET);
 		}
 	}
 }

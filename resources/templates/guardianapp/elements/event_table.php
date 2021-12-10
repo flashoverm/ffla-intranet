@@ -1,43 +1,34 @@
 <?php
-	global $guardianUserController, $currentUser;
+global $guardianUserController, $currentUser;
+
+$columns = array(
+		array( "label" => "Datum", "sort" => EventDAO::ORDER_DATE),
+		array( "label" => "Beginn", "sort" => EventDAO::ORDER_START),
+		array( "label" => "Ende", "sort" => EventDAO::ORDER_END),
+		array( "label" => "Typ", "sort" => EventDAO::ORDER_TYPE),
+		array( "label" => "Titel", "sort" => EventDAO::ORDER_TITLE),
+		array( "label" => "Zuständig", "sort" => EventDAO::ORDER_ENGINE),
+);
+
+if(!empty($options['showOccupation'])){
+	$columns[] = array("label" => "Belegung");
+}
+if(!empty($options['showPublic'])){
+	$columns[] = array("label" => "Öffentlich", "sort" => EventDAO::ORDER_PUBLIC);
+}
+$columns[] = array();
+if( !empty($options['showDelete']) &&
+		$guardianUserController->isUserAllowedToEditSomeEvent($currentUser)){
+	$columns[] = array();
+}
+if( !empty($options['showDeleteDB']) ){
+	$columns[] = array();
+}
+
+renderTable(
+		TEMPLATES_PATH . "/guardianapp/elements/event_row.php",
+		$columns,
+		$data,
+		$options
+		);
 ?>
-	<div class="table-responsive">
-		<table class="table table-hover table-striped" data-toggle="table" data-pagination="true" data-search="true">
-			<thead>
-				<tr>
-					<th data-sortable="true" class="text-center">Datum</th>
-					<th data-sortable="true" class="text-center">Beginn</th>
-					<th data-sortable="true" class="text-center">Ende</th>
-					<th data-sortable="true" class="text-center">Typ</th>
-					<th data-sortable="true" class="text-center">Titel</th>
-					<th data-sortable="true" class="text-center">Zuständig</th>
-					<?php 
-					if(!empty($options['showOccupation'])){
-					?>
-						<th data-sortable="true" class="text-center">Belegung</th>
-					<?php 
-					}
-					if(!empty($options['showPublic'])){
-					?>
-					<th data-sortable="true" class="text-center">Öffentlich</th>
-					<?php
-					}
-					?>
-					<th></th>
-					<?php
-					if( !empty($options['showDelete']) &&
-							$guardianUserController->isUserAllowedToEditSomeEvent($currentUser)){
-						echo"<th></th>";
-					}
-					?>
-				</tr>
-			</thead>
-			<tbody>
-			<?php 
-			foreach ( $data as $event ) {
-				render(TEMPLATES_PATH . "/guardianapp/elements/event_row.php", $event, $options);
-			}
-			?>
-			</tbody>
-		</table>
-	</div>

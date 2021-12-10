@@ -59,5 +59,15 @@
 			</td>
 		<?php 
 		}
+		if( !empty($options['showDeleteDB']) ){
+		?>
+			<td class="text-center">
+				<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#confirmDeleteDB<?= $data->getUuid(); ?>">Löschen (DB)</button>
+				<?php 
+				createDialog('confirmDeleteDB' . $data->getUuid(), "Wache wirklich entgültig löschen?", null, "deletedb", $data->getUuid());
+				?>
+			</td>
+		<?php 
+		}
 		?>
 	</tr>

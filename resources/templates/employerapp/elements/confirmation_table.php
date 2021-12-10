@@ -1,6 +1,6 @@
 <?php
 $columns = array(
-	array( "label" => "Datum/Uhrzeit", "sort" => ConfirmationDAO::ORDER_DATE),
+	array( "label" => "Datum", "sort" => ConfirmationDAO::ORDER_DATE),
 	array( "label" => "Beginn", "sort" => ConfirmationDAO::ORDER_START),
 	array( "label" => "Ende", "sort" => ConfirmationDAO::ORDER_END),
 	array( "label" => "Einsatz", "sort" => ConfirmationDAO::ORDER_ALARM),
