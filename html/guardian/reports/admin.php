@@ -23,7 +23,7 @@ if (isset ( $_POST ['delete'] )) {
 	}
 }
 
-$variables ['reports'] = $reportDAO->getReports();
+$variables ['reports'] = $reportDAO->getReports($_GET);
 
 renderLayoutWithContentFile ( $variables );
 

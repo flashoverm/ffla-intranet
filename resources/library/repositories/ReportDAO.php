@@ -4,6 +4,16 @@ require_once "BaseDAO.php";
 
 class ReportDAO extends BaseDAO{
 	
+	const ORDER_DATE = "date";
+	const ORDER_START = "start_time";
+	const ORDER_END = "end_time";
+	const ORDER_TYPE = "type";
+	const ORDER_TITLE = "title";
+	const ORDER_ENGINE = "name";
+	const ORDER_INCIDENTS = "noIncidents";
+	const ORDER_APPROVED = "managerApproved";
+	const ORDER_EMSENTRY = "emsEntry";
+	
 	protected $engineDAO;
 	protected $eventTypeDAO;
 	protected $reportUnitDAO;
@@ -36,22 +46,20 @@ class ReportDAO extends BaseDAO{
 		return false;	
 	}
 	
-	function getReports($dateOrder = "DESC"){
-		$statement = $this->db->prepare("SELECT * FROM report ORDER BY date " . $dateOrder);
+	function getReports(array $getParams, $dateOrder = "DESC"){
+		$query = "SELECT report.*, engine.name FROM report, engine
+			WHERE engine.uuid = report.engine
+			ORDER BY date " . $dateOrder;
 		
-		if ($statement->execute()) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+		return $this->executeQuery($query, null, $getParams);
 	}
 	
-	function getReportsByEngine($engineUuid, $dateOrder = "DESC"){
-		$statement = $this->db->prepare("SELECT * FROM report WHERE engine = ? ORDER BY date " . $dateOrder);
+	function getReportsByEngine($engineUuid, array $getParams, $dateOrder = "DESC"){
+		$query = "SELECT report.*, engine.name FROM report, engine
+			WHERE engine = ? AND engine.uuid = report.engine 
+			ORDER BY date " . $dateOrder;
 		
-		if ($statement->execute(array($engineUuid))) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+		return $this->executeQuery($query, array($engineUuid), $getParams);
 	}
 	
 	function filterReports($reports, $typeUuid, $from, $until) {

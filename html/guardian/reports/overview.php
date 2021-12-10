@@ -22,9 +22,9 @@ $variables = checkPermissions($variables);
     }
         
     if($userController->hasCurrentUserPrivilege(Privilege::FFADMINISTRATION)){
-        $variables ['reports'] = $reportDAO->getReports();
+    	$variables ['reports'] = $reportDAO->getReports($_GET);
     } else {
-    	$variables ['reports'] = $reportDAO->getReportsByEngine($userController->getCurrentUser()->getEngine()->getUuid());
+    	$variables ['reports'] = $reportDAO->getReportsByEngine($userController->getCurrentUser()->getEngine()->getUuid(), $_GET);
         $variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die Ihrem Zug zugewiesen wurden";
     }
 

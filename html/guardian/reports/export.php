@@ -23,9 +23,9 @@ if(userLoggedIn()){
     $usersEngine = $userController->getCurrentUser()->getEngine();
         
     if( $usersEngine->getIsAdministration() ){
-    	$reports = $reportDAO->getReports("ASC");
+    	$reports = $reportDAO->getReports($_GET, "ASC");
     } else {
-        $reports = $reportDAO->getReportsByEngine($usersEngine->getUuid(), "ASC");
+    	$reports = $reportDAO->getReportsByEngine($usersEngine->getUuid(), $_GET, "ASC");
         $variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die Ihrem Zug zugewiesen wurden";
     }
     
