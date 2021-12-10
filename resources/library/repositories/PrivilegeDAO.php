@@ -61,7 +61,7 @@ class PrivilegeDAO extends BaseDAO{
 		$statement = $this->db->prepare("CREATE TABLE privilege (
 						  uuid CHAR(36) NOT NULL,
 						  privilege VARCHAR(32) NOT NULL,
-						  is_default BOOLEAN NOT NULL,
+						  is_default BOOLEAN NOT NULL default 0,
                           PRIMARY KEY (uuid)
                           )");
 		

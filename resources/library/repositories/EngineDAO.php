@@ -78,7 +78,7 @@ class EngineDAO extends BaseDAO{
 		$statement = $this->db->prepare("CREATE TABLE engine (
                           uuid CHARACTER(36) NOT NULL,
 						  name VARCHAR(32) NOT NULL,
-                          isadministration BOOLEAN NOT NULL,
+                          isadministration BOOLEAN NOT NULL default 0,
 						  shortname VARCHAR(32) NOT NULL,
                           PRIMARY KEY  (uuid)
                           )");

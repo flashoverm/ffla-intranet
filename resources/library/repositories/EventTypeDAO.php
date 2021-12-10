@@ -52,7 +52,7 @@ class EventTypeDAO extends BaseDAO{
 		$statement = $this->db->prepare("CREATE TABLE eventtype (
                           uuid CHARACTER(36) NOT NULL,
 						  type VARCHAR(64) NOT NULL,
-                          isseries BOOLEAN NOT NULL,
+                          isseries BOOLEAN NOT NULL default 0,
                           PRIMARY KEY  (uuid)
                           )");
 		
