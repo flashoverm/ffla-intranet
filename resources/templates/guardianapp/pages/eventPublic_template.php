@@ -8,7 +8,7 @@ if(!isset($events) ){
 	$options = array(
 			'showOccupation' => true,
 	);
-	renderEventTable($events, $options);
+	
+	render(TEMPLATES_PATH . "/guardianapp/elements/event_table.php", $events, $options);
 }
 ?>
-

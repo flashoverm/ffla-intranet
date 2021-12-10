@@ -21,5 +21,3 @@ if (! count ( $hydrants->getData() )) {
     createHydrantGoogleMap($hydrants->getData(), true, true, $config["mapView"]["height"] . "px", $config["mapView"]["widewidth"] . "px");
 }
 ?>
-
-

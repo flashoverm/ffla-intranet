@@ -10,5 +10,3 @@ if (! count ( $hydrants->getData() )) {
  
 }
 ?>
-
-

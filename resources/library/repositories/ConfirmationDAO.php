@@ -28,8 +28,6 @@ class ConfirmationDAO extends BaseDAO {
 			$saved = $this->insertConfirmation($confirmation);
 		}
 		if($saved != null){
-			$this->index(new Search(
-					$saved->getUuid(), $this->tableName, json_encode($saved)));
 			return $saved;
 		}
 		return false;
