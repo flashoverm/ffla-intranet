@@ -27,16 +27,16 @@ if( isset( $_POST['withdraw'] ) ){
 
 if( isset( $_GET["done"] ) ){
 	$variables ['tab'] = 'done';
-	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::DONE, getCurrentUserUUID());
+	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::DONE, getCurrentUserUUID(), $_GET);
 	
 } else if (isset( $_GET["declined"] ) ){
 	$variables ['tab'] = 'declined';
-	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::DECLINED, getCurrentUserUUID());
+	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::DECLINED, getCurrentUserUUID(), $_GET);
 	
 } else {
 	$variables ['tab'] = 'open';
-	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::OPEN, getCurrentUserUUID());
-	$variables['furtherRequest'] = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::REQUEST, getCurrentUserUUID());
+	$variables['dataChangeRequests'] = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::OPEN, getCurrentUserUUID(), $_GET);
+	$variables['furtherRequest'] = $dataChangeRequestDAO->getDataChangeRequestsByStateAndUser(DataChangeRequest::REQUEST, getCurrentUserUUID(), $_GET);
 }
 
 renderLayoutWithContentFile($variables);

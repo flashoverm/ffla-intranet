@@ -55,13 +55,13 @@ if( isset($_POST['confirmation']) ){
 
 if( isset( $_GET["accepted"] ) ){
 	$variables ['tab'] = 'accepted';
-	$variables['confirmations'] = $confirmationDAO->getConfirmationsByState(Confirmation::ACCEPTED);
+	$variables['confirmations'] = $confirmationDAO->getConfirmationsByState(Confirmation::ACCEPTED, $_GET);
 } else if ( isset( $_GET["declined"] ) ){
 	$variables ['tab'] = 'declined';
-	$variables['confirmations'] = $confirmationDAO->getConfirmationsByState(Confirmation::DECLINED);
+	$variables['confirmations'] = $confirmationDAO->getConfirmationsByState(Confirmation::DECLINED, $_GET);
 } else {
 	$variables ['tab'] = 'open';
-	$variables['confirmations'] = $confirmationDAO->getConfirmationsByState(Confirmation::OPEN);
+	$variables['confirmations'] = $confirmationDAO->getConfirmationsByState(Confirmation::OPEN, $_GET);
 }
 
 renderLayoutWithContentFile($variables);

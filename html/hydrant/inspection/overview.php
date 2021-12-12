@@ -25,9 +25,9 @@ if(isset($_POST['delete'])){
 }
 
 if($userController->hasCurrentUserPrivilege(Privilege::HYDRANTADMINISTRATOR)){
-    $variables ['inspections'] = $inspectionDAO->getInspections();
+	$variables ['inspections'] = $inspectionDAO->getInspections($_GET);
 } else {
-	$variables ['inspections'] =  $inspectionDAO->getInspectionsByEngine($engine->getUuid());
+	$variables ['inspections'] =  $inspectionDAO->getInspectionsByEngine($engine->getUuid(), $_GET);
 }
 
 renderLayoutWithContentFile($variables);

@@ -25,6 +25,8 @@ if( ! isset( $url_prefix )){
 $config = array (
     "apps" => array(
         "landing" => "",
+    	"administration" => "administrationapp",
+    	"users" => "usersapp",
         "files" => "filesapp",
         "hydrant" => "hydrantapp",
         "guardian" => "guardianapp",
@@ -60,7 +62,10 @@ $config = array (
     "formats" => array (
         "date" => "d.m.Y",
         "time" => "H:i",
-        "datetime" => "d.m.Y H:i"
+        "datetime" => "d.m.Y H:i",
+    	"sqldatetime" => "'%d.%m.%Y %T'",
+    	"sqldate" => "'%d.%m.%Y'",
+    	"sqltime" => "'%T'",
     ),
     "mapView" => array (
         "apiUrl" => "https://maps.googleapis.com/maps/api/staticmap",

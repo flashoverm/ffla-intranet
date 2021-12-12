@@ -3,6 +3,15 @@
 require_once "BaseDAO.php";
 
 class HydrantDAO extends BaseDAO{
+    
+    const ORDER_HY = "hy";
+    const ORDER_FID = "fid";
+    const ORDER_STREET = "street";
+    const ORDER_DISTRICT = "district";
+    const ORDER_ENGINE = "name";
+    const ORDER_OPERATING = "operating";
+    const ORDER_TYPE = "type";
+    const ORDER_LASTCHECK = "lastcheck";
 	
 	protected $engineDAO;
 	
@@ -21,24 +30,50 @@ class HydrantDAO extends BaseDAO{
 		return $saved;
 	}
 	
-	function getHydrants(){
-		$statement = $this->db->prepare("SELECT * 
+	function getHydrantByUuid(string $uuid){
+	    $statement = $this->db->prepare("SELECT * FROM hydrant WHERE uuid = ?");
+	    
+	    if ($statement->execute(array($uuid))) {
+	        return $this->handleResult($statement, false);
+	    }
+	    return false;
+	}
+	
+	function getHydrantByFid(int $fid){
+	    $statement = $this->db->prepare("SELECT * FROM hydrant WHERE fid = ?");
+	    
+	    if ($statement->execute(array($fid))) {
+	        return $this->handleResult($statement, false);
+	    }
+	    return false;
+	}
+	
+	function getHydrantByHy(int $hy){
+	    $statement = $this->db->prepare("SELECT * FROM hydrant WHERE hy = ?");
+	    
+	    if ($statement->execute(array($hy))) {
+	        return $this->handleResult($statement, false);
+	    }
+	    return false;
+	}
+	
+	
+	function getHydrants($getParams){
+	    $query = "SELECT hydrant.*, lastchecks.lastcheck, engine.name
 			FROM hydrant
 			LEFT JOIN (
         		SELECT hydrant_inspection.hydrant, MAX(inspection.date) AS lastcheck
             	FROM inspection, hydrant_inspection
             	WHERE hydrant_inspection.inspection = inspection.uuid
         		GROUP BY hydrant_inspection.hydrant
-            ) AS lastchecks ON hydrant.uuid = lastchecks.hydrant");
+            ) AS lastchecks ON hydrant.uuid = lastchecks.hydrant
+            INNER JOIN engine ON hydrant.engine = engine.uuid";
 		
-		if ($statement->execute()) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+	    return $this->executeQuery($query, null, $getParams);
 	}
 	
-	function getHydrantsOfEngine($engineUuid){
-		$statement = $this->db->prepare("SELECT * 
+	function getHydrantsOfEngine($engineUuid, $getParams){
+	    $query = "SELECT hydrant.*, lastchecks.lastcheck, engine.name
 			FROM hydrant 
 			LEFT JOIN (
         		SELECT hydrant_inspection.hydrant, MAX(inspection.date) AS lastcheck
@@ -46,52 +81,20 @@ class HydrantDAO extends BaseDAO{
             	WHERE hydrant_inspection.inspection = inspection.uuid
         		GROUP BY hydrant_inspection.hydrant
             ) AS lastchecks ON hydrant.uuid = lastchecks.hydrant
-			WHERE engine = ? AND operating = TRUE");
+            INNER JOIN engine ON hydrant.engine = engine.uuid
+			WHERE engine = ? AND operating = TRUE";
 		
-		if ($statement->execute(array($engineUuid))) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+	    return $this->executeQuery($query, array($engineUuid), $getParams);
 	}
 	
-	function getHydrantsOfStreet(string $street){
-		$statement = $this->db->prepare("SELECT * FROM hydrant WHERE street = ? AND operating = TRUE");
+	function getHydrantsOfStreet(string $street, $getParams){
+		$query = "SELECT hydrant.*, engine.name FROM hydrant, engine WHERE street = ? AND operating = TRUE AND engine.uuid = hydrant.engine";
 		
-		if ($statement->execute(array($street))) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+		return $this->executeQuery($query, array($street), $getParams);
 	}
-	
-	function getHydrantByUuid(string $uuid){
-		$statement = $this->db->prepare("SELECT * FROM hydrant WHERE uuid = ?");
-		
-		if ($statement->execute(array($uuid))) {
-			return $this->handleResult($statement, false);
-		}
-		return false;
-	}
-	
-	function getHydrantByFid(int $fid){
-		$statement = $this->db->prepare("SELECT * FROM hydrant WHERE fid = ?");
-		
-		if ($statement->execute(array($fid))) {
-			return $this->handleResult($statement, false);
-		}
-		return false;
-	}
-	
-	function getHydrantByHy(int $hy){
-		$statement = $this->db->prepare("SELECT * FROM hydrant WHERE hy = ?");
-		
-		if ($statement->execute(array($hy))) {
-			return $this->handleResult($statement, false);
-		}
-		return false;
-	}
-	
-	function getUncheckedHydrantsOfEngine($engineUuid){
-		$statement = $this->db->prepare("SELECT *
+
+	function getUncheckedHydrantsOfEngine($engineUuid, $getParams){
+	    $query = "SELECT hydrant.*, lastchecks.lastcheck, engine.name
         FROM hydrant
         LEFT JOIN (
         	SELECT hydrant_inspection.hydrant, MAX(inspection.date) AS lastcheck
@@ -99,15 +102,14 @@ class HydrantDAO extends BaseDAO{
             WHERE hydrant_inspection.inspection = inspection.uuid
         	GROUP BY hydrant_inspection.hydrant
             ) AS lastchecks ON hydrant.uuid = lastchecks.hydrant
+        INNER JOIN engine ON hydrant.engine = engine.uuid
         WHERE (lastcheck IS NULL OR (lastcheck + INTERVAL hydrant.cycle YEAR) < NOW())
         	AND engine = ? AND checkbyff = TRUE AND operating = true
-        ORDER BY lastcheck");
+        ORDER BY lastcheck";
 		
-		if ($statement->execute(array($engineUuid))) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+	    return $this->executeQuery($query, array($engineUuid), $getParams);
 	}
+	
 	
 	function getStreetList(){
 		$statement = $this->db->prepare("SELECT DISTINCT street FROM hydrant ORDER BY street");

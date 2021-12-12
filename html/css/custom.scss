@@ -5,8 +5,8 @@ $theme-colors: (
 
 @import "bootstrap-4.1.3/scss/bootstrap.scss";
 
-.navbar {
-	margin-bottom: $jumbotron-padding;
+.content-container {
+	margin-top: $jumbotron-padding;
 }
 
 .jumbotron {

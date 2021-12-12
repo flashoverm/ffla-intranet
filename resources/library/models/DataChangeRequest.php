@@ -270,4 +270,20 @@ class DataChangeRequest extends BaseModel {
 		$this->setPerson($person);
 	}
 	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'comment' => $this->comment,
+				'createDate' => $this->createDate,
+				'datatype' => $this->datatype,
+				'lastAdvisor' => $this->lastAdvisor,
+				'newValue' => $this->newValue,
+				'state' => $this->state,
+				'person' => $this->person,
+				'user' => $this->user,
+				'furtherRequest' => $this->furtherRequest,
+				'lastUpdate' => $this->lastUpdate,
+		];
+	}
+	
 }

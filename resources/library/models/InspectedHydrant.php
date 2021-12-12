@@ -128,6 +128,15 @@ class InspectedHydrant extends BaseModel {
 	 * Custom Methods
 	 */
 	
+	public function jsonSerialize() {
+		return [
+				'hydrant' => $this->hydrant,
+				'index' => $this->index,
+				'type' => $this->type,
+				'criteria' => $this->criteria,
+		];
+	}
+	
 	public function addCriterion(int $hydrantIndex, int $criterionIndex, bool $value){
 		$this->criteria[] = array(
 				"hy_idx" => $hydrantIndex,

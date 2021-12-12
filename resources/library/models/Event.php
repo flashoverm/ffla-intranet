@@ -301,6 +301,24 @@ class Event extends BaseModel {
 	 * Custom Methods
 	 */
 	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'comment' => $this->comment,
+				'creator' => $this->creator,
+				'deletedBy' => $this->deletedBy,
+				'endTime' => $this->endTime,
+				'engine' => $this->engine,
+				'published' => $this->published,
+				'staff' => $this->staff,
+				'staffConfirmation' => $this->staffConfirmation,
+				'startTime' => $this->startTime,
+				'title' => $this->title,
+				'type' => $this->type,
+				'typeOther' => $this->typeOther,
+		];
+	}
+	
 	function setEventData($date, $startTime, $endTime, $type, $typeOther, $title, $comment, $engine, $staffConfirmation){
 		$this->setDate($date);
 		$this->setStartTime($startTime);

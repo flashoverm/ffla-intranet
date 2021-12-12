@@ -15,7 +15,7 @@
 </ul>
 
 <?php
-if ( ! count ( $dataChangeRequests ) ) {
+if ( ! count ( $dataChangeRequests->getData() ) ) {
 	showInfo ( "Keine Stammdatenänderungen vorhanden" );
 } else {
 	
@@ -38,7 +38,8 @@ if ( ! count ( $dataChangeRequests ) ) {
 				'showLastUpdate' => true,
 		);
 	}
-	renderDataChangeTable($dataChangeRequests, $options);
+	
+	render(TEMPLATES_PATH . "/masterdataapp/elements/dataChange_table.php", $dataChangeRequests, $options);
 }
 ?>
 

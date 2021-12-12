@@ -173,6 +173,19 @@ class ReportUnit extends BaseModel {
 	 * Custom Methods
 	 */
 	
+	public function jsonSerialize() {
+		return [
+				'date' => $this->date,
+				'endTime' => $this->endTime,
+				'startTime' => $this->startTime,
+				'km' => $this->km,
+				'staff' => $this->staff,
+				'unitName' => $this->unitName,
+				'uuid' => $this->uuid,
+				'reportUuid' => $this->reportUuid,
+		];
+	}
+	
 	public function addStaff(ReportStaff $reportStaff){
 		$this->staff[] = $reportStaff;
 	}

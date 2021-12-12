@@ -100,10 +100,10 @@
 								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users/overview'>Benutzerverwaltung</a>
 								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users/admin'>Benutzer anlegen</a>
 								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users/import'>Benutzer importieren</a>
-								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/privilege'>Berechtigungen</a>
+								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users/privileges'>Berechtigungen</a>
 								<div class='dropdown-divider'></div>
-								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/logbook'>Logbuch</a>
-								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/maillog'>Mail Logbuch</a>
+								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/administration/logbook'>Logbuch</a>
+								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/administration/maillog'>Mail Logbuch</a>
 							</div>
 						</li>
 					<?php 

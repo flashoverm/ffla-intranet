@@ -1,10 +1,10 @@
 <?php
-require_once realpath ( dirname ( __FILE__ ) . "/../resources/bootstrap.php" );
+require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
 
 // Pass variables (as an array) to template
 $variables = array (
-		'app' => $config["apps"]["landing"],
+		'app' => $config["apps"]["administration"],
 		'template' => "maillog_template.php",
 		'title' => "Mail Log",
 		'secured' => true,
@@ -24,15 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 }
 
-$variables ['resultSize'] = 20; 
-
-if(isset($_GET['page'])){
-	$variables ['currentPage'] = $_GET['page'];
-	$variables ['mails'] = $mailLogDAO->getMailLogs($_GET['page'], $variables ['resultSize']);
-} else {
-	$variables ['currentPage'] = 1;
-	$variables ['mails'] = $mailLogDAO->getMailLogs(1, $variables ['resultSize']);
-}
+$variables ['mails'] = $mailLogDAO->getMailLogs($_GET);
 
 renderLayoutWithContentFile ($variables );
  

@@ -61,23 +61,19 @@ class StaffTemplate extends BaseModel {
 	 * Custom Methods
 	 */
 	
+	public function jsonSerialize() {
+		return [
+				'eventType' => $this->eventType,
+				'staffPositions' => $this->staffPositions,
+		];
+	}
+	
 	public function addStaffposition(StaffPosition $staffPosition){
 		$this->staffPositions[] = $staffPosition;
 	}
 	
 	public function clearStaffpositions(){
 		$this->staffPositions = array();
-	}
-	
-	public function toJson(): string{
-		$vars = get_object_vars($this);
-		$vars['eventType'] = json_decode($this->eventType->toJson());
-		$staffpositions = array();
-		foreach($this->getStaffPositions() as $position){
-			$staffpositions[] = json_decode($position->toJson());
-		}
-		$vars['staffPositions'] = $staffpositions; 
-		return json_encode($vars, JSON_UNESCAPED_UNICODE);
 	}
 	
 }

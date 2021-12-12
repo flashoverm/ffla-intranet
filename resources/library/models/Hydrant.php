@@ -303,6 +303,24 @@ class Hydrant extends BaseModel {
 	 * Custom Methods
 	 */
 	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'checkByFF' => $this->checkByFF,
+				'cycle' => $this->cycle,
+				'district' => $this->district,
+				'engine' => $this->engine,
+				'hy' => $this->hy,
+				'lastCheck' => $this->lastCheck,
+				'lat' => $this->lat,
+				'lng' => $this->lng,
+				'map' => $this->map,
+				'operating' => $this->operating,
+				'street' => $this->street,
+				'type' => $this->type,
+		];
+	}
+	
 	public function setHydrantData(int $hy, int $fid, float $lat, float $lng, ?string $street, ?string $district, ?string $type, ?Engine $engine, bool $checkbyff, bool $operating) {
 		$this->setHy($hy);
 		$this->setFid($fid);

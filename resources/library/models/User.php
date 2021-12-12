@@ -374,10 +374,21 @@ class User extends BaseModel {
 		$this->setEngine($engine);
 	}
 	
-	public function toJson() : string{
-		$vars = get_object_vars($this);
-		$vars['engine'] = json_decode($this->engine->toJson());
-		return json_encode($vars, JSON_UNESCAPED_UNICODE);
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'email' => $this->email,
+				'firstname' => $this->firstname,
+				'lastname' => $this->lastname,
+				'engine' => $this->engine,
+				'additionalEngines' => $this->additionalEngines,
+				'locked' => $this->locked,
+				'deleted' => $this->deleted,
+				'lastLogin' => $this->lastLogin,
+				'employerAddress' => $this->employerAddress,
+				'employerMail' => $this->employerMail,
+
+		];
 	}
 }
 

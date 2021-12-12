@@ -34,9 +34,17 @@ if (isset ( $_POST ['deletedb'] )) {
 	}
 }
 
-$variables ['events'] = $eventDAO->getActiveEvents();
-$variables ['pastEvents'] = $eventDAO->getPastEvents();
-$variables ['deletedEvents'] = $eventDAO->getDeletedEvents();
+if( isset( $_GET["past"] ) ){
+	$variables ['tab'] = 'past';
+	$variables ['events'] = $eventDAO->getPastEvents($_GET);
+	
+} else if( isset( $_GET["deleted"] ) ){
+	$variables ['tab'] = 'deleted';
+	$variables ['events'] = $eventDAO->getDeletedEvents($_GET);
+} else {
+	$variables ['tab'] = 'current';
+	$variables ['events'] = $eventDAO->getActiveEvents($_GET);
+}
 
 renderLayoutWithContentFile($variables);
 ?>

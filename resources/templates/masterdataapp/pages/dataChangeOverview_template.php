@@ -11,14 +11,14 @@
 </ul>
 
 <?php
-if ( ! ( count ( $dataChangeRequests ) || ( isset($furtherRequest) && count ( $furtherRequest ) ) ) ) {
+if ( ! ( count ( $dataChangeRequests->getData() ) || ( isset($furtherRequest) && count ( $furtherRequest->getData() ) ) ) ) {
 	showInfo ( "Keine Stammdatenänderungen vorhanden" );
 } else {
 	
 	if($tab == 'open'){
 		
 		//Show additional further request table if present
-		if(count ( $furtherRequest ) ){
+		if(count ( $furtherRequest->getData() ) ){
 
 			echo '<h4>Rückfragen</h4>';
 			echo '<h6 class="text-muted">Inhalt der Rückfrage wird unter "Bearbeiten" angezeigt</h6>';
@@ -27,26 +27,26 @@ if ( ! ( count ( $dataChangeRequests ) || ( isset($furtherRequest) && count ( $f
 				'showUserOptions' => true,
 			);
 			
-			renderDataChangeTable($furtherRequest, $options);
+			render(TEMPLATES_PATH . "/masterdataapp/elements/dataChange_table.php", $furtherRequest, $options);
 			
-			if( count ( $dataChangeRequests ) ){
+			if( count ( $dataChangeRequests->getData() ) ){
 				echo '<h4 class="my-3">Offene Anfragen</h4>';
 			}
 		}
 		
-		if(count ( $dataChangeRequests ) ){
+		if(count ( $dataChangeRequests->getData() ) ){
 			
 			$options = array(
 					'showUserOptions' => true,
 			);
 			
-			renderDataChangeTable($dataChangeRequests, $options);
+			render(TEMPLATES_PATH . "/masterdataapp/elements/dataChange_table.php", $dataChangeRequests, $options);
 		}
 		
 	} else {
 		$options = array();
 		
-		renderDataChangeTable($dataChangeRequests, $options);
+		render(TEMPLATES_PATH . "/masterdataapp/elements/dataChange_table.php", $dataChangeRequests, $options);
 		
 	}
 }

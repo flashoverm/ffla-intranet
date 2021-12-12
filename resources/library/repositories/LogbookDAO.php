@@ -4,6 +4,10 @@ require_once "BaseDAO.php";
 
 class LogbookDAO extends BaseDAO{
 	
+	const ORDER_USER = "firstname";
+	const ORDER_ACTION = "action";
+	const ORDER_TIMESTAMP = "timestamp";
+	
 	function __construct(PDO $pdo) {
 		parent::__construct($pdo, "logbook");
 	}
@@ -24,41 +28,11 @@ class LogbookDAO extends BaseDAO{
 			return false;
 		}
 	}
-	
-	function getLogbook(){
-		$statement = $this->db->prepare("SELECT * FROM logbook ORDER BY timestamp DESC");
+
+	function getLogbook(array $getParams){
+		$query = "SELECT logbook.*, user.firstname FROM logbook, user WHERE user.uuid = logbook.user ORDER BY timestamp DESC";
 		
-		if ($statement->execute()) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
-	}
-	
-	function getLogbookPage($page, $resultSize = 20){
-		$fromRowNumber = (($page-1)*$resultSize)+1;
-		$toRowNumber = $fromRowNumber+$resultSize;
-		
-		$this->db->query("SET @row_number = 0;");
-		
-		$statement = $this->db->prepare("
-			SELECT  *
-			FROM ( SELECT *, (@row_number:=@row_number + 1) AS RowNum FROM logbook ORDER BY timestamp DESC) AS Data
-			WHERE   RowNum >= ? AND RowNum < ?
-			ORDER BY RowNum");
-		
-		if ($statement->execute(array($fromRowNumber, $toRowNumber))) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
-	}
-	
-	function getLogbookEntryCount(){
-		$statement = $this->db->prepare("SELECT count(*) AS count FROM logbook");
-		
-		if ($statement->execute()) {
-			return $statement->fetchColumn(); 
-		}
-		return false;
+		return $this->executeQuery($query, null, $getParams);
 	}
 	
 	function clearLogbook(){

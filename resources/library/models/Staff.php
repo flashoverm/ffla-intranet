@@ -129,4 +129,15 @@ class Staff extends BaseModel {
 	 **************************************************
 	 * Custom Methods
 	 */
+	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'position' => $this->position,
+				'user' => $this->user,
+				'unconfirmed' => $this->unconfirmed,
+				'eventUuid' => $this->eventUuid,
+				'userAcknowledged' => $this->userAcknowledged,
+		];
+	}
 }

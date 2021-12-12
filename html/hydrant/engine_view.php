@@ -15,7 +15,7 @@ if (isset($_GET['engine'])) {
 
     $engine = trim($_GET['engine']);
     
-	$hydrants = $hydrantDAO->getHydrantsOfEngine($engine);
+    $hydrants = $hydrantDAO->getHydrantsOfEngine($engine, $_GET);
     
     $variables ['hydrants'] = $hydrants;
     

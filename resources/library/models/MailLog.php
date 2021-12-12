@@ -186,5 +186,17 @@ class MailLog extends BaseModel {
 		$entry->setError($error);
 		return $entry;
 	}
+	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'timestamp' => $this->timestamp,
+				'body' => $this->body,
+				'error' => $this->error,
+				'recipient' => $this->recipient,
+				'state' => $this->state,
+				'subject' => $this->subject,
+		];
+	}
 
 }

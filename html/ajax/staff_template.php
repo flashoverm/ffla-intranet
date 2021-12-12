@@ -10,7 +10,7 @@ if(!$isManager){
 		
 		$staffTemplate = $staffTemplateDAO->getStaffTemplate($_GET['uuid']);
 		if($staffTemplate){
-			echo $staffTemplate->toJson();
+			echo json_encode($staffTemplate);
 			header('Content-Type: text/plain');
 			//header('Content-Type: application/json');
 			

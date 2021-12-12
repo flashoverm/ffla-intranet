@@ -4,6 +4,14 @@ require_once "BaseDAO.php";
 
 class EventDAO extends BaseDAO{
 	
+	const ORDER_DATE = "date";
+	const ORDER_START = "start_time";
+	const ORDER_END = "end_time";
+	const ORDER_TYPE = "type";
+	const ORDER_TITLE = "title";
+	const ORDER_ENGINE = "name";
+	const ORDER_PUBLIC = "published";
+	
 	protected $userDAO;
 	protected $engineDAO;
 	protected $eventTypeDAO;
@@ -39,22 +47,20 @@ class EventDAO extends BaseDAO{
 		return false;	
 	}
 
-	function getPublicEvents(){
-		$statement = $this->db->prepare("SELECT * FROM event WHERE date >= (now() - INTERVAL 1 DAY) AND published = TRUE AND deleted_by IS NULL ORDER BY date DESC");
+	function getPublicEvents(array $getParams){
+		$query = "SELECT event.*, engine.name FROM event, engine 
+			WHERE date >= (now() - INTERVAL 1 DAY) AND published = TRUE AND deleted_by IS NULL AND event.engine = engine.uuid
+			ORDER BY date DESC";
 		
-		if ($statement->execute()) {
-			return $this->handleResult($statement, true);
-		}
-		return false;	
+		return $this->executeQuery($query, null, $getParams);
 	}
 	
-	function getActiveEvents(){
-		$statement = $this->db->prepare("SELECT * FROM event WHERE date >= (now() - INTERVAL 1 DAY) AND deleted_by IS NULL ORDER BY date ASC");
+	function getActiveEvents(array $getParams){
+		$query = "SELECT event.*, engine.name FROM event, engine 
+			WHERE date >= (now() - INTERVAL 1 DAY) AND deleted_by IS NULL AND event.engine = engine.uuid
+			ORDER BY date ASC";
 		
-		if ($statement->execute()) {
-			return $this->handleResult($statement, true);
-		}
-		return false;	
+		return $this->executeQuery($query, null, $getParams);
 	}
 	
 	function getEventsWithCreator($userUuid){
@@ -66,50 +72,44 @@ class EventDAO extends BaseDAO{
 		return false;
 	}
 	
-	function getPastEvents(){
-		$statement = $this->db->prepare("SELECT * FROM event WHERE date < (now() - INTERVAL 1 DAY) AND deleted_by IS NULL ORDER BY date ASC");
+	function getPastEvents(array $getParams){
+		$query = "SELECT event.*, engine.name FROM event, engine 
+			WHERE date < (now() - INTERVAL 1 DAY) AND deleted_by IS NULL  AND event.engine = engine.uuid
+			ORDER BY date ASC";
 		
-		if ($statement->execute()) {
-			return $this->handleResult($statement, true);
-		}
-		return false;	
+		return $this->executeQuery($query, null, $getParams);
 	}
 	
-	function getDeletedEvents(){
-		$statement = $this->db->prepare("SELECT * FROM event WHERE NOT deleted_by IS NULL ORDER BY date ASC");
+	function getDeletedEvents(array $getParams){
+		$query = "SELECT event.*, engine.name FROM event, engine 
+			WHERE NOT deleted_by IS NULL  AND event.engine = engine.uuid
+			ORDER BY date ASC";
 		
-		if ($statement->execute()) {
-			return $this->handleResult($statement, true);
-		}
-		return false;	
+		return $this->executeQuery($query, null, $getParams);
 	}
 	
-	function getUsersActiveEvents(User $user){
-		$statement = $this->db->prepare("SELECT event.* 
-				 FROM event 
-				 WHERE (engine = ? OR creator = ? OR engine IN (SELECT engine FROM additional_engines WHERE user = ?) )
+	function getUsersActiveEvents(User $user, array $getParams){
+		$query = "SELECT event.*, engine.name
+				 FROM event, engine
+				 WHERE (published = TRUE OR engine = ? OR creator = ? OR engine IN (SELECT engine FROM additional_engines WHERE user = ?) )
                  AND date >= (now() - INTERVAL 1 DAY) 
 				 AND deleted_by IS NULL 
-                 ORDER BY date ASC");
-		
-		if ($statement->execute(array($user->getEngine()->getUuid(), $user->getUuid(), $user->getUuid()))) {
-			return $this->handleResult($statement, true);
-		}
-		return false;	
+ 				 AND event.engine = engine.uuid
+                 ORDER BY date ASC";
+				
+		return $this->executeQuery($query, array($user->getEngine()->getUuid(), $user->getUuid(), $user->getUuid()), $getParams);
 	}
 	
-	function getUsersPastEvents(User $user){
-		$statement = $this->db->prepare("SELECT event.* 
-				FROM event 
+	function getUsersPastEvents(User $user, array $getParams){
+		$query = "SELECT event.*, engine.name
+				FROM event, engine
 				WHERE (engine = ? OR creator = ? OR engine IN (SELECT engine FROM additional_engines WHERE user = ?) ) 
 				AND date < (now() - INTERVAL 1 DAY) 
 				AND deleted_by IS NULL 
-				ORDER BY date DESC");
+				AND event.engine = engine.uuid
+				ORDER BY date DESC";
 		
-		if ($statement->execute(array($user->getEngine()->getUuid(), $user->getUuid(), $user->getUuid()))) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+		return $this->executeQuery($query, array($user->getEngine()->getUuid(), $user->getUuid(), $user->getUuid()), $getParams);
 	}
 
 	function deleteEvent($eventUuid){

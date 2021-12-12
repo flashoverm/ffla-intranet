@@ -7,7 +7,7 @@ $privileges = $privilegeDAO->getPrivileges();
 
 // Pass variables (as an array) to template
 $variables = array (
-		'app' => $config["apps"]["landing"],
+		'app' => $config["apps"]["users"],
 		'template' => "userEdit/userEditAdmin_template.php",
 		'secured' => true,
 		'privilege' => Privilege::PORTALADMIN,

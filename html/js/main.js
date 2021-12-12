@@ -1,11 +1,15 @@
 function showLoader(){
 	var overlay = document.getElementById("overlay");
-	  overlay.style.display = "inline";		
+	overlay.style.display = "inline";
+	var content = document.getElementById("content");
+	content.style.display = "none";
 }
 
 function hideLoader(){
 	var overlay = document.getElementById("overlay");
-	overlay.style.display = "none";		
+	overlay.style.display = "none";	
+	var content = document.getElementById("content");
+	content.style.display = "inline";
 }
 
 

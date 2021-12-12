@@ -8,7 +8,7 @@ if( userLoggedIn() ){
 
 // Pass variables (as an array) to template
 $variables = array(
-		'app' => $config["apps"]["landing"],
+		'app' => $config["apps"]["users"],
 		'template' => "resetPassword_template.php",
 	    'title' => "Passwort zurücksetzen",
 		'secured' => false,

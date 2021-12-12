@@ -64,7 +64,7 @@ if (! count ( $hydrants )) {
 		<tbody>
     
     <?php
-    foreach ( $hydrants as $row ) {
+    foreach ( $hydrants->getData() as $row ) {
 		generateTableRow($row);
 	}
 	?>
@@ -73,7 +73,7 @@ if (! count ( $hydrants )) {
 </div>
 <br>
 <?php 
-createHydrantGoogleMap($hydrants, true, false, $config['mapView']['height'] . 'px', '100%');
+createHydrantGoogleMap($hydrants->getData(), true, false, $config['mapView']['height'] . 'px', '100%');
 }
 ?>
 

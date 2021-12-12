@@ -11,7 +11,7 @@
 </ul>
 
 <?php
-if ( ! count ( $confirmations ) ) {
+if ( ! count ( $confirmations->getData() ) ) {
 	showInfo ( "Keine Anträge vorhanden" );
 } else {
 	
@@ -35,7 +35,7 @@ if ( ! count ( $confirmations ) ) {
 		);
 	}
 
-	renderConfirmationTable($confirmations, $options);
+	render(TEMPLATES_PATH . "/employerapp/elements/confirmation_table.php", $confirmations, $options);
 }
 
     

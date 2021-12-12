@@ -224,4 +224,19 @@ class Confirmation extends BaseModel {
 		$this->setUser($user);
 	}
 	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'date' => $this->date,
+				'startTime' => $this->startTime,
+				'endTime' => $this->endTime,
+				'description' => $this->description,
+				'lastAdvisor' => $this->lastAdvisor,
+				'reason' => $this->reason,
+				'state' => $this->state,
+				'user' => $this->user,
+				'lastUpdate' => $this->lastUpdate,
+		];
+	}
+	
 }

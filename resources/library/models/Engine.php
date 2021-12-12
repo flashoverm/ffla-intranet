@@ -103,4 +103,12 @@ class Engine extends BaseModel {
 	 * Custom Methods
 	 */
 	
+	public function jsonSerialize() {
+		return [
+				'uuid' => $this->uuid,
+				'name' => $this->name,
+				'isAdministration' => $this->isAdministration,
+				'shortName' => $this->shortName,
+		];
+	}
 }
