@@ -10,7 +10,7 @@ $variables = array (
 	    'secured' => true,
 		'privilege' => Privilege::EVENTMANAGER,
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
     if (isset ( $_POST ['emsEntry'] )) {
         if($reportController->setEmsEntry($_POST ['emsEntry'])){

@@ -9,7 +9,7 @@ $variables = array(
 	    'title' => "Ansicht festlegen",
 	    'secured' => true,	
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 $redirect = false;
 

@@ -13,7 +13,7 @@ $variables = array(
 		'privilege' => Privilege::ENGINEHYDRANTMANANGER,
 		'criteria' => InspectedHydrant::HYDRANTCRITERIA,
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if(isset($_GET['id'])){
     

@@ -9,7 +9,7 @@ $variables = array(
 	    'title' => "Hydrantenabfrage",
 	    'secured' => true
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 $variables ['engines'] = $engineDAO->getEngines();
 

@@ -10,7 +10,7 @@ $variables = array(
 		'title' => "Arbeitgebernachweis beantragen",
 		'secured' => true,
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 $confirmation = new Confirmation();
 if(isset($_GET ['id'])) {

@@ -13,7 +13,7 @@ $variables = array (
 	    'eventtypes' => $eventtypes,
 		'privilege' => Privilege::EVENTMANAGER,
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 $type = -1;
 $from = date('Y-m-01');

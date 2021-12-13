@@ -14,7 +14,7 @@ if (! isset($_GET['id'])) {
 	        'showFormular' => false,
 	        'alertMessage' => "Wache kann nicht angezeigt werden"
     );
-    $variables = checkPermissions($variables);
+    $variables = checkSitePermissions($variables);
     
 } else {
     $uuid = trim($_GET['id']);
@@ -43,7 +43,7 @@ if (! isset($_GET['id'])) {
     	        'isCreator' => $isCreator,
     	        'otherEngine' => $otherEngine
     	);
-    	$variables = checkPermissions($variables);
+    	$variables = checkSitePermissions($variables);
     	
     	if($event->getTypeOther() != null){
     		$variables['subtitle'] = $event->getTypeOther();
@@ -128,7 +128,7 @@ if (! isset($_GET['id'])) {
     			'showFormular' => false,
     			'alertMessage' => "Wache nicht gefunden"
     	);
-    	$variables = checkPermissions($variables);
+    	$variables = checkSitePermissions($variables);
     	
     }
 }

@@ -11,7 +11,7 @@ $variables = array (
 		'secured' => true,
 		'privilege' => Privilege::PORTALADMIN
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if (isset ( $_POST ['disable'] )) {
 	$uuid = trim ( $_POST ['disable'] );

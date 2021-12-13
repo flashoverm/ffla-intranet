@@ -12,7 +12,7 @@ $variables = array (
 	    'showFormular' => false,
 		'privilege' => Privilege::EVENTMANAGER
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 

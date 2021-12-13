@@ -10,7 +10,7 @@ $variables = array(
 	    'secured' => true,
 		'privilege' => Privilege::FILEADMIN
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if(isset($_FILES['upload']) && isset($_POST['description'])){
     

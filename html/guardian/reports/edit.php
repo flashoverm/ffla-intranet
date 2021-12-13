@@ -18,7 +18,7 @@ $variables = array (
 		'engines' => $engines,
         'title' => "Wachbericht erstellen",
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 $eventReport = NULL;
 

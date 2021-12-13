@@ -3,7 +3,21 @@ require_once LIBRARY_PATH . '/util.php';
 require_once LIBRARY_PATH . "/ui_util.php";
 require_once LIBRARY_PATH . "/ui_render.php";
 
-function checkPermissions($variables = array()){
+function checkFunctionPermissions(array $privileges, $variables = array()){
+	$newVariables = $variables;
+	$newVariables['privilege'] = $privileges;
+	$newVariables['isFunction'] = true;
+	checkSitePermissions($newVariables);
+}
+
+function checkFunctionPermission(string $privilege, $variables = array()){
+	$newVariables = $variables;
+	$newVariables['privilege'] = $privilege;
+	$newVariables['isFunction'] = true;
+	checkSitePermissions($newVariables);
+}
+
+function checkSitePermissions($variables = array()){
 	global $currentUser;
 	
 	$variables['currentUser'] = $currentUser;
@@ -16,29 +30,41 @@ function checkPermissions($variables = array()){
 	}
 	
 	//check if logged in user is required
-	if ($variables['secured'] && (! isset($currentUser) || ! $currentUser) ) {
+	if (isset($variables['secured']) && $variables['secured'] && (! isset($currentUser) || ! $currentUser) ) {
 		goToLogin();
 	}
 	
 	// check privileges
 	if(isset($variables['privilege'])){
 		
-		if(isset($currentUser) && $currentUser){
-			
-			if( $currentUser->hasPrivilegeByName($variables['privilege']) ){
+		if(is_array($variables['privilege'])){
+			//Multible privileges possible
+			if(userHasOnePrivilege($variables['privilege'], true)){
+				//User has one of the possible required privileges -> OK
+				return $variables;
+			}
+		} else {
+			if(userHasPrivilege($variables['privilege'], true)){
 				//User has required privilege -> OK
 				return $variables;
 			}
 		}
+		
 	} else {
 		//case: no privilege required -> OK
 		return $variables;
 	}
 	
 	//required privilege missing -> not OK
-	$variables['alertMessage'] = "Sie haben keine Berechtigung diese Seite anzuzeigen";
+	if(isset($variables['isFunction']) && $variables['isFunction']){
+		$variables['alertMessage'] = "Sie haben keine Berechtigung diese Aktion auszuführen";
+	} else {
+		$variables['alertMessage'] = "Sie haben keine Berechtigung diese Seite anzuzeigen";
+	}
 	$variables['showFormular'] = false;
-	
+	if( ! isset($variables['title'])){
+		$variables['title'] = "Keine Berechtigung";
+	}
 	renderLayoutWithContentFile($variables);
 	//stop processing because of missing privilege
 	exit();
@@ -57,8 +83,6 @@ function renderPrintContentFile($variables = array()){
         }
     }
     
-    $contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $template;
-    
     require_once (TEMPLATES_PATH . "/header_print.php");
     
     if(isset($alertMessage)){
@@ -73,12 +97,13 @@ function renderPrintContentFile($variables = array()){
     	showInfo($infoMessage);
     }
     
-    if (file_exists ( $contentFileFullPath )) {
-        if(!isset($showFormular) || $showFormular){
-            require_once ($contentFileFullPath);
-        }
-    } else {
-    	echo "Requested template  " . $contentFileFullPath . " not existing";
+    if(!isset($showFormular) || $showFormular){
+    	$contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $template;
+    	if (file_exists ( $contentFileFullPath )) {
+    		require_once ($contentFileFullPath);
+    	} else {
+    		echo "Requested template  " . $contentFileFullPath . " not existing";
+    	}
     }
         
     echo "</body>
@@ -100,8 +125,6 @@ function renderLayoutWithContentFile($variables = array()) {
 		}
 	}
 	
-	$contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $template;
-	
 	require_once (TEMPLATES_PATH . "/header.php");
 	
 	//Footer is always added to the bottom so it can be placed before the cotent-container
@@ -122,12 +145,13 @@ function renderLayoutWithContentFile($variables = array()) {
 		showInfo($infoMessage);
 	}
 
-	if (file_exists ( $contentFileFullPath )) {
-		if(!isset($showFormular) || $showFormular){
+	if(!isset($showFormular) || $showFormular){
+		$contentFileFullPath = TEMPLATES_PATH . "/" . $app .  "/pages/" . $template;
+		if (file_exists ( $contentFileFullPath )) {
 			require_once ($contentFileFullPath);
+		} else {
+			echo "Requested template  " . $contentFileFullPath . " not existing";
 		}
-	} else {
-		echo "Requested template  " . $contentFileFullPath . " not existing";
 	}
 
 	// close content div

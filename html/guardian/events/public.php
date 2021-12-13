@@ -8,9 +8,9 @@ $variables = array (
 		'app' => $config["apps"]["guardian"],
 		'template' => "eventPublic_template.php",
 	    'title' => "Öffentliche Wachen",
-	    'secured' => false,
+	    'secured' => true,
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if($config["settings"]["publicevents"]){
 	$variables ['events'] =  $eventDAO->getPublicEvents($_GET);

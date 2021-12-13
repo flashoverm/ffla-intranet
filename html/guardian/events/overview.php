@@ -10,7 +10,7 @@ $variables = array (
 	    'title' => "Übersicht Wachen",
 	    'secured' => true,
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if (isset ( $_POST ['delete'] )) {
 	$delete_event_uuid = trim ( $_POST ['delete'] );

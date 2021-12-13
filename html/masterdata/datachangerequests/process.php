@@ -12,7 +12,7 @@ $variables = array(
 		'secured' => true,
 		'privilege' => Privilege::MASTERDATAADMIN
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if( isset($_POST['datachangerequest']) ){
 	$dataChangeRequestUuid = trim ( $_POST['datachangerequest'] );

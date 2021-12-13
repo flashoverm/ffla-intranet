@@ -10,7 +10,7 @@ $variables = array (
 	    'secured' => true,
 		'privilege' => Privilege::EVENTADMIN
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
   
 if (isset ( $_POST ['delete'] )) {
 	$delete_report_uuid = trim ( $_POST ['delete'] );

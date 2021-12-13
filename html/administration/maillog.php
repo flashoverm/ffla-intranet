@@ -10,7 +10,7 @@ $variables = array (
 		'secured' => true,
 		'privilege' => Privilege::PORTALADMIN
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if( isset($_POST['purge']) ){

@@ -10,7 +10,7 @@ $variables = array(
 		'title' => "Stammdatenänderung beantragen",
 		'secured' => true,
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 $dataChangeRequest = new DataChangeRequest();
 if(isset($_GET ['id'])) {

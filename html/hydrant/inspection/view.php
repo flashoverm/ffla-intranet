@@ -11,7 +11,7 @@ $variables = array(
 	    'secured' => true,
 		'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if(isset($_GET['id'])){
     

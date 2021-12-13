@@ -9,7 +9,7 @@ $variables = array(
 	    'title' => "Straße nicht festgelegt",
 	    'secured' => true
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if (isset($_GET['street'])) {
 

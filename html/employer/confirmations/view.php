@@ -11,7 +11,7 @@ $variables = array(
 		'secured' => true,
 		'orientation' => 'portrait'
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if (isset($_GET['id'])) {
 	

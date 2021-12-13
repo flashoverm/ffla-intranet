@@ -12,12 +12,13 @@ $variables = array(
 		'secured' => true,
 		'privilege' => Privilege::FFADMINISTRATION
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if( isset($_POST['confirmation']) ){
 	$confirmationUuid = trim ( $_POST['confirmation'] );
 	
 	if( isset($_POST['accept']) ){
+
 		$confirmation = $confirmationController->acceptConfirmation($confirmationUuid, $userController->getCurrentUser());
 		if($confirmation){
 			createConfirmationFile($confirmation->getUuid());
@@ -32,6 +33,7 @@ if( isset($_POST['confirmation']) ){
 		}
 		
 	} else if ( isset($_POST['decline']) ){
+		
 		$reason = null;
 		if(isset( $_POST ['reason'] ) && !empty( $_POST ['reason'] ) ){
 			$reason = trim( $_POST ['reason'] );

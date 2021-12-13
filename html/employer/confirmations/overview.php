@@ -10,7 +10,7 @@ $variables = array(
 		'title' => "Eigene Arbeitgebernachweise",
 		'secured' => true,
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if( isset( $_POST['withdraw'] ) ){
 	//create logentry

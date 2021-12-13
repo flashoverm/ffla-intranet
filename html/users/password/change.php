@@ -10,7 +10,7 @@ $variables = array(
 	    'secured' => true,
 		'privilege' => Privilege::EDITUSER,	
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if (isset($_POST['password_old']) && isset($_POST['password']) && isset($_POST['password2']) && userLoggedIn()) {
 

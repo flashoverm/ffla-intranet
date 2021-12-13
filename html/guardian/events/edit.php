@@ -17,7 +17,7 @@ $variables = array (
         'staffpositions' => $staffpositions,
         'engines' => $engines,
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 //Display event if uuid is parameter
 if (isset($_GET['id'])) {

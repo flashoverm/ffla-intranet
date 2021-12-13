@@ -14,7 +14,7 @@ $variables = array (
 		'subtitle' => "der Freiwilligen Feuerwehr der Stadt Landshut",
 		'secured' => false
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 if(isset($_SESSION["ref"])){
 	$variables ['infoMessage'] = "Bitte zuerst einloggen";

@@ -10,7 +10,7 @@ $variables = array(
 	    'secured' => true,
 		'privilege' => Privilege::HYDRANTADMINISTRATOR
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 $variables['years'] = $inspectionDAO->getInspectionYears();
 

@@ -10,7 +10,7 @@ $variables = array(
 	    'secured' => true,
 	    'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
-$variables = checkPermissions($variables);
+$variables = checkSitePermissions($variables);
 
 $variables['criteria'] = InspectedHydrant::HYDRANTCRITERIA;
 

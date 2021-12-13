@@ -1,5 +1,48 @@
 <?php
 
+function userIsCurrentUser(User $user){
+	if($user->getUuid() == getCurrentUserUUID()){
+		return true;
+	}
+	return false;
+}
+
+function checkPermission($requiredPrivilege){
+	global $currentUser;
+	
+	if(isset($currentUser) && $currentUser){
+		
+		if( $currentUser->hasPrivilegeByName($requiredPrivilege) ){
+			return true;
+		}
+	}
+	return false;
+}
+
+function userHasPrivilege($requiredPrivilege, $continue = false){
+	if(checkPermission($requiredPrivilege)){
+		return true;
+	}
+	http_response_code(403);
+	if($continue){
+		return false;
+	}
+	exit();
+}
+
+function userHasOnePrivilege(array $requiredPrivileges, $continue = false){
+	foreach($requiredPrivileges as $requiredPrivilege){
+		if(checkPermission($requiredPrivilege)){
+			return true;
+		}
+	}
+	http_response_code(403);
+	if($continue){
+		return false;
+	}
+	exit();
+}
+
 function getCurrentUserUUID(){
 	if(userLoggedIn()){
 		if(isset($_SESSION ['intranet_doasuser'])){
