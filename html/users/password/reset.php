@@ -2,7 +2,7 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
 
-if( userLoggedIn() ){
+if( SessionUtil::userLoggedIn() ){
 	header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects
 }
 

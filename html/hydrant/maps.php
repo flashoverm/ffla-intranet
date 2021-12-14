@@ -2,7 +2,7 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once LIBRARY_PATH . "/util.php";
 
-if(	userLoggedIn() ){
+if(	SessionUtil::userLoggedIn() ){
     
     $fullpath = $config["paths"]["maps"] . basename($_GET['hydrant']) . ".png";
     
@@ -16,7 +16,7 @@ if(	userLoggedIn() ){
     
     imagedestroy($im);
 } else {
-    goToLogin();
+	SessionUtil::goToLogin();
 }
 
 ?>

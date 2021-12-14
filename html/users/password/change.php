@@ -12,9 +12,9 @@ $variables = array(
 );
 $variables = checkSitePermissions($variables);
 
-if (isset($_POST['password_old']) && isset($_POST['password']) && isset($_POST['password2']) && userLoggedIn()) {
+if (isset($_POST['password_old']) && isset($_POST['password']) && isset($_POST['password2']) && SessionUtil::userLoggedIn()) {
 
-	$uuid = getCurrentUserUUID();
+	$uuid = SessionUtil::getCurrentUserUUID();
     $password_old = trim($_POST['password_old']);
     $password = trim($_POST['password']);
     $password2 = trim($_POST['password2']);

@@ -28,7 +28,7 @@ if (! isset($_GET['id'])) {
 		
 		$variables['report'] = $report;
 				
-		if(userLoggedIn()){
+		if(SessionUtil::userLoggedIn()){
         	
 			if( $guardianUserController->isUserAllowedToEditReport($currentUser, $uuid) ){
 	            

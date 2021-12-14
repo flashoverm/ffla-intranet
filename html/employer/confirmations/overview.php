@@ -27,12 +27,12 @@ if( isset( $_POST['withdraw'] ) ){
 
 if( isset( $_GET["accepted"] ) ){
 	$variables ['tab'] = 'accepted';
-	$variables['confirmations'] = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::ACCEPTED, getCurrentUserUUID(), $_GET);
+	$variables['confirmations'] = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::ACCEPTED, SessionUtil::getCurrentUserUUID(), $_GET);
 	
 } else {
 	$variables ['tab'] = 'open';
-	$variables['confirmations'] = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::OPEN, getCurrentUserUUID(), $_GET);
-	$variables['declined'] = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::DECLINED, getCurrentUserUUID(), $_GET);
+	$variables['confirmations'] = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::OPEN, SessionUtil::getCurrentUserUUID(), $_GET);
+	$variables['declined'] = $confirmationDAO->getConfirmationsByStateAndUser(Confirmation::DECLINED, SessionUtil::getCurrentUserUUID(), $_GET);
 }
 
 renderLayoutWithContentFile($variables);

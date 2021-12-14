@@ -160,8 +160,8 @@ class LogbookEntry extends BaseModel {
 		$entry->setTimestamp(date('Y-m-d H:i:s'));
 		$entry->setAction($actionId);
 		$entry->setUser(NULL);
-		if(userLoggedIn()){
-			$entry->setUser(getCurrentUserUUID());
+		if(SessionUtil::userLoggedIn()){
+			$entry->setUser(SessionUtil::getCurrentUserUUID());
 		}
 		$entry->setObjects($objects);
 		$entry->setMessage(LogbookEntry::logbookEnry($actionId, $objects));

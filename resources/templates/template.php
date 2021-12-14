@@ -1,5 +1,4 @@
 <?php
-require_once LIBRARY_PATH . '/util.php';
 require_once LIBRARY_PATH . "/ui_util.php";
 require_once LIBRARY_PATH . "/ui_render.php";
 
@@ -22,7 +21,7 @@ function checkSitePermissions($variables = array()){
 	
 	$variables['currentUser'] = $currentUser;
 	
-	$localhostRequest = localhostRequest();
+	$localhostRequest = SessionUtil::localhostRequest();
 	
 	if($localhostRequest){
 		//skip privilege check on localhost-request
@@ -31,7 +30,7 @@ function checkSitePermissions($variables = array()){
 	
 	//check if logged in user is required
 	if (isset($variables['secured']) && $variables['secured'] && (! isset($currentUser) || ! $currentUser) ) {
-		goToLogin();
+		SessionUtil::goToLogin();
 	}
 	
 	// check privileges
@@ -39,12 +38,12 @@ function checkSitePermissions($variables = array()){
 		
 		if(is_array($variables['privilege'])){
 			//Multible privileges possible
-			if(userHasOnePrivilege($variables['privilege'], true)){
+			if(PrivilegeUtil::userHasOnePrivilege($variables['privilege'], true)){
 				//User has one of the possible required privileges -> OK
 				return $variables;
 			}
 		} else {
-			if(userHasPrivilege($variables['privilege'], true)){
+			if(PrivilegeUtil::userHasPrivilege($variables['privilege'], true)){
 				//User has required privilege -> OK
 				return $variables;
 			}

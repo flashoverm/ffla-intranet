@@ -24,8 +24,8 @@ if (! isset($_GET['id'])) {
     	
         $isCreator = false;
         $otherEngine = null;
-    	if (userLoggedIn()) {
-    		$isCreator = (strcmp($event->getCreator()->getUuid(), getCurrentUserUUID()) == 0);
+        if (SessionUtil::userLoggedIn()) {
+    		$isCreator = (strcmp($event->getCreator()->getUuid(), SessionUtil::getCurrentUserUUID()) == 0);
     		
     		if(strcmp($userController->getCurrentUser()->getEngine()->getUuid(), $event->getEngine()->getUuid()) != 0){
     			$otherEngine = $event->getEngine();
@@ -81,7 +81,7 @@ if (! isset($_GET['id'])) {
     		$staff_uuid = trim($_POST['removestaffbyuserid']);
     		$staffEntry = $staffDAO->getEventStaffEntry($staff_uuid);
     		
-    		if($staffEntry->getUser() != null && getCurrentUserUUID() == $staffEntry->getUser()->getUuid()){
+    		if($staffEntry->getUser() != null && SessionUtil::getCurrentUserUUID() == $staffEntry->getUser()->getUuid()){
     			$log = LogbookEntry::fromAction(LogbookActions::EventUnscribedByUser, $staff_uuid);
     			if($eventController->removeUser($staff_uuid)){
     				mail_unscribe_staff_user($staff_uuid, $uuid);

@@ -76,7 +76,7 @@ function send_mail($to, $subject, $body, $attachments = NULL, $footer = true) {
 	        return true;
 	        
 	    }catch(Exception $e){
-	    	if( startsWith($e->getMessage(), "SMTP connect() failed") ){
+	    	if( StringUtil::startsWith($e->getMessage(), "SMTP connect() failed") ){
 	    		$mailState = MailLog::MailConnectError;
 	    	} else {
 	    		$mailState = MailLog::Failed;

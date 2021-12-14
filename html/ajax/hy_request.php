@@ -1,7 +1,7 @@
 <?php
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 
-if(! userLoggedIn()){
+if(! SessionUtil::userLoggedIn()){
     http_response_code(401);
 } else {
     if (isset($_GET['fid']) && isset($_GET['fieldid'])) {

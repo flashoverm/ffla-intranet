@@ -22,7 +22,7 @@
 				name="start" id="start" 
 				<?php
 				if(isset($report) ){
-					echo "value='" . timeToHm ($report->getStartTime()) . "'";
+					echo "value='" . DateFormatUtil::timeToHm ($report->getStartTime()) . "'";
 				}?>
 				required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
 			</div>
@@ -33,7 +33,7 @@
 				placeholder="--:--" title="--:--" class="form-control" 
 				<?php
 				if(isset($report) && $report->getEndTime() != null ){
-					echo "value='" . timeToHm ($report->getEndTime()) . "'";
+					echo "value='" . DateFormatUtil::timeToHm ($report->getEndTime()) . "'";
 				}?>
 				name="end" id="end" required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
 			</div>

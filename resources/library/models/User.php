@@ -106,7 +106,7 @@ class User extends BaseModel {
 	 * @return NULL
 	 */
 	public function getEngine() : ?Engine {
-		if( getCurrentUserUUID() == $this->uuid && isset( $_SESSION["setEngine"] ) ){
+		if( SessionUtil::getCurrentUserUUID() == $this->uuid && isset( $_SESSION["setEngine"] ) ){
 			return $_SESSION["setEngine"];
 		}
 		return $this->engine;

@@ -23,7 +23,7 @@ if (isset ( $_POST ['delete'] )) {
 	}
 }
 
-if(userLoggedIn()){
+if(SessionUtil::userLoggedIn()){
 	
 	if( isset( $_GET["past"] ) ){
 		$variables ['tab'] = 'past';

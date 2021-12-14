@@ -2,13 +2,13 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once LIBRARY_PATH . "/util.php";
 
-if(	userLoggedIn() ){
+if(	SessionUtil::userLoggedIn() ){
 	
 	$fullpath = $config["paths"]["files"] . basename($_GET['id']);
 	
 	if (file_exists($fullpath)) {
 		
-		if(endsWith($_GET['file'], ".pdf")){
+		if(StringUtil::endsWith($_GET['file'], ".pdf")){
 			header("Content-type: application/pdf");
 			header('Content-Disposition: inline; filename=' . $_GET['id']);
 
@@ -29,7 +29,7 @@ if(	userLoggedIn() ){
 		echo "Datei nicht gefunden";
 	}
 } else {
-	goToLogin();
+	SessionUtil::goToLogin();
 }
 
 ?>

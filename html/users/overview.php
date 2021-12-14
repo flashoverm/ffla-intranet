@@ -15,7 +15,7 @@ $variables = checkSitePermissions($variables);
 
 if (isset ( $_POST ['disable'] )) {
 	$uuid = trim ( $_POST ['disable'] );
-	if($uuid == getCurrentUserUUID()){
+	if($uuid == SessionUtil::getCurrentUserUUID()){
 		$variables ['alertMessage'] = "Eigenes Konto kann nicht gesperrt werden";
 	} else if($userController->lockUser( $uuid )) {
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserLocked, $uuid));
@@ -35,7 +35,7 @@ if (isset ( $_POST ['enable'] )) {
 }
 if (isset ( $_POST ['delete'] )) {
 	$uuid = trim ( $_POST ['delete'] );
-	if($uuid == getCurrentUserUUID()){
+	if($uuid == SessionUtil::getCurrentUserUUID()){
 		$variables ['alertMessage'] = "Eigenes Konto kann nicht gelöscht werden";
 	} else if($userController->deleteUser( $uuid )) {
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserDeleted, $uuid));

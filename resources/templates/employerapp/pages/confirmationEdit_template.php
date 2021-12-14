@@ -19,7 +19,7 @@
 				name="start" id="start" 
 				<?php
 				if(isset($confirmation) ){
-					echo "value='" . timeToHm ($confirmation->getStartTime()) . "'";
+					echo "value='" . DateFormatUtil::timeToHm ($confirmation->getStartTime()) . "'";
 				}?>
 				required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
 			</div>
@@ -30,7 +30,7 @@
 				placeholder="--:--" title="--:--" class="form-control" 
 				<?php
 				if(isset($confirmation) ){
-					echo "value='" . timeToHm ($confirmation->getEndTime()) . "'";
+					echo "value='" . DateFormatUtil::timeToHm ($confirmation->getEndTime()) . "'";
 				}?>
 				name="end" id="end" required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
 			</div>

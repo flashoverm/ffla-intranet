@@ -11,7 +11,7 @@ $variables = array(
 );
 $variables = checkSitePermissions($variables);
 
-if( userLoggedIn() ){
+if( SessionUtil::userLoggedIn() ){
 	header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects
 }
 

@@ -19,7 +19,7 @@ $type = -1;
 $from = date('Y-m-01');
 $to = date('Y-m-t');
 
-if(userLoggedIn()){
+if(SessionUtil::userLoggedIn()){
     $usersEngine = $userController->getCurrentUser()->getEngine();
         
     if( $usersEngine->getIsAdministration() ){
@@ -117,7 +117,7 @@ function reportsToCSV($reports, $head = ""){
         $filestring .= "\n\n"; 
     }
     
-    echo convertToWindowsCharset($filestring);
+    echo StringUtil::convertToWindowsCharset($filestring);
 }
 
 function reportsToInvoiceCSV($reports, $head = ""){
@@ -155,7 +155,7 @@ function reportsToInvoiceCSV($reports, $head = ""){
 		"\n";
 	}
 	
-	echo convertToWindowsCharset($filestring);
+	echo StringUtil::convertToWindowsCharset($filestring);
 }
 
 ?>

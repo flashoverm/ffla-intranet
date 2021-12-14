@@ -90,7 +90,7 @@ function renderPageSizeSelection(ResultSet $resultSet){
 			<?php if($resultSet->getPageSize() == -1){
 			    echo "Zeige alle " . $resultSet->getOverallSize() . " Zeilen";
 			} else {
-			    echo "Zeige Zeile " . $resultSet->getFrom() . " bis " . $resultSet->getTo() . " von " . $resultSet->getOverallSize() . " Zeilen.";
+				echo "Zeige Zeile " . $resultSet->getFrom() . " bis " . min(array($resultSet->getTo(), $resultSet->getOverallSize())) . " von " . $resultSet->getOverallSize() . " Zeilen.";
 			}
 			?>
 		</span>

@@ -22,8 +22,8 @@ class UserController extends BaseController{
 	}
 		
 	function getCurrentUser(){
-		if( userLoggedIn()){
-			return $this->userDAO->getUserByUUID(getCurrentUserUUID());
+		if( SessionUtil::userLoggedIn()){
+			return $this->userDAO->getUserByUUID(SessionUtil::getCurrentUserUUID());
 		}
 		return false;
 	}
