@@ -59,11 +59,6 @@ if (isset ( $_POST ['useremail'] ) ) {
 		$employerMail = trim($_POST['employerMail']);
 	}
 	
-	$uuid = null;
-	if(isset($_GET['self'])){
-		$uuid = $variables['user']->getUuid();
-	}
-	
 	$exit = false;
 	
 	//check if password equals (if set)
@@ -81,7 +76,7 @@ if (isset ( $_POST ['useremail'] ) ) {
 	
 	if (! $exit) {
 
-		if($uuid == null){
+		if( ! isset($variables['userSelfEdit']) || ! $variables['userSelfEdit']){
 			
 			//New user is requested
 			
