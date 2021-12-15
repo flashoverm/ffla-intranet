@@ -108,7 +108,7 @@
 			<tr>
 				<th>Erstellt am</th>
 				<td>
-					<?= date($config ["formats"] ["datetime"], strtotime($report->getCreateDate())); ?> Uhr
+					<?= date($config ["formats"] ["datetime"], strtotime($report->getCreateDate())); ?>
 				</td>
 			</tr>
 			<?php } ?>

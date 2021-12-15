@@ -19,7 +19,7 @@ require_once 'reportTable.php';
 			<tr>
 				<th>Freigegeben am</th>
 				<td>
-					<?= date($config ["formats"] ["datetime"], strtotime($report->getManagerApprovedDate())); ?> Uhr
+					<?= date($config ["formats"] ["datetime"], strtotime($report->getManagerApprovedDate())); ?>
 				</td>
 			</tr>
 			<?php } ?>
