@@ -2,9 +2,12 @@
 Release Documentation
 ******************************
 
-#### V2.5
+### V2.4.5
 
-Feature: Message board
+ALTER TABLE report ADD createDate DATETIME NULL AFTER creator;
+ALTER TABLE report ADD managerApprovedDate DATETIME NULL AFTER managerApproved;  
+ALTER TABLE report ADD managerApprovedBy CHAR(36) NULL AFTER managerApprovedDate; 
+ALTER TABLE report ADD CONSTRAINT report_ibfk_4 FOREIGN KEY (managerApprovedBy) REFERENCES user(uuid) ON DELETE RESTRICT ON UPDATE RESTRICT; 
 
 ### V2.4.4
 

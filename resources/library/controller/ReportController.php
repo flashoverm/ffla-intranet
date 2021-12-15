@@ -25,8 +25,10 @@ class ReportController extends BaseController{
 		return $this->reportDAO->updateReportOnly($report);
 	}
 	
-	function setApproval($reportUuid){
+	function setApproval($reportUuid, $currentUser){
 		$report = $this->reportDAO->getReport($reportUuid);
+		$report->setManagerApprovedDate(date('Y-m-d H:i:s'));
+		$report->setManagerApprovedBy($currentUser);
 		$report->setManagerApproved(true);
 		return $this->reportDAO->updateReportOnly($report);
 	}
@@ -34,6 +36,8 @@ class ReportController extends BaseController{
 	function unsetApproval($reportUuid){
 		$report = $this->reportDAO->getReport($reportUuid);
 		$report->setManagerApproved(false);
+		$report->setManagerApprovedDate(null);
+		$report->setManagerApprovedBy(null);
 		return $this->reportDAO->updateReportOnly($report);
 	}
 	

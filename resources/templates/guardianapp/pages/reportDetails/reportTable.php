@@ -104,6 +104,14 @@
 				<th>Ersteller</th>
 				<td><?= $report->getCreator()->getFullName() ?></td>
 			</tr>
+			<?php if($report->getCreateDate() != null){ ?>
+			<tr>
+				<th>Erstellt am</th>
+				<td>
+					<?= date($config ["formats"] ["datetime"], strtotime($report->getCreateDate())); ?>
+				</td>
+			</tr>
+			<?php } ?>
 		</tbody>
 	</table>
 </div>

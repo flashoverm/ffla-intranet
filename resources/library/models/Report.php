@@ -36,6 +36,8 @@ class Report extends BaseModel {
 	
 	protected ?User $creator;
 	
+	protected $createDate;
+	
 	/**
 	 * @ORM\Column(type="smallint")
 	 */
@@ -56,6 +58,12 @@ class Report extends BaseModel {
 	 */
 	protected bool $managerApproved;
 	
+	
+	protected $managerApprovedDate;
+	
+	
+	protected ?User $managerApprovedBy;
+	
 	/**
 	 * @ORM\Column(type="string")
 	 */
@@ -70,6 +78,48 @@ class Report extends BaseModel {
 	protected array $units;
 	
 	
+	/**
+	 * @return NULL
+	 */
+	public function getCreateDate() {
+		return $this->createDate;
+	}
+
+	/**
+	 * @return NULL
+	 */
+	public function getManagerApprovedDate() {
+		return $this->managerApprovedDate;
+	}
+
+	/**
+	 * @return NULL
+	 */
+	public function getManagerApprovedBy() : ?User {
+		return $this->managerApprovedBy;
+	}
+
+	/**
+	 * @param NULL $createDate
+	 */
+	public function setCreateDate($createDate) {
+		$this->createDate = $createDate;
+	}
+
+	/**
+	 * @param NULL $managerApprovedDate
+	 */
+	public function setManagerApprovedDate($managerApprovedDate) {
+		$this->managerApprovedDate = $managerApprovedDate;
+	}
+
+	/**
+	 * @param NULL $managerApprovedBy
+	 */
+	public function setManagerApprovedBy(?User $managerApprovedBy) {
+		$this->managerApprovedBy = $managerApprovedBy;
+	}
+
 	/**
 	 * @return mixed
 	 */
@@ -293,6 +343,8 @@ class Report extends BaseModel {
 	public function setUnits(array $units) {
 		$this->units = $units;
 	}
+	
+	
 
 	/*
 	 **************************************************
@@ -302,6 +354,7 @@ class Report extends BaseModel {
 	function __construct() {
 		parent::__construct();
 		$this->creator = NULL;
+		$this->createDate = NULL;
 		$this->date = NULL;
 		$this->emsEntry = false;
 		$this->endTime = NULL;
@@ -309,6 +362,8 @@ class Report extends BaseModel {
 		$this->eventUuid = NULL;
 		$this->ilsEntry = false;
 		$this->managerApproved = false;
+		$this->managerApprovedBy = NULL;
+		$this->managerApprovedDate = NULL;
 		$this->noIncidents = false;
 		$this->reportText = NULL;
 		$this->startTime = NULL;
@@ -328,6 +383,7 @@ class Report extends BaseModel {
 		return [
 				'uuid' => $this->uuid,
 				'creator' => $this->creator,
+				'createDate' => $this->createDate,
 				'date' => $this->date,
 				'emsEntry' => $this->emsEntry,
 				'endTime' => $this->endTime,
@@ -335,6 +391,8 @@ class Report extends BaseModel {
 				'eventUuid' => $this->eventUuid,
 				'ilsEntry' => $this->ilsEntry,
 				'managerApproved' => $this->managerApproved,
+				'managerApprovedDate' => $this->managerApprovedDate,
+				'managerApprovedBy' => $this->managerApprovedBy,
 				'noIncidents' => $this->noIncidents,
 				'reportText' => $this->reportText,
 				'startTime' => $this->startTime,
