@@ -55,7 +55,7 @@ if (! isset($_GET['id'])) {
 	            }
 	            
 	            if(isset($_POST['managerApprove'])){
-	            	if($reportController->setApproval($uuid)){
+	            	if($reportController->setApproval($uuid, $currentUser)){
 	            		mail_report_approved($uuid);
 	            		$variables['successMessage'] = "Bericht aktualisiert und an Verwaltung versandt";
 	            		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportApproved, $uuid));

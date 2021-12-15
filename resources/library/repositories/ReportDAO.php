@@ -99,8 +99,13 @@ class ReportDAO extends BaseDAO{
 		$object->setIlsEntry($result['ilsEntry']);
 		$object->setEmsEntry($result['emsEntry']);
 		$object->setManagerApproved($result['managerApproved']);
+		if($result['managerApprovedBy'] != null){
+			$object->setManagerApprovedBy($this->userDAO->getUserByUUID($result['managerApprovedBy']));
+		}
+		$object->setManagerApprovedDate($result['managerApprovedDate']);
 		$object->setReportText($result['report']);
 		$object->setUnits($this->reportUnitDAO->getReportUnits($result['uuid']));
+		$object->setCreateDate($result['createDate']);
 		return $object;
 	}
 	
@@ -113,10 +118,15 @@ class ReportDAO extends BaseDAO{
 		    $creator = $report->getCreator()->getUuid();
 		}
 		
+		$approvedBy = null;
+		if($report->getManagerApprovedBy() != null){
+			$approvedBy = $report->getManagerApprovedBy()->getUuid();
+		}
+		
 		$statement = $this->db->prepare("INSERT INTO report (uuid, event, date, start_time, 
 			end_time, type, type_other, title, engine, creator, noIncidents, ilsEntry, 
-			report, emsEntry, managerApproved)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)");
+			report, emsEntry, createDate, managerApproved, managerApprovedBy, managerApprovedDate)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?)");
 		
 		$result = $statement->execute(array(
 				$uuid, $report->getEventUuid(), $report->getDate(),
@@ -125,7 +135,8 @@ class ReportDAO extends BaseDAO{
 				$report->getTitle(), $report->getEngine()->getUuid(),
 		        $creator, $report->getNoIncidents(),
 				$report->getIlsEntry(), $report->getReportText(),
-				$report->getEmsEntry(), $report->getManagerApproved()
+				$report->getEmsEntry(), $report->getManagerApproved(),
+				$approvedBy, $report->getManagerApprovedDate()
 		));
 		
 		if ($result) {
@@ -166,19 +177,26 @@ class ReportDAO extends BaseDAO{
 	        $creator = $report->getCreator()->getUuid();
 	    }
 	    
+	    $approvedBy = null;
+	    if($report->getManagerApprovedBy() != null){
+	    	$approvedBy = $report->getManagerApprovedBy()->getUuid();
+	    }
+	    
 		$statement = $this->db->prepare("UPDATE report
 		SET event = ?, date = ?, start_time = ?, end_time = ?, type = ?, type_other = ?,
-		title = ?, engine = ?, creator = ?, noIncidents = ?, ilsEntry = ?, report = ?,
-		emsEntry = ?, managerApproved = ? WHERE uuid = ?");
+		title = ?, engine = ?, creator = ?, createDate = ?, noIncidents = ?, ilsEntry = ?, report = ?,
+		emsEntry = ?, managerApproved = ?, managerApprovedBy = ?, managerApprovedDate = ?
+		WHERE uuid = ?");
 		
 		$result = $statement->execute(array(
 				$report->getEventUuid(), $report->getDate(),
 				$report->getStartTime(), $report->getEndTime(),
 				$report->getType()->getUuid(), $report->getTypeOther(),
 				$report->getTitle(), $report->getEngine()->getUuid(),
-		        $creator, $report->getNoIncidents(),
+		        $creator, $report->getCreateDate(), $report->getNoIncidents(),
 				$report->getIlsEntry(), $report->getReportText(),
 				$report->getEmsEntry(), $report->getManagerApproved(),
+				$approvedBy, $report->getManagerApprovedDate(),
 				$report->getUuid()
 		));
 		
@@ -200,14 +218,18 @@ class ReportDAO extends BaseDAO{
 						  title VARCHAR(96),
                           engine CHARACTER(36) NOT NULL,
 						  creator VARCHAR(128) NOT NULL,
+						  createDate datetime NOT NULL,
                           noIncidents BOOLEAN NOT NULL default 0,
                           ilsEntry BOOLEAN NOT NULL default 0,
 						  emsEntry BOOLEAN NOT NULL default 0,
 						  managerApproved BOOLEAN NOT NULL default 0,
+						  managerApprovedDate datetime,
+						  managerApprovedBy CHARACTER(36),
                           report TEXT,
                           PRIMARY KEY  (uuid),
 						  FOREIGN KEY (type) REFERENCES eventtype(uuid),
-						  FOREIGN KEY (engine) REFERENCES engine(uuid)
+						  FOREIGN KEY (engine) REFERENCES engine(uuid),
+						  FOREIGN KEY (managerApprovedBy) REFERENCES user(uuid),
                           )");
 		
 		$result = $statement->execute();
