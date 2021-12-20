@@ -51,7 +51,7 @@ RewriteRule ^(.*)past/?$ 									$1/overview.php?past [QSA]
 RewriteRule ^(.*)calender/([^/]+)?$ 						$1/calender.php?id=$2 [QSA]
 RewriteRule ^(.*)events/([^/]+)/assign/?([^/]+)/?$			$1/events/assign.php?id=$2&staffid=$3 [QSA]
 RewriteRule ^(.*)events/([^/]+)/subscribe/?([^/]+)/?$ 		$1/events/subscribe.php?id=$2&staffid=$3 [QSA]
-RewriteRule ^(.*)events/([^/]+)/acknowledge/?([^/]+)/?$ 	$1/events/details.php?id=$2&acknowledge=$3 [QSA]
+RewriteRule ^(.*)events/([^/]+)/acknowledge/?([^/]+)/?$ 	$1/events/view.php?id=$2&acknowledge=$3 [QSA]
 RewriteRule ^(.*)reports/new/([^/]+)/?$ 					$1/reports/edit.php?event=$2 [QSA]
 RewriteRule ^(.*)templates/([^/]+)/?$ 						$1/templates.php?eventtype=$2 [QSA]
 

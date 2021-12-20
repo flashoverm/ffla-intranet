@@ -21,6 +21,15 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 	$event = $eventDAO->getEvent($eventUUID);
 	$staffposition = $staffDAO->getEventStaffEntry($staffUUID);
 	
+	if( ! $event->getPublished()){
+		checkPermissions(array(
+				array("privilege" => Privilege::EVENTADMIN),
+				array("privilege" => Privilege::EVENTMANAGER, "engine" => $event->getEngine()),
+				array("privilege" => Privilege::EVENTPARTICIPENT, "engine" => $event->getEngine()),
+				array("user" => $event->getCreator())
+		), $variables);
+	}
+	
 	if(isset($event) and isset($staffposition) && $event->getDeletedBy() == null) {
 	    $variables ['showFormular'] = true;
 	    

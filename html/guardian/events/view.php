@@ -38,12 +38,21 @@ if (! isset($_GET['id'])) {
     			'app' => $config["apps"]["guardian"],
     			'template' => "eventDetails/eventDetails_template.php",
     			'title' => $event->getType()->getType(),
-    			'secured' => false,
+    			'secured' => true,
     			'showFormular' => true,
     	        'isCreator' => $isCreator,
     	        'otherEngine' => $otherEngine
     	);
     	checkSitePermissions($variables);
+    	
+    	if( ! $event->getPublished()){
+    		checkPermissions(array(
+    				array("privilege" => Privilege::EVENTADMIN),
+    				array("privilege" => Privilege::EVENTMANAGER, "engine" => $event->getEngine()),
+    				array("privilege" => Privilege::EVENTPARTICIPENT, "engine" => $event->getEngine()),
+    				array("user" => $event->getCreator())
+    		), $variables);
+    	}
     	
     	if($event->getTypeOther() != null){
     		$variables['subtitle'] = $event->getTypeOther();
@@ -56,10 +65,15 @@ if (! isset($_GET['id'])) {
     		$staffUuid = trim($_POST['acknowledgeID']);
     	}
     	if(isset($staffUuid)){
-    		if($eventController->acknowledgeStaffUser($staffUuid)){
-    			$variables['successMessage'] = "Die Wachteilnahme wurde zur Kenntnis genommen";
+    		$staffEntry = $staffDAO->getEventStaffEntry($staffUuid);
+    		if($currentUser->getUuid() == $staffEntry->getUser()->getUuid()){
+    			if($eventController->acknowledgeStaffUser($staffUuid)){
+    				$variables['successMessage'] = "Die Wachteilnahme wurde zur Kenntnis genommen";
+    			} else {
+    				$variables['alertMessage'] = "Kenntnisnahme nicht möglich";
+    			}
     		} else {
-    			$variables['alertMessage'] = "Kenntnisnahme nicht möglich";
+    			$variables['alertMessage'] = "Kenntnisnahme nur bei eigenem Eintrag möglich";
     		}
     	}
     	
