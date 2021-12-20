@@ -10,7 +10,7 @@ $variables = array (
 	    'title' => "Öffentliche Wachen",
 	    'secured' => true,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if($config["settings"]["publicevents"]){
 	$variables ['events'] =  $eventDAO->getPublicEvents($_GET);

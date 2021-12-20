@@ -10,13 +10,15 @@ $variables = array(
 		'title' => "Stammdatenänderung beantragen",
 		'secured' => true,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 $dataChangeRequest = new DataChangeRequest();
 if(isset($_GET ['id'])) {
 	$variables ['title'] = 'Stammdatenänderung bearbeiten';
 	$dataChangeRequest = $dataChangeRequestDAO->getDataChangeRequest($_GET ['id']);
 	$variables ['dataChangeRequest'] = $dataChangeRequest;
+	
+	checkPermissions(array("user" => $dataChangeRequest->getUser()), $variables);
 }
 
 if( isset($_POST['datatype']) && isset($_POST['newvalue']) ){

@@ -10,6 +10,6 @@ $variables = array (
 		'subtitle' => 'der Freiwilligen Feuerwehr der Stadt Landshut',
 		'secured' => false,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 renderLayoutWithContentFile ($variables);

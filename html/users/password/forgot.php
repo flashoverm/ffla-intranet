@@ -9,7 +9,7 @@ $variables = array(
 		'title' => "Passwort vergessen",
 		'secured' => false,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if( SessionUtil::userLoggedIn() ){
 	header ( "Location: " . $config["urls"]["intranet_home"] . "/" ); // redirects

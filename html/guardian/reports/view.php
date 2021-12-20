@@ -12,7 +12,7 @@ $variables = array(
 		'secured' => true,
 		'showFormular' => false,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if (! isset($_GET['id'])) {
 	
@@ -33,6 +33,15 @@ if (! isset($_GET['id'])) {
 			if( $guardianUserController->isUserAllowedToEditReport($currentUser, $uuid) ){
 	            
 	        	$variables['showFormular'] = true;
+	        	
+	        	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	        		$report = $reportDAO->getReport($uuid);
+	        		checkPermissions(array(
+	        				array("privilege" => Privilege::EVENTADMIN),
+	        				array("privilege" => Privilege::EVENTMANAGER, "engine" => $report->getEngine()),
+	        				array("user" => $report->getCreator())
+	        		), $variables);
+	        	}
 	            
 	            if(isset($_POST['emsEntry'])){
 	            	if($reportController->setEmsEntry($uuid)){

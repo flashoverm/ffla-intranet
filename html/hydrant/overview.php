@@ -9,7 +9,7 @@ $variables = array(
 		'title' => "Hydranten der Stadt Landshut",
 		'secured' => true
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 $hydrants = $hydrantDAO->getHydrants($_GET);
 

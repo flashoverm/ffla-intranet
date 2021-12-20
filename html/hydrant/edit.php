@@ -11,7 +11,7 @@ $variables = array (
 	    'showFormular' => true,
 	    'privilege' => Privilege::HYDRANTADMINISTRATOR
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 $variables ['engines'] = $engineDAO->getEngines();
 

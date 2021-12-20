@@ -11,7 +11,7 @@ $variables = array (
 	    'secured' => true,
 	    'showFormular' => false
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 

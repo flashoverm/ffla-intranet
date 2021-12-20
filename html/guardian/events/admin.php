@@ -11,7 +11,7 @@ $variables = array (
 	    'secured' => true,
 		'privilege' => Privilege::EVENTADMIN
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if (isset ( $_POST ['delete'] )) {
 	$delete_event_uuid = trim ( $_POST ['delete'] );

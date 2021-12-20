@@ -9,7 +9,7 @@ $variables = array(
 	    'title' => "Formulare",
 	    'secured' => true
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 $variables ['files'] = $fileDAO->getFiles();
 

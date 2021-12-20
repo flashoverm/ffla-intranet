@@ -14,7 +14,7 @@ if (! isset($_GET['id'])) {
 	        'showFormular' => false,
 	        'alertMessage' => "Wache kann nicht angezeigt werden"
     );
-    $variables = checkSitePermissions($variables);
+    checkSitePermissions($variables);
     
 } else {
     $uuid = trim($_GET['id']);
@@ -43,7 +43,7 @@ if (! isset($_GET['id'])) {
     	        'isCreator' => $isCreator,
     	        'otherEngine' => $otherEngine
     	);
-    	$variables = checkSitePermissions($variables);
+    	checkSitePermissions($variables);
     	
     	if($event->getTypeOther() != null){
     		$variables['subtitle'] = $event->getTypeOther();
@@ -65,6 +65,12 @@ if (! isset($_GET['id'])) {
     	
     	if (isset($_POST['removestaffid'])) {
     		// Remove by manager
+    		checkPermissions(array(
+    				array("privilege" => Privilege::EVENTADMIN),
+    				array("privilege" => Privilege::EVENTMANAGER, "engine" => $event->getEngine()),
+    				array("user" => $event->getCreator())
+    		), $variables);
+    		
     		$staff_uuid = trim($_POST['removestaffid']);
     		mail_remove_staff_user($staff_uuid, $uuid);
     		$log = LogbookEntry::fromAction(LogbookActions::EventUnscribed, $staff_uuid);
@@ -96,6 +102,12 @@ if (! isset($_GET['id'])) {
     	}
     	
     	if (isset($_POST['confirmstaffid'])) {
+    		checkPermissions(array(
+    				array("privilege" => Privilege::EVENTADMIN),
+    				array("privilege" => Privilege::EVENTMANAGER, "engine" => $event->getEngine()),
+    				array("user" => $event->getCreator())
+    		), $variables);
+    		
     		$staff_uuid = trim($_POST['confirmstaffid']);
     		mail_confirm_staff_user($staff_uuid, $uuid);
     		if($eventController->confirmStaffUser($staff_uuid)){
@@ -107,6 +119,12 @@ if (! isset($_GET['id'])) {
     	}
     	
     	if (isset($_POST['publish']) && $event->getEngine() != NULL) {
+    		checkPermissions(array(
+    				array("privilege" => Privilege::EVENTADMIN),
+    				array("privilege" => Privilege::EVENTMANAGER, "engine" => $event->getEngine()),
+    				array("user" => $event->getCreator())
+    		), $variables);
+    		
     		$event = $eventController->publishEvent($uuid);
     		if($event){
     			mail_publish_event($event);
@@ -128,7 +146,7 @@ if (! isset($_GET['id'])) {
     			'showFormular' => false,
     			'alertMessage' => "Wache nicht gefunden"
     	);
-    	$variables = checkSitePermissions($variables);
+    	checkSitePermissions($variables);
     	
     }
 }

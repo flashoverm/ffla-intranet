@@ -15,7 +15,7 @@ $variables = array (
 		'privilege' => Privilege::PORTALADMIN,
 		'engines' => $engines,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if(isset($_POST['engine'])){
 	

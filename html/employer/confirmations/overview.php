@@ -10,11 +10,13 @@ $variables = array(
 		'title' => "Eigene Arbeitgebernachweise",
 		'secured' => true,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if( isset( $_POST['withdraw'] ) ){
 	//create logentry
 	$confirmationUuid = $_POST['withdraw'];
+	$confirmation = $confirmationDAO->getConfirmation($confirmationUuid);
+	checkPermissions(array("user" => $confirmation->getUser()), $variables);
 	$log = LogbookEntry::fromAction(LogbookActions::ConfirmationWithdraw, $confirmationUuid);
 	
 	if( $confirmationDAO->deleteConfirmation($confirmationUuid) ){

@@ -11,7 +11,7 @@ $variables = array(
 		'secured' => true,
 		'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 //get hydrants by engine with last checkup not set or older than 6 years
 $params = $_GET;

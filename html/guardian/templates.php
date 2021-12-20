@@ -11,7 +11,7 @@ $variables = array (
 		'eventtypes' => $eventTypeDAO->getEventTypes(),
 		'staffpositions' => $staffPositionDAO->getStaffPositions(),
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if(isset($_GET ['eventtype'])){
 	

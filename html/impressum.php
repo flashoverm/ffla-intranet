@@ -9,6 +9,6 @@ $variables = array (
 		'title' => 'Impressum',
 		'secured' => false,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 renderLayoutWithContentFile ($variables );

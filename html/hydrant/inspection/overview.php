@@ -10,11 +10,19 @@ $variables = array(
 	    'secured' => true,
 		'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 $engine = $userController->getCurrentUser()->getEngine();
 
 if(isset($_POST['delete'])){
+	
+	$inspection = $inspectionDAO->getInspection($_POST['delete']);
+	checkPermissions(array(
+			array('engine' => $inspection->getEngine(), 'privilege' => Privilege::ENGINEHYDRANTMANANGER),
+			array('privilege' => Privilege::HYDRANTADMINISTRATOR),
+			array('privilege' => Privilege::FFADMINISTRATION),
+	), $variables);
+	
 	$log = LogbookEntry::fromAction(LogbookActions::InspectionDeleted, $_POST['delete']);
     if($inspectionDAO->deleteInspection($_POST['delete'])){
         $variables ['successMessage'] = "Prüfbericht gelöscht";

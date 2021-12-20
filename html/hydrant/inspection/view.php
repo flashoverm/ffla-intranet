@@ -11,11 +11,17 @@ $variables = array(
 	    'secured' => true,
 		'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if(isset($_GET['id'])){
     
     $inspection = $inspectionDAO->getInspection($_GET['id']);
+    
+    checkPermissions(array(
+    		array('engine' => $inspection->getEngine(), 'privilege' => Privilege::ENGINEHYDRANTMANANGER),
+    		array('privilege' => Privilege::HYDRANTADMINISTRATOR),
+    		array('privilege' => Privilege::FFADMINISTRATION),
+    ), $variables);
     
     if($inspection) {
         $variables['inspection'] = $inspection;

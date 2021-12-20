@@ -10,7 +10,7 @@ $variables = array(
 		'secured' => true,
 		'privilege' => Privilege::ENGINEHYDRANTMANANGER
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 $engine = $userController->getCurrentUser()->getEngine();
 

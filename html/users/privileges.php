@@ -11,6 +11,6 @@ $variables = array (
 		'title' => "Berechtigungen",
 		'privileges' => $privilegeDAO->getPrivileges(),
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 renderLayoutWithContentFile ( $variables );

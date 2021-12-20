@@ -12,11 +12,11 @@ $variables = array(
 		'secured' => true,
 		'privilege' => Privilege::FFADMINISTRATION
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if( isset($_POST['confirmation']) ){
 	$confirmationUuid = trim ( $_POST['confirmation'] );
-	
+		
 	if( isset($_POST['accept']) ){
 
 		$confirmation = $confirmationController->acceptConfirmation($confirmationUuid, $userController->getCurrentUser());

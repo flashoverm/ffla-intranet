@@ -10,9 +10,16 @@ $variables = array (
 	    'secured' => true,
 		'privilege' => Privilege::EVENTMANAGER,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
     if (isset ( $_POST ['emsEntry'] )) {
+    	$report = $reportDAO->getReport($_POST ['emsEntry']);
+    	checkPermissions(array(
+    			array("privilege" => Privilege::EVENTADMIN),
+    			array("privilege" => Privilege::EVENTMANAGER, "engine" => $report->getEngine()),
+    			array("user" => $report->getCreator())
+    	), $variables);
+    	
         if($reportController->setEmsEntry($_POST ['emsEntry'])){
         	$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportEMSSet, $_POST ['emsEntry']));
             $variables['successMessage'] = "Bericht aktualisiert";

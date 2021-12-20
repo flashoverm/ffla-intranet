@@ -13,7 +13,7 @@ $variables = array(
 		'privilege' => Privilege::PORTALADMIN,	
 		'privileges' => $privileges,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if( isset( $_GET["user"] ) ) {
 	

@@ -12,7 +12,7 @@ $variables = array(
 		'criteria' => InspectedHydrant::HYDRANTCRITERIA,
 		'orientation' => 'landscape'
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 $hydrants = array();
 

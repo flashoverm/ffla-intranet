@@ -34,7 +34,7 @@ if( $userController->getCurrentUser() != null ){
 		$variables['secured'] = false;
 	}
 }
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if (isset ( $_POST ['useremail'] ) ) {
 

@@ -10,10 +10,17 @@ $variables = array (
 	    'title' => "Übersicht Wachen",
 	    'secured' => true,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if (isset ( $_POST ['delete'] )) {
 	$delete_event_uuid = trim ( $_POST ['delete'] );
+	$event = $eventDAO->getEvent($delete_event_uuid);
+	checkPermissions(array(
+			array("privilege" => Privilege::EVENTADMIN),
+			array("privilege" => Privilege::EVENTMANAGER, "engine" => $event->getEngine()),
+			array("user" => $event->getCreator())
+	), $variables);
+	
 	mail_delete_event ( $delete_event_uuid );
 	if( $eventController->markAsDeleted( $delete_event_uuid ) ){
 		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventDeleted, $delete_event_uuid));

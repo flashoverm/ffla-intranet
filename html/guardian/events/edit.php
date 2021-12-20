@@ -17,7 +17,7 @@ $variables = array (
         'staffpositions' => $staffpositions,
         'engines' => $engines,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 //Display event if uuid is parameter
 if (isset($_GET['id'])) {
@@ -28,18 +28,13 @@ if (isset($_GET['id'])) {
     $event = $eventDAO->getEvent($uuid);
     
     if($event){
+    	checkPermissions(array(
+    			array("privilege" => Privilege::EVENTADMIN),
+    			array("privilege" => Privilege::EVENTMANAGER, "engine" => $event->getEngine()),
+    			array("user" => $event->getCreator())
+    	), $variables);
     	
-    	$dateNow = getdate();
-    	$now = strtotime( $dateNow['year']."-".$dateNow['mon']."-".($dateNow['mday']) );
-
-    	if (SessionUtil::userLoggedIn() && $guardianUserController->isUserAllowedToEditEvent($userController->getCurrentUser(), $event->getUuid())){
-			$variables['event'] = $event;
-	            
-		} else {
-			$variables ['alertMessage'] = "Sie sind nicht berechtigt, diese Wache zu bearbeiten";
-			$variables ['showFormular'] = false;
-		}
-    	
+    	$variables['event'] = $event;
     } else {
         $variables ['alertMessage'] = "Wache nicht gefunden";
         $variables ['showFormular'] = false;

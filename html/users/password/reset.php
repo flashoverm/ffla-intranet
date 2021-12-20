@@ -13,7 +13,7 @@ $variables = array(
 	    'title' => "Passwort zurücksetzen",
 		'secured' => false,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 $token = null;
 if( ! isset($_GET['token']) ) {

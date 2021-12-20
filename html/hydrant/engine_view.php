@@ -9,7 +9,7 @@ $variables = array(
 	    'title' => "Zug nicht festgelegt",
 	    'secured' => true
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if (isset($_GET['engine'])) {
 

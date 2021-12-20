@@ -10,11 +10,15 @@ $variables = array(
 		'title' => "Eigene Stammdatenänderungen",
 		'secured' => true,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if( isset( $_POST['withdraw'] ) ){
 	//create logentry
 	$dataChangeRequestUuid = $_POST['withdraw'];
+	
+	$dataChangeRequest = $dataChangeRequestDAO->getDataChangeRequest($dataChangeRequestUuid);
+	checkPermissions(array("user" => $dataChangeRequest->getUser()), $variables);
+	
 	$log = LogbookEntry::fromAction(LogbookActions::DataChangeWithdraw, $dataChangeRequestUuid);
 	
 	if( $dataChangeRequestDAO->deleteDataChangeRequest($dataChangeRequestUuid) ){

@@ -18,7 +18,7 @@ $variables = array (
 		'engines' => $engines,
         'title' => "Wachbericht erstellen",
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 $eventReport = NULL;
 
@@ -28,6 +28,12 @@ if(isset($_GET['id'])){
 	$uuid = trim($_GET['id']);
 	$eventReport = $reportDAO->getReport($uuid);
 	if($eventReport){
+		checkPermissions(array(
+				array("privilege" => Privilege::EVENTADMIN),
+				array("privilege" => Privilege::EVENTMANAGER, "engine" => $eventReport->getEngine()),
+				array("user" => $eventReport->getCreator())
+		), $variables);
+		
 		$variables['report'] = $eventReport;
 		$variables['title'] = 'Wachbericht bearbeiten';
 	} else {

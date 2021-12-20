@@ -11,12 +11,17 @@ $variables = array(
 		'secured' => true,
 		'orientation' => 'portrait'
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if (isset($_GET['id'])) {
 	
 	$confirmation = $confirmationDAO->getConfirmation($_GET['id']);
 	$variables['confirmation'] = $confirmation;
+	
+	checkPermissions(array(
+			array("privilege" => Privilege::FFADMINISTRATION),
+			array("user" => $confirmation->getUser())
+	), $variables);
 }
 
 if(isset($_GET['print'])){

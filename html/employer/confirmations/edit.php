@@ -10,13 +10,15 @@ $variables = array(
 		'title' => "Arbeitgebernachweis beantragen",
 		'secured' => true,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 $confirmation = new Confirmation();
 if(isset($_GET ['id'])) {
 	$variables ['title'] = 'Arbeitgebernachweis bearbeiten';
 	$confirmation = $confirmationDAO->getConfirmation($_GET ['id']);
 	$variables ['confirmation'] = $confirmation;
+	
+	checkPermissions(array("user" => $confirmation->getUser()), $variables);
 }
 
 if( isset($_POST['date']) && isset($_POST['start']) && isset($_POST['end']) ){

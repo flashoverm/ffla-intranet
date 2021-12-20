@@ -9,7 +9,7 @@ $variables = array(
 	    'title' => "Ansicht festlegen",
 	    'secured' => true,	
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 $redirect = false;
 
@@ -24,8 +24,12 @@ if( ! count($currentUser->getAdditionalEngines()) > 0 ){
 
 if( isset( $_GET["engine"] ) ){
 	$engine = $engineDAO->getEngine($_GET["engine"]);
-	$_SESSION["setEngine"] = $engine;
-	$redirect = true;	
+	if($currentUser->hasEngine($engine)){
+		$_SESSION["setEngine"] = $engine;
+	} else {
+		$_SESSION["setEngine"] = $currentUser->getEngine();
+	}
+	$redirect = true;
 }
 
 if($redirect){

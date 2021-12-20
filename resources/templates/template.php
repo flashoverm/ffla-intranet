@@ -2,30 +2,38 @@
 require_once LIBRARY_PATH . "/ui_util.php";
 require_once LIBRARY_PATH . "/ui_render.php";
 
-function checkFunctionPermissions(array $privileges, $variables = array()){
-	$newVariables = $variables;
-	$newVariables['privilege'] = $privileges;
-	$newVariables['isFunction'] = true;
-	checkSitePermissions($newVariables);
+function checkPermissions(array $rules, $variables = array()){
+	/*
+	 * rules: list (array) of rules (OR)
+	 * rule:  combination of user, engine or single privilege (AND)
+	 */
+	
+	if(SessionUtil::localhostRequest()){
+		//skip privilege check on localhost-request
+		return;
+	}
+	
+	if(isset($rules[0]) && is_array($rules[0])){
+		foreach($rules as $rule){
+			if(PrivilegeUtil::checkRule($rule)){
+				return;
+			}
+		}
+	} else {
+		if(PrivilegeUtil::checkRule($rules)){
+			return;
+		}
+	}
+	
+	renderErrorPage(403, $variables);
 }
 
-function checkFunctionPermission(string $privilege, $variables = array()){
-	$newVariables = $variables;
-	$newVariables['privilege'] = $privilege;
-	$newVariables['isFunction'] = true;
-	checkSitePermissions($newVariables);
-}
-
-function checkSitePermissions($variables = array()){
+function checkSitePermissions($variables){
 	global $currentUser;
 	
-	$variables['currentUser'] = $currentUser;
-	
-	$localhostRequest = SessionUtil::localhostRequest();
-	
-	if($localhostRequest){
+	if(SessionUtil::localhostRequest()){
 		//skip privilege check on localhost-request
-		return $variables;
+		return;
 	}
 	
 	//check if logged in user is required
@@ -33,45 +41,33 @@ function checkSitePermissions($variables = array()){
 		SessionUtil::goToLogin();
 	}
 	
-	// check privileges
 	if(isset($variables['privilege'])){
-		
-		if(is_array($variables['privilege'])){
-			//Multible privileges possible
-			if(PrivilegeUtil::userHasOnePrivilege($variables['privilege'], true)){
-				//User has one of the possible required privileges -> OK
-				return $variables;
-			}
-		} else {
-			if(PrivilegeUtil::userHasPrivilege($variables['privilege'], true)){
-				//User has required privilege -> OK
-				return $variables;
-			}
+		if( ! PrivilegeUtil::checkPrivileges($variables['privilege'])){
+			renderErrorPage(403, $variables);
 		}
-		
-	} else {
-		//case: no privilege required -> OK
-		return $variables;
 	}
-	
-	//required privilege missing -> not OK
-	if(isset($variables['isFunction']) && $variables['isFunction']){
-		$variables['alertMessage'] = "Sie haben keine Berechtigung diese Aktion auszuführen";
+}
+
+function renderErrorPage($code, $variables = array()){
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		$variables['alertMessage'] = "Sie haben keine Berechtigung diese Aktion durchzuführen";
 	} else {
 		$variables['alertMessage'] = "Sie haben keine Berechtigung diese Seite anzuzeigen";
 	}
+	
+
 	$variables['showFormular'] = false;
 	if( ! isset($variables['title'])){
 		$variables['title'] = "Keine Berechtigung";
 	}
+	http_response_code($code);
 	renderLayoutWithContentFile($variables);
-	//stop processing because of missing privilege
+	//stop processing because of missing privilege/wrong user
 	exit();
-	
 }
 
 function renderPrintContentFile($variables = array()){
-	global $config, $userController, $userDAO, $engineDAO, $guardianUserController, 
+	global $config, $currentUser, $userController, $userDAO, $engineDAO, $guardianUserController, 
 	$eventTypeDAO, $logbookDAO, $mailLogDAO, $staffPositionDAO, $hydrantDAO, $eventController;
 
     if (count ( $variables ) > 0) {
@@ -113,7 +109,7 @@ function renderPrintContentFile($variables = array()){
 }
 
 function renderLayoutWithContentFile($variables = array()) {
-	global $config, $userController, $userDAO, $engineDAO, $guardianUserController, 
+	global $config, $currentUser, $userController, $userDAO, $engineDAO, $guardianUserController, 
 	$eventTypeDAO, $logbookDAO, $mailLogDAO, $staffPositionDAO, $hydrantDAO, $eventController;
 
 	if (count ( $variables ) > 0) {

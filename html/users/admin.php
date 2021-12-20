@@ -14,7 +14,7 @@ $variables = array (
 		'engines' => $engineDAO->getEngines(),
 		'privileges' => $privileges,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if( isset($_GET['id']) ){
 	// edit by admin

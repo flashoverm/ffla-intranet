@@ -13,7 +13,7 @@ $variables = array (
 	    'eventtypes' => $eventtypes,
 		'privilege' => Privilege::EVENTMANAGER,
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 $type = -1;
 $from = date('Y-m-01');
@@ -22,7 +22,7 @@ $to = date('Y-m-t');
 if(SessionUtil::userLoggedIn()){
     $usersEngine = $userController->getCurrentUser()->getEngine();
         
-    if( $usersEngine->getIsAdministration() ){
+    if( $usersEngine->getIsAdministration()){
     	$reports = $reportDAO->getReports($_GET, "ASC");
     } else {
     	$reports = $reportDAO->getReportsByEngine($usersEngine->getUuid(), $_GET, "ASC");

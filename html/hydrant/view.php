@@ -9,7 +9,7 @@ $variables = array(
 	    'title' => "Hydrant",
 	    'secured' => true
 );
-$variables = checkSitePermissions($variables);
+checkSitePermissions($variables);
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         
