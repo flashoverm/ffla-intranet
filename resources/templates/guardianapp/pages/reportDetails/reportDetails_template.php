@@ -50,21 +50,24 @@ require_once 'reportTable.php';
 		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/view/". $report->getUuid() . "/file"; ?>">PDF anzeigen</a>
 		<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["guardianapp_home"] . "/reports/view/". $report->getUuid() . "/file&force=true"; ?>">PDF neu erzeugen</a>
 		<div class="dropdown-divider"></div>
-	
-	<?php if(!$report->getEmsEntry()){ ?>
-		<a href="#" class="dropdown-item" data-toggle='modal' data-target='#confirmEms'>Bericht in EMS angelegt</a>
-	<?php } else { ?>
-		<a href="#" class="dropdown-item" data-toggle='modal' data-target='#removeEms'>Bericht in EMS entfernt</a>
-	<?php } ?>
-		<div class="dropdown-divider"></div>
-	<?php if(!$report->getManagerApproved()){ ?>
-		<a href="#" class="dropdown-item" data-toggle='modal' data-target='#managerApprove'>Bericht freigeben</a>
-	<?php } else { ?>
-		<a href="#" class="dropdown-item" data-toggle='modal' data-target='#managerApproveRemove'>Freigabe entfernen</a>
-	<?php } ?>
-		<div class="dropdown-divider"></div>
-		<a class="dropdown-item" href="<?= $config["urls"]["guardianapp_home"] . "/reports/edit/". $report->getUuid(); ?>">Bearbeiten</a>
-		<a href="#" class="dropdown-item" data-toggle='modal' data-target='#confirmDelete'>Löschen</a>
+	<?php if($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)) { ?>
+		<?php if(!$report->getEmsEntry()){ ?>
+			<a href="#" class="dropdown-item" data-toggle='modal' data-target='#confirmEms'>Bericht in EMS angelegt</a>
+		<?php } else { ?>
+			<a href="#" class="dropdown-item" data-toggle='modal' data-target='#removeEms'>Bericht in EMS entfernt</a>
+		<?php } ?>
+			<div class="dropdown-divider"></div>
+		<?php if(!$report->getManagerApproved()){ ?>
+			<a href="#" class="dropdown-item" data-toggle='modal' data-target='#managerApprove'>Bericht freigeben</a>
+		<?php } else { ?>
+			<a href="#" class="dropdown-item" data-toggle='modal' data-target='#managerApproveRemove'>Freigabe entfernen</a>
+		<?php } ?>
+			<div class="dropdown-divider"></div>
+	<?php } ?> 
+			<a class="dropdown-item" href="<?= $config["urls"]["guardianapp_home"] . "/reports/edit/". $report->getUuid(); ?>">Bearbeiten</a>
+		<?php if($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)) { ?>
+			<a href="#" class="dropdown-item" data-toggle='modal' data-target='#confirmDelete'>Löschen</a>
+		<?php } ?> 
 	</div>
 </div>
 	

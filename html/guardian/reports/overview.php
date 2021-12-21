@@ -8,7 +8,6 @@ $variables = array (
 		'template' => "reportOverview_template.php",
 	    'title' => "Übersicht Wachberichte",
 	    'secured' => true,
-		'privilege' => Privilege::EVENTMANAGER,
 );
 checkSitePermissions($variables);
 
@@ -30,9 +29,12 @@ checkSitePermissions($variables);
         
     if($userController->hasCurrentUserPrivilege(Privilege::FFADMINISTRATION)){
     	$variables ['reports'] = $reportDAO->getReports($_GET);
-    } else {
+    } else if($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
     	$variables ['reports'] = $reportDAO->getReportsByEngine($userController->getCurrentUser()->getEngine()->getUuid(), $_GET);
         $variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die Ihrem Zug zugewiesen wurden";
+    } else {
+    	$variables ['reports'] = $reportDAO->getReportsByCreator($userController->getCurrentUser()->getUuid(), $_GET);
+    	$variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die von Ihnen erstellt wurden";
     }
 
 renderLayoutWithContentFile ( $variables );

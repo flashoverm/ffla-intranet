@@ -21,9 +21,7 @@ function left_navigation ($currentUser){
 						Wachberichte
 					</a>
         			<div class='dropdown-menu bg-dark'>";
-		if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
-			echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/overview'>Berichtsübersicht</a>";
-		}
+		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/overview'>Berichtsübersicht</a>";
 		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/new'>Bericht anlegen</a>";
 		if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
 			echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/export'>Berichte exportieren</a>";

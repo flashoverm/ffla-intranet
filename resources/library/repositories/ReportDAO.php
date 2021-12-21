@@ -62,6 +62,14 @@ class ReportDAO extends BaseDAO{
 		return $this->executeQuery($query, array($engineUuid), $getParams);
 	}
 	
+	function getReportsByCreator($creatorUuid, array $getParams, $dateOrder = "DESC"){
+		$query = "SELECT report.*, engine.name FROM report, engine
+			WHERE creator = ? AND engine.uuid = report.engine
+			ORDER BY date " . $dateOrder;
+		
+		return $this->executeQuery($query, array($creatorUuid), $getParams);
+	}
+	
 	function filterReports($reports, $typeUuid, $from, $until) {
 		$data = array ();
 		foreach($reports as $report){

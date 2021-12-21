@@ -29,78 +29,74 @@ if (! isset($_GET['id'])) {
 		$variables['report'] = $report;
 				
 		if(SessionUtil::userLoggedIn()){
+			
+			checkPermissions(array(
+					array("privilege" => Privilege::FFADMINISTRATION),
+					array("privilege" => Privilege::EVENTADMIN),
+					array("privilege" => Privilege::EVENTMANAGER, "engine" => $report->getEngine()),
+					array("user" => $report->getCreator()),
+			), $variables);
+				            
+        	$variables['showFormular'] = true;
         	
-			if( $guardianUserController->isUserAllowedToEditReport($currentUser, $uuid) ){
-	            
-	        	$variables['showFormular'] = true;
-	        	
-	        	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	        		$report = $reportDAO->getReport($uuid);
-	        		checkPermissions(array(
-	        				array("privilege" => Privilege::EVENTADMIN),
-	        				array("privilege" => Privilege::EVENTMANAGER, "engine" => $report->getEngine()),
-	        				array("user" => $report->getCreator())
-	        		), $variables);
-	        	}
-	            
-	            if(isset($_POST['emsEntry'])){
-	            	if($reportController->setEmsEntry($uuid)){
-	                    $variables['successMessage'] = "Bericht aktualisiert";
-	                    $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportEMSSet, $uuid));
-	                } else {
-	                    $variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
-	                }
-	                $variables['report'] = $reportDAO->getReport($uuid);
-	            }
-	            
-	            if(isset($_POST['emsEntryRemoved'])){
-	            	if($reportController->unsetEmsEntry($uuid)){
-	            		$variables['successMessage'] = "Bericht aktualisiert";
-	            		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportEMSUnset, $uuid));
-	            	} else {
-	            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
-	            	}
-	            	$variables['report'] = $reportDAO->getReport($uuid);
-	            }
-	            
-	            if(isset($_POST['managerApprove'])){
-	            	if($reportController->setApproval($uuid, $currentUser)){
-	            		mail_report_approved($uuid);
-	            		$variables['successMessage'] = "Bericht aktualisiert und an Verwaltung versandt";
-	            		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportApproved, $uuid));
-	            	} else {
-	            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
-	            	}
-	            	$variables['report'] = $reportDAO->getReport($uuid);
-	            }
-	            
-	            if(isset($_POST['managerApproveRemove'])){
-	            	if($reportController->unsetApproval($uuid)){
-	            		$variables['successMessage'] = "Bericht aktualisiert";
-	            		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportApprovRemoved, $uuid));
-	            	} else {
-	            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
-	            	}
-	            	$variables['report'] = $reportDAO->getReport($uuid);
-	            }
-	            
-	            if (isset ( $_POST ['delete'] )) {
-	            	$log = LogbookEntry::fromAction(LogbookActions::ReportDeleted, $uuid);
-	            	if($reportDAO->deleteReport( $uuid )){
-	            		$variables ['successMessage'] = "Bericht gelöscht";
-	            		$logbookDAO->save($log);
-	            		header ( "Location: " . $config["urls"]["guardianapp_home"] . "/reports/overview"); // redirects
-	            	} else {
-	            		$variables ['alertMessage'] = "Bericht konnte nicht gelöscht werden";
-	            	}
-	            }
-	            
-	        } else {
-	        	
-	        	$variables['alertMessage'] = "Sie haben keine Zugriffsrechte auf diesen Bericht";
-	        	$variables['title'] = 'Sie haben keine Zugriffsrechte auf diesen Bericht';
-
-	        }   
+        	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        		checkPermissions(array(
+        				array("privilege" => Privilege::EVENTADMIN),
+        				array("privilege" => Privilege::EVENTMANAGER, "engine" => $report->getEngine()),
+        		), $variables);
+        	}
+            
+            if(isset($_POST['emsEntry'])){
+            	if($reportController->setEmsEntry($uuid)){
+                    $variables['successMessage'] = "Bericht aktualisiert";
+                    $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportEMSSet, $uuid));
+                } else {
+                    $variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
+                }
+                $variables['report'] = $reportDAO->getReport($uuid);
+            }
+            
+            if(isset($_POST['emsEntryRemoved'])){
+            	if($reportController->unsetEmsEntry($uuid)){
+            		$variables['successMessage'] = "Bericht aktualisiert";
+            		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportEMSUnset, $uuid));
+            	} else {
+            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
+            	}
+            	$variables['report'] = $reportDAO->getReport($uuid);
+            }
+            
+            if(isset($_POST['managerApprove'])){
+            	if($reportController->setApproval($uuid, $currentUser)){
+            		mail_report_approved($uuid);
+            		$variables['successMessage'] = "Bericht aktualisiert und an Verwaltung versandt";
+            		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportApproved, $uuid));
+            	} else {
+            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
+            	}
+            	$variables['report'] = $reportDAO->getReport($uuid);
+            }
+            
+            if(isset($_POST['managerApproveRemove'])){
+            	if($reportController->unsetApproval($uuid)){
+            		$variables['successMessage'] = "Bericht aktualisiert";
+            		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportApprovRemoved, $uuid));
+            	} else {
+            		$variables['alertMessage'] = "Bericht konnte nicht aktualisiert werden";
+            	}
+            	$variables['report'] = $reportDAO->getReport($uuid);
+            }
+            
+            if (isset ( $_POST ['delete'] )) {
+            	$log = LogbookEntry::fromAction(LogbookActions::ReportDeleted, $uuid);
+            	if($reportDAO->deleteReport( $uuid )){
+            		$variables ['successMessage'] = "Bericht gelöscht";
+            		$logbookDAO->save($log);
+            		header ( "Location: " . $config["urls"]["guardianapp_home"] . "/reports/overview"); // redirects
+            	} else {
+            		$variables ['alertMessage'] = "Bericht konnte nicht gelöscht werden";
+            	}
+            }  
 		}
 
 	} else {

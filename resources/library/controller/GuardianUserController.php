@@ -82,23 +82,4 @@ class GuardianUserController extends UserController{
 		
 		return false;
 	}
-	
-	public function isUserAllowedToEditReport($user, $reportUuid){
-		global $reportDAO;
-		
-		if($user->hasPrivilegeByName(Privilege::EVENTADMIN)){
-			return true;
-		}
-		
-		if($user->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
-			return true;
-		}
-		
-		$report = $reportDAO->getReport($reportUuid);
-		if($user->hasPrivilegeByName(Privilege::EVENTMANAGER)
-				&& $report->getEngine()->getUuid() == $user->getEngine()->getUuid()){
-					return true;
-		}
-		return false;
-	}
 }

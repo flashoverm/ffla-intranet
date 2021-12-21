@@ -31,6 +31,7 @@ global $config;
 			echo " &ndash; ";
 		} ?>
 	</td>
+	<?php if(!empty($options['showEMS'])){ ?>
 	<td class="text-center">
 		<?php
 		if($data->getEmsEntry()){
@@ -40,6 +41,7 @@ global $config;
 			createDialog("confirmEms" . $data->getUuid(), "Wurde die Wache in EMS angelegt?", null, "emsEntry", $data->getUuid());
 		} ?>
 	</td>
+	<?php } ?>
 	<td class="text-center">
 		<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/view/" . $data->getUuid() ?>">Anzeigen</a>
 	</td>

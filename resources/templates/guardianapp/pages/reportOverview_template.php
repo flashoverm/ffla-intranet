@@ -1,4 +1,13 @@
 <?php
+global $currentUser;
+
+if($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
+	$options = array(
+			'showEMS' => true,
+	);
+} else {
+	$options = array();
+}
 
 $columns = array(
 		array( "label" => "Datum", "sort" => ReportDAO::ORDER_DATE),
@@ -9,13 +18,15 @@ $columns = array(
 		array( "label" => "Zuständig", "sort" => ReportDAO::ORDER_ENGINE),
 		array( "label" => "Vorkomnisse", "sort" => ReportDAO::ORDER_INCIDENTS),
 		array( "label" => "Freigabe", "sort" => ReportDAO::ORDER_APPROVED),
-		array( "label" => "EMS", "sort" => ReportDAO::ORDER_EMSENTRY),
-		array(),
-		array(),
 );
+if(!empty($options['showEMS'])){
+	$columns[] = array( "label" => "EMS", "sort" => ReportDAO::ORDER_EMSENTRY);
+}
+$columns[] = array();
 
 renderTable(
 		TEMPLATES_PATH . "/guardianapp/elements/report_row.php",
 		$columns,
-		$reports
+		$reports,
+		$options
 		);
