@@ -86,6 +86,8 @@ if (! count ( $user )) {
 							<?php 
 							}
 							?>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="<?= $config["urls"]["intranet_home"] . "/administration/logbook?user=" . $row->getUuid() ?>">Logbuch</a>
 						</div>
 					</div>
 					<?php

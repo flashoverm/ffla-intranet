@@ -1,4 +1,9 @@
 <?php
+
+if(isset($forUser)){
+	showInfo("Es werden nur Logeinträge für den Benutzer \"" . $forUser->getFullNameWithEmail() . "\" angezeigt");
+}
+
 renderTable(
 	TEMPLATES_PATH . "/administrationapp/elements/logbook_row.php", 
 	array(
