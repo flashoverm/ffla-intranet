@@ -4,6 +4,7 @@
         	<div class="form-group">
         		<label>Typ:</label> <select class="form-control" name="type" id="type">
         		    	<option value="-1" selected>Alle Wachen</option>
+        		    	<option value="-2">Alle Theaterwachen</option>
         		    <?php foreach ( $eventtypes as $eventtype ) :
         		    if(isset($type) && $eventtype->getUuid() == $type) {?>
         					<option value="<?= $eventtype->getUuid(); ?>" selected><?= $eventtype->getType(); ?></option>
@@ -42,63 +43,30 @@
     <p>
     	<input type="submit" class="btn btn-primary" value='Filter anwenden'>
     </p>
-
+	<div>
     <?php
     if (! count ( $reports )) {
         showInfo ( "Es sind keine Wachberichte vorhanden" );
     } else {
+    	$columns = array(
+    			array( "label" => "Datum", "sort" => ReportDAO::ORDER_DATE),
+    			array( "label" => "Beginn", "sort" => ReportDAO::ORDER_START),
+    			array( "label" => "Ende", "sort" => ReportDAO::ORDER_END),
+    			array( "label" => "Typ", "sort" => ReportDAO::ORDER_TYPE),
+    			array( "label" => "Titel", "sort" => ReportDAO::ORDER_TITLE),
+    			array( "label" => "Zuständig", "sort" => ReportDAO::ORDER_ENGINE),
+    			array( "label" => "Freigabe", "sort" => ReportDAO::ORDER_APPROVED),
+    	);
+    	$columns[] = array();
+    	
+    	renderTable(
+    			TEMPLATES_PATH . "/guardianapp/elements/report_row.php",
+    			$columns,
+    			$reports,
+    			array('showApproval' => true, "hideSearch" => true)
+    	);
         ?>
-    <div class="table-responsive">
-    	<table class="table table-striped" data-toggle="table" data-pagination="true">
-    		<thead>
-    			<tr>
-    				<th data-sortable="true" class="text-center">Datum</th>
-    				<th data-sortable="true" class="text-center">Wachbeginn</th>
-    				<th data-sortable="true" class="text-center">Ende</th>
-    				<th data-sortable="true" class="text-center">Typ</th>
-    				<th data-sortable="true" class="text-center">Titel</th>
-    				<th data-sortable="true" class="text-center">Zuständig</th>
-    				<th data-sortable="true" class="text-center">Freigabe</th>
-    				<th></th>
-    			</tr>
-    		</thead>
-    		<tbody>
-    	<?php
-    		foreach ( $reports as $row ) {
-    		    ?>
-    				<tr>
-    				<td class="text-center"><?= date($config ["formats"] ["date"], strtotime($row->getDate())) ?></td>
-    				<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($row->getStartTime())) ?></td>
-    				<td class="text-center">
-    	<?php
-    		if ($row->getEndTime() != 0) {
-    		    echo date($config ["formats"] ["time"], strtotime($row->getEndTime()));
-    		} else {
-    			echo " - ";
-    		}
-    		?></td>
-    				<td class="text-center"><?= $row->getType()->getType() ?></td>
-    				<td class="text-center"><?= $row->getTitle() ?></td>
-    				<td class="text-center"><?= $row->getEngine()->getName() ?></td>
-    				<td class="text-center">
-    					<?php
-    					if($row->getManagerApproved()){
-    					    echo " &#10003; ";
-    					} else {
-    						echo " &ndash; ";
-    					}
-    					?>
-    				</td>
-    				<td class="text-center">
-    					<a class="btn btn-primary btn-sm" href="<?=$config["urls"]["guardianapp_home"] . "/reports/view/" . $row->getUuid() ?>">Anzeigen</a>
-    				</td>
-    			</tr>
-    		<?php
-    		}
-    		?>
-    		</tbody>
-    	</table>
-    </div>
+       </div>
     <p>
     	<input type="submit" name="csv" class="btn btn-primary" value='Wachen exportieren'>
     	<input type="submit" name="invoice" class="btn btn-primary" value='Rechungsdaten exportieren'>

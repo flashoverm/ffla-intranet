@@ -22,7 +22,7 @@ class EventType extends BaseModel {
 	/**
 	 * @ORM\Column(type="smallint")
 	 */
-	protected bool $isSeries;
+	protected bool $sendNoReport;
 	
 	
 	/**
@@ -42,8 +42,8 @@ class EventType extends BaseModel {
 	/**
 	 * @return string
 	 */
-	public function getIsSeries() : int{
-		return $this->isSeries;
+	public function getSendNoReport() : int{
+		return $this->sendNoReport;
 	}
 
 	/**
@@ -61,22 +61,24 @@ class EventType extends BaseModel {
 	}
 
 	/**
-	 * @param string $isSeries
+	 * @param string $sendNoReport
 	 */
-	public function setIsSeries(bool $isSeries) {
-		$this->isSeries = $isSeries;
+	public function setSendNoReport(bool $sendNoReport) {
+		$this->sendNoReport = $sendNoReport;
 	}
+	
+	
 	
 	/*
 	 **************************************************
 	 * Constructor
 	 */
 	
-	function __construct(?string $uuid, ?string $type, bool $isSeries = false) {
+	function __construct(?string $uuid, ?string $type, bool $sendNoReport = false) {
 		parent::__construct();
 		$this->uuid = $uuid;
 		$this->type = $type;
-		$this->isSeries = $isSeries;
+		$this->sendNoReport = $sendNoReport;
 	}
 	
 	/*
@@ -88,7 +90,7 @@ class EventType extends BaseModel {
 		return [
 				'uuid' => $this->uuid,
 				'type' => $this->type,
-				'isSeries' => $this->isSeries,
+				'sendNoReport' => $this->sendNoReport,
 		];
 	}
 }

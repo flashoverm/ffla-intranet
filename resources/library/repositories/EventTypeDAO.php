@@ -9,9 +9,9 @@ class EventTypeDAO extends BaseDAO{
 	}
 	
 	function save(EventType $eventType){
-		$statement = $this->db->prepare("INSERT INTO eventtype (uuid, type, isseries) VALUES (?, ?, ?)");
+		$statement = $this->db->prepare("INSERT INTO eventtype (uuid, type, sendNoReport) VALUES (?, ?, ?, ?)");
 		
-		$result = $statement->execute(array($eventType->getUuid(), $eventType->getType(), $eventType->getIsSeries()));
+		$result = $statement->execute(array($eventType->getUuid(), $eventType->getType(), $eventType->getSendNoReport()));
 		
 		if ($result) {
 			return true;
@@ -44,7 +44,7 @@ class EventTypeDAO extends BaseDAO{
 	 */
 	
 	protected function resultToObject($result){
-		$object = new EventType($result['uuid'], $result['type'], $result['isseries']);
+		$object = new EventType($result['uuid'], $result['type'], $result['sendNoReport']);
 		return $object;
 	}
 	
@@ -52,7 +52,7 @@ class EventTypeDAO extends BaseDAO{
 		$statement = $this->db->prepare("CREATE TABLE eventtype (
                           uuid CHARACTER(36) NOT NULL,
 						  type VARCHAR(64) NOT NULL,
-                          isseries BOOLEAN NOT NULL default 0,
+                          sendNoReport BOOLEAN NOT NULL default 0,
                           PRIMARY KEY  (uuid)
                           )");
 		

@@ -33,7 +33,7 @@ abstract class BaseDAO {
 		return $db;
 	}
 	
-	function executeQuery(string $query, ?array $parameter, array $getParams = null){
+	function executeQuery(string $query, ?array $parameter, ?array $getParams){
 
 		$execQuery = $query;
 		
@@ -41,7 +41,7 @@ abstract class BaseDAO {
 		$resultSet->initializeFromGetParams($getParams);
 					
 		//Not search, do database pagination (default behaviour)
-		if( ! $resultSet->isSearch()){
+		if( ! $resultSet->isSearch() && ! $resultSet->getShowAll()){
 			
 			$orderBy = "";
 			

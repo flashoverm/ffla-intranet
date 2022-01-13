@@ -4,9 +4,14 @@ global $currentUser;
 if($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
 	$options = array(
 			'showEMS' => true,
+			'showApproval' => true,
+			'showIncidents' => true
 	);
 } else {
-	$options = array();
+	$options = array(
+			'showApproval' => true,
+			'showIncidents' => true
+	);
 }
 
 $columns = array(

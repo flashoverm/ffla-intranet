@@ -76,7 +76,9 @@ class ReportDAO extends BaseDAO{
 			
 			if($report->getDate() >= $from && $report->getDate() <= $until ){
 				
-				if($typeUuid == -1 || $report->getType()->getUuid() == $typeUuid){
+				if($typeUuid == -1 || $report->getType()->getUuid() == $typeUuid
+						//Special case - TODO find a better way
+						|| ( $typeUuid == -2 && strpos($report->getType()->getType(), "Theaterwache") > -1 ) ){
 					$data [] = $report;
 				}
 			}

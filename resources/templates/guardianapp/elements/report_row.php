@@ -15,6 +15,7 @@ global $config;
 	<td class="text-center"><?= $data->getType()->getType() ?></td>
 	<td class="text-center"><?= $data->getTitle() ?></td>
 	<td class="text-center"><?= $data->getEngine()->getName() ?></td>
+	<?php if(!empty($options['showIncidents'])){ ?>
 	<td class="text-center">
 		<?php
 		if($data->getNoIncidents()){
@@ -23,6 +24,8 @@ global $config;
 		    echo " siehe Bericht ";
 		} ?>
 	</td>
+	<?php } ?>
+	<?php if(!empty($options['showApproval'])){ ?>
 	<td class="text-center">
 		<?php
 		if($data->getManagerApproved()){
@@ -31,6 +34,7 @@ global $config;
 			echo " &ndash; ";
 		} ?>
 	</td>
+	<?php } ?>
 	<?php if(!empty($options['showEMS'])){ ?>
 	<td class="text-center">
 		<?php

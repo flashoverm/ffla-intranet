@@ -6,61 +6,62 @@ function render($template, $data, $options = array()){
 	include $template;
 }
 
-function renderTable($rowTemplate, $columns, $data, $options = array()){
+function renderTable($rowTemplate, $columns, ResultSet $data, $options = array()){
 	if ( ! isset($data) || ! count ( $data->getData() )) {
 		showInfo ( "Es ist kein Eintrag vorhanden" );
 	} else {
 		?>
-	<div class="table-responsive" id="table">
-		<?php 
-		renderTableDescription($data);
-		?>
-		<thead>
-			<tr>
-			<?php
-			foreach ( $columns as $column ) {
-				if(isset($column['label'])){
-					$sort = isset($column['sort']) ? $column['sort'] : null;
-					renderTableHead($column['label'], $data, $sort);
-				} else {
-					echo "<th></th>";
+		<div class="table-responsive" id="table">
+			<?php 
+			renderTableDescription($data, $options);
+			?>
+			<thead>
+				<tr>
+				<?php
+				foreach ( $columns as $column ) {
+					if(isset($column['label'])){
+						$sort = isset($column['sort']) ? $column['sort'] : null;
+						renderTableHead($column['label'], $data, $sort);
+					} else {
+						echo "<th></th>";
+					}
 				}
+				?>
+				</tr>
+			</thead>
+			<tbody>
+			<?php
+			foreach ( $data->getData() as $row ) {
+				render($rowTemplate, $row, $options);
 			}
 			?>
-			</tr>
-		</thead>
-		<tbody>
-		<?php
-		foreach ( $data->getData() as $row ) {
-			render($rowTemplate, $row, $options);
+			</tbody>
+			<?php
+			renderTableClosing($data);
+			?>
+		</div>
+		<?php 
+		if( ! $data->isSearch() && ! $data->getShowAll() ){
+			renderPagination($data);
 		}
-		?>
-		</tbody>
-		<?php
-		renderTableClosing($data);
-		?>
-	</div>
-	<?php 
-	renderPagination($data);
 	}
 }
 
 function renderPagination(ResultSet $resultSet){
-    if( ! $resultSet->isSearch()){
-		$pageDisplayNumber = 5;
-		if($resultSet->getPageSize() == -1){
-		    $pages = 1;
-		} else {
-		    $pages = ceil ($resultSet->getOverallSize()/$resultSet->getPageSize());
-		}
-		
+	$pageDisplayNumber = 5;
+	if($resultSet->getPageSize() == -1){
+	    $pages = 1;
+	} else {
+	    $pages = ceil ($resultSet->getOverallSize()/$resultSet->getPageSize());
+	}
+	
+	?>
+	<nav>
+		<?php 
+		renderPageSizeSelection($resultSet);
 		?>
-		<nav>
-			<?php 
-			renderPageSizeSelection($resultSet);
-			?>
-			<ul class="pagination justify-content-end">
-		  	<?php
+		<ul class="pagination justify-content-end">
+	  	<?php
 		  			  	    
     		  	if($resultSet->getPage() > 1){
     		  		echo '<li class="page-item"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()-1) . '"><</a></li>';
@@ -76,10 +77,9 @@ function renderPagination(ResultSet $resultSet){
     		  		echo '<li class="page-item"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()+1) . '">></a></li>';
     		  	}
 		  	?>
-			</ul>
-		</nav>
-	<?php
-	}
+		</ul>
+	</nav>
+<?php
 }
 
 function renderPageSizeSelection(ResultSet $resultSet){
@@ -131,12 +131,14 @@ function renderSearch(ResultSet $resultSet){
 <?php	
 }
 
-function renderTableDescription(ResultSet $resultSet){
-	if($resultSet->isSearch()){
+function renderTableDescription(ResultSet $resultSet, $options){
+	if($resultSet->isSearch() || $resultSet->getShowAll()){
 	?> 
-		<div class="buttons-toolbar">
-			<a class="btn btn-primary search-reset" href="<?= getCurrentUrlWithoutQueryParam(ResultSet::SEARCH_PARAM) ?>">Suche abbrechen</a>
-		</div>
+		<?php if( ! isset($options['hideSearch'] )) { ?>
+			<div class="buttons-toolbar">
+				<a class="btn btn-primary search-reset" href="<?= getCurrentUrlWithoutQueryParam(ResultSet::SEARCH_PARAM) ?>">Suche abbrechen</a>
+			</div>
+		<?php } ?> 
 		<script>
 		document.body.addEventListener("onload", tableInit, true);
 		
@@ -149,15 +151,19 @@ function renderTableDescription(ResultSet $resultSet){
 			class="table table-striped" 
 			data-toggle="table" 
 			data-pagination="true" 
-			data-search="true" 
-			data-toolbar=".buttons-toolbar"
-			data-toolbar-align="right"
+			<?php if( ! isset($options['hideSearch'] )) { ?>
+				data-search="true"
+				data-toolbar=".buttons-toolbar"
+				data-toolbar-align="right"
+				data-search-text="<?= $resultSet->getSearchTerm() ?>"
+			<?php } ?> 
 			data-on-load-success="onLoad()"
-			data-search-text="<?= $resultSet->getSearchTerm() ?>"
 		> 
 	<?php
 	} else {
-		renderSearch($resultSet);
+		if( ! isset($options['hideSearch'] )) {
+			renderSearch($resultSet);
+		}
 	?> 
 		<div class="bootstrap-table">
 			<div class="fixed-table-container">
@@ -169,7 +175,7 @@ function renderTableDescription(ResultSet $resultSet){
 }
 
 function renderTableClosing(ResultSet $resultSet){
-	if($resultSet->isSearch()){
+	if($resultSet->isSearch() || $resultSet->getShowAll()){
 	?>
 		</table>
 	<?php	
@@ -182,13 +188,11 @@ function renderTableClosing(ResultSet $resultSet){
 	}
 }
 
-function renderTableHead(string $label, ResultSet $resultSet, ?string $orderBy=null, ?string $attributes=null){
+function renderTableHead(string $label, ResultSet $resultSet, ?string $orderBy=null){
 
-	if($resultSet->isSearch()){
+	if($resultSet->isSearch() || $resultSet->getShowAll()){
 		echo"<th "; 
 		if($orderBy != null){ echo "data-sortable=\"true\""; }
-		echo " ";
-		if($attributes != null) { echo $attributes; } else { echo "class='text-center'"; }
 		echo " >";
 		echo $label;
 		echo "</th>";
@@ -220,7 +224,7 @@ function renderTableHead(string $label, ResultSet $resultSet, ?string $orderBy=n
 		}
 	}
 	?>
-	<th <?php if($attributes != null) { echo $attributes; } else { echo "class='text-center'"; } ?>>
+	<th <?php echo "class='text-center'"; ?>>
 		<?php if($orderBy != null){ ?>
 		<a href="<?= $url ?>">
 		<?php } ?>

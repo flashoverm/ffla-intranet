@@ -9,6 +9,7 @@ class ResultSet implements Countable {
 	const SORTORDER_PARAM = "sortorder";
 	const SORTORDER_DESC = "DESC";
 	const SORTORDER_ASC = "ASC";
+	const SHOWALL_PARAM = "showAll";
 	
 	protected ?array $data;
 	
@@ -23,6 +24,22 @@ class ResultSet implements Countable {
 	
 	protected ?string $searchTerm;
 	
+	protected bool $showAll;
+		
+	/**
+	 * @return mixed
+	 */
+	public function getShowAll() {
+		return $this->showAll;
+	}
+
+	/**
+	 * @param mixed $showAll
+	 */
+	public function setShowAll($showAll) {
+		$this->showAll = $showAll;
+	}
+
 	/**
 	 * @return mixed
 	 */
@@ -137,6 +154,7 @@ class ResultSet implements Countable {
 		$this->searchTerm = null;
 		$this->sortedBy = null;
 		$this->desc = false;
+		$this->showAll = false;
 	}
 	
 	/*
@@ -157,6 +175,9 @@ class ResultSet implements Countable {
 			}
 			if(isset($getParams[self::SORTBY_PARAM])){
 				$this->sortedBy = $getParams[self::SORTBY_PARAM];
+			}
+			if(isset($getParams[self::SHOWALL_PARAM])){
+				$this->showAll = true;
 			}
 			if(isset($getParams[self::SORTORDER_PARAM])){
 				if($getParams[self::SORTORDER_PARAM] == self::SORTORDER_DESC){

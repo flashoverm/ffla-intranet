@@ -2,6 +2,10 @@
 Release Documentation
 ******************************
 
+### V2.4.6
+
+ALTER TABLE eventtype CHANGE isseries sendNoReport TINYINT(1) NOT NULL DEFAULT '0'; 
+
 ### V2.4.5
 
 ALTER TABLE report ADD createDate DATETIME NULL AFTER creator;

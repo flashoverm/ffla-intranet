@@ -21,6 +21,7 @@ $to = date('Y-m-t');
 
 if(SessionUtil::userLoggedIn()){
     $usersEngine = $userController->getCurrentUser()->getEngine();
+    $_GET[ResultSet::SHOWALL_PARAM] = true;
         
     if( $usersEngine->getIsAdministration()){
     	$reports = $reportDAO->getReports($_GET, "ASC");
@@ -36,7 +37,8 @@ if(SessionUtil::userLoggedIn()){
 
     }
     
-    $reports = $reportDAO->filterReports($reports, $type, $from, $to);
+    $reportsData = $reportDAO->filterReports($reports->getData(), $type, $from, $to);
+    $reports->setData($reportsData);
     
     $variables ['type'] = $type;
     $variables ['from'] = $from;
@@ -53,6 +55,8 @@ if((isset($_POST['csv']) || isset($_POST['invoice'])) && $userController->hasCur
 	
     if($type == -1 ){
         $head = "Alle Wachen";
+    } else if ($type == -2) {
+    	$head = "Alle Theaterwachen";
     } else {
     	$head = "Wachen von Typ " . $eventTypeDAO->getEventType($type)->getType();
     }
@@ -61,9 +65,9 @@ if((isset($_POST['csv']) || isset($_POST['invoice'])) && $userController->hasCur
         date($config ["formats"] ["date"], strtotime($to)) . "\n\n";
         
     if(isset($_POST['csv'])){
-    	reportsToCSV($reports, $head);
+    	reportsToCSV($reports->getData(), $head);
     } else if(isset($_POST['invoice'])){
-    	reportsToInvoiceCSV($reports, $head);
+    	reportsToInvoiceCSV($reports->getData(), $head);
     }
     
     $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportsExported, null));
@@ -132,6 +136,7 @@ function reportsToInvoiceCSV($reports, $head = ""){
 	"Personal" . $delimiter .
 	"Dauer" . $delimiter .
 	"Gesamtstunden" . $delimiter .
+	$delimiter ."Personal" . $delimiter .
 	"\n";
 	
 	foreach ( $reports as $report ) {
@@ -139,10 +144,15 @@ function reportsToInvoiceCSV($reports, $head = ""){
 		$duration = strtotime($report->getEndTime()) - strtotime($report->getStartTime());
 		$personalhours = 0;
 		$personalcount = 0;
+		$personalString = "";
 		foreach ( $report->getUnits() as $unit ) {
 			$unitDuration = strtotime($unit->getEndTime()) - strtotime($unit->getStartTime());
 			$personalhours += ($unitDuration * count($unit->getStaff()));
 			$personalcount += count($unit->getStaff());
+			
+			foreach($unit->getStaff() as $staff){
+				$personalString .= $staff->getName() . $delimiter;
+			}
 		}
 		
 		$filestring .= date($config ["formats"] ["date"], strtotime($report->getDate())) . $delimiter .
@@ -151,8 +161,8 @@ function reportsToInvoiceCSV($reports, $head = ""){
 		$report->getTitle() . $delimiter .
 		$personalcount . $delimiter .
 		gmdate($config ["formats"] ["time"], $duration) . $delimiter .
-		gmdate($config ["formats"] ["time"], $personalhours) . 
-		"\n";
+		gmdate($config ["formats"] ["time"], $personalhours) . $delimiter .
+		$delimiter .$personalString . "\n";
 	}
 	
 	echo StringUtil::convertToWindowsCharset($filestring);
