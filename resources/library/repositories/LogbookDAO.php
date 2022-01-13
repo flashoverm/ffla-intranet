@@ -35,6 +35,15 @@ class LogbookDAO extends BaseDAO{
 		return $this->executeQuery($query, null, $getParams);
 	}
 	
+	function getLogbookByUser($userUuid, array $getParams){
+		$query = "SELECT logbook.*, user.firstname FROM logbook
+			LEFT JOIN user ON user.uuid = logbook.user 
+			WHERE logbook.user = ? OR logbook.object = ?
+			ORDER BY timestamp DESC";
+		
+		return $this->executeQuery($query, array($userUuid, $userUuid), $getParams);
+	}
+	
 	function clearLogbook(){
 		$statement = $this->db->prepare("DELETE FROM logbook");
 		

@@ -19,7 +19,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 }
 
-$variables ['logbook'] = $logbookDAO->getLogbook($_GET);
+
+if(isset($_GET['user'])){
+	$user = $userDAO->getUserByUUID($_GET['user']);
+	if($user){
+		$variables ['forUser'] = $user;
+		$variables ['logbook'] = $logbookDAO->getLogbookByUser($user->getUuid(), $_GET);
+	} else {
+		$variables ['alertMessage'] = "Benutzer " . $_GET['user'] . " nicht gefunden";
+		$variables ['logbook'] = $logbookDAO->getLogbook($_GET);
+	}
+	
+} else {
+	$variables ['logbook'] = $logbookDAO->getLogbook($_GET);
+}
+
 
 renderLayoutWithContentFile ($variables );
 
