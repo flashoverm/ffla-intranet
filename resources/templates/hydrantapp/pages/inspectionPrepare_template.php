@@ -143,6 +143,7 @@ function planForInspection(hy){
 		return;
 	}
 
+	console.log("find candidate" + hy);
 	var row = document.getElementById('candidate' + hy);
 	if(row == null){
 		row = document.getElementById('data' + hy);	
@@ -219,7 +220,7 @@ function updateButtonStyle(hy, button){
 
 <table class="d-none">
 <?php
-foreach ( $hydrants as $row ) {
+foreach ( $hydrants->getData() as $row ) {
 	generateTableRow($row, 'data');
 }
 ?>
