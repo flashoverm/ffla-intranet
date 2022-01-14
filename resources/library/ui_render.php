@@ -48,6 +48,8 @@ function renderTable($rowTemplate, $columns, ResultSet $data, $options = array()
 }
 
 function renderPagination(ResultSet $resultSet){
+	global $url_prefix;
+	
 	$pageDisplayNumber = 5;
 	if($resultSet->getPageSize() == -1){
 	    $pages = 1;
@@ -64,17 +66,17 @@ function renderPagination(ResultSet $resultSet){
 	  	<?php
 		  			  	    
     		  	if($resultSet->getPage() > 1){
-    		  		echo '<li class="page-item"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()-1) . '"><</a></li>';
+    		  		echo '<li class="page-item"><a class="page-link" href="' . $url_prefix . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()-1) . '"><</a></li>';
     		  	}
     		  	for($i=max(1, $resultSet->getPage()-$pageDisplayNumber);  ($i<=( $pages ) && $i<=($resultSet->getPage()+$pageDisplayNumber) ); $i++){    	
     		    	echo '<li class="page-item';
     		    	if($i == $resultSet->getPage()){
     		    		echo ' active';
     		    	}
-    		    	echo '"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $i) . '">' . $i . '</a></li>';
+    		    	echo '"><a class="page-link" href="' . $url_prefix . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $i) . '">' . $i . '</a></li>';
     		  	}
     		  	if($resultSet->getPage() < $pages){
-    		  		echo '<li class="page-item"><a class="page-link" href="' . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()+1) . '">></a></li>';
+    		  		echo '<li class="page-item"><a class="page-link" href="' . $url_prefix . getCurrentUrlWithQueryParam(ResultSet::PAGE_PARAM, $resultSet->getPage()+1) . '">></a></li>';
     		  	}
 		  	?>
 		</ul>
@@ -83,6 +85,8 @@ function renderPagination(ResultSet $resultSet){
 }
 
 function renderPageSizeSelection(ResultSet $resultSet){
+	global $url_prefix;
+	
 	$clearedFromPage = getCurrentUrlWithoutQueryParam(ResultSet::PAGE_PARAM);
 ?>
 	<div class="float-left pagination-detail">
@@ -103,11 +107,11 @@ function renderPageSizeSelection(ResultSet $resultSet){
 				<span class="caret"></span>
 				</button>
 				<div class="dropdown-menu">
-					<a class="dropdown-item <?php if($resultSet->getPageSize() == 10){ echo "active"; } ?>" href="<?= setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, 10) ?>">10</a>
-					<a class="dropdown-item <?php if($resultSet->getPageSize() == 25){ echo "active"; } ?>" href="<?= setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, 25) ?>">25</a>
-					<a class="dropdown-item <?php if($resultSet->getPageSize() == 50){ echo "active"; } ?>" href="<?= setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, 50) ?>">50</a>
-					<a class="dropdown-item <?php if($resultSet->getPageSize() == 100){ echo "active"; } ?>" href="<?= setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, 100) ?>">100</a>
-					<a class="dropdown-item <?php if($resultSet->getPageSize() == -1){ echo "active"; } ?>" href="<?= setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, -1) ?>">Alle</a>
+					<a class="dropdown-item <?php if($resultSet->getPageSize() == 10){ echo "active"; } ?>" href="<?= $url_prefix . setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, 10) ?>">10</a>
+					<a class="dropdown-item <?php if($resultSet->getPageSize() == 25){ echo "active"; } ?>" href="<?= $url_prefix . setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, 25) ?>">25</a>
+					<a class="dropdown-item <?php if($resultSet->getPageSize() == 50){ echo "active"; } ?>" href="<?= $url_prefix . setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, 50) ?>">50</a>
+					<a class="dropdown-item <?php if($resultSet->getPageSize() == 100){ echo "active"; } ?>" href="<?= $url_prefix . setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, 100) ?>">100</a>
+					<a class="dropdown-item <?php if($resultSet->getPageSize() == -1){ echo "active"; } ?>" href="<?= $url_prefix . setQueryParam($clearedFromPage, ResultSet::PAGESIZE_PARAM, -1) ?>">Alle</a>
 				</div>
 			</span>
 			Zeilen pro Seite.
@@ -132,11 +136,13 @@ function renderSearch(ResultSet $resultSet){
 }
 
 function renderTableDescription(ResultSet $resultSet, $options){
+	global $url_prefix;
+	
 	if($resultSet->isSearch() || $resultSet->getShowAll()){
 	?> 
 		<?php if( ! isset($options['hideSearch'] )) { ?>
 			<div class="buttons-toolbar">
-				<a class="btn btn-primary search-reset" href="<?= getCurrentUrlWithoutQueryParam(ResultSet::SEARCH_PARAM) ?>">Suche abbrechen</a>
+				<a class="btn btn-primary search-reset" href="<?= $url_prefix . getCurrentUrlWithoutQueryParam(ResultSet::SEARCH_PARAM) ?>">Suche abbrechen</a>
 			</div>
 		<?php } ?> 
 		<script>
@@ -189,6 +195,7 @@ function renderTableClosing(ResultSet $resultSet){
 }
 
 function renderTableHead(string $label, ResultSet $resultSet, ?string $orderBy=null){
+	global $url_prefix;
 
 	if($resultSet->isSearch() || $resultSet->getShowAll()){
 		echo"<th "; 
@@ -226,7 +233,7 @@ function renderTableHead(string $label, ResultSet $resultSet, ?string $orderBy=n
 	?>
 	<th <?php echo "class='text-center'"; ?>>
 		<?php if($orderBy != null){ ?>
-		<a href="<?= $url ?>">
+		<a href="<?= $url_prefix . $url ?>">
 		<?php } ?>
 			<div class="th-inner <?= $innerClasses ?>">
 				<?= $label ?>
@@ -251,6 +258,7 @@ function unsetQueryParam($url, $paramName){
 }
 
 function setQueryParam($url, $paramName, $paramValue){
+	
 	$urlParts = parse_url($url);
 	$path = $urlParts['path'];
 	
