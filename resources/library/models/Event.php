@@ -331,6 +331,10 @@ class Event extends BaseModel {
 		$this->setStaffConfirmation($staffConfirmation);
 	}
 	
+	function isDeleted(){
+		return $this->deletedBy != null;
+	}
+	
 	function getOccupancy(){
 		$occupancy = 0;
 		foreach ($this->staff as $staff){

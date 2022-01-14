@@ -28,7 +28,7 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 			array("user" => $event->getCreator())
 	), $variables);
 	
-	if(isset($event) and isset($staffposition)) {
+	if(isset($event) && isset($staffposition) && ! $event->isDeleted()) {
 	    $variables ['showFormular'] = true;
 	    
 	    $variables ['title'] = "In " . $event->getType()->getType() . " einteilen";

@@ -43,7 +43,7 @@ if(isset($_GET['id'])){
 } else if(isset($_GET['event'])){
 	
 	$event = $eventDAO->getEvent($_GET['event']);
-	if($event){
+	if($event && ! $event->isDeleted()){
 		
 		if(SessionUtil::userLoggedIn()){
 			$creator = $userController->getCurrentUser();

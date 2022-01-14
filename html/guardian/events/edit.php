@@ -27,7 +27,7 @@ if (isset($_GET['id'])) {
     $uuid = trim($_GET['id']);
     $event = $eventDAO->getEvent($uuid);
     
-    if($event){
+    if($event && ! $event->isDeleted()){
     	checkPermissions(array(
     			array("privilege" => Privilege::EVENTADMIN),
     			array("privilege" => Privilege::EVENTMANAGER, "engine" => $event->getEngine()),

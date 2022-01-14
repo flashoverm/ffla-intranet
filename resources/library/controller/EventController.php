@@ -61,6 +61,9 @@ class EventController extends BaseController{
 	
 	function markAsDeleted($eventUuid){
 		$event = $this->eventDAO->getEvent($eventUuid);
+		if($event->isDeleted()){
+			return false;
+		}
 		$event->setDeletedBy($this->userController->getCurrentUser());
 		return $this->eventDAO->save($event);
 	}

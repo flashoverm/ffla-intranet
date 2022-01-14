@@ -20,7 +20,7 @@ if (! isset($_GET['id'])) {
     $uuid = trim($_GET['id']);
     $event = $eventDAO->getEvent($uuid);
     
-    if($event){
+    if($event && ! $event->isDeleted()){
     	
         $isCreator = false;
         $otherEngine = null;
