@@ -1,15 +1,24 @@
 function showLoader(){
 	var overlay = document.getElementById("overlay");
-	overlay.style.display = "inline";
+	if(overlay != null){
+		overlay.style.display = "inline";
+	}
 	var content = document.getElementById("content");
-	content.style.display = "none";
+	if(content != null){
+		content.style.display = "none";
+	}
 }
 
 function hideLoader(){
 	var overlay = document.getElementById("overlay");
-	overlay.style.display = "none";	
+	if(overlay != null){
+		overlay.style.display = "none";	
+	}
+	
 	var content = document.getElementById("content");
-	content.style.display = "inline";
+	if(content != null){
+		content.style.display = "inline";
+	}
 }
 
 
