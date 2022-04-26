@@ -10,7 +10,7 @@ global $config;
 	<td><a class="btn btn-primary btn-sm" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/view/". $data->getUuid(); ?>">Anzeigen</a></td>
 	<td>
 		<div class="dropdown">
-			<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Optionen</button>
+			<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" data-boundary="window">Optionen</button>
 			<div class="dropdown-menu">
 				
 				<a class="dropdown-item" target="_blank" href="<?= $config["urls"]["hydrantapp_home"] . "/inspection/view/". $data->getUuid() . "/file"; ?>">PDF anzeigen</a>

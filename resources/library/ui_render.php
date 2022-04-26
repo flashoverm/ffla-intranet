@@ -36,6 +36,16 @@ function renderTable($rowTemplate, $columns, ResultSet $data, $options = array()
 			}
 			?>
 			</tbody>
+			<script>
+            	console.log($('.table-responsive'));
+                $('.table-responsive').on('show.bs.dropdown', function () {
+                     $('.table-responsive').css( "overflow", "inherit" );
+                });
+                
+                $('.table-responsive').on('hide.bs.dropdown', function () {
+                     $('.table-responsive').css( "overflow", "auto" );
+                });
+            </script>
 			<?php
 			renderTableClosing($data);
 			?>
