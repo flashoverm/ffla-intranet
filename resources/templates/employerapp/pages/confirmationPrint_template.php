@@ -53,7 +53,7 @@ if(isset($confirmation)){
 					<br>
 					<br>
 					<br>
-					<p align='justify'>Die Arbeitgeberbestätigung <u><b>muss</b></u> dem Antrag auf Erstattung fortgewährter Leistungen beigelegt werden. Eine Abrechnung / Auszahlung ohne Nachweis kann von der Buchhaltung nicht durchgeführt werden.</p>
+					<p align='justify'>Die Arbeitgeberbestätigung <u><b>muss</b></u> dem Antrag auf Erstattung fortgewährter Leistungen beigelegt werden. Eine Abrechnung/Auszahlung ohne Nachweis kann von der Buchhaltung nicht durchgeführt werden.</p>
 					<br>
 					<br>
 					<br>
