@@ -26,12 +26,14 @@ if ( ! count ( $confirmations->getData() ) ) {
 				'showReason' => true,
 				'showUserData' => true,
 				'showLastUpdate' => true,
+		        'showLastAdvisor' => true,
 		);
 	} else {
 		$options = array(
 				'showUserData' => true,
 				'showViewConfirmation' => true,
-				'showLastUpdate' => true,
+    		    'showLastUpdate' => true,
+    		    'showLastAdvisor' => true,
 		);
 	}
 

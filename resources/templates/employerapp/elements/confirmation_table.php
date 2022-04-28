@@ -15,6 +15,9 @@ if(!empty($options['showReason'])){
 if(!empty($options['showLastUpdate'])){
 	$columns[] = array("label" => "Geändert", "sort" => ConfirmationDAO::ORDER_LASTUPDATE);
 }
+if(!empty($options['showLastAdvisor'])){
+    $columns[] = array("label" => "Bearbeiter");
+}
 if(!empty($options['showUserOptions'])){
 	$columns[] = array();
 	$columns[] = array();
