@@ -40,7 +40,7 @@ if(isset($confirmation)){
 				<td colspan="2"><div class="mb-3"><b><?= $title ?></b></div></td>
 			</tr>
 			<tr>
-				<td colspan="2">
+				<td colspan="1">
 					Sehr geehrte Damen und Herren,<br>
 					<br>
 					der/die Feuerwehrmann/-frau <?= $confirmation->getUser()->getFullName() ?><br>
@@ -50,6 +50,10 @@ if(isset($confirmation)){
 					für die Freiwillige Feuerwehr der Stadt Landshut im Einsatz.<br>
 					<br>
 					Die Richtigkeit der Angaben wird hiermit bestätigt.<br>
+					<br>
+					<br>
+					<br>
+					<p align='justify'>Die Arbeitgeberbestätigung <u><b>muss</b></u> dem Antrag auf Erstattung fortgewährter Leistungen beigelegt werden. Eine Abrechnung/Auszahlung ohne Nachweis kann von der Buchhaltung nicht durchgeführt werden.</p>
 					<br>
 					<br>
 					<br>

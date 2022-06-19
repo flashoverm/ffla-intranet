@@ -7,8 +7,8 @@ global $config;
 	<td class="text-center"><?= $data->getDescription() ?></td>
 	
 	<?php if(!empty($options['showUserData'])){ ?>
-		<td><?= $data->getUser()->getFullName() ?></td>
-		<td><?= $data->getUser()->getEngine()->getName() ?></td>
+		<td class="text-center"><?= $data->getUser()->getFullName() ?></td>
+		<td class="text-center"><?= $data->getUser()->getEngine()->getName() ?></td>
 	<?php } ?>
 	<?php if(!empty($options['showReason'])){ ?>
 		<td><?= $data->getReason() ?></td>
@@ -22,6 +22,16 @@ global $config;
 	<?php
 		}
 	} ?>
+	<?php if(!empty($options['showLastAdvisor'])){
+	    if($data->getLastAdvisor() == NULL){
+	        echo '<td class="text-center"><span class="d-none">0</span>-</td>';
+	    } else {
+	        ?>
+		<td class="text-center"><?= $data->getLastAdvisor()->getFullName() ?></td>
+	<?php
+		}
+	}
+	?>
 	<?php if(!empty($options['showUserOptions'])){ ?>
 		<td class="text-center">
 			<a class="btn btn-primary btn-sm" href="<?= $config["urls"]["employerapp_home"] . "/confirmations/edit/" . $data->getUuid() ?>">Bearbeiten</a>

@@ -48,7 +48,7 @@ if (! count ( $user )) {
 				</td>
 				<td>
 					<div class="dropdown">
-						<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">Optionen</button>
+						<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" data-boundary="window">Optionen</button>
 						<div class="dropdown-menu">
 
 							<a class="dropdown-item" href="<?= $config["urls"]["intranet_home"] . "/users/admin/" . $row->getUuid() ?>">Bearbeiten</a>
@@ -97,6 +97,17 @@ if (! count ( $user )) {
 						createDialog('confirmSet' . $row->getUuid(), "Passwort für diesen Benutzer anlegen und Anmeldung freischalten?", null, "setpw", $row->getUuid());
 					}
 					?>
+							<script>
+        	console.log($('.table-responsive'));
+            $('.table-responsive').on('show.bs.dropdown', function () {
+            	 console.log("Do");
+                 $('.table-responsive').css( "overflow", "inherit" );
+            });
+            
+            $('.table-responsive').on('hide.bs.dropdown', function () {
+                 $('.table-responsive').css( "overflow", "auto" );
+            });
+        </script>
 				</td>
 			</tr>
 		<?php
