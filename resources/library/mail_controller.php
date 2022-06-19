@@ -2,6 +2,38 @@
 require_once LIBRARY_PATH . "/mail_body.php";
 require_once LIBRARY_PATH . "/mail.php";
 
+function sendMailWithTemplate($recipient, $subject, $template, array $parameter, $attachments = NULL, $footer = true){
+    
+    //Do not send if user is locked
+    if(
+        ( ! $recipient->getLocked() && $recipient->getPassword() != null )
+        || 
+        $recipient->getPassword() == null 
+    ) {
+               
+        $body = renderMail($recipient, $template, $parameter);
+        return send_mail($recipient->getEmail(), $subject, $body, $attachments, $footer);
+    }
+    return true;
+}
+
+function sendMailsWithTemplate($recipients, $subject, $template, array $parameter, $attachment = NULL) {
+    $success = true;
+    foreach ($recipients as $to) {
+        if(!sendMailWithTemplate($to, $subject, $template, $parameter, $attachment)){
+            $success = false;
+        }
+    }
+    return $success;
+}
+
+
+
+
+/*
+ * hydrant inspection
+ */
+
 function mail_send_inspection_report($report_uuid){
     global $config;
     global $bodies;
@@ -37,33 +69,45 @@ function get_inspection_link($inspection_uuid){
  */
 
 function mail_add_user($email, $password) {
-	global $bodies;
+    global $userDAO;
 	$subject = "Benutzer angelegt";
 	
-	$body = $bodies["user_add"] . $bodies["login"] . $email . $bodies["password"] . $password . $bodies["user_add2"];
+	$user = $userDAO->getUserByEmail($email);
 	
-	return send_mail ( $email, $subject, $body );
+	$parameter = array(
+	    'email' => $email, 
+	    'password' => $password
+	);
+		
+	return sendMailWithTemplate ( $user, $subject, TEMPLATES_PATH . "/usersapp/mails/addUser_mail.php", $parameter);
 }
 
 function mail_reset_password($user_uuid, $password) {
-	global $bodies, $userDAO;
+	global $userDAO;
 	$subject = "Passwort zurückgesetzt";
 	
-	$body = $bodies["reset_password"] . $bodies["password"] . $password . $bodies["reset_password2"];
-	
 	$user = $userDAO->getUserByUUID($user_uuid);
-	return send_mail ($user->getEmail(), $subject, $body );
+	
+	$parameter = array(
+	    'password' => $password
+	);
+	
+	return sendMailWithTemplate ( $user, $subject, TEMPLATES_PATH . "/usersapp/mails/resetPassword_mail.php", $parameter);
+	
 }
 
 function mail_forgot_password(String $email, String $token) {
-	global $config, $bodies;
+    global $config, $userDAO;
 	$subject = "Passwort zurücksetzen";
 	
-	$link = $config ["urls"] ["base_url"] . "/users/password/reset/" . $token;
+	$user = $userDAO->getUserByEmail($email);
 	
-	$body = $bodies["forgot_password"] . $link . $bodies["forgot_password_2"];
+	$parameter = array(
+	    'reset_link' => $config ["urls"] ["base_url"] . "/users/password/reset/" . $token
+	);
+			
+	return sendMailWithTemplate ( $user, $subject, TEMPLATES_PATH . "/usersapp/mails/forgotPassword_mail.php", $parameter);
 	
-	return send_mail ($email, $subject, $body );
 }
 
 
@@ -387,11 +431,12 @@ function inform_users_manager($event_uuid, $user){
  */
 
 function mail_insert_event_report(Report $report){
-	global $config, $bodies, $userDAO, $guardianUserController;
+	global $config, $userDAO, $guardianUserController;
 	
 	$subject = "Wachbericht";
-	$body = $bodies["event_report"] . get_report_link($report->getUuid());
-	
+	$parameter = array(
+	    'report_link' => get_report_link($report->getUuid()),
+	);
 	$file = $config["paths"]["reports"] . $report->getUuid() . ".pdf";
 	
 	//send report to administration
@@ -400,36 +445,60 @@ function mail_insert_event_report(Report $report){
 	$managerList = $guardianUserController->getEventmanagerOfEngine($report->getEngine()->getUuid());
 	
 	$recipients = array_merge($managerList, $administration);
-	return send_mails($recipients, $subject, $body, $file);
+	
+	return sendMailsWithTemplate ( 
+	    $recipients, 
+	    $subject, 
+	    TEMPLATES_PATH . "/guardianapp/mails/insertReport_mail.php", 
+	    $parameter, 
+	    $file
+	);
+	
 }
 
 function mail_update_report(Report $report){
-	global $config, $bodies, $userDAO, $guardianUserController;
+	global $config, $userDAO, $guardianUserController;
 	
 	$subject = "Wachbericht aktualisiert";
-	$body = $bodies["event_report_update"] . get_report_link($report->getUuid());
-	
+	$parameter = array(
+	    'report_link' => get_report_link($report->getUuid()),
+	);
 	$file = $config["paths"]["reports"] . $report->getUuid() . ".pdf";
-	
+
 	//send report to administration
 	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
 	//send report to manager of the assigned engine
 	$managerList = $guardianUserController->getEventmanagerOfEngine($report->getEngine()->getUuid());
 	
 	$recipients = array_merge($managerList, $administration);
-	return send_mails($recipients, $subject, $body, $file);
+	return sendMailsWithTemplate (
+	    $recipients,
+	    $subject,
+	    TEMPLATES_PATH . "/guardianapp/mails/updateReport_mail.php",
+	    $parameter,
+	    $file
+	    );
 }
 
 function mail_report_approved($report_uuid){
-	global $config, $bodies, $userDAO;
+	global $config, $userDAO;
 	
 	$subject = "Wachbericht freigegeben";
-	$body = $bodies["event_report_approved"] . get_report_link($report_uuid);
-	
+	$parameter = array(
+	    'report_link' => get_report_link($report_uuid),
+	);	
 	$file = $config["paths"]["reports"] . $report_uuid . ".pdf";
 	
 	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
 	return send_mails($administration, $subject, $body, $file);
+	
+	return sendMailsWithTemplate (
+	    $administration,
+	    $subject,
+	    TEMPLATES_PATH . "/guardianapp/mails/updateReport_mail.php",
+	    $parameter,
+	    $file
+	    );
 }
 
 

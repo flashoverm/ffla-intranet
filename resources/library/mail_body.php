@@ -50,13 +50,7 @@ $bodies = array (
 	"event_unscribe_engine" => $util["head"] . "jemand aus Ihrem Zug wurde durch den Wachbeauftragten von der Wache entfernt:  \n\n",
 	
 	"event_unscribe_by_user_engine" => $util["head"] . "jemand aus Ihrem Zug hat sich aus einer Wache ausgetragen: \n\n",
-		
-	"event_report" => $util["head"] . "ein Wachbericht wurde angelegt und ist als Anhang verfügbar oder unter:  \n\n",
-	
-	"event_report_update" => $util["head"] . "ein Wachbericht wurde aktualisiert und ist als Anhang verfügbar oder unter: \n\n",
-	
-	"event_report_approved" => $util["head"] . "ein Wachbericht wurde durch einen Wachbeauftragten überprüft und freigegeben.\n\nDer Bericht befindet sich im Anhang oder unter:  \n\n",
-		
+			
 	"confirmation_requested" => $util["head"] . "eine neue Anfrage einer Arbeitgeberbestätigung wurde erstellt.\n\nBearbeitung der Anfragen unter: \n\n", 
 		
 	"confirmation_declined" => $util["head"] . "eine Anfrage einer Arbeitgeberbestätigung wurde abgelehnt.\n\nDer Grund der Ablehnung und die Möglichkeit, den Antrag zu bearbeiten sind zu finden unter: \n\n",
@@ -73,16 +67,5 @@ $bodies = array (
 		
 	"datachange_request_update" => $util["head"] . "eine Stammdatenänderung mit offener Rückfrage wurde aktualisiert.\n\nBearbeitung der Anfragen unter: \n\n",
 		
-	"user_add" => $util["head"] . "für Sie wurde ein Zugang angelegt:",
-	"login" => "\n\nLogin: ",
-	"password" => "\n\nPasswort: ",
-	"user_add2" => "\n\nSie können sich jetzt im Portal unter " . $config ["urls"] ["base_url"] . " anmelden.",
-	
-	
-	"reset_password" => $util["head"] . "ihr Passwort wurde zurückgesetzt:",
-	"reset_password2" => "\n\n Sie können es im Portal unter " . $config ["urls"] ["base_url"] . " in ihr Wunschkennwort ändern.",
-		
-	"forgot_password" => $util["head"] . "sie können ihr Passwort unter folgendem Link zurücksetzen:\n\n",
-	"forgot_password_2" => "\n\n Der Link ist  " . Token::TOKEN_VALIDITY[Token::ResetPassword] . " Minuten gültig, danach muss ein neuer Link angefordert werden",
-	
+   
 );

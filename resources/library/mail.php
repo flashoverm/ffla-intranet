@@ -96,17 +96,6 @@ function send_mail($to, $subject, $body, $attachments = NULL, $footer = true) {
 }
 
 
-function send_mails($recipients, $subject, $body, $attachment = NULL) {
-    $success = true;
-    foreach (removeLockedUsers($recipients) as $to) {
-        if(!send_mail($to->getEmail(), $subject, $body, $attachment)){
-        	$success = false;
-        }
-    }
-    return $success;
-}
-
-
 function send_mail_to_mailinglist($mailing, $subject, $body, $attachment = NULL){
 	global $mailingList;
 	
@@ -121,17 +110,3 @@ function send_mail_to_mailinglist($mailing, $subject, $body, $attachment = NULL)
     return $success;
 }
 
-function removeLockedUsers($recipients){
-	$filtered = array ();
-	
-	foreach ($recipients as $user) {
-		#User with password (registered) and login enabled, or unregiered user
-		if( 
-				( ! $user->getLocked() && $user->getPassword() != null )
-				|| $user->getPassword() == null ) {
-			$filtered [] = $user;
-		}
-	}
-	
-	return $filtered;
-}
