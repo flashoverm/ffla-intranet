@@ -47,11 +47,18 @@ if(SessionUtil::userLoggedIn()){
    
 }
 
-if((isset($_POST['csv']) || isset($_POST['invoice'])) && $userController->hasCurrentUserPrivilege($variables ['privilege'])){
+if((isset($_POST['csv']) || isset($_POST['invoice']) || isset($_POST['csvlist'])) && $userController->hasCurrentUserPrivilege($variables ['privilege'])){
+    
+    $filename = "Wachberichte_Export.csv";
+    if (isset($_POST['invoice'])){
+        $filename = "Wachberichte_Export_Rechnung.csv";
+    } else if (isset($_POST['csvlist'])){
+        $filename = "Wachberichte_Export_Liste.csv";
+    }
 	
 	header('Content-Encoding: UTF-8');
 	header('Content-type: text/csv; charset=UTF-8');
-	header('Content-Disposition: attachment; filename=Wachberichte_Export.csv');
+	header('Content-Disposition: attachment; filename=' . $filename);
 	
     if($type == -1 ){
         $head = "Alle Wachen";
@@ -66,8 +73,10 @@ if((isset($_POST['csv']) || isset($_POST['invoice'])) && $userController->hasCur
         
     if(isset($_POST['csv'])){
     	reportsToCSV($reports->getData(), $head);
-    } else if(isset($_POST['invoice'])){
+    } else if (isset($_POST['invoice'])){
     	reportsToInvoiceCSV($reports->getData(), $head);
+    } else if (isset($_POST['csvlist'])){
+        reportsToCSVList($reports->getData(), $head);
     }
     
     $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::ReportsExported, null));
@@ -166,6 +175,43 @@ function reportsToInvoiceCSV($reports, $head = ""){
 	}
 	
 	echo StringUtil::convertToWindowsCharset($filestring);
+}
+
+function reportsToCSVList($reports, $head = ""){
+    global $config;
+    $delimiter = ";";
+    $filestring = $head;
+    
+    foreach ( $reports as $report ) {
+        
+        $filestring .= "Datum" . $delimiter .
+        "Beginn" . $delimiter .
+        "Ende" . $delimiter .
+        "Typ" . $delimiter .
+        "Titel" . $delimiter .
+        "Personal" . $delimiter .
+        "Löschzug" . $delimiter .
+        "Dauer" . $delimiter .
+        "\n";
+                
+        foreach ( $report->getUnits() as $unit ) {
+            $unitDuration = strtotime($unit->getEndTime()) - strtotime($unit->getStartTime());
+            foreach ( $unit->getStaff() as $staff ) {
+                
+                $filestring .= date($config ["formats"] ["date"], strtotime($report->getDate())) . $delimiter .
+                date($config ["formats"] ["time"], strtotime($report->getStartTime())) . $delimiter .
+                date($config ["formats"] ["time"], strtotime($report->getEndTime())) . $delimiter .
+                $report->getType()->getType() . $delimiter .
+                $report->getTitle() . $delimiter .
+                $staff->getName() . $delimiter .
+                $staff->getEngine()->getName() . $delimiter .
+                gmdate($config ["formats"] ["time"], $unitDuration) .
+                "\n";
+            }
+        }
+    }
+    
+    echo StringUtil::convertToWindowsCharset($filestring);
 }
 
 ?>

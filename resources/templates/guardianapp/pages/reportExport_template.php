@@ -70,6 +70,7 @@
     <p>
     	<input type="submit" name="csv" class="btn btn-primary" value='Wachen exportieren'>
     	<input type="submit" name="invoice" class="btn btn-primary" value='Rechungsdaten exportieren'>
+    	<input type="submit" name="csvlist" class="btn btn-primary" value='Wachen exportieren (Liste)'>
     </p>
 </form>
 
