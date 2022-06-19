@@ -436,6 +436,7 @@ function mail_insert_event_report(Report $report){
 	$subject = "Wachbericht";
 	$parameter = array(
 	    'report_link' => get_report_link($report->getUuid()),
+	    'report' => $report,
 	);
 	$file = $config["paths"]["reports"] . $report->getUuid() . ".pdf";
 	
@@ -462,6 +463,7 @@ function mail_update_report(Report $report){
 	$subject = "Wachbericht aktualisiert";
 	$parameter = array(
 	    'report_link' => get_report_link($report->getUuid()),
+	    'report' => $report,
 	);
 	$file = $config["paths"]["reports"] . $report->getUuid() . ".pdf";
 
@@ -481,16 +483,18 @@ function mail_update_report(Report $report){
 }
 
 function mail_report_approved($report_uuid){
-	global $config, $userDAO;
+	global $config, $userDAO, $reportDAO;
+	
+	$report = $reportDAO->getReport($report_uuid);
 	
 	$subject = "Wachbericht freigegeben";
 	$parameter = array(
 	    'report_link' => get_report_link($report_uuid),
+	    'report' => $report,
 	);	
 	$file = $config["paths"]["reports"] . $report_uuid . ".pdf";
 	
 	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
-	return send_mails($administration, $subject, $body, $file);
 	
 	return sendMailsWithTemplate (
 	    $administration,
