@@ -10,12 +10,10 @@ function renderMail($recipient, $template, array $parameter){
 }
 
 function renderMailHead($recipient){
-    $head = "Lieber ";
+    $head = "Hallo";
     
     if(isset($recipient)){
-        $head .= $recipient->getFirstname();
-    } else {
-        $head .= "Benutzer";
+        $head .= " " . $recipient->getFirstname();
     }
     
     $head .= ",\n\n";
