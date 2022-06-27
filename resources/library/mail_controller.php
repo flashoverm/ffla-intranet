@@ -191,7 +191,7 @@ function mail_publish_event($event_obj) {
 	
 	$recipients = $guardianUserController->getEventManangerExeptEngineAndCreator($event_obj->getEngine()->getUuid(), $event_obj->getCreator()->getUuid());
 	
-	return send_mails($recipients, $subject, $body);
+	return sendMailsWithBody($recipients, $subject, $body);
 }
 
 function mail_not_full($event_uuid) {
@@ -296,7 +296,7 @@ function mail_unscribe_staff_user($staff_uuid, $event_uuid) {
 		
 		$body = $bodies["event_unscribe_by_user_engine"] . get_event_link($event_uuid);
 		$recipients = $guardianUserController->getEventmanagerOfEngine($staffuser->getEngine()->getUuid());
-		$sendOK = send_mails($recipients, $subject, $body);
+		$sendOK = sendMailsWithBody($recipients, $subject, $body);
 	}
 	
 	//send mail to manager of the event
@@ -361,7 +361,7 @@ function mail_remove_staff_user($staff_uuid, $event_uuid) {
 		$body = $bodies["event_unscribe_engine"] . get_event_link($event_uuid);
 		
 		$recipients = $guardianUserController->getEventmanagerOfEngine($user->getEngine()->getUuid());
-		send_mails($recipients, $subject, $body);
+		sendMailsWithBody($recipients, $subject, $body);
 	}
 }
 
@@ -407,7 +407,7 @@ function mail_to_manager($event_obj, $subject, $body){
 	
 	$recipients = $guardianUserController->getEventmanagerOfEngine($event_obj->getEngine()->getUuid());
 	
-	return send_mails($recipients, $subject, $body);
+	return sendMailsWithBody($recipients, $subject, $body);
 }
 
 function mail_to_creator(Event $event, $subject, $body){
@@ -424,7 +424,7 @@ function mail_to_staff($event_obj, $subject, $body){
 		}
 	}
 
-	return send_mails($recipients, $subject, $body);
+	return sendMailsWithBody($recipients, $subject, $body);
 }
 
 
@@ -437,7 +437,7 @@ function inform_users_manager($event_uuid, $user){
 		$body = $bodies["event_subscribe_manager"] . get_event_link($event_uuid);
 		
 		$recipients = $guardianUserController->getEventmanagerOfEngine($user->engine);
-		return send_mails($recipients, $subject, $body);
+		return sendMailsWithBody($recipients, $subject, $body);
 	}
 	return true;
 }
@@ -533,7 +533,7 @@ function mail_send_confirmation_request($confirmation){
 	$body = $bodies["confirmation_requested"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations/process";
 		
 	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
-	return send_mails($administration, $subject, $body);
+	return sendMailsWithBody($administration, $subject, $body);
 }
 
 function mail_send_confirmation_declined($confirmation){
@@ -604,7 +604,7 @@ function mail_send_datachange_request(){
 	$body = $bodies["datachange_requested"] . $config ["urls"] ["base_url"] . $config["urls"]["masterdataapp_home"] . "/datachangerequests/process";
 	
 	$dataadmins = $userDAO->getUsersWithPrivilegeByName(Privilege::MASTERDATAADMIN);
-	return send_mails($dataadmins, $subject, $body);
+	return sendMailsWithBody($dataadmins, $subject, $body);
 }
 
 function mail_send_datachange_request_update(){
@@ -614,7 +614,7 @@ function mail_send_datachange_request_update(){
 	$body = $bodies["datachange_request_update"] . $config ["urls"] ["base_url"] . $config["urls"]["masterdataapp_home"] . "/datachangerequests/process";
 	
 	$dataadmins = $userDAO->getUsersWithPrivilegeByName(Privilege::MASTERDATAADMIN);
-	return send_mails($dataadmins, $subject, $body);
+	return sendMailsWithBody($dataadmins, $subject, $body);
 }
 
 function mail_send_datachange_status(DataChangeRequest $datachangerequest){
