@@ -27,6 +27,22 @@ function sendMailsWithTemplate($recipients, $subject, $template, array $paramete
     return $success;
 }
 
+function sendMailsWithBody($recipients, $subject, $body, $attachment = NULL) {
+    $success = true;
+    foreach ($recipients as $to) {
+        if(
+            ( ! $to->getLocked() && $to->getPassword() != null )
+            ||
+            $to->getPassword() == null
+        ) {
+            if(!send_mail($to->getEmail(), $subject, $body, $attachment)){
+                $success = false;
+            }
+        }
+    }
+    return $success;
+}
+
 
 
 
