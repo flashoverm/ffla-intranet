@@ -182,17 +182,17 @@ function reportsToCSVList($reports, $head = ""){
     $delimiter = ";";
     $filestring = $head;
     
+    $filestring .= "Datum" . $delimiter .
+    "Beginn" . $delimiter .
+    "Ende" . $delimiter .
+    "Typ" . $delimiter .
+    "Titel" . $delimiter .
+    "Personal" . $delimiter .
+    "Löschzug" . $delimiter .
+    "Dauer" . $delimiter .
+    "\n";
+    
     foreach ( $reports as $report ) {
-        
-        $filestring .= "Datum" . $delimiter .
-        "Beginn" . $delimiter .
-        "Ende" . $delimiter .
-        "Typ" . $delimiter .
-        "Titel" . $delimiter .
-        "Personal" . $delimiter .
-        "Löschzug" . $delimiter .
-        "Dauer" . $delimiter .
-        "\n";
                 
         foreach ( $report->getUnits() as $unit ) {
             $unitDuration = strtotime($unit->getEndTime()) - strtotime($unit->getStartTime());
