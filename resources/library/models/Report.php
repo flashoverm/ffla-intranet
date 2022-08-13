@@ -449,6 +449,7 @@ class Report extends BaseModel {
 				$reportUnit->addStaff($reportStaff);
 			}
 		}
+		//$this->addReportUnit($reportUnit);
 	}
 		
 	

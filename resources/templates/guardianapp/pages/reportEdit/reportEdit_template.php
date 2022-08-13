@@ -171,7 +171,7 @@
 		
 						<div class='modal-header'>
 							<h4 class='modal-title'>Bericht absenden</h4>
-							<button type='button' class='close' data-dismiss='modal'>&times;</button>
+							<button type='button' id='reportSubmitClose' class='close' data-dismiss='modal'>&times;</button>
 						</div>
 			            <div class='modal-body'>Bitte überprüfen Sie alle eingebenen Daten.<br>Ist das Wachende korrekt eingetragen (tatsächliches Ende der Wachveranstaltung)?</div>
 			            <div class='modal-footer'>
@@ -210,7 +210,8 @@ if(!isDateSupported()){
 }
 
 function processReportForm() {
-	closeOneModal('confirmSubmit');
+	var modal = document.getElementById('reportSubmitClose');
+	modal.click();
     
     var reportSubmit = document.getElementById('reportSubmit');
     reportSubmit.click();
