@@ -14,7 +14,7 @@
 				<td><?= date($config ["formats"] ["date"], strtotime($event->getDate())); ?></td>
 				<td><?= date($config ["formats"] ["time"], strtotime($event->getStartTime())); ?></td>
 				<td><?php
-				if ($event->getEndTime() != 0) {
+				if ($event->getEndTime() != null) {
 				    echo date($config ["formats"] ["time"], strtotime($event->getEndTime()));
 				} else {
 					echo " - ";

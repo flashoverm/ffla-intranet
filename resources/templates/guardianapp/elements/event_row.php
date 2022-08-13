@@ -6,7 +6,7 @@
 		<td class="text-center"><?= date($config ["formats"] ["time"], strtotime($data->getStartTime())); ?></td>
 		<td class="text-center">
 			<?php
-			if ($data->getEndTime() != 0) {
+			if ($data->getEndTime() != null) {
 				echo date($config ["formats"] ["time"], strtotime($data->getEndTime()));
 			} else {
 				echo " &ndash; ";
