@@ -280,14 +280,22 @@ function processReportForm() {
 
 function rotateCorrection(){
 
+	var content = document.getElementById("content");
+	content.style.display = "inline";
 	for(i = -2; i < cCount; i++) {
 		var dc = document.getElementById("dc" + i);
 		var doc = document.getElementById("doc" + i);
+		
+		console.log("Rotate-Correction - no: " + i);
+		console.log("Rotate-Correction - dc: ");
+		console.log(dc);
+		console.log(dc.offsetWidth);
 		
 		doc.style.width = dc.offsetHeight + 'px';
 		doc.style.height = dc.offsetWidth + 'px';
 		doc.style.margin = "auto";		
 	}	
+	content.style.display = "none";
 }
 
 function addHydrantOverview(){
