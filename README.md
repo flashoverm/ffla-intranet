@@ -39,6 +39,24 @@ test is merged into master with a new version number
 
 ## Usage
 
+Local docker stack:
+
+Place database-file in
+
+	.docker/database/fflaintranet.sql
+
+	docker-compose up 
+
+
+Portal:
+
+	fflaintranet.localhost
+	
+phpMyAdmin:
+
+	fflaintranet-pma.localhost
+
+
 New installation:
 
 * Clone repository in webserver folder (e.g. /var/www/)
@@ -47,9 +65,7 @@ New installation:
 
 * Replace and adapt config sample
 
-* apt install -y zip
-
-* apt install -y gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget php7.0-gd 
+* apt install -y zip gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget php7.0-gd 
 
 * Run "php composer.phar install" in {application}/resources/ folder
 

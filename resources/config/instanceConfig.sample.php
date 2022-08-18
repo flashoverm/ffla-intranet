@@ -10,7 +10,7 @@ $dbConfig = array (
 		"dbname" => "fflaintranet",
 		"username" => "fflaintranet",
 		"password" => "fflaintranet",
-		"host" => "localhost"
+		"host" => "database"
 );
 
 //required
@@ -27,10 +27,10 @@ $mailConfig = array (
 //partly optional - overrides default settings
 $overrideConfig = array(
 		"urls" => array(
-				"base_url" => "http://127.0.0.1"
+				"base_url" => "http://fflaintranet.localhost"
 		),
 		"paths" => array(
-				"nodejs" => "D:/runtimes/nodejs/node.exe"
+				"nodejs" => "node"
 		),
 		"mapView" => array(
 				"apiKey" => "yourapikey",
