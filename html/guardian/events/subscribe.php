@@ -68,10 +68,10 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     						$variables ['alertMessage'] = "Eintragen fehlgeschlagen";
     					}
     				} else {
-    					$variables ['alertMessage'] = "Eintragen nicht möglich - Sie besetzen bereits eine Position";
+    					$variables ['alertMessage'] = "Eintragen nicht möglich - Du besetzt bereits eine Position";
     				}
     			} else {
-    				$variables ['alertMessage'] = "Eintragen nicht möglich - Sie sind nicht für Wachen freigegeben";
+    				$variables ['alertMessage'] = "Eintragen nicht möglich - Du bist nicht für Wachen freigegeben";
     			}
     		} else {
     			$variables ['alertMessage'] = "Eintragen nicht möglich - Der aktuelle Benutzer wurde nicht gefunden";

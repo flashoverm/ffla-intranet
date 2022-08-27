@@ -564,10 +564,10 @@ function mail_send_confirmation($confirmation){
 			$body = $body . "\n\n" . "Die Bestätigung wurde bereits an die in den Benutzerdaten hinterlegte E-Mail-Adresse des Arbeitgebers gesendet.";
 		} else {
 			$body = $body . "\n\n" . "Die Bestätigung konnte aufgrund eines Fehler nicht an den Arbeitgeber gesendet werden. \n"
-						. "Bitte leiten Sie die Bestätigung selbst weiter.";
+						. "Bitte leite die Bestätigung selbst weiter.";
 		}
 	} else {
-		$body = $body . "\n\n" . "Bitte leiten Sie die Bestätigung an Ihren Arbeitgeber weiter. \n"
+		$body = $body . "\n\n" . "Bitte leite die Bestätigung an deinen Arbeitgeber weiter. \n"
 					. "(In den Benutzerdaten kann die E-Mail-Adresse des Arbeitgebers hinterlegt werden. Die Bestätigung wird dann direkt an diese Adresse gesendet)";
 	}
 		
