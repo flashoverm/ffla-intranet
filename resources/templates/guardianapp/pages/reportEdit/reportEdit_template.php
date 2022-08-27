@@ -1,5 +1,56 @@
-<?php include 'reportEditUnit_template.php'; ?>
-<?php include 'reportCard_template.php'; ?>
+<?php 
+if(isset($report) && isset($noEndTime) && $noEndTime == true){
+?>
+
+<div class="table-responsive">
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<th colspan="1">Titel</th>
+				<td colspan="2"><?= $report->getTitle(); ?></td>
+			</tr>
+			<tr>
+				<th>Datum</th>
+				<th>Wachbeginn</th>
+				<th>Ende</th>
+			</tr>
+			<tr>				
+				<td><?= date($config ["formats"] ["date"], strtotime($report->getDate())); ?></td>
+				<td><?= date($config ["formats"] ["time"], strtotime($report->getStartTime())); ?></td>
+				<td><?php
+				if ($report->getEndTime() != null) {
+				    echo date($config ["formats"] ["time"], strtotime($report->getEndTime()));
+				} else {
+					echo " - ";
+				}
+				?></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<form id="endTimeFormat" onsubmit="showLoader()" method="post" >
+	<p>Um den Wachbericht den den Wachdaten auszufüllen muss ein Wachende angegeben werden:
+    <div class="form-group">
+    	<label>Wachende:</label> <input type="time" required
+    	placeholder="--:--" title="--:--" class="form-control" 
+    	<?php
+    	if(isset($report) && $report->getEndTime() != null ){
+    		echo "value='" . DateFormatUtil::timeToHm ($report->getEndTime()) . "'";
+    	}?>
+    	name="endForm" id="endForm" required pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
+    </div>
+    <p>Hinweis: Der vorausgefüllte Bericht muss noch ergänzt und abgeschickt werden!</p>
+	<div>
+	    <input type="submit" class="btn btn-primary" value="Bericht ausfüllen">
+	 </div>
+</form>
+  
+<?php  
+} else {
+
+    include 'reportEditUnit_template.php';
+    include 'reportCard_template.php';
+?>
 
 <form id="reportForm" onsubmit="showLoader()" method="post" >
 	<div class="row">
@@ -173,7 +224,13 @@
 							<h4 class='modal-title'>Bericht absenden</h4>
 							<button type='button' id='reportSubmitClose' class='close' data-dismiss='modal'>&times;</button>
 						</div>
-			            <div class='modal-body'>Bitte überprüfen Sie alle eingebenen Daten.<br>Ist das Wachende korrekt eingetragen (tatsächliches Ende der Wachveranstaltung)?</div>
+			            <div class='modal-body'>
+			            	<p><b>Bitte überprüfe alle eingebenen Daten!</b></p>
+			            	<?php if(isset($fromEvent) && $fromEvent == true){ ?>
+			            	<p>Sind die von der Wache übernommenen Felder korrekt?</p>
+			            	<?php } ?>
+			            	<p>Ist das Wachende korrekt (tatsächliches Ende der Wachveranstaltung)?</p>
+			            </div>
 			            <div class='modal-footer'>
 							<button type='button' class='btn btn-primary' onClick='processReportForm()'>Abschicken</button>
 							<button type='button' class='btn btn-outline-primary' data-dismiss='modal'>Abbrechen</button>
@@ -219,3 +276,7 @@ function processReportForm() {
 
 
 </script>
+
+<?php 
+}
+?>

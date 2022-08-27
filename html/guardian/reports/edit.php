@@ -44,17 +44,28 @@ if(isset($_GET['id'])){
 	
 	$event = $eventDAO->getEvent($_GET['event']);
 	if($event && ! $event->isDeleted()){
-		
-		if(SessionUtil::userLoggedIn()){
+
+	    if(SessionUtil::userLoggedIn()){
 			$creator = $userController->getCurrentUser();
 		} else {
 			$creator = null;
+		}
+		
+		//Set end time if provided by form
+		if (isset($_POST) && isset($_POST ['endForm'])) {
+		    $event->setEndTime(trim ( $_POST ['endForm'] . ":00" ));
 		}
 		
 		$eventReport = new Report();
 		$eventReport->setDataOfEvent($event);
 		$eventReport->setCreator($creator);
 		$variables['report'] = $eventReport;
+		$variables['fromEvent'] = true;
+		
+		//Show endtime form if endtime not set
+		if($eventReport->getEndTime() == null){
+		    $variables['noEndTime'] = true;
+		}
 
 	} else {
 		$variables ['alertMessage'] = "Wache nicht gefunden";
