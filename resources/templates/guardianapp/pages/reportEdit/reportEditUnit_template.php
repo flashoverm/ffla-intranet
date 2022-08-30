@@ -79,17 +79,6 @@
 										name="positionname" id="positionname">
 								</div>
 							</div>
-							<div class="col" id="engineselect">
-								<div class="form-group">
-									<select class="form-control" name="positionengine" required="required"
-										id="positionengine">
-										<option value="" disabled selected>Löschzug auswählen</option>
-										<?php foreach ( $engines as $option ) : ?>
-										<option value="<?=  $option->getUuid(); ?>"><?= $option->getName(); ?></option>
-										<?php endforeach; ?>
-									</select>
-								</div>
-							</div>
 						</div>
 					</div>
 					<p class="text-right my-0 mx-0"><sub><em>* Mehr Personal kann mit + eingefügt werden</em></sub></p>

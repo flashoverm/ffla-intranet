@@ -2,6 +2,14 @@
 Release Documentation
 ******************************
 
+### V2.5.0
+
+DROP FOREIGN KEY report_staff_ibfk_2;
+ALTER TABLE report_staff DROP INDEX engine; 
+ALTER TABLE report_staff DROP engine;
+
+Start script replace_report_staff.php
+
 ### V2.4.6
 
 ALTER TABLE eventtype CHANGE isseries sendNoReport TINYINT(1) NOT NULL DEFAULT '0'; 

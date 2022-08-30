@@ -144,11 +144,10 @@ if (isset($_POST) && isset($_POST ['start'])) {
         while ( isset ( $_POST ["unit" . $unitCount . "function" . $position . "field"] ) ) {
             $staffPositionUuid = trim ( $_POST ["unit" . $unitCount . "function" . $position . "field"] );
             $staffPosition = $staffPositionDAO->getStaffPosition($staffPositionUuid);
-            $name = trim ( $_POST ["unit" . $unitCount . "name" . $position . "field"] );
-            $unitEngineUuid = trim ( $_POST ["unit" . $unitCount . "engine" . $position . "field"] );
-            $engineUnit = $engineDAO->getEngine($unitEngineUuid);
+            $userUuid = trim ( $_POST ["unit" . $unitCount . "user" . $position . "field"] );
+            $user = $userDAO->getUser($userUuid);
 
-            $unit->addStaff(new ReportStaff($staffPosition, $name, $engineUnit));
+            $unit->addStaff(new ReportStaff($staffPosition, $user));
             
             $position += 1;
         }

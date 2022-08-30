@@ -4,12 +4,12 @@ require_once "BaseDAO.php";
 
 class ReportUnitDAO extends BaseDAO{
 	
-	protected $engineDAO;
+    protected $userDao;
 	protected $staffPositionDAO;
 	
-	function __construct(PDO $pdo, EngineDAO $engineDAO, StaffPositionDAO $staffPositionDAO) {
+	function __construct(PDO $pdo, UserDAO $userDao, StaffPositionDAO $staffPositionDAO) {
 		parent::__construct($pdo, "report_unit");
-		$this->engineDAO = $engineDAO;
+		$this->userDao = $userDao;
 		$this->staffPositionDAO = $staffPositionDAO;
 	}
 	
@@ -67,8 +67,7 @@ class ReportUnitDAO extends BaseDAO{
 	protected function resultToReportStaffObject($result){
 		$object = new ReportStaff(
 				$this->staffPositionDAO->getStaffPosition($result['position']),
-				$result['name'],
-				$this->engineDAO->getEngine($result['engine'])
+		        $this->userDao->getUserByUUID($result['user'])
 			);
 		$object->setUuid($result['uuid']);
 		$object->setUnitUuid($result['unit']);
@@ -106,12 +105,11 @@ class ReportUnitDAO extends BaseDAO{
 		$uuid = $this->generateUuid();
 		$staff->setUuid($uuid);
 		
-		$statement = $this->db->prepare("INSERT INTO report_staff (uuid, position, name, engine, unit)
-		VALUES (?, ?, ?, ?, ?)");
+		$statement = $this->db->prepare("INSERT INTO report_staff (uuid, position, user, unit)
+		VALUES (?, ?, ?, ?)");
 		
 		$result = $statement->execute(array(
-				$uuid, $staff->getPosition()->getUuid(), $staff->getName(),
-				$staff->getEngine()->getUuid(), $staff->getUnitUuid()
+				$uuid, $staff->getPosition()->getUuid(), $staff->getUser(), $staff->getUnitUuid()
 		));
 		
 		if ($result) {
@@ -138,12 +136,11 @@ class ReportUnitDAO extends BaseDAO{
 			$statement = $this->db->prepare("CREATE TABLE report_staff (
                           uuid CHARACTER(36) NOT NULL,
 						  position CHARACTER(36) NOT NULL,
-						  name VARCHAR(96) NOT NULL,
-                          engine CHARACTER(36) NOT NULL,
+                          user CHARACTER(36) NOT NULL,
 						  unit CHARACTER(36) NOT NULL,
                           PRIMARY KEY  (uuid),
 						  FOREIGN KEY (unit) REFERENCES report_unit(uuid),
-						  FOREIGN KEY (engine) REFERENCES engine(uuid)
+						  FOREIGN KEY (user) REFERENCES user(uuid)
                           )");
 			$result = $statement->execute();
 			
