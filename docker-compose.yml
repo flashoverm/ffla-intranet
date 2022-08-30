@@ -39,6 +39,8 @@ services:
     env_file: .docker/database/.env
     labels:
       - "traefik.http.routers.pma.rule=Host(`fflaintranet-pma.localhost`)"
+    environment:
+        UPLOAD_LIMIT: 512M
   proxy:
     image: traefik:v2.6
     command: --api.insecure=true --providers.docker
