@@ -18,6 +18,7 @@
 			<li><a href="#edit">Wache bearbeiten</a></li>
 			<li><a href="#warn">Warnfunktion</a></li>
 			<li><a href="#reportOrg">Wachberichte verwalten</a></li>
+			<li><a href="#multiEngine">Mehrere Einheiten (z.B. UG ÖEL)</a></li>
 		</ul>
 	</div>
 </div>
@@ -304,11 +305,26 @@
 			src="<?= $config["urls"]["intranet_home"] ?>/images/manual/guardian/Report_Overview.jpg" style="width: 75%;">
 
 	</div>
+	
+	<div class="mt-5" id="multiEngine">
+		<h4>
+			Mehrere Einheiten (z.B. UG ÖEL) <a href="#">&uarr;</a>
+		</h4>
+		<p>Ist man Wachbeauftragter einer Einheit die nicht seiner primären Einheit entspricht (z.B. Primäre Einheit: Stadtlöschzüge, Wachbeauftragter der UG ÖEL) muss man, um die Funktionalität des Wachbeauftragen für die zusätzliche Einheit wahrzunehmen auf die Ansicht dieser umschalten.</p>
+		
+		<p>Dazu findet man im Benutzermenü den Punkt „Ansicht wechseln“ unter dem man auf die zusätzliche Einheit umschalten kann (und auch wieder zurück).</p>
+		
+		<p>Befindet man sich nicht in der Ansicht seiner primären Einheit wird die aktuelle Einheit hinter der E-Mail-Adresse in der Menüleiste angezeigt.</p>
+		
+		<img class="img-fluid rounded mb-2 mx-auto d-block border"
+			src="<?= $config["urls"]["intranet_home"] ?>/images/manual/guardian/Change_View.jpg" style="width: 75%;">
+			
+	</div>
 </div>
 
 <div class="mt-5">
 	<h4>
 		<a href="#">&uarr;</a>
 	</h4>
-	<p>Stand 21.08.2021</p>
+	<p>Stand 19.09.2022</p>
 </div>
