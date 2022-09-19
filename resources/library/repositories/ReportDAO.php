@@ -156,9 +156,7 @@ class ReportDAO extends BaseDAO{
 				$report->getEmsEntry(), $report->getManagerApproved(),
 				$approvedBy, $report->getManagerApprovedDate()
 		));
-		
-		print_r($statement->errorInfo());
-		
+				
 		if ($result) {
 			
 			foreach($report->getUnits() as $reportUnit){

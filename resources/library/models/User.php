@@ -107,7 +107,13 @@ class User extends BaseModel {
 	 */
 	public function getEngine() : ?Engine {
 		if( SessionUtil::getCurrentUserUUID() == $this->uuid && isset( $_SESSION["setEngine"] ) ){
-			return $_SESSION["setEngine"];
+		    if($_SESSION["setEngine"] != $this->engine->getUuid()){
+		        foreach ($this->additionalEngines as $additionalEngine) {
+		            if($_SESSION["setEngine"] == $additionalEngine->getUuid()){
+		                return $additionalEngine;
+		            }
+		        }
+		    }
 		}
 		return $this->engine;
 	}

@@ -18,16 +18,16 @@ if(isset($_POST["ref"]) && ! isset($_SESSION["ref"])){
 }
 
 if( ! count($currentUser->getAdditionalEngines()) > 0 ){
-	$_SESSION["setEngine"] = $currentUser->getEngine();
+	$_SESSION["setEngine"] = $currentUser->getEngine()->getUuid();
 	$redirect = true;	
 }
 
 if( isset( $_GET["engine"] ) ){
 	$engine = $engineDAO->getEngine($_GET["engine"]);
 	if($currentUser->hasEngine($engine)){
-		$_SESSION["setEngine"] = $engine;
+		$_SESSION["setEngine"] = $engine->getUuid();
 	} else {
-		$_SESSION["setEngine"] = $currentUser->getEngine();
+	    $_SESSION["setEngine"] = $currentUser->getEngine()->getUuid();
 	}
 	$redirect = true;
 }
