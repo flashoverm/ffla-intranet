@@ -33,7 +33,7 @@ class ReportStaff extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getUser() : ?string {
+	public function getUser() : ?User {
 		return $this->user;
 	}
 
@@ -61,7 +61,7 @@ class ReportStaff extends BaseModel {
 	/**
 	 * @param mixed $name
 	 */
-	public function setUser(?string $user) {
+	public function setUser(?User $user) {
 		$this->user = $user;
 	}
 

@@ -65,7 +65,7 @@
 						<div class="row" id="position1">
 							<div class="col">
 								<div class="form-group">
-									<select class="form-control" name="positionfunction" required="required" id="positionfunction">
+									<select class="form-control" name="positionfunction1" required="required" id="positionfunction1">
 										<option value="" disabled selected>Funktion auswählen</option>
 										<?php foreach ( $staffpositions as $option ) : ?>
 										<option value="<?=  $option->getUuid(); ?>"><?= $option->getPosition(); ?></option>
@@ -75,8 +75,10 @@
 							</div>
 							<div class="col">
 								<div class="form-group">
-									<input type="text" placeholder="Name" class="form-control" required="required"
-										name="positionname" id="positionname">
+									<input type="text" placeholder="Name" class="form-control positionuser" required="required"
+										name="positionuser1" id="positionuser1">
+									<input type="hidden" class="form-control positionuseruuid"
+										name="positionuseruuid1" id="positionuseruuid1">
 								</div>
 							</div>
 						</div>
@@ -93,28 +95,66 @@
 	</div>
 </div>
 
+<style>
+.ui-autocomplete {
+z-index: 10000;
+}
+</style>
+
 <script type='text/javascript'>
 
-    var form = document.getElementById('addUnitForm');
-    if (form.attachEvent) {
-        form.attachEvent("submit", processForm);
-    } else {
-        form.addEventListener("submit", processForm);
-    }
-    
-    var reportPositionCount = 1;
-    var reportEngine = "";
-    var stationString = "Stationäre Wache"
+var form = document.getElementById('addUnitForm');
+if (form.attachEvent) {
+    form.attachEvent("submit", processForm);
+} else {
+    form.addEventListener("submit", processForm);
+}
 
-	function processForm(e) {
-	    if (e.preventDefault) e.preventDefault();
-		
-		addUnit();
-  
-		clearUnitForm();
-	    
-	    $('#addUnitModal').modal('hide');
-	    return false;
-	}
+var reportPositionCount = 1;
+var reportEngine = "";
+var stationString = "Stationäre Wache"
+
+function processForm(e) {
+    if (e.preventDefault) e.preventDefault();
+	
+	addUnit();
+
+	clearUnitForm();
+    
+    $('#addUnitModal').modal('hide');
+    return false;
+}
+
+$( function() {
+    $( ".positionuser" ).autocomplete({
+      source: function( request, response ) {
+        $.ajax({
+          url: "<?= $config["urls"]["intranet_home"] ?>/ajax/userTypeahead",
+          dataType: "json",
+          data: {
+            name: request.term
+          },
+          success: function( data ) {
+            response($.map(data, function (value, key) {
+                return {
+                    label: value.name,
+                    value: value.uuid
+                }
+            }));
+          }
+        });
+      },
+      minLength: 3,
+      select: function(event, ui) {
+      	console.log(event);
+      	console.log(ui.item.label);
+      	console.log(ui.item.value);
+        // place the person.given_name value into the textfield called 'select_origin'...
+        //$('#search').val(ui.item.first_name);
+        // and place the person.id into the hidden textfield called 'link_origin_id'. 
+        //$('#link_origin_id').val(ui.item.id);
+       }
+    });
+});
 
 </script>

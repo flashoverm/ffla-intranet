@@ -94,32 +94,17 @@ function createUnitStaff($unitNumber, $staffNumber, ReportStaff $staff = null) {
 		</select>
 	</div>
 	<div class="col-sm">
-		<input class="form-control bg-white" id="unit<?= $unitNumber ?>name<?= $staffNumber ?>" 
-			disabled name="unit<?= $unitNumber ?>name<?= $staffNumber ?>" type="text"" 
-			<?php if(isset($staff)){ echo "value='" . $staff->getName() . "'"; } ?>
+		<input class="form-control bg-white" id="unit<?= $unitNumber ?>user<?= $staffNumber ?>" 
+			disabled name="unit<?= $unitNumber ?>user<?= $staffNumber ?>" type="text" 
+			<?php if(isset($staff)){ echo "value='" . $staff->getUser()->getFullName() . "'"; } ?>
         	>
-	</div>
-	<div class="col-sm">
-		<select class="form-control bg-white" id="unit<?= $unitNumber ?>engine<?= $staffNumber ?>" 
-			disabled name="unit<?= $unitNumber ?>engine<?= $staffNumber ?>" required="required" id="positionengine">
-			<option value="" selected>Löschzug auswählen</option>
-			<?php foreach ( $engines as $option ) : ?>
-			<option value="<?=  $option->getUuid(); ?>"
-				<?php if(isset($staff) && $staff->getEngine()->getUuid() == $option->getUuid()){ echo "selected"; } ?>>
-				<?= $option->getName(); ?>
-			</option>
-			<?php endforeach; ?>
-		</select>
 	</div>
 	
 	<input id="unit<?= $unitNumber ?>function<?= $staffNumber ?>field" name="unit<?= $unitNumber ?>function<?= $staffNumber ?>field" type="hidden" 
 	<?php if(isset($staff)){ echo "value='" . $staff->getPosition()->getUuid() . "'"; } ?>
         >
-    <input id="unit<?= $unitNumber ?>name<?= $staffNumber ?>field" name="unit<?= $unitNumber ?>name<?= $staffNumber ?>field" type="hidden" 
-    <?php if(isset($staff)){ echo "value='" . $staff->getName() . "'"; } ?>
-        >
-    <input id="unit<?= $unitNumber ?>engine<?= $staffNumber ?>field" name="unit<?= $unitNumber ?>engine<?= $staffNumber ?>field" type="hidden" 
-    <?php if(isset($staff)){ echo "value='" . $staff->getEngine()->getUuid() . "'"; } ?>
+    <input id="unit<?= $unitNumber ?>user<?= $staffNumber ?>field" name="unit<?= $unitNumber ?>user<?= $staffNumber ?>field" type="hidden" 
+    <?php if(isset($staff)){ echo "value='" . $staff->getUser()->getUuid() . "'"; } ?>
         >
 </div>
 <?php

@@ -101,6 +101,21 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
+	function getUsersTypeaheadWithPrivilegeByName(String $query, String $priviledgeName){
+	    $queryString = "%".strtolower($query)."%";
+	    $statement = $this->db->prepare("SELECT user.*
+		FROM user, user_privilege, privilege
+		WHERE user.uuid = user_privilege.user AND privilege.uuid = user_privilege.privilege
+		AND privilege.privilege = ?
+		AND user.deleted = false
+        AND ( LOWER(user.firstname) LIKE ? OR LOWER(user.lastname) LIKE ? OR LOWER(CONCAT(user.firstname, ' ', user.lastname)) LIKE ?)");
+	    
+	    if ($statement->execute(array($priviledgeName, $queryString, $queryString, $queryString))) {
+	        return $this->handleResult($statement, true);
+	    }
+	    return false;
+	}
+	
 	function getUsersByEngineAndPrivilege(String $engineUuid, String $privilege){
 		$statement = $this->db->prepare("SELECT user.*
 		FROM user, user_privilege, privilege

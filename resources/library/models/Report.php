@@ -444,8 +444,7 @@ class Report extends BaseModel {
 			if($eventStaff->getUser() != NULL){
 				$reportStaff = new ReportStaff(
 						$eventStaff->getPosition(),
-						$eventStaff->getUser()->getFullName(),
-						$eventStaff->getUser()->getEngine());
+						$eventStaff->getUser());
 				$reportUnit->addStaff($reportStaff);
 			}
 		}

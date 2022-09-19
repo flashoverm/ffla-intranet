@@ -145,7 +145,7 @@ if (isset($_POST) && isset($_POST ['start'])) {
             $staffPositionUuid = trim ( $_POST ["unit" . $unitCount . "function" . $position . "field"] );
             $staffPosition = $staffPositionDAO->getStaffPosition($staffPositionUuid);
             $userUuid = trim ( $_POST ["unit" . $unitCount . "user" . $position . "field"] );
-            $user = $userDAO->getUser($userUuid);
+            $user = $userDAO->getUserByUUID($userUuid);
 
             $unit->addStaff(new ReportStaff($staffPosition, $user));
             
