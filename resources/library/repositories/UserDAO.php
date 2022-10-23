@@ -107,7 +107,7 @@ class UserDAO extends BaseDAO {
 		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND privilege.privilege = ?
 		AND user_privilege.engine = ?
-		AND user.deleted = false");
+		AND user.deleted = false ORDER BY user.lastname");
 	
 		if ($statement->execute(array($privilege, $engineUuid))) {
 			return $this->handleResult($statement, true);
