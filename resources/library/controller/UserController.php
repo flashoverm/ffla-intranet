@@ -97,10 +97,13 @@ class UserController extends BaseController{
 		
 		$user = $this->userDAO->getUserByUUID($uuid);
 		if($user){
-			$user->setPassword($pwhash);
-			if($this->userDAO->save($user)){
-				return $password;
-			}
+		    if(! $user->getLocked() && ! $user->getDeleted()){
+		        $user->setPassword($pwhash);
+		        if($this->userDAO->save($user)){
+		            return $password;
+		        }
+		    }
+
 		}
 		return false;
 	}
