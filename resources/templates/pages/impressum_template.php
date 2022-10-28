@@ -8,7 +8,7 @@
 
 <p><b>Verantwortlich nach § 10 Absatz 3 MDStV:</b></p>
 
-<p>Gerhard Nemela (Stadtbrandrat)
+<p>Sebastian Öllerer (Stadtbrandrat)
 <br>Martin Dax (Stadtbrandinspektor)
 <br>Andreas Kei (Vorsitzender)</p>
 
