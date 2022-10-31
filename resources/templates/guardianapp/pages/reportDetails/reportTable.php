@@ -85,8 +85,20 @@
 			?>
 			<tr>
 				<td><?= $staff->getPosition()->getPosition() ?></td>
-				<td><?= $staff->getName() ?></td>
-				<td><?= $staff->getEngine()->getName() ?></td>
+				<td>
+					<?php if($staff->getUser() != null){
+					    echo $staff->getUser()->getFullNameLastNameFirst();
+    				} else {
+    				    echo $staff->getName();
+    				} ?>
+				</td>
+				<td>
+    				<?php if($staff->getUser() != null){
+    				    echo $staff->getUser()->getEngine()->getName();
+    				} else {
+    				    echo $staff->getEngine()->getName();
+    				}?>
+				</td>
 			</tr>
 			<?php } ?>
 			</tbody>

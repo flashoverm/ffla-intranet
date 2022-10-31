@@ -450,6 +450,17 @@ class Report extends BaseModel {
 		}
 		$this->addReportUnit($reportUnit);
 	}
+	
+	function hasOldStaffFormat() : bool {
+	    foreach ( $this->getUnits() as $unit ) {
+	        foreach ( $unit->getStaff() as $staff ) {
+	            if($staff->getName() != null){
+	                return true;
+	            }
+	        }
+	    }
+	    return false;
+	}
 		
 	
 }

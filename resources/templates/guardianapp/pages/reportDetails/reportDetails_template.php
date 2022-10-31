@@ -64,7 +64,11 @@ require_once 'reportTable.php';
 		<?php } ?>
 			<div class="dropdown-divider"></div>
 	<?php } ?> 
+			<?php if( ! $report->hasOldStaffFormat() ) {?>
 			<a class="dropdown-item" href="<?= $config["urls"]["guardianapp_home"] . "/reports/edit/". $report->getUuid(); ?>">Bearbeiten</a>
+			<?php } else { ?>
+			    <span class="dropdown-item">Bearbeiten nicht möglich!</span>
+			<?php  } ?>
 		<?php if($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)) { ?>
 			<a href="#" class="dropdown-item" data-toggle='modal' data-target='#confirmDelete'>Löschen</a>
 		<?php } ?> 

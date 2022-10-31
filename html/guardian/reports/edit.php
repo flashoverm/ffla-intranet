@@ -142,11 +142,17 @@ if (isset($_POST) && isset($_POST ['start'])) {
         
         $position = 1;
         while ( isset ( $_POST ["unit" . $unitCount . "function" . $position . "field"] ) ) {
+            
             $staffPositionUuid = trim ( $_POST ["unit" . $unitCount . "function" . $position . "field"] );
             $staffPosition = $staffPositionDAO->getStaffPosition($staffPositionUuid);
             $userUuid = trim ( $_POST ["unit" . $unitCount . "user" . $position . "field"] );
             $user = $userDAO->getUserByUUID($userUuid);
-
+            if(! $user){
+                //If user not found old format is used -> 400!
+                http_response_code(400);
+                echo "400 - Bad Request";
+                return;
+            }
             $unit->addStaff(new ReportStaff($staffPosition, $user));
             
             $position += 1;

@@ -68,20 +68,28 @@ function addUnit(){
 		newPersonal.style.display = null;	
 
 		var position = form.querySelector("#position" + i);
-		
-		var inputs = newPersonal.getElementsByTagName("input");
-		nameField(inputs[0], "unit" + unitNo + "user" + i);
-		inputs[0].value = position.querySelector("#positionuser" + i).value;
-
-		nameField(inputs[1], "unit" + unitNo + "function" + i + "field");
-		inputs[1].value = position.querySelector("#positionfunction" + i).value;
-		nameField(inputs[2], "unit" + unitNo + "user" + i + "field");
-		inputs[2].value = position.querySelector("#positionuser" + i).value;
-		
+				
 		var selects = newPersonal.getElementsByTagName("select");
 		nameField(selects[0], "unit" + unitNo + "function" + i)
 		selects[0].selectedIndex = position.querySelector("#positionfunction" + i).selectedIndex;
 		
+		nameField(selects[1], "unit" + unitNo + "user" + i)
+		selects[1].innerHTML = position.querySelector("#positionuser" + i).innerHTML;
+				
+		var inputs = newPersonal.getElementsByTagName("input");
+
+		nameField(inputs[0], "unit" + unitNo + "engine" + i);
+		inputs[0].value = position.querySelector("#positionengine" + i).selectedOptions[0].innerHTML;
+
+		nameField(inputs[1], "unit" + unitNo + "function" + i + "field");
+		inputs[1].value = position.querySelector("#positionfunction" + i).value;
+		
+		nameField(inputs[2], "unit" + unitNo + "user" + i + "field");
+		inputs[2].value = position.querySelector("#positionuser" + i).value;
+		
+		nameField(inputs[3], "unit" + unitNo + "engine" + i + "field");
+		inputs[3].value = position.querySelector("#positionengine" + i).value;
+
 		personalContainer[0].appendChild(newPersonal);
 	}
 
@@ -155,17 +163,15 @@ function addReportStaffPosition(){
 	newPosition.querySelector("#positionfunction1").name = "positionfunction" + reportPositionCount;
 	newPosition.querySelector("#positionfunction1").id = "positionfunction" + reportPositionCount;
 	
-	if(newPosition.querySelector("#positionuser1").value != ""){
-		newPosition.querySelector("#positionuser1").value = "";
+	if(newPosition.querySelector("#positionengine1").value != ""){
+		newPosition.querySelector("#positionengine1").value = "";
 	}
+	newPosition.querySelector("#positionengine1").id = "positionengine" + reportPositionCount;
+	
+	resetUserSelect(newPosition.querySelector("#positionuser1"));
 	newPosition.querySelector("#positionuser1").name = "positionuser" + reportPositionCount;
 	newPosition.querySelector("#positionuser1").id = "positionuser" + reportPositionCount;
 	
-	if(newPosition.querySelector("#positionuseruuid1").value != ""){
-		newPosition.querySelector("#positionuseruuid1").value = "";
-	}
-	newPosition.querySelector("#positionuseruuid1").name = "positionuseruuid" + reportPositionCount;
-	newPosition.querySelector("#positionuseruuid1").id = "positionuseruuid" + reportPositionCount;
 	
 	container.appendChild(newPosition);
 }
@@ -184,6 +190,7 @@ function clearUnitForm(){
 	while(reportPositionCount > 1){
 		removeLastReportStaffPosition();
 	}
+	
 
 	form.reset();
 
@@ -197,6 +204,18 @@ function clearUnitForm(){
 
 	var addButton = document.getElementById("addUnit");
 	addButton.value = "Hinzufügen";
+	
+	resetUserSelect(form.querySelector("#positionuser1"));
+
+}
+
+function resetUserSelect(userSelect){
+	userSelect.innerHTML = "";
+    var optDef = document.createElement('option');
+    optDef.innerHTML = "Löschzug auswählen";
+    optDef.selected = true;
+    optDef.disabled = true;
+    userSelect.appendChild(optDef);
 }
 
 function insertAfter(newNode, referenceNode) {
@@ -299,9 +318,18 @@ function initializeModalEdit(unitnumber){
 function addExistingStaffPosition(unitnumber, positionNo) {
 	var positionfunction = document.getElementById("unit" + unitnumber + "function" + positionNo);
 	var positionuser = document.getElementById("unit" + unitnumber + "user" + positionNo);
+	var positionengine = document.getElementById("unit" + unitnumber + "engine" + positionNo + "field");
 
 	var position = form.querySelector("#position" + positionNo);
-	position.querySelector("#positionuser" + positionNo).value = positionuser.value;
+	//position.querySelector("#positionuser" + positionNo).value = positionuser.value;
 	position.querySelector("#positionfunction" + positionNo).selectedIndex = positionfunction.selectedIndex;
+	
+	var engineSelect = 	position.querySelector("#positionengine" + positionNo);
+	engineSelect.value = positionengine.value;
+	
+	var userSelect = position.querySelector("#positionuser" + positionNo);
+	userSelect.innerHTML = positionuser.innerHTML;
+
+	
 }
 	

@@ -75,10 +75,20 @@
 							</div>
 							<div class="col">
 								<div class="form-group">
-									<input type="text" placeholder="Name" class="form-control positionuser" required="required"
-										name="positionuser1" id="positionuser1">
-									<input type="hidden" class="form-control positionuseruuid"
-										name="positionuseruuid1" id="positionuseruuid1">
+									<select class="form-control" id="positionengine1" onchange="loadUsers(this)">
+										<option value="" disabled selected>Löschzug auswählen</option>
+										<?php foreach ( $engines as $option ) : ?>
+										<option value="<?=  $option->getUuid(); ?>"><?= $option->getName(); ?></option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+							</div>
+							<div class="col" id="userselect1">
+								<div class="form-group">
+									<select class="form-control" name="positionuser1" required="required"
+										id="positionuser1">
+										<option value="" disabled selected>Zuerst Löschzug auswählen</option>
+									</select>
 								</div>
 							</div>
 						</div>
@@ -125,36 +135,63 @@ function processForm(e) {
     return false;
 }
 
-$( function() {
-    $( ".positionuser" ).autocomplete({
-      source: function( request, response ) {
-        $.ajax({
-          url: "<?= $config["urls"]["intranet_home"] ?>/ajax/userTypeahead",
-          dataType: "json",
-          data: {
-            name: request.term
-          },
-          success: function( data ) {
-            response($.map(data, function (value, key) {
-                return {
-                    label: value.name,
-                    value: value.uuid
-                }
-            }));
-          }
-        });
-      },
-      minLength: 3,
-      select: function(event, ui) {
-      	console.log(event);
-      	console.log(ui.item.label);
-      	console.log(ui.item.value);
-        // place the person.given_name value into the textfield called 'select_origin'...
-        //$('#search').val(ui.item.first_name);
-        // and place the person.id into the hidden textfield called 'link_origin_id'. 
-        //$('#link_origin_id').val(ui.item.id);
-       }
-    });
-});
+var xhr = getXmlHttpRequestObject();
+
+function getXmlHttpRequestObject() {
+    if(window.XMLHttpRequest) {
+        return new XMLHttpRequest();
+    } 
+    else if(window.ActiveXObject) {
+        return new ActiveXObject("Microsoft.XMLHTTP");
+    } 
+    else {
+        alert('Ajax funktioniert bei Ihnen nicht!');
+    }
+}
+
+function loadUsers(source) {
+		console.log(source);
+
+	if(xhr.readyState == 4 || xhr.readyState == 0) {
+		var positionNo = source.id.slice(-1);
+		var engine = document.getElementById('positionengine' + positionNo);
+		    
+	    xhr.open('GET', '<?= $config["urls"]["intranet_home"] ?>/ajax/users/' + engine.value + '/field/positionuser' + positionNo, true);
+	    xhr.setRequestHeader("Content-Type","text/plain");
+	    xhr.onreadystatechange = setUsers;
+	    xhr.send(null);
+    } else {
+    }
+}
+
+function setUsers(){
+    if(xhr.readyState == 4) {
+
+    	if(xhr.status == 200){
+    	
+    	    var response = eval( '(' + xhr.responseText + ')' );
+    		
+    		var userSelect = document.getElementById(response.fieldid);
+    		userSelect.innerHTML = "";
+    		
+    		if(response.status == '200'){
+    		    var optDef = document.createElement('option');
+                optDef.innerHTML = "Person auswählen";
+                optDef.selected = true;
+                optDef.disabled = true;
+                userSelect.appendChild(optDef);
+    
+            	response.users.forEach(user => {
+            		var opt = document.createElement('option');
+                    opt.value = user.uuid;
+                    opt.innerHTML = user.name;
+                    userSelect.appendChild(opt);
+            	});
+    		} else {
+    			resetUserSelect(userSelect);
+    		}
+    	}
+    }
+}
 
 </script>

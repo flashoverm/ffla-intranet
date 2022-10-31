@@ -17,6 +17,10 @@ class ReportStaff extends BaseModel {
 	/**
 	 * @ORM\Column(type="string")
 	 */
+	protected ?string $name;
+	
+	protected ?Engine $engine;
+	
 	protected ?User $user;
 		
 	protected ?StaffPosition $position;
@@ -28,6 +32,20 @@ class ReportStaff extends BaseModel {
 	 */
 	public function getUuid() : ?string {
 		return $this->uuid;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getName() : ?string {
+	    return $this->name;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getEngine() : ?Engine {
+	    return $this->engine;
 	}
 
 	/**
@@ -57,6 +75,20 @@ class ReportStaff extends BaseModel {
 	public function setUuid(?string $uuid) {
 		$this->uuid = $uuid;
 	}
+	
+	/**
+	 * @param mixed $name
+	 */
+	public function setName(?string $name) {
+	    $this->name = $name;
+	}
+	
+	/**
+	 * @param mixed $engine
+	 */
+	public function setEngine(?Engine $engine) {
+	    $this->engine = $engine;
+	}
 
 	/**
 	 * @param mixed $name
@@ -85,12 +117,15 @@ class ReportStaff extends BaseModel {
 	 * Constructor
 	 */
 	
-	function __construct(StaffPosition $position, User $user) {
+	function __construct(StaffPosition $position, ?User $user) {
 		parent::__construct();
 		$this->user = $user;
 		$this->position = $position;
 		$this->uuid = NULL;
 		$this->unitUuid = NULL;
+		$this->name = null;
+		$this->engine = null;
+		
 	}
 	
 	/*
@@ -104,6 +139,8 @@ class ReportStaff extends BaseModel {
 				'position' => $this->position,
 				'uuid' => $this->uuid,
 				'unitUuid' => $this->unitUuid,
+		        'name' => $this->name,
+		        'engine' => $this->engine,
 		];
 	}
 }

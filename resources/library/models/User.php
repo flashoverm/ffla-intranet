@@ -365,6 +365,14 @@ class User extends BaseModel {
 		return $this->getFullName() . " (" . $this->email . ")";
 	}
 	
+	public function getFullNameLastNameFirst() : string {
+	    return $this->lastname . " " . $this->firstname;
+	}
+	
+	public function getFullNameLastNameFirstWithMail() : string {
+	    return $this->getFullNameLastNameFirst() . " (" . $this->email . ")";
+	}
+	
 	public function setUserData(string $firstname, string $lastname, string $email, Engine $engine, string $employerAddress, string $employerMail){
 		$this->setFirstname($firstname);
 		$this->setLastname($lastname);
