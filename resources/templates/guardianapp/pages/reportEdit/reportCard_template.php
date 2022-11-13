@@ -7,7 +7,6 @@ function createUnitCard($number, ReportUnit $unit = null) {
 		<h5 class="mb-0">
 			<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse<?= $number ?>">
 			<?php if(isset($unit)){ 
-			    
 			    echo  $unit->getUnitName(); 
 			} ?>
 			</button>
@@ -78,7 +77,7 @@ function createUnitCard($number, ReportUnit $unit = null) {
 }
 
 function createUnitStaff($unitNumber, $staffNumber, ReportStaff $staff = null) {
-    global $staffpositions, $engines;
+    global $staffpositions, $engines, $userDAO;
 ?>
 <div class="row form-group unitpersonaltemplate" <?php if(!isset($staff)) { echo 'style="display:none;"'; } ?>>
 	<div class="col-sm">
@@ -94,32 +93,80 @@ function createUnitStaff($unitNumber, $staffNumber, ReportStaff $staff = null) {
 		</select>
 	</div>
 	<div class="col-sm">
-		<input class="form-control bg-white" id="unit<?= $unitNumber ?>name<?= $staffNumber ?>" 
-			disabled name="unit<?= $unitNumber ?>name<?= $staffNumber ?>" type="text"" 
-			<?php if(isset($staff)){ echo "value='" . $staff->getName() . "'"; } ?>
+		<?php 
+		if( ! isset($staff) || $staff->getUser() != null){ ?>
+		    
+		    <select class="form-control bg-white" id="unit<?= $unitNumber ?>user<?= $staffNumber ?>"
+		    disabled name="unit<?= $unitNumber ?>user<?= $staffNumber ?>" required="required" id="positionuser">
+    		    <?php if(isset($staff)){ ?>
+    		      <option value="" selected disabled>Person auswählen</option>
+    		    <?php } else { ?>
+    		      <option value="" selected disabled>Löschzug auswählen</option>
+    		    <?php } ?>
+
+    		    
+    		    <?php if(isset($staff)){
+    		        $users = $userDAO->getUsersByEngineAndPrivilege($staff->getUser()->getEngine()->getUuid(), Privilege::EVENTPARTICIPENT);
+    		        foreach ( $users as $option ) : ?>
+        			    <option value="<?=  $option->getUuid(); ?>"
+            				<?php if($staff->getUser()->getUuid() == $option->getUuid()){ echo "selected"; } ?>>
+            				<?= $option->getFullNameLastNameFirst(); ?>
+            			</option>
+    			    <?php endforeach;
+    			} ?>
+    			
+			</select>
+		
+		<?php 
+		} else { 
+		?>
+		    <input class="form-control bg-white" id="unit<?= $unitNumber ?>user<?= $staffNumber ?>"
+		    disabled name="unit<?= $unitNumber ?>user<?= $staffNumber ?>" type="text"
+		    <?php if(isset($staff)){
+	            echo "value='" . $staff->getName() . "'";
+		    } ?>
         	>
+		<?php 
+		} 
+		?>
+	
+
 	</div>
 	<div class="col-sm">
-		<select class="form-control bg-white" id="unit<?= $unitNumber ?>engine<?= $staffNumber ?>" 
-			disabled name="unit<?= $unitNumber ?>engine<?= $staffNumber ?>" required="required" id="positionengine">
-			<option value="" selected>Löschzug auswählen</option>
-			<?php foreach ( $engines as $option ) : ?>
-			<option value="<?=  $option->getUuid(); ?>"
-				<?php if(isset($staff) && $staff->getEngine()->getUuid() == $option->getUuid()){ echo "selected"; } ?>>
-				<?= $option->getName(); ?>
-			</option>
-			<?php endforeach; ?>
-		</select>
+		<input class="form-control bg-white" id="unit<?= $unitNumber ?>engine<?= $staffNumber ?>" 
+			disabled name="unit<?= $unitNumber ?>engine<?= $staffNumber ?>" type="text" 
+			<?php if(isset($staff)){ 
+			    if($staff->getUser() != null) {
+			        echo "value='" . $staff->getUser()->getEngine()->getName() . "'";
+			    } else {
+			        echo "value='" . $staff->getEngine()->getName() . "'"; 
+			    }
+			} ?>
+        	>
 	</div>
 	
 	<input id="unit<?= $unitNumber ?>function<?= $staffNumber ?>field" name="unit<?= $unitNumber ?>function<?= $staffNumber ?>field" type="hidden" 
-	<?php if(isset($staff)){ echo "value='" . $staff->getPosition()->getUuid() . "'"; } ?>
+	<?php if(isset($staff)){
+	    echo "value='" . $staff->getPosition()->getUuid() . "'"; 
+	} ?>
         >
-    <input id="unit<?= $unitNumber ?>name<?= $staffNumber ?>field" name="unit<?= $unitNumber ?>name<?= $staffNumber ?>field" type="hidden" 
-    <?php if(isset($staff)){ echo "value='" . $staff->getName() . "'"; } ?>
+	<input id="unit<?= $unitNumber ?>user<?= $staffNumber ?>field" name="unit<?= $unitNumber ?>user<?= $staffNumber ?>field" type="hidden" 
+	<?php if(isset($staff)){
+	    if($staff->getUser() != null) {
+	        echo "value='" . $staff->getUser()->getUuid() . "'";
+	    } else {
+	        echo "value='" . $staff->getName() . "'";
+	    }
+	} ?>
         >
     <input id="unit<?= $unitNumber ?>engine<?= $staffNumber ?>field" name="unit<?= $unitNumber ?>engine<?= $staffNumber ?>field" type="hidden" 
-    <?php if(isset($staff)){ echo "value='" . $staff->getEngine()->getUuid() . "'"; } ?>
+    <?php if(isset($staff)){ 
+        if($staff->getUser() != null) {
+            echo "value='" . $staff->getUser()->getEngine()->getUuid() . "'";
+        } else {
+            echo "value='" . $staff->getEngine()->getUuid() . "'";
+        }
+    } ?>
         >
 </div>
 <?php

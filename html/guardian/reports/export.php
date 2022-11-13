@@ -121,9 +121,16 @@ function reportsToCSV($reports, $head = ""){
 		foreach ( $report->getUnits() as $unit ) {
 			$unitDuration = strtotime($unit->getEndTime()) - strtotime($unit->getStartTime());
 			foreach ( $unit->getStaff() as $staff ) {
-                $filestring .=  $staff->getName() . $delimiter .
-                    $staff->getEngine()->getName() . $delimiter . 
-                    gmdate($config ["formats"] ["time"], $unitDuration) .
+			    
+			    if($staff->getUser() != null){
+			        $filestring .=  $staff->getUser()->getFullNameLastNameFirst() . $delimiter . 
+			        $staff->getUser()->getEngine()->getName() . $delimiter;
+			    } else {
+			        $filestring .=  $staff->getName() . $delimiter . 
+			        $staff->getEngine()->getName() . $delimiter;
+			    }
+			    
+                $filestring .= gmdate($config ["formats"] ["time"], $unitDuration) .
                     "\n";
             }
         }
@@ -160,7 +167,11 @@ function reportsToInvoiceCSV($reports, $head = ""){
 			$personalcount += count($unit->getStaff());
 			
 			foreach($unit->getStaff() as $staff){
-				$personalString .= $staff->getName() . $delimiter;
+			    if($staff->getUser() != null){
+			        $personalString .=  $staff->getUser()->getFullNameLastNameFirst() . $delimiter;
+			    } else {
+			        $personalString .=  $staff->getName() . $delimiter;
+			    }
 			}
 		}
 		
@@ -202,10 +213,17 @@ function reportsToCSVList($reports, $head = ""){
                 date($config ["formats"] ["time"], strtotime($report->getStartTime())) . $delimiter .
                 date($config ["formats"] ["time"], strtotime($report->getEndTime())) . $delimiter .
                 $report->getType()->getType() . $delimiter .
-                $report->getTitle() . $delimiter .
-                $staff->getName() . $delimiter .
-                $staff->getEngine()->getName() . $delimiter .
-                gmdate($config ["formats"] ["time"], $unitDuration) .
+                $report->getTitle() . $delimiter;
+                
+                if($staff->getUser() != null){
+                    $filestring .= $staff->getUser()->getFullNameLastNameFirst() . $delimiter . 
+                    $staff->getUser()->getEngine()->getName() . $delimiter;
+                } else {
+                    $filestring .= $staff->getName() . $delimiter .
+                    $staff->getEngine()->getName() . $delimiter;
+                }
+                
+                $filestring .= gmdate($config ["formats"] ["time"], $unitDuration) .
                 "\n";
             }
         }

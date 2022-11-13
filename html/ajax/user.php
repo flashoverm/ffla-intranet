@@ -10,9 +10,10 @@ if(!$isManager){
 	
 		$user = $userDAO->getUserByUUID($_GET['uuid']);
 		if($user){
+		    header('Content-Type: application/json');
+		    //header('Content-Type: text/plain');
 			echo json_encode($user);
-			header('Content-Type: text/plain');
-			//header('Content-Type: application/json');
+
 		} else {
 			http_response_code(404);
 		}

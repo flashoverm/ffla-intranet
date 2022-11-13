@@ -142,13 +142,18 @@ if (isset($_POST) && isset($_POST ['start'])) {
         
         $position = 1;
         while ( isset ( $_POST ["unit" . $unitCount . "function" . $position . "field"] ) ) {
+            
             $staffPositionUuid = trim ( $_POST ["unit" . $unitCount . "function" . $position . "field"] );
             $staffPosition = $staffPositionDAO->getStaffPosition($staffPositionUuid);
-            $name = trim ( $_POST ["unit" . $unitCount . "name" . $position . "field"] );
-            $unitEngineUuid = trim ( $_POST ["unit" . $unitCount . "engine" . $position . "field"] );
-            $engineUnit = $engineDAO->getEngine($unitEngineUuid);
-
-            $unit->addStaff(new ReportStaff($staffPosition, $name, $engineUnit));
+            $userUuid = trim ( $_POST ["unit" . $unitCount . "user" . $position . "field"] );
+            $user = $userDAO->getUserByUUID($userUuid);
+            if(! $user){
+                //If user not found old format is used -> 400!
+                http_response_code(400);
+                echo "400 - Bad Request";
+                return;
+            }
+            $unit->addStaff(new ReportStaff($staffPosition, $user));
             
             $position += 1;
         }
