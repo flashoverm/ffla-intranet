@@ -2,6 +2,13 @@
 Release Documentation
 ******************************
 
+### V2.5.0
+
+ALTER TABLE report_staff ADD user CHAR(36) NULL AFTER engine; 
+ALTER TABLE report_staff ADD CONSTRAINT report_staff_ibfk_3 FOREIGN KEY (user) REFERENCES user(uuid) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE report_staff CHANGE name name VARCHAR(96) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL; 
+ALTER TABLE report_staff CHANGE engine engine CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL; 
+
 ### V2.4.7
 
 UPDATE staffposition SET position = 'Dienstgrad (Gruppenführer)' WHERE staffposition.uuid = '28F8486C-1F14-4293-6BB6-59A959281FE3'; 

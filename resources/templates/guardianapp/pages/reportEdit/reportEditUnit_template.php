@@ -65,7 +65,7 @@
 						<div class="row" id="position1">
 							<div class="col">
 								<div class="form-group">
-									<select class="form-control" name="positionfunction" required="required" id="positionfunction">
+									<select class="form-control" name="positionfunction1" required="required" id="positionfunction1">
 										<option value="" disabled selected>Funktion auswählen</option>
 										<?php foreach ( $staffpositions as $option ) : ?>
 										<option value="<?=  $option->getUuid(); ?>"><?= $option->getPosition(); ?></option>
@@ -75,18 +75,19 @@
 							</div>
 							<div class="col">
 								<div class="form-group">
-									<input type="text" placeholder="Name" class="form-control" required="required"
-										name="positionname" id="positionname">
-								</div>
-							</div>
-							<div class="col" id="engineselect">
-								<div class="form-group">
-									<select class="form-control" name="positionengine" required="required"
-										id="positionengine">
+									<select class="form-control" id="positionengine1" onchange="loadUsers(this)">
 										<option value="" disabled selected>Löschzug auswählen</option>
 										<?php foreach ( $engines as $option ) : ?>
 										<option value="<?=  $option->getUuid(); ?>"><?= $option->getName(); ?></option>
 										<?php endforeach; ?>
+									</select>
+								</div>
+							</div>
+							<div class="col" id="userselect1">
+								<div class="form-group">
+									<select class="form-control" name="positionuser1" required="required"
+										id="positionuser1">
+										<option value="" disabled selected>Zuerst Löschzug auswählen</option>
 									</select>
 								</div>
 							</div>
@@ -104,28 +105,93 @@
 	</div>
 </div>
 
+<style>
+.ui-autocomplete {
+z-index: 10000;
+}
+</style>
+
 <script type='text/javascript'>
 
-    var form = document.getElementById('addUnitForm');
-    if (form.attachEvent) {
-        form.attachEvent("submit", processForm);
-    } else {
-        form.addEventListener("submit", processForm);
-    }
-    
-    var reportPositionCount = 1;
-    var reportEngine = "";
-    var stationString = "Stationäre Wache"
+var form = document.getElementById('addUnitForm');
+if (form.attachEvent) {
+    form.attachEvent("submit", processForm);
+} else {
+    form.addEventListener("submit", processForm);
+}
 
-	function processForm(e) {
-	    if (e.preventDefault) e.preventDefault();
-		
-		addUnit();
-  
-		clearUnitForm();
-	    
-	    $('#addUnitModal').modal('hide');
-	    return false;
-	}
+var reportPositionCount = 1;
+var reportEngine = "";
+var stationString = "Stationäre Wache"
+
+function processForm(e) {
+    if (e.preventDefault) e.preventDefault();
+	
+	addUnit();
+
+	clearUnitForm();
+    
+    $('#addUnitModal').modal('hide');
+    return false;
+}
+
+var xhr = getXmlHttpRequestObject();
+
+function getXmlHttpRequestObject() {
+    if(window.XMLHttpRequest) {
+        return new XMLHttpRequest();
+    } 
+    else if(window.ActiveXObject) {
+        return new ActiveXObject("Microsoft.XMLHTTP");
+    } 
+    else {
+        alert('Ajax funktioniert bei Ihnen nicht!');
+    }
+}
+
+function loadUsers(source) {
+		console.log(source);
+
+	if(xhr.readyState == 4 || xhr.readyState == 0) {
+		var positionNo = source.id.slice(-1);
+		var engine = document.getElementById('positionengine' + positionNo);
+		    
+	    xhr.open('GET', '<?= $config["urls"]["intranet_home"] ?>/ajax/users/' + engine.value + '/field/positionuser' + positionNo, true);
+	    xhr.setRequestHeader("Content-Type","text/plain");
+	    xhr.onreadystatechange = setUsers;
+	    xhr.send(null);
+    } else {
+    }
+}
+
+function setUsers(){
+    if(xhr.readyState == 4) {
+
+    	if(xhr.status == 200){
+    	
+    	    var response = eval( '(' + xhr.responseText + ')' );
+    		
+    		var userSelect = document.getElementById(response.fieldid);
+    		userSelect.innerHTML = "";
+    		
+    		if(response.status == '200'){
+    		    var optDef = document.createElement('option');
+                optDef.innerHTML = "Person auswählen";
+                optDef.selected = true;
+                optDef.disabled = true;
+                userSelect.appendChild(optDef);
+    
+            	response.users.forEach(user => {
+            		var opt = document.createElement('option');
+                    opt.value = user.uuid;
+                    opt.innerHTML = user.name;
+                    userSelect.appendChild(opt);
+            	});
+    		} else {
+    			resetUserSelect(userSelect);
+    		}
+    	}
+    }
+}
 
 </script>

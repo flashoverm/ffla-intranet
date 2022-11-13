@@ -21,6 +21,8 @@ class ReportStaff extends BaseModel {
 	
 	protected ?Engine $engine;
 	
+	protected ?User $user;
+		
 	protected ?StaffPosition $position;
 	
 	protected ?string $unitUuid;
@@ -31,19 +33,26 @@ class ReportStaff extends BaseModel {
 	public function getUuid() : ?string {
 		return $this->uuid;
 	}
-
+	
 	/**
 	 * @return mixed
 	 */
 	public function getName() : ?string {
-		return $this->name;
+	    return $this->name;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getEngine() : ?Engine {
+	    return $this->engine;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getEngine() : ?Engine {
-		return $this->engine;
+	public function getUser() : ?User {
+		return $this->user;
 	}
 
 	/**
@@ -66,19 +75,26 @@ class ReportStaff extends BaseModel {
 	public function setUuid(?string $uuid) {
 		$this->uuid = $uuid;
 	}
-
+	
 	/**
 	 * @param mixed $name
 	 */
 	public function setName(?string $name) {
-		$this->name = $name;
+	    $this->name = $name;
 	}
-
+	
 	/**
 	 * @param mixed $engine
 	 */
 	public function setEngine(?Engine $engine) {
-		$this->engine = $engine;
+	    $this->engine = $engine;
+	}
+
+	/**
+	 * @param mixed $name
+	 */
+	public function setUser(?User $user) {
+		$this->user = $user;
 	}
 
 	/**
@@ -101,13 +117,15 @@ class ReportStaff extends BaseModel {
 	 * Constructor
 	 */
 	
-	function __construct(StaffPosition $position, string $name, Engine $engine) {
+	function __construct(StaffPosition $position, ?User $user) {
 		parent::__construct();
-		$this->engine = $engine;
-		$this->name = $name;
+		$this->user = $user;
 		$this->position = $position;
 		$this->uuid = NULL;
 		$this->unitUuid = NULL;
+		$this->name = null;
+		$this->engine = null;
+		
 	}
 	
 	/*
@@ -117,11 +135,12 @@ class ReportStaff extends BaseModel {
 
 	public function jsonSerialize() {
 		return [
-				'engine' => $this->engine,
-				'name' => $this->name,
+				'user' => $this->user,
 				'position' => $this->position,
 				'uuid' => $this->uuid,
 				'unitUuid' => $this->unitUuid,
+		        'name' => $this->name,
+		        'engine' => $this->engine,
 		];
 	}
 }

@@ -444,12 +444,22 @@ class Report extends BaseModel {
 			if($eventStaff->getUser() != NULL){
 				$reportStaff = new ReportStaff(
 						$eventStaff->getPosition(),
-						$eventStaff->getUser()->getFullName(),
-						$eventStaff->getUser()->getEngine());
+						$eventStaff->getUser());
 				$reportUnit->addStaff($reportStaff);
 			}
 		}
 		$this->addReportUnit($reportUnit);
+	}
+	
+	function hasOldStaffFormat() : bool {
+	    foreach ( $this->getUnits() as $unit ) {
+	        foreach ( $unit->getStaff() as $staff ) {
+	            if($staff->getName() != null){
+	                return true;
+	            }
+	        }
+	    }
+	    return false;
 	}
 		
 	

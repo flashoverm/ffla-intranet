@@ -5,7 +5,7 @@
 		<select class="form-control" name="user" id="user" required="required" onchange="getUser()">
 			<option value="new">Neuer Eintrag:</option>
 			<?php foreach ( $user as $option ) : ?>
-			<option value="<?=  $option->getUuid(); ?>"><?= $option->getFullNameWithEmail(); ?></option>
+			<option value="<?=  $option->getUuid(); ?>"><?= $option->getFullNameLastNameFirstWithMail(); ?></option>
 			<?php endforeach; ?>
 		</select> 
 	</div>
