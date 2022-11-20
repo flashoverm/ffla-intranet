@@ -54,10 +54,9 @@
 		<table class="table table-bordered">
 			<tr>
 			<?php 
-			if($unit->getUnitName() != null && ! $unit->getUnitName() == "Stationäre Wache"){
+			if($unit->getUnitName() != null && $unit->getUnitName() != "Stationäre Wache"){
 			?>	
-				<th colspan="2"><?= $unit->getUnitName() ?></th>
-				<td><?= $unit->getKm() ?> km</th>
+				<th colspan="3"><?= $unit->getUnitName() . " (" . $unit->getKm() . " km)" ?></th>
 			</tr>
 			<?php 
 			} else {
