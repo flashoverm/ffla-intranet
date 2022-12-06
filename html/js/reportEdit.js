@@ -70,11 +70,14 @@ function addUnit(){
 		var position = form.querySelector("#position" + i);
 				
 		var selects = newPersonal.getElementsByTagName("select");
+		
 		nameField(selects[0], "unit" + unitNo + "function" + i)
 		selects[0].selectedIndex = position.querySelector("#positionfunction" + i).selectedIndex;
-		
+		selects[0].value = position.querySelector("#positionfunction" + i).value;
+
 		nameField(selects[1], "unit" + unitNo + "user" + i)
 		selects[1].innerHTML = position.querySelector("#positionuser" + i).innerHTML;
+		selects[1].value = position.querySelector("#positionuser" + i).value;
 				
 		var inputs = newPersonal.getElementsByTagName("input");
 
