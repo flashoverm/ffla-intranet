@@ -111,6 +111,7 @@ if (isset ( $_POST ['type'] ) ) {
 		//insert
 		$event = new Event();
 		$event->setCreator($creator);
+		$event->setPublished($publish);
 	}
 			
 	$event->setEventData($date, $start, $end, $type, $typeOther, $title, $comment, $engine, $staff_confirmation);
