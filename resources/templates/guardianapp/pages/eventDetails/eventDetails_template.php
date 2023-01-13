@@ -70,10 +70,10 @@ if ($isCreator) {
 						?>
 		            <?php 
 			        } else {
-			            echo "<button type='button' class='btn btn-outline-primary ml-1' disabled='disabled' >Wache ist nicht öffentlich</button>";   
+			            echo "<button type='button' class='btn btn-outline-primary mr-1' disabled='disabled' >Wache ist nicht öffentlich</button>";   
 			        }
 				} else {
-				    echo "<button type='button' class='btn btn-outline-primary ml-1' disabled='disabled' >Wache ist öffentlich</button>";
+				    echo "<button type='button' class='btn btn-outline-primary mr-1' disabled='disabled' >Wache ist öffentlich</button>";
 				    if( $guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid()) and $relevant) {
 				    	echo "<a class='btn btn-primary' href='" . $config["urls"]["guardianapp_home"] . "/events/edit/" . $event->getUuid() . "'>Bearbeiten</a>";
 				    }
