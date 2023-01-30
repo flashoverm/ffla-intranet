@@ -8,7 +8,7 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../bootstrap.php" );
 require_once LIBRARY_PATH . "/mail_controller.php";
 
-$events = $eventDAO->getActiveEvents();
+$events = $eventDAO->getActiveEvents($_GET);
 
 foreach ( $events as $event ) {
        
