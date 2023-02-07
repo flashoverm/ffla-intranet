@@ -122,44 +122,45 @@ if (isset($_POST) && isset($_POST ['start'])) {
     		$title, $engine, $noIncidents, $reportText, $creator, $ilsEntry);
     $eventReport->clearReportUnits();
 
-    $unitCount = 1;
-    while ( isset ( $_POST ["unit" . $unitCount . "unit"] ) ) {
-        $unitdate = trim ( $_POST ['unit' . $unitCount . 'date' . "field"] );
-        $unitbeginn = trim ( $_POST ['unit' . $unitCount . 'start' . "field"] );
-        $unitend = trim ( $_POST ['unit' . $unitCount . 'end' . "field"] );
-        $unitname = trim ( $_POST ['unit' . $unitCount . 'unit'] );
-        
-        if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1]).(0[1-9]|1[0-2]).[0-9]{4}$/", $date)) {
-        	//European date format -> change to yyyy-mm-dd
-        	$unitdate = date_create_from_format('d.m.Y', $unitdate)->format('Y-m-d');
-        }
-        
-        $unit = new ReportUnit($unitname, $unitdate, $unitbeginn, $unitend);
-        if(isset ( $_POST ['unit' . $unitCount . 'km'] ) && $_POST ['unit' . $unitCount . 'km'] != ""){
-            $unitkm = trim ( $_POST ['unit' . $unitCount . 'km'] );
-            $unit->setKm($unitkm);
-        }
-        
-        $position = 1;
-        while ( isset ( $_POST ["unit" . $unitCount . "function" . $position . "field"] ) ) {
+    //TODO change units to array or add max unit number
+    for ($unitCount = 1; $unitCount < 200; $unitCount++) {
+        if(isset ( $_POST ["unit" . $unitCount . "unit"] )){
             
-            $staffPositionUuid = trim ( $_POST ["unit" . $unitCount . "function" . $position . "field"] );
-            $staffPosition = $staffPositionDAO->getStaffPosition($staffPositionUuid);
-            $userUuid = trim ( $_POST ["unit" . $unitCount . "user" . $position . "field"] );
-            $user = $userDAO->getUserByUUID($userUuid);
-            if(! $user){
-                //If user not found old format is used -> 400!
-                http_response_code(400);
-                echo "400 - Bad Request";
-                return;
+            $unitdate = trim ( $_POST ['unit' . $unitCount . 'date' . "field"] );
+            $unitbeginn = trim ( $_POST ['unit' . $unitCount . 'start' . "field"] );
+            $unitend = trim ( $_POST ['unit' . $unitCount . 'end' . "field"] );
+            $unitname = trim ( $_POST ['unit' . $unitCount . 'unit'] );
+            
+            if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1]).(0[1-9]|1[0-2]).[0-9]{4}$/", $date)) {
+                //European date format -> change to yyyy-mm-dd
+                $unitdate = date_create_from_format('d.m.Y', $unitdate)->format('Y-m-d');
             }
-            $unit->addStaff(new ReportStaff($staffPosition, $user));
             
-            $position += 1;
+            $unit = new ReportUnit($unitname, $unitdate, $unitbeginn, $unitend);
+            if(isset ( $_POST ['unit' . $unitCount . 'km'] ) && $_POST ['unit' . $unitCount . 'km'] != ""){
+                $unitkm = trim ( $_POST ['unit' . $unitCount . 'km'] );
+                $unit->setKm($unitkm);
+            }
+            
+            //TODO change position to array or add max function number
+            for ($position = 1; $position < 50; $position++) {
+                if( isset ( $_POST ["unit" . $unitCount . "function" . $position . "field"] ) ) {
+                    $staffPositionUuid = trim ( $_POST ["unit" . $unitCount . "function" . $position . "field"] );
+                    $staffPosition = $staffPositionDAO->getStaffPosition($staffPositionUuid);
+                    $userUuid = trim ( $_POST ["unit" . $unitCount . "user" . $position . "field"] );
+                    $user = $userDAO->getUserByUUID($userUuid);
+                    if(! $user){
+                        //If user not found old format is used -> 400!
+                        http_response_code(400);
+                        echo "400 - Bad Request";
+                        return;
+                    }
+                    $unit->addStaff(new ReportStaff($staffPosition, $user));
+                }
+            }
+            
+            $eventReport->addReportUnit($unit);
         }
-        
-        $eventReport->addReportUnit($unit);
-        $unitCount += 1;
     }
     
     $eventReport = $reportDAO->save($eventReport);
