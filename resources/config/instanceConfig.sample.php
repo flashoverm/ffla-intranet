@@ -19,7 +19,7 @@ $mailConfig = array (
 		"username" => "",
 		"password" => "",
 		"secure" => "",
-		"port" => 25,
+		"port" => 1025,
 		"fromaddress" => "intranet@feuerwehr-landshut.de",
 		"fromname" => "Intranet Feuerwehr Landshut"
 );
