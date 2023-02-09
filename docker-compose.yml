@@ -38,9 +38,14 @@ services:
     image: phpmyadmin/phpmyadmin:latest
     env_file: .docker/database/.env
     labels:
-      - "traefik.http.routers.pma.rule=Host(`fflaintranet-pma.localhost`)"
+      - "traefik.http.routers.pma.rule=Host(`pma.fflaintranet.localhost`)"
     environment:
         UPLOAD_LIMIT: 512M
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+    #localhost:8025
   proxy:
     image: traefik:v2.6
     command: --api.insecure=true --providers.docker

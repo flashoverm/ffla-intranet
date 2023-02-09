@@ -8,15 +8,18 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../bootstrap.php" );
 require_once LIBRARY_PATH . "/mail_controller.php";
 
-$events = $eventDAO->getActiveEvents($_GET);
+$activeEvents = $eventDAO->getActiveEvents($_GET);
 
-foreach ( $events as $event ) {
-       
+foreach ( $activeEvents as $event ) {
+          
 	if(! $event->isEventFull() ){
         
+	    
         $date = date_create($event->getDate());
         date_sub($date, new DateInterval( "P".$config ["settings"] ["reminderAtDay"]."D" ));
                 
+        echo $event->getUuid() . " - " . $date->format("d.m.Y") . "\n";
+        
         if($date->format("d.m.Y") == date("d.m.Y")){
             //Send reminder mail
             mail_not_full($event->getUuid());

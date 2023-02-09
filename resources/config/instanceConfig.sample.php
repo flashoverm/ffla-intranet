@@ -15,11 +15,11 @@ $dbConfig = array (
 
 //required
 $mailConfig = array (
-		"host" => "127.0.0.1",
+		"host" => "mailhog",
 		"username" => "",
 		"password" => "",
 		"secure" => "",
-		"port" => 25,
+		"port" => 1025,
 		"fromaddress" => "intranet@feuerwehr-landshut.de",
 		"fromname" => "Intranet Feuerwehr Landshut"
 );
@@ -40,7 +40,7 @@ $overrideConfig = array(
 				"password" => "",
 		),
 		"settings" => array(
-				"deactivateOutgoingMails" => true,
+				"deactivateOutgoingMails" => false,
 				"selfregistration" => false,
 		)
 );

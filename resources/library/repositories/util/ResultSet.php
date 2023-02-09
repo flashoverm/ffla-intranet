@@ -1,6 +1,6 @@
 <?php
 
-class ResultSet implements Countable {
+class ResultSet implements Countable, Iterator {
 	
 	const PAGE_PARAM = "page";
 	const PAGESIZE_PARAM = "pageSize";
@@ -10,6 +10,8 @@ class ResultSet implements Countable {
 	const SORTORDER_DESC = "DESC";
 	const SORTORDER_ASC = "ASC";
 	const SHOWALL_PARAM = "showAll";
+	
+	private $pointer = 0;
 	
 	protected ?array $data;
 	
@@ -218,6 +220,27 @@ class ResultSet implements Countable {
 	public function isSorted(){
 		return $this->sortedBy != null && $this->sortedBy != "";
 	}
+	
+    public function next(){
+        $this->pointer++;
+    }
+
+    public function valid(){
+        return $this->pointer < $this->count();
+    }
+
+    public function current(){
+        return $this->data[$this->pointer];
+    }
+
+    public function rewind(){
+        $this->pointer = 0;
+    }
+
+    public function key(){
+        return $this->pointer;
+    }
+
 }
 
 ?>
