@@ -15,7 +15,7 @@ $dbConfig = array (
 
 //required
 $mailConfig = array (
-		"host" => "127.0.0.1",
+		"host" => "mailhog",
 		"username" => "",
 		"password" => "",
 		"secure" => "",
@@ -40,7 +40,7 @@ $overrideConfig = array(
 				"password" => "",
 		),
 		"settings" => array(
-				"deactivateOutgoingMails" => true,
+				"deactivateOutgoingMails" => false,
 				"selfregistration" => false,
 		)
 );
