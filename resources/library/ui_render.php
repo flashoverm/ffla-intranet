@@ -150,7 +150,7 @@ function renderTableDescription(ResultSet $resultSet, $options){
 	
 	if($resultSet->isSearch() || $resultSet->getShowAll()){
 	?> 
-		<?php if( ! isset($options['hideSearch'] )) { ?>
+		<?php if( ! isset($options['hideSearch'] ) && ! $resultSet->getShowAll() ) { ?>
 			<div class="buttons-toolbar">
 				<a class="btn btn-primary search-reset" href="<?= $url_prefix . getCurrentUrlWithoutQueryParam(ResultSet::SEARCH_PARAM) ?>">Suche abbrechen</a>
 			</div>
