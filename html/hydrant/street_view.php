@@ -15,6 +15,7 @@ if (isset($_GET['street'])) {
 
 	$street = trim($_GET['street']);
     
+	$_GET[ResultSet::SHOWALL_PARAM] = true;
 	$hydrants = $hydrantDAO->getHydrantsOfStreet($street, $_GET);
     
     $variables ['hydrants'] = $hydrants;

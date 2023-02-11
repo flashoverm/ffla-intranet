@@ -137,7 +137,7 @@ function createHydrantGoogleMap($hydrants, $visable, $markerListener, $height, $
 			?>
 				google.maps.event.addListener(marker, 'click', (function(marker, i) {
 					return function() {
-						infowindow.setContent("<a href='<?= $config["urls"]["hydrantapp_home"]?>/" + locations[i][0] + "'>Hy: " + locations[i][0] + "&nbsp;</a>");
+						infowindow.setContent("<a href='<?= $config["urls"]["hydrantapp_home"]?>/view/" + locations[i][0] + "'>Hy: " + locations[i][0] + "&nbsp;</a>");
 						infowindow.open(map, marker);
 					}
 				})(marker, i));

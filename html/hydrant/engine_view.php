@@ -15,6 +15,7 @@ if (isset($_GET['engine'])) {
 
     $engine = trim($_GET['engine']);
     
+    $_GET[ResultSet::SHOWALL_PARAM] = true;
     $hydrants = $hydrantDAO->getHydrantsOfEngine($engine, $_GET);
     
     $variables ['hydrants'] = $hydrants;
