@@ -31,7 +31,8 @@ $config = array (
         "hydrant" => "hydrantapp",
         "guardian" => "guardianapp",
         "employer" => "employerapp",
-        "masterdata" => "masterdataapp"
+        "masterdata" => "masterdataapp",
+        "pager" => "pagerapp"
     ),
     "urls" => array (
         'url_prefix' => $url_prefix,
@@ -42,6 +43,7 @@ $config = array (
         "guardianapp_home" => $url_prefix . "/guardian",
         "employerapp_home" => $url_prefix . "/employer",
         "masterdataapp_home" => $url_prefix . "/masterdata",
+        "pagerapp_home" => $url_prefix . "/pager",
         
         "files" => $url_prefix . "/files",
         
@@ -86,6 +88,7 @@ $config = array (
     //default settings, can be overwritten in instanceConfig
     "settings" => array (
         "reminderAtDay" => 10,						//days before "not-full-reminder" is sent
+        "reportReminderAfterDays" => 14,            //days after reminder is sent to approve report
         "useDefaultMapMarker" => false,
         
         "selfregistration" => false,                    //enables self registration of managers

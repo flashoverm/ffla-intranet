@@ -66,6 +66,7 @@
 						<a class='dropdown-item text-light' href='<?= $config ["urls"] ["employerapp_home"] ?>/'>Arbeitgeberbestätigungen</a>
 						<a class='dropdown-item text-light' href='<?= $config ["urls"] ["masterdataapp_home"] ?>/'>Stammdatenänderung</a>
 						<a class='dropdown-item text-light' href='<?= $config ["urls"] ["filesapp_home"] ?>/'>Formulare</a>
+						<a class='dropdown-item text-light' href='<?= $config ["urls"] ["pagerapp_home"] ?>/'>Alarmierungsauswertung</a>
 					</div>
 				</li>
 			    <?php 
