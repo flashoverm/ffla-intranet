@@ -12,6 +12,8 @@ $bodies = array (
     "report_insert" => $util["head"] . "es wurde ein neuer Hydranten-Prüfbericht angelegt. Dieser befindet sich im Anhang oder im Portal unter \n\n",
     
     "report_update" => $util["head"] . "ein Hydranten-Prüfbericht wurde aktualisiert. Dieser befindet sich im Anhang oder im Portal unter \n\n",
+    
+    "report_not_approved" => $util["head"] . "der folgende Wachbericht muss noch überprüft und freigegeben werden: \n\n",
 	
 	"event_insert" => $util["head"] . "in ihrem Zug wurde eine neue Wache eingestellt: \n\n",
 	

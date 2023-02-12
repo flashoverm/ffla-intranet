@@ -521,6 +521,18 @@ function mail_report_approved($report_uuid){
 	    );
 }
 
+function mail_not_approved($report_uuid) {
+    global $bodies, $reportDAO;
+    
+    $subject = "Erinnerung: Wachbericht nicht freigegeben";
+    
+    $body = $bodies["report_not_approved"] . get_report_link($report_uuid);
+    
+    $report = $reportDAO->getReport( $report_uuid );
+        
+    return mail_to_manager($report, $subject, $body);
+}
+
 
 /*
  * Confirmations

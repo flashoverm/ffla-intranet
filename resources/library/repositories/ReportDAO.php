@@ -54,6 +54,15 @@ class ReportDAO extends BaseDAO{
 		return $this->executeQuery($query, null, $getParams);
 	}
 	
+	function getUnapprovedReports(array $getParams, $dateOrder = "DESC"){
+	    $query = "SELECT report.*, engine.name FROM report, engine
+			WHERE engine.uuid = report.engine
+            AND report.managerApproved = 0
+			ORDER BY date " . $dateOrder;
+	    
+	    return $this->executeQuery($query, null, $getParams);
+	}
+	
 	function getReportsByEngine($engineUuid, array $getParams, $dateOrder = "DESC"){
 		$query = "SELECT report.*, engine.name FROM report, engine
 			WHERE engine = ? AND engine.uuid = report.engine 
