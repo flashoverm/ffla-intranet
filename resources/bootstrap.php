@@ -59,6 +59,8 @@ $eventDAO = new EventDAO($db, $userDAO, $engineDAO, $eventTypeDAO, $staffDAO);
 $reportUnitDAO = new ReportUnitDAO($db, $userDAO, $staffPositionDAO, $engineDAO);
 $reportDAO = new ReportDAO($db, $engineDAO, $eventTypeDAO, $reportUnitDAO, $userDAO);
 
+$pagerAlertDAO = new PagerAlertDAO($db);
+
 //Controller
 
 $userController = new UserController($privilegeDAO, $userDAO, $tokenDAO);

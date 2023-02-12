@@ -41,7 +41,15 @@
 			<h5 class="card-title">Formulare</h5>
 			<p class="card-text">Download und Verwaltung von diversen Formularen und Dateien.</p>
 			<a href="<?= $config["urls"]["filesapp_home"]?>/"
-				class="card-link">Weiter zur den Formularen</a>
+				class="card-link">Weiter zu den Formularen</a>
+		</div>
+	</div>
+	<div class="card mx-auto mb-2">
+		<div class="card-body">
+			<h5 class="card-title">Alarmierungsauswertung</h5>
+			<p class="card-text">Auswertung der digitalen Meldeempfänger als Karte.</p>
+			<a href="<?= $config["urls"]["pagerapp_home"]?>/"
+				class="card-link">Weiter zur Alarmierungsauswertung</a>
 		</div>
 	</div>
 </div>
