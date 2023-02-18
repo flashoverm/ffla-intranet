@@ -107,6 +107,23 @@ class ReportDAO extends BaseDAO{
 		return false;
 	}
 	
+	function getReportsByYear($year){
+	    $statement = $this->db->prepare("SELECT * FROM report WHERE YEAR(date) = ?");
+	    if ($statement->execute(array($year))) {
+	        return $this->handleResult($statement, false);
+	    }
+	    return false;	
+	}
+	
+	function getReportYears(){
+	    $statement = $this->db->prepare("SELECT DISTINCT(YEAR(date)) as year FROM report ORDER BY year");
+	    
+	    if ($statement->execute()) {
+	        return $statement->fetchAll(PDO::FETCH_COLUMN);
+	    }
+	    return false;
+	}
+	
 	/*
 	 * Init and helper methods
 	 */

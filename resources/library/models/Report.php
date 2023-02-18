@@ -411,6 +411,28 @@ class Report extends BaseModel {
 		$this->units = array();
 	}
 	
+	function getStaffCount(){
+	    $count = 0;
+	    foreach ( $this->getUnits() as $unit ) {
+	        $count = $count + count($unit->getStaff());
+	    }
+	    return $count;
+	}
+	
+	function getStaffMinutes(){
+	    $seconds = 0;
+	    foreach ( $this->getUnits() as $unit ) {
+	        $endSeconds =  (strtotime($unit->getEndTime()) - strtotime('TODAY'));
+	        $startSeconds = (strtotime($unit->getStartTime()) - strtotime('TODAY'));
+	        if($endSeconds < $startSeconds){
+	            $endSeconds += 24*60*60;
+	        }
+	        
+	        $seconds = $seconds + ($endSeconds - $startSeconds) * count($unit->getStaff());
+	    }
+	    return $seconds/60 ;
+	}
+	
 	function setReportData($date, $start_time, $end_time, EventType $type, ?string $type_other,
 			?string $title, Engine $engine, bool $noIncidents, ?string $report, 
 			?User $creator, bool $ilsEntry) {

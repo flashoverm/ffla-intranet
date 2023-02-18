@@ -189,4 +189,13 @@ class ReportUnit extends BaseModel {
 	public function addStaff(ReportStaff $reportStaff){
 		$this->staff[] = $reportStaff;
 	}
+	
+	public function getUnitOperatingMinutes(){
+	    $endSeconds =  (strtotime($this->getEndTime()) - strtotime('TODAY'));
+	    $startSeconds = (strtotime($this->getStartTime()) - strtotime('TODAY'));
+	    if($endSeconds < $startSeconds){
+	        $endSeconds += 24*60*60;
+	    }
+	    return ($endSeconds - $startSeconds)/60;
+	}
 }
