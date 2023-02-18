@@ -23,6 +23,7 @@ function left_navigation ($currentUser){
         			<div class='dropdown-menu bg-dark'>";
 		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/overview'>Berichtsübersicht</a>";
 		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/new'>Bericht anlegen</a>";
+		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/statistics'>Berichtstatistik</a>";
 		if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
 			echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/export'>Berichte exportieren</a>";
 		}
