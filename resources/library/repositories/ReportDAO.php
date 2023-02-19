@@ -124,6 +124,21 @@ class ReportDAO extends BaseDAO{
 	    return false;
 	}
 	
+	function getReportsByStaff($userUuid){
+	    $statement = $this->db->prepare("SELECT report.* 
+            FROM report, report_unit, report_staff 
+            WHERE report.uuid = report_unit.report 
+            AND report_unit.uuid = report_staff.unit 
+            AND report_staff.user = ? 
+            ORDER BY report.date DESC; 
+        ");
+	    
+	    if ($statement->execute(array($userUuid))) {
+	        return $this->handleResult($statement, false);
+	    }
+	    return false;	
+	}
+	
 	/*
 	 * Init and helper methods
 	 */
