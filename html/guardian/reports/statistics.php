@@ -21,7 +21,7 @@ if(isset($_GET ['year'])){
     $year = $_GET ['year'];
 }
 
-    $reports = $reportDAO->getReportsByYear($year);
+$reports = $reportDAO->getReportsByYear($year);
 
 $statisticData = array();
 

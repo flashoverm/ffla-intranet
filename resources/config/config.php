@@ -87,6 +87,9 @@ $config = array (
     ),
     //default settings, can be overwritten in instanceConfig
     "settings" => array (
+        "eventHourlyRate" => array(
+            2022 => 15.90
+        ),
         "reminderAtDay" => 10,						//days before "not-full-reminder" is sent
         "reportReminderAfterDays" => 14,            //days after reminder is sent to approve report
         "useDefaultMapMarker" => false,

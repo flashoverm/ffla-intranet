@@ -28,6 +28,15 @@ function left_navigation ($currentUser){
 			echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/export'>Berichte exportieren</a>";
 		}
 		echo "				</div>
+                </li>
+				<li class='nav-item dropdown'>
+        			<a class='nav-link dropdown-toggle text-light mx-1' data-toggle='dropdown' href='#'>
+						Wachstatistiken
+					</a>
+        			<div class='dropdown-menu bg-dark'>";
+		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/statistics'>Berichtstatistik</a>";
+		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/userstatistics'>Benutzerstatistik</a>";
+		echo "		</div>
 				</li>";
 	} else {
 		if($config ["settings"] ["publicevents"]){
