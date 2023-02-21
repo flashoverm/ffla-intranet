@@ -115,6 +115,16 @@ class ReportDAO extends BaseDAO{
 	    return false;	
 	}
 	
+	function getReportsByYearByEngine($year, $engineUuid){
+	    $statement = $this->db->prepare("SELECT * FROM report 
+            WHERE YEAR(date) = ? AND engine = ?");
+	    
+	    if ($statement->execute(array($year, $engineUuid))) {
+	        return $this->handleResult($statement, false);
+	    }
+	    return false;
+	}
+	
 	function getReportYears(){
 	    $statement = $this->db->prepare("SELECT DISTINCT(YEAR(date)) as year FROM report ORDER BY year");
 	    

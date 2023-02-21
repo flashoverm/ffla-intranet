@@ -55,6 +55,7 @@ RewriteRule ^(.*)events/([^/]+)/subscribe/?([^/]+)/?$ 		$1/events/subscribe.php?
 RewriteRule ^(.*)events/([^/]+)/acknowledge/?([^/]+)/?$ 	$1/events/view.php?id=$2&acknowledge=$3 [QSA]
 RewriteRule ^(.*)reports/new/([^/]+)/?$ 					$1/reports/edit.php?event=$2 [QSA]
 RewriteRule ^(.*)reports/statistics/([^/]+)/?$ 				$1/reports/statistics.php?year=$2 [QSA]
+RewriteRule ^(.*)reports/enginestatistics/([^/]+)/?$ 		$1/reports/enginestatistics.php?year=$2 [QSA]
 RewriteRule ^(.*)templates/([^/]+)/?$ 						$1/templates.php?eventtype=$2 [QSA]
 
 # Users etc.

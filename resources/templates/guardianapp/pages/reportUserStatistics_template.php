@@ -28,7 +28,7 @@ if( ! isset($statisticData) || count($statisticData) < 1 ){
 				</tr>
 				<tr>
 					<td>Wachverdienst (Hochrechnung bei <?= number_format($rate, 2) ?> €/Stunde - Abweichung möglich)</td>
-					<td><?= ($minutes/60*$rate) . " €"?></td>
+					<td><?=  number_format($minutes/60*$rate, 2, ",", "") . " €"?></td>
 				</tr>
 			<?php
 			}

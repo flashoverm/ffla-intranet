@@ -6,7 +6,7 @@ require_once TEMPLATES_PATH . "/template.php";
 $variables = array(
     'app' => $config["apps"]["guardian"],
     'template' => "reportUserStatistics_template.php",
-    'title' => 'Benutzer-Statistiken Wachen',
+    'title' => 'Eigene Wachstatistik',
     'secured' => true
 );
 checkSitePermissions($variables);
