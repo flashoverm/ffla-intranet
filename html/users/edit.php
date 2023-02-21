@@ -12,6 +12,8 @@ $variables = array (
 		'privileges' => $privilegeDAO->getPrivileges(),
 );
 
+$error = false;
+
 if( $userController->getCurrentUser() != null ){
 	// edit by user itself
 	//		uuid from current user
@@ -59,8 +61,6 @@ if (isset ( $_POST ['useremail'] ) ) {
 		$employerMail = trim($_POST['employerMail']);
 	}
 	
-	$exit = false;
-	
 	//check if password equals (if set)
 	$password = NULL;
 	if(isset($_POST ['userpassword'])){
@@ -69,12 +69,11 @@ if (isset ( $_POST ['useremail'] ) ) {
 		
 		if ($password != $password2) {
 			$variables ['alertMessage'] = 'Die Passwörter müssen übereinstimmen';
-			$exit = true;
+			$error = true;
 		}
 	}
 	
-	
-	if (! $exit) {
+	if (! $error) {
 
 		if( ! isset($variables['userSelfEdit']) || ! $variables['userSelfEdit']){
 			
@@ -144,6 +143,8 @@ if (isset ( $_POST ['useremail'] ) ) {
 		}
 	}
 }
+
+$variables ['error'] = $error;
 
 renderLayoutWithContentFile ($variables );
 ?>
