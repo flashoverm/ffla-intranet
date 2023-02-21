@@ -23,7 +23,6 @@ function left_navigation ($currentUser){
         			<div class='dropdown-menu bg-dark'>";
 		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/overview'>Berichtsübersicht</a>";
 		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/new'>Bericht anlegen</a>";
-		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/statistics'>Berichtstatistik</a>";
 		if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
 			echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/export'>Berichte exportieren</a>";
 		}
@@ -34,8 +33,11 @@ function left_navigation ($currentUser){
 						Wachstatistiken
 					</a>
         			<div class='dropdown-menu bg-dark'>";
-		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/statistics'>Berichtstatistik</a>";
-		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/userstatistics'>Benutzerstatistik</a>";
+		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/statistics'>Gesamt-Statistik</a>";
+		if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
+		    echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/enginestatistics'>Zugs-Statistik</a>";
+		}
+		echo "<a class='dropdown-item text-light' href='" . $config["urls"]["guardianapp_home"]. "/reports/userstatistics'>Eigene Statistik</a>";
 		echo "		</div>
 				</li>";
 	} else {
