@@ -12,7 +12,7 @@ if(isset($config["settings"]["eventHourlyRate"][$year])){
     $rate = end($config["settings"]["eventHourlyRate"]);
 }
 
-showInfo("Hochrechnung bei " . number_format($rate, 2) . " €/Stunde - Abweichung möglich) ");
+showInfo("Hochrechnung bei " . number_format($rate, 2) . " €/Stunde - Abweichung möglich");
 ?>
 <div class="form-group">
 	<select class="form-control" name="year" id="year" onchange="loadStatistics()">
