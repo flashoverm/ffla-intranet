@@ -13,7 +13,6 @@ checkSitePermissions($variables);
 
 $statisticData = array();
 
-$userUuid = '0EDC6EEC-AD3A-02FF-AE50-87EBF5FCE0F0';
 $userUuid = $userController->getCurrentUser()->getUuid();
 
 $reports = $reportDAO->getReportsByStaff($userUuid);

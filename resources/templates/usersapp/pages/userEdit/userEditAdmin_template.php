@@ -20,6 +20,7 @@
 							  if( 	(isset($user) && $user->hasPrivilegeByName($row->getPrivilege())) 
 							  		|| isset($_POST['priv_' . $row->getUuid() ]) 
 							  		|| (! isset($user) && $_SERVER['REQUEST_METHOD'] === 'GET' && $row->getIsDefault() )
+							        || ( ! $error && $row->getIsDefault())
 							  ){
 							  	echo "checked";
 							  }

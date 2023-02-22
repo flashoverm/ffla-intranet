@@ -16,6 +16,8 @@ $variables = array (
 );
 checkSitePermissions($variables);
 
+$error = false;
+
 if( isset($_GET['id']) ){
 	// edit by admin
 	//		uuid from get param
@@ -87,18 +89,17 @@ if (isset ( $_POST ['useremail'] ) ) {
 	}
 	
 	//check if password equals (if set)
-	$exit = false;
 	if(isset($_POST ['userpassword'])){
 		$password = trim($_POST ['userpassword']);
 		$password2 = trim($_POST ['userpassword2']);
 		
 		if ($password != $password2) {
 			$variables ['alertMessage'] = 'Die Passwörter müssen übereinstimmen';
-			$exit = true;
+			$error = true;
 		}
 	}
 	
-	if (! $exit) {
+	if (! $error) {
 				
 		if($uuid == null){
 			
@@ -179,6 +180,8 @@ if (isset ( $_POST ['useremail'] ) ) {
 		}
 	}
 }
+
+$variables ['error'] = $error;
 
 renderLayoutWithContentFile ($variables );
 ?>

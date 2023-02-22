@@ -144,7 +144,7 @@ class ReportDAO extends BaseDAO{
         ");
 	    
 	    if ($statement->execute(array($userUuid))) {
-	        return $this->handleResult($statement, false);
+	        return $this->handleResult($statement, true);
 	    }
 	    return false;	
 	}
