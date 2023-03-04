@@ -116,7 +116,7 @@ if(isset($report) && isset($noEndTime) && $noEndTime == true){
 	</div>
 		
 	<div class="form-group">
-		<label>Titel (optional):</label> <input type="text"
+		<label>Titel:</label> <input type="text" required="required"
 			class="form-control" name="title" id="title"
 		    <?php
 		    if(isset($report) && $report->getTitle() != null){
