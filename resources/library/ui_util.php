@@ -66,9 +66,9 @@ function createHydrantGoogleMap($hydrants, $visable, $markerListener, $height, $
 	<div class="dynamic-map rounded mx-auto" id="dynamic-map" 
 	<?php
 	if($visable){
-		echo "style='display: block; height: " . $height . "; width: " . $width . ";'";
+		echo "style='display: block; height: " . $height . ";'";
 	} else {
-		echo "style='display: none; height: " . $height . "; width: " . $width . ";'";
+		echo "style='display: none; height: " . $height . ";'";
 	}
 	?>
 	>
@@ -186,9 +186,9 @@ function createPagerAlertMap($alerts, $visable, $height, $width, $replaceWithIma
 	<div class="dynamic-map rounded mx-auto" id="dynamic-map" 
 	<?php
 	if($visable){
-		echo "style='display: block; height: " . $height . "; width: " . $width . ";'";
+	    echo "style='display: block; height: " . $height . ";'";
 	} else {
-		echo "style='display: none; height: " . $height . "; width: " . $width . ";'";
+	    echo "style='display: none; height: " . $height . ";'";
 	}
 	?>
 	>
