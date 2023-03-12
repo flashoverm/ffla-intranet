@@ -23,24 +23,11 @@
 			<strong>Testbetrieb</strong><br/>Das Portal befindet sich noch in der Erprobung. Fehler im Ablauf können nicht ausgeschlossen werden!
 		</div>
 		 -->
-		<div class="row">
-			<div class="col">
-				<a href="<?= $config["urls"]["intranet_home"]?>/">
-					<img class="d-block logo"
-						src="<?= $config["urls"]["intranet_home"] ?>/images/layout/shortheader_new-1.png">
-				</a>
-					 
-			</div>
-			<div class="col my-auto">
-				<h1 class="text-center header-title"><?= $title ?></h1>
-				<?php
-		          if(isset($subtitle)){
-			         echo "<h5 class='text-center header-subtitle'>".$subtitle."</h5>";
-		          }
-		        ?>
-			</div>
-			<div class="col">
-			</div>
+		<div>
+			<a href="<?= $config["urls"]["intranet_home"]?>/">
+				<img class="d-block logo"
+					src="<?= $config["urls"]["intranet_home"] ?>/images/layout/shortheader_new-1.png">
+			</a>
 		</div>
 	</div>
 	

@@ -125,9 +125,19 @@ function renderLayoutWithContentFile($variables = array()) {
 	//Footer is always added to the bottom so it can be placed before the cotent-container
 	require_once (TEMPLATES_PATH . "/footer.php");
 	
-	echo "<div class=\"container content-container\" id=\"container\">\n";
-	echo "\t<div id=\"content\" class=\"content\" style=\"display:none;\">\n";
+	?>
+	<div class="container content-container" id="container">
+		<div id="content" class="content" style="display:none;">
+        	<div class="headline">
+            	<h1 class="headline-title"><?= $title ?></h1>
+            	<?php
+                  if(isset($subtitle)){
+                     echo "<h5 class='headline-subtitle'>".$subtitle."</h5>";
+                  }
+                ?>
+            </div>
 
+	<?php
 	if(isset($alertMessage)){
 		showAlert($alertMessage);
 	}
