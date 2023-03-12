@@ -140,20 +140,42 @@
 }
 
 .logo {
-	height: 100px;
+	height: 80px;
+	content: url("/images/layout/shortheader_new-1.png");
 }
 
-@media screen and (max-width: 992px) {
+.headline {
+  margin-top: 1rem;
+  margin-bottom: 1rem; 
+}
+
+.headline-title {
+	font-size: 2.5rem;	
+}
+
+
+@media screen and (max-width: 500px) {
 	.logo {
-		height: 75px;
+		min-width: 250px;
+		width: 100%;
+		height: auto;
+		content: url("/images/layout/shortheader_new-long.png");
 	}
 	
-	.header-title {
-		font-size: 1.75rem;			
+	.headline-title {
+		font-size: 1.75rem;	
 	}
 	
-	.header-subtitle {
+	.headline-subtitle {
 		font-size: 1.25rem;
 	}
+}
 
+
+.headline-subtitle {
+	font-size: 1.20rem;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+	margin-top: 0rem;
 }
