@@ -26,16 +26,16 @@
 		<div class="row">
 			<div class="col">
 				<a href="<?= $config["urls"]["intranet_home"]?>/">
-					<img class="img-fluid d-block"
+					<img class="d-block logo"
 						src="<?= $config["urls"]["intranet_home"] ?>/images/layout/shortheader_new-1.png">
 				</a>
 					 
 			</div>
 			<div class="col my-auto">
-				<h1 class="text-center"><?= $title ?></h1>
+				<h1 class="text-center header-title"><?= $title ?></h1>
 				<?php
 		          if(isset($subtitle)){
-			         echo "<h5 class='text-center'>".$subtitle."</h5>";
+			         echo "<h5 class='text-center header-subtitle'>".$subtitle."</h5>";
 		          }
 		        ?>
 			</div>
