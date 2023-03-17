@@ -6,7 +6,7 @@
 		<a class="nav-link <?php if($tab == 'past'){ echo "active"; } ?>" href="<?= $config["urls"]["guardianapp_home"] ?>/events/admin/past">Vergangene Wachen</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link <?php if($tab == 'deleted'){ echo "active"; } ?>" href="<?= $config["urls"]["guardianapp_home"] ?>/events/admin/deleted">Gelöschte Wachen</a>
+		<a class="nav-link <?php if($tab == 'canceled'){ echo "active"; } ?>" href="<?= $config["urls"]["guardianapp_home"] ?>/events/admin/canceled">Abgesagte Wachen</a>
 	</li>
 </ul>
 
@@ -16,8 +16,8 @@ if (!isset($events) || ! count ( $events ) ) {
 } else {
 	$options = array(
 			'showOccupation' => true,
-			'showDeleteDB' => true,
 			'showPublic' => true,
+	    
 	);
 	
 	render(TEMPLATES_PATH . "/guardianapp/elements/event_table.php", $events, $options);
