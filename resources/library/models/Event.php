@@ -51,7 +51,9 @@ class Event extends BaseModel {
 	 */
 	protected bool $staffConfirmation;
 	
-	protected ?User $deletedBy;
+	protected ?User $cancledBy;
+	
+	protected ?string $cancelationReason;
 	
 	/**
 	 * @ORM\Column(type="string")
@@ -148,8 +150,15 @@ class Event extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getDeletedBy() : ?User {
-		return $this->deletedBy;
+	public function getCancledBy() : ?User {
+		return $this->cancledBy;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getCancelationReason() : ?string {
+	    return $this->cancelationReason;
 	}
 
 	/**
@@ -251,10 +260,17 @@ class Event extends BaseModel {
 	}
 
 	/**
-	 * @param mixed $deletedBy
+	 * @param mixed $canceledBy
 	 */
-	public function setDeletedBy(?User $deletedBy) {
-		$this->deletedBy = $deletedBy;
+	public function setCancledBy(?User $cancledBy) {
+	    $this->cancledBy = $cancledBy;
+	}
+	
+	/**
+	 * @param mixed $hash
+	 */
+	public function setCancelationReason(?string $cancelationReason) {
+	    $this->cancelationReason = $cancelationReason;
 	}
 
 	/**
@@ -282,7 +298,8 @@ class Event extends BaseModel {
 		$this->comment = NULL;
 		$this->creator = NULL;
 		$this->date = NULL;
-		$this->deletedBy = NULL;
+		$this->cancledBy = NULL;
+		$this->cancelationReason = NULL;
 		$this->endTime = NULL;
 		$this->engine = NULL;
 		$this->hash = NULL;
@@ -306,7 +323,8 @@ class Event extends BaseModel {
 				'uuid' => $this->uuid,
 				'comment' => $this->comment,
 				'creator' => $this->creator,
-				'deletedBy' => $this->deletedBy,
+				'canceledBy' => $this->cancledBy,
+		        'cancelationReason' => $this->cancelationReason,
 				'endTime' => $this->endTime,
 				'engine' => $this->engine,
 				'published' => $this->published,
@@ -331,8 +349,8 @@ class Event extends BaseModel {
 		$this->setStaffConfirmation($staffConfirmation);
 	}
 	
-	function isDeleted(){
-		return $this->deletedBy != null;
+	function isCanceled(){
+	    return $this->cancledBy != null;
 	}
 	
 	function getOccupancy(){

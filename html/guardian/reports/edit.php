@@ -68,7 +68,11 @@ if(isset($_GET['id'])){
 		}
 
 	} else {
-		$variables ['alertMessage'] = "Wache nicht gefunden";
+	    if($event->isCanceled()){
+	        $variables ['alertMessage'] = "Wache abgesagt";
+	    } else {
+	        $variables ['alertMessage'] = "Wache nicht gefunden";
+	    }
 	}
 }
 
