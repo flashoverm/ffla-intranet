@@ -27,7 +27,7 @@ if (isset($_GET['id'])) {
     $uuid = trim($_GET['id']);
     $event = $eventDAO->getEvent($uuid);
     
-    if($event && ! $event->isDeleted()){
+    if($event && ! $event->isCanceled()){
     	checkPermissions(array(
     			array("privilege" => Privilege::EVENTADMIN),
     			array("privilege" => Privilege::EVENTMANAGER, "engine" => $event->getEngine()),
@@ -36,7 +36,11 @@ if (isset($_GET['id'])) {
     	
     	$variables['event'] = $event;
     } else {
-        $variables ['alertMessage'] = "Wache nicht gefunden";
+        if($event->isCanceled()){
+            $variables ['alertMessage'] = "Wache abgesagt";
+        } else {
+            $variables ['alertMessage'] = "Wache nicht gefunden";
+        }
         $variables ['showFormular'] = false;
     }
     

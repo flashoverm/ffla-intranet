@@ -35,9 +35,11 @@
 				<?php
 				if( ! isset($print) ){
 					if($currentUser && $guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid())){
-						echo "<td></td>";
+						echo "<th>Status</th>";
 					}
-					echo "<td></td>";
+					if($relevant ){
+					    echo "<th>Aktionen</th>";
+					}
 				} ?>
 			</tr>
 			
@@ -81,43 +83,43 @@
 
 				<?php
 				if( ! isset($print) && $relevant){
-					echo "<td>";
-						if ( ! $entry->getUser()) {
-							if(SessionUtil::userLoggedIn() && $eventController->isUserManagerOrCreator($currentUser->getUuid(), $event->getUuid())){
-							?>
-								<a class='btn btn-primary btn-sm mb-1' href='<?= $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() . "/assign/" . $entry->getUuid() ?>'>Einteilen</a>
-							<?php
-							}
-							?>
-							<a class='btn btn-primary btn-sm mb-1' href='<?= $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() . "/subscribe/" . $entry->getUuid() ?>'>Eintragen</a>
-							<?php
-						} else if(SessionUtil::userLoggedIn()){
-
-							if ($eventController->isUserManagerOrCreator($currentUser->getUuid(), $event->getUuid()) && $event->getStaffConfirmation() && $entry->getUnconfirmed()) { ?>
-		    					<button type='button' class='btn btn-primary btn-sm mb-1' data-toggle='modal' data-target='#confirmConfirmation<?= $entry->getUuid() ?>'>Bestätigen</button>
-		    					<?php 
-		    					createDialog('confirmConfirmation' . $entry->getUuid(), "Personal wirklich bestätigen?", null, "confirmstaffid", $entry->getUuid());
-							} 
-							if ($entry->getUser()->getUuid() == SessionUtil::getCurrentUserUUID()) {	// Remove by user himself ?>
-								<button type='button' class='btn btn-outline-primary btn-sm mb-1' data-toggle='modal' data-target='#confirmUnscribeByUser<?= $entry->getUuid() ?>'>Austragen</button>
-								<?php 
-								createDialog('confirmUnscribeByUser' . $entry->getUuid(), "Personal wirklich austragen?", null, "removestaffbyuserid", $entry->getUuid());
-								
-							} else if ($eventController->isUserManagerOrCreator($currentUser->getUuid(), $event->getUuid())) {	// Remove by manager ?>
-								<button type='button' class='btn btn-outline-primary btn-sm mb-1' data-toggle='modal' data-target='#confirmUnscribe<?= $entry->getUuid() ?>'>Entfernen</button>
-								<?php 
-								createDialog('confirmUnscribe' . $entry->getUuid(), "Personal wirklich austragen?", null, "removestaffid", $entry->getUuid());
-		        			}
-		        			
-		        			if ($currentUser->getUuid() == $entry->getUser()->getUuid() && ! $entry->getUserAcknowledged()) { ?>
-		    					<button type='button' class='btn btn-primary btn-sm mb-1' data-toggle='modal' data-target='#acknowledge<?= $entry->getUuid() ?>'>Zur Kenntnis nehmen</button>
-		    					<?php 
-		    					createDialog('acknowledge' . $entry->getUuid(), "Wachteilnahme zur Kenntnis nehmen?", null, "acknowledgeID", $entry->getUuid());
-							}
+    				echo "<td>";
+			        if ( ! $entry->getUser() ) {
+						if(SessionUtil::userLoggedIn() && $eventController->isUserManagerOrCreator($currentUser->getUuid(), $event->getUuid())){
+						?>
+							<a class='btn btn-primary btn-sm mb-1' href='<?= $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() . "/assign/" . $entry->getUuid() ?>'>Einteilen</a>
+						<?php
 						}
-						echo "</td>";
-					} ?>
-				
+						?>
+						<a class='btn btn-primary btn-sm mb-1' href='<?= $config["urls"]["guardianapp_home"] . "/events/" . $event->getUuid() . "/subscribe/" . $entry->getUuid() ?>'>Eintragen</a>
+						<?php
+					} else if(SessionUtil::userLoggedIn()){
+
+						if ($eventController->isUserManagerOrCreator($currentUser->getUuid(), $event->getUuid()) && $event->getStaffConfirmation() && $entry->getUnconfirmed()) { ?>
+	    					<button type='button' class='btn btn-primary btn-sm mb-1' data-toggle='modal' data-target='#confirmConfirmation<?= $entry->getUuid() ?>'>Bestätigen</button>
+	    					<?php 
+	    					createDialog('confirmConfirmation' . $entry->getUuid(), "Personal wirklich bestätigen?", null, "confirmstaffid", $entry->getUuid());
+						} 
+						if ($entry->getUser()->getUuid() == SessionUtil::getCurrentUserUUID()) {	// Remove by user himself ?>
+							<button type='button' class='btn btn-outline-primary btn-sm mb-1' data-toggle='modal' data-target='#confirmUnscribeByUser<?= $entry->getUuid() ?>'>Austragen</button>
+							<?php 
+							createDialog('confirmUnscribeByUser' . $entry->getUuid(), "Personal wirklich austragen?", null, "removestaffbyuserid", $entry->getUuid());
+							
+						} else if ($eventController->isUserManagerOrCreator($currentUser->getUuid(), $event->getUuid())) {	// Remove by manager ?>
+							<button type='button' class='btn btn-outline-primary btn-sm mb-1' data-toggle='modal' data-target='#confirmUnscribe<?= $entry->getUuid() ?>'>Entfernen</button>
+							<?php 
+							createDialog('confirmUnscribe' . $entry->getUuid(), "Personal wirklich austragen?", null, "removestaffid", $entry->getUuid());
+	        			}
+	        			
+	        			if ($currentUser->getUuid() == $entry->getUser()->getUuid() && ! $entry->getUserAcknowledged()) { ?>
+	    					<button type='button' class='btn btn-primary btn-sm mb-1' data-toggle='modal' data-target='#acknowledge<?= $entry->getUuid() ?>'>Zur Kenntnis nehmen</button>
+	    					<?php 
+	    					createDialog('acknowledge' . $entry->getUuid(), "Wachteilnahme zur Kenntnis nehmen?", null, "acknowledgeID", $entry->getUuid());
+						}
+					}
+					echo "</td>";
+			    } 
+				?>
 			</tr>
 			<?php
 			}

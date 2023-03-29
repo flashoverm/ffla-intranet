@@ -158,7 +158,7 @@ class EventDAO extends BaseDAO{
 		$object->setCreator($this->userDAO->getUserByUUID($result['creator']));
 		$object->setEngine($this->engineDAO->getEngine($result['engine']));
 		if($result['canceled_by']){
-			$object->setCancledBy($this->userDAO->getUserByUUID($result['canceled_by']));
+			$object->setCanceledBy($this->userDAO->getUserByUUID($result['canceled_by']));
 		}
 		$object->setCancelationReason($result['cancelationReason']);
 		$object->setStaff($this->staffDAO->getEventStaff($result['uuid']));
@@ -198,7 +198,7 @@ class EventDAO extends BaseDAO{
 	}
 	
 	protected function updateEvent(Event $event){
-		$canceledBy = $event->getCancledBy();
+		$canceledBy = $event->getCanceledBy();
 		if($canceledBy != NULL){
 		    $canceledBy = $canceledBy->getUuid();
 		}

@@ -30,7 +30,7 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 		), $variables);
 	}
 	
-	if(isset($event) and isset($staffposition) && ! $event->isDeleted()) {
+	if(isset($event) and isset($staffposition) && ! $event->isCanceled()) {
 	    $variables ['showFormular'] = true;
 	    
 	    $variables ['title'] = "In " . $event->getType()->getType() . " eintragen";

@@ -51,7 +51,7 @@ class Event extends BaseModel {
 	 */
 	protected bool $staffConfirmation;
 	
-	protected ?User $cancledBy;
+	protected ?User $canceledBy;
 	
 	protected ?string $cancelationReason;
 	
@@ -150,8 +150,8 @@ class Event extends BaseModel {
 	/**
 	 * @return mixed
 	 */
-	public function getCancledBy() : ?User {
-		return $this->cancledBy;
+	public function getCanceledBy() : ?User {
+		return $this->canceledBy;
 	}
 	
 	/**
@@ -262,8 +262,8 @@ class Event extends BaseModel {
 	/**
 	 * @param mixed $canceledBy
 	 */
-	public function setCancledBy(?User $cancledBy) {
-	    $this->cancledBy = $cancledBy;
+	public function setCanceledBy(?User $canceledBy) {
+	    $this->canceledBy = $canceledBy;
 	}
 	
 	/**
@@ -298,7 +298,7 @@ class Event extends BaseModel {
 		$this->comment = NULL;
 		$this->creator = NULL;
 		$this->date = NULL;
-		$this->cancledBy = NULL;
+		$this->canceledBy = NULL;
 		$this->cancelationReason = NULL;
 		$this->endTime = NULL;
 		$this->engine = NULL;
@@ -323,7 +323,7 @@ class Event extends BaseModel {
 				'uuid' => $this->uuid,
 				'comment' => $this->comment,
 				'creator' => $this->creator,
-				'canceledBy' => $this->cancledBy,
+				'canceledBy' => $this->canceledBy,
 		        'cancelationReason' => $this->cancelationReason,
 				'endTime' => $this->endTime,
 				'engine' => $this->engine,
@@ -350,7 +350,7 @@ class Event extends BaseModel {
 	}
 	
 	function isCanceled(){
-	    return $this->cancledBy != null;
+	    return $this->canceledBy != null;
 	}
 	
 	function getOccupancy(){
