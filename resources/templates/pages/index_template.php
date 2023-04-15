@@ -1,6 +1,5 @@
 
-<div class="container" id="container">
-
+<div>
 	<div class="card mx-auto mb-2">
 		<div class="card-body">
 			<h5 class="card-title">Wachverwaltung</h5>

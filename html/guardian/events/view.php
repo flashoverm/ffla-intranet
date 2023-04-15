@@ -20,7 +20,7 @@ if (! isset($_GET['id'])) {
     $uuid = trim($_GET['id']);
     $event = $eventDAO->getEvent($uuid);
     
-    if($event && ! $event->isDeleted()){
+    if($event){
     	
         $isCreator = false;
         $otherEngine = null;
@@ -147,6 +147,20 @@ if (! isset($_GET['id'])) {
     		} else {
     			$variables['alertMessage'] = "Wache konnte nicht veröffentlicht werden";
     		}
+    	}
+    	
+    	//if cancel
+    	//cancelEvent
+    	//log LogbookActions::EventCanceled
+    	if (isset($_POST['reason'])) {
+    	    $reason = trim($_POST['reason']);
+    	    if($eventController->cancelEvent($uuid, $reason)){
+    	        mail_cancel_event($event->getUuid());
+    	        $variables['successMessage'] = "Wache abgesagt - Teilnehmer informiert";
+    	        $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventCanceled, $uuid));
+    	    } else {
+    	        $variables['alertMessage'] = "Wache konnte nicht abgesagt werden";
+    	    }
     	}
     	
     	$variables['event'] = $eventDAO->getEvent($event->getUuid());

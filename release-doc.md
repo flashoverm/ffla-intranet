@@ -2,6 +2,11 @@
 Release Documentation
 ******************************
 
+### V2.5.1
+
+ALTER TABLE event CHANGE deleted_by canceled_by CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL; 
+ALTER TABLE event ADD cancelationReason VARCHAR(255) AFTER canceled_by; 
+
 ### V2.5.0
 
 ALTER TABLE report_staff ADD user CHAR(36) NULL AFTER engine; 

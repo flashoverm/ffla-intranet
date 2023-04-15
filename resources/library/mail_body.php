@@ -25,7 +25,9 @@ $bodies = array (
 	
 	"event_staff_confirmed" => $util["head"] . "Du kannst an einer Wache teilnehmen, an der du dich eingetragen hast: \n\n",
 	
-	"event_delete" => $util["head"] . "eine Wache, bei der du dich eingetragen hast, wurde abgesagt: \n\n",
+	"event_cancel" => $util["head"] . "eine Wache, bei der du dich eingetragen hast, wurde abgesagt: \n\n",
+    
+    "event_cancel_administration" => $util["head"] . "eine Wache wurde abgesagt: \n\n",
 	
 	"event_subscribe" => $util["head"] . "Du hast dich in eine Wache eingeschrieben: \n\n",
 	

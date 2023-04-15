@@ -275,23 +275,33 @@
 						<label class='custom-control-label custom-control-label-big' for='informMe'>Information über angelegte Wache an eigene E-Mail-Adresse</label>
 					</div>";
 		}
-		if(isset($event)){
-			echo '<a class="btn btn-outline-primary" href=' . $config["urls"]["guardianapp_home"] . '/events/view/' . $event->getUuid() . ">Zurück</a>";
-		}
 		?>
-				
-	<input type="submit" class="btn btn-primary"
+	
+	<div class="mt-3">
 		<?php
 		if(isset($event)){
-			echo " value='Aktualisieren' ";
-		}else{
-			echo " value='Speichern' ";
-		}?>
-		>
-	<?php if(!isset($event)){
-	    echo "<button type='button' class='btn btn-primary float-right' onClick='submitMutible()'>Speichern und nächste Wache anlegen</button>";
-	}?>
-	
+		    echo '<a class="btn btn-outline-primary" href=' . $config["urls"]["guardianapp_home"] . '/events/view/' . $event->getUuid() . ">Zurück</a>";
+		} else {
+		?>
+		    <a href='<?= $config["urls"]["guardianapp_home"] . "/events/overview" ?>' class='btn btn-outline-primary'>Zurück</a>
+		<?php
+		}
+		?>
+    	<div class='float-right'>
+    
+        	<?php if(!isset($event)){
+        	    echo "<button type='button' class='btn btn-primary' onClick='submitMutible()'>Speichern und nächste Wache anlegen</button>";
+        	}?>	
+        	<input type="submit" class="btn btn-primary"
+        		<?php
+        		if(isset($event)){
+        			echo " value='Aktualisieren' ";
+        		}else{
+        			echo " value='Speichern' ";
+        		}?>
+        		>
+	</div>
+	</div>
 </form>
 
 

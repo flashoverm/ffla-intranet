@@ -17,13 +17,6 @@ if(!empty($options['showPublic'])){
 	$columns[] = array("label" => "Öffentlich", "sort" => EventDAO::ORDER_PUBLIC);
 }
 $columns[] = array();
-if( !empty($options['showDelete']) &&
-		$guardianUserController->isUserAllowedToEditSomeEvent($currentUser)){
-	$columns[] = array();
-}
-if( !empty($options['showDeleteDB']) ){
-	$columns[] = array();
-}
 
 renderTable(
 		TEMPLATES_PATH . "/guardianapp/elements/event_row.php",

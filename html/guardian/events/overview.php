@@ -12,44 +12,30 @@ $variables = array (
 );
 checkSitePermissions($variables);
 
-if (isset ( $_POST ['delete'] )) {
-	$delete_event_uuid = trim ( $_POST ['delete'] );
-	$event = $eventDAO->getEvent($delete_event_uuid);
-	checkPermissions(array(
-			array("privilege" => Privilege::EVENTADMIN),
-			array("privilege" => Privilege::EVENTMANAGER, "engine" => $event->getEngine()),
-			array("user" => $event->getCreator())
-	), $variables);
 	
-	mail_delete_event ( $delete_event_uuid );
-	if( $eventController->markAsDeleted( $delete_event_uuid ) ){
-		$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventDeleted, $delete_event_uuid));
-		$variables ['successMessage'] = "Wache gelöscht";
-	} else {
-		$variables ['alertMessage'] = "Wache konnte nicht gelöscht werden";
-	}
+if( isset( $_GET["past"] ) ){
+	$variables ['tab'] = 'past';
+} else if ( isset($_GET["canceled"])) {
+    $variables ['tab'] = 'canceled';
+} else {
+	$variables ['tab'] = 'current';
 }
 
-if(SessionUtil::userLoggedIn()){
-	
-	if( isset( $_GET["past"] ) ){
-		$variables ['tab'] = 'past';
+if($currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
+	if($variables ['tab'] == 'past'){
+		$variables ['events'] = $eventDAO->getPastEvents($_GET);
+	} else if ($variables ['tab'] == 'canceled') {
+	    $variables ['events'] = $eventDAO->getCanceledEvents($_GET);
 	} else {
-		$variables ['tab'] = 'current';
+		$variables ['events'] = $eventDAO->getActiveEvents($_GET);
 	}
-    
-	if($currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
-		if($variables ['tab'] == 'past'){
-			$variables ['events'] = $eventDAO->getPastEvents($_GET);
-		} else {
-			$variables ['events'] = $eventDAO->getActiveEvents($_GET);
-		}
+} else {
+	if($variables ['tab'] == 'past'){
+		$variables ['events'] = $eventDAO->getUsersPastEvents($currentUser, $_GET);
+	} else if ($variables ['tab'] == 'canceled') {
+	    $variables ['events'] = $eventDAO->getUsersCanceledEvents($currentUser, $_GET);
 	} else {
-		if($variables ['tab'] == 'past'){
-			$variables ['events'] = $eventDAO->getUsersPastEvents($currentUser, $_GET);
-		} else {
-			$variables ['events'] = $eventDAO->getUsersActiveEvents($currentUser, $_GET);
-		}
+		$variables ['events'] = $eventDAO->getUsersActiveEvents($currentUser, $_GET);
 	}
 }
 

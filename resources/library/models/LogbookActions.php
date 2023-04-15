@@ -32,7 +32,7 @@ abstract class LogbookActions {
 			 */
 			101 => "Wache angelegt",
 			102 => "Wache aktualisiert",
-			103 => "Wache entfernt",
+			103 => "Wache abgesagt",
 			104 => "Wache aus Datenbank entfernt",
 			105 => "Wache veröffentlicht",
 			
@@ -142,7 +142,7 @@ abstract class LogbookActions {
 	 */
 	const EventCreated = 101;
 	const EventUpdated = 102;
-	const EventDeleted = 103;
+	const EventCanceled = 103;
 	const EventDeletedDB = 104;
 	const EventPublished = 105;
 	

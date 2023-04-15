@@ -5,6 +5,9 @@
 	<li class="nav-item">
 		<a class="nav-link <?php if($tab == 'past'){ echo "active"; } ?>" href="<?= $config["urls"]["guardianapp_home"] ?>/events/past">Vergangene Wachen</a>
 	</li>
+	<li class="nav-item">
+		<a class="nav-link <?php if($tab == 'canceled'){ echo "active"; } ?>" href="<?= $config["urls"]["guardianapp_home"] ?>/events/canceled">Abgesagte Wachen</a>
+	</li>
 </ul>
 
 <?php
@@ -16,11 +19,14 @@ if (!isset($events) || ! count ( $events ) ) {
 		$options = array(
 				'showPublic' => true,
 		);
+	} else if($tab == 'canceled'){
+	    $options = array(
+	        'showPublic' => true,
+	    );
 	} else {
 		$options = array(
-				'showOccupation' => true,
-				'showDelete' => true,
-				'showPublic' => true,
+			'showOccupation' => true,
+			'showPublic' => true,
 		);
 	}
 	

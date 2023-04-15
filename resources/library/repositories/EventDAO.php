@@ -49,7 +49,7 @@ class EventDAO extends BaseDAO{
 
 	function getPublicEvents(array $getParams){
 		$query = "SELECT event.*, engine.name FROM event, engine 
-			WHERE date >= (now() - INTERVAL 1 DAY) AND published = TRUE AND deleted_by IS NULL AND event.engine = engine.uuid
+			WHERE date >= (now() - INTERVAL 1 DAY) AND published = TRUE AND canceled_by IS NULL AND event.engine = engine.uuid
 			ORDER BY date ASC";
 		
 		return $this->executeQuery($query, null, $getParams);
@@ -57,7 +57,7 @@ class EventDAO extends BaseDAO{
 	
 	function getActiveEvents(array $getParams){
 		$query = "SELECT event.*, engine.name FROM event, engine 
-			WHERE date >= (now() - INTERVAL 1 DAY) AND deleted_by IS NULL AND event.engine = engine.uuid
+			WHERE date >= (now() - INTERVAL 1 DAY) AND canceled_by IS NULL AND event.engine = engine.uuid
 			ORDER BY date ASC";
 		
 		return $this->executeQuery($query, null, $getParams);
@@ -74,15 +74,15 @@ class EventDAO extends BaseDAO{
 	
 	function getPastEvents(array $getParams){
 		$query = "SELECT event.*, engine.name FROM event, engine 
-			WHERE date < (now() - INTERVAL 1 DAY) AND deleted_by IS NULL  AND event.engine = engine.uuid
+			WHERE date < (now() - INTERVAL 1 DAY) AND canceled_by IS NULL  AND event.engine = engine.uuid
 			ORDER BY date DESC";
 		
 		return $this->executeQuery($query, null, $getParams);
 	}
 	
-	function getDeletedEvents(array $getParams){
+	function getCanceledEvents(array $getParams){
 		$query = "SELECT event.*, engine.name FROM event, engine 
-			WHERE NOT deleted_by IS NULL  AND event.engine = engine.uuid
+			WHERE NOT canceled_by IS NULL  AND event.engine = engine.uuid
 			ORDER BY date DESC";
 		
 		return $this->executeQuery($query, null, $getParams);
@@ -93,7 +93,7 @@ class EventDAO extends BaseDAO{
 				 FROM event, engine
 				 WHERE (published = TRUE OR engine = ? OR creator = ? OR engine IN (SELECT engine FROM additional_engines WHERE user = ?) OR event.uuid IN (SELECT event FROM staff WHERE user = ?) )
                  AND date >= (now() - INTERVAL 1 DAY) 
-				 AND deleted_by IS NULL 
+				 AND canceled_by IS NULL 
  				 AND event.engine = engine.uuid
                  ORDER BY date ASC";
 				
@@ -105,11 +105,22 @@ class EventDAO extends BaseDAO{
 				FROM event, engine
 				WHERE (published = TRUE OR engine = ? OR creator = ? OR engine IN (SELECT engine FROM additional_engines WHERE user = ?) OR event.uuid IN (SELECT event FROM staff WHERE user = ?) ) 
 				AND date < (now() - INTERVAL 1 DAY) 
-				AND deleted_by IS NULL 
+				AND canceled_by IS NULL 
 				AND event.engine = engine.uuid
 				ORDER BY date DESC";
 		
 		return $this->executeQuery($query, array($user->getEngine()->getUuid(), $user->getUuid(), $user->getUuid(), $user->getUuid()), $getParams);
+	}
+	
+	function getUsersCanceledEvents(User $user, array $getParams){
+	    $query = "SELECT event.*, engine.name
+				FROM event, engine
+				WHERE (published = TRUE OR engine = ? OR creator = ? OR engine IN (SELECT engine FROM additional_engines WHERE user = ?) OR event.uuid IN (SELECT event FROM staff WHERE user = ?) )
+				AND NOT canceled_by IS NULL
+				AND event.engine = engine.uuid
+				ORDER BY date DESC";
+	    
+	    return $this->executeQuery($query, array($user->getEngine()->getUuid(), $user->getUuid(), $user->getUuid(), $user->getUuid()), $getParams);
 	}
 
 	function deleteEvent($eventUuid){
@@ -146,9 +157,10 @@ class EventDAO extends BaseDAO{
 		$object->setHash($result['hash']);
 		$object->setCreator($this->userDAO->getUserByUUID($result['creator']));
 		$object->setEngine($this->engineDAO->getEngine($result['engine']));
-		if($result['deleted_by']){
-			$object->setDeletedBy($this->userDAO->getUserByUUID($result['deleted_by']));
+		if($result['canceled_by']){
+			$object->setCanceledBy($this->userDAO->getUserByUUID($result['canceled_by']));
 		}
+		$object->setCancelationReason($result['cancelationReason']);
 		$object->setStaff($this->staffDAO->getEventStaff($result['uuid']));
 		return $object;
 	}
@@ -161,7 +173,7 @@ class EventDAO extends BaseDAO{
 				. $event->getEndTime() . $event->getType()->getUuid() . $event->getTitle() );
 		
 		$statement = $this->db->prepare("INSERT INTO event 
-		(uuid, date, start_time, end_time, type, type_other, title, comment, engine, creator, published, staff_confirmation, deleted_by, hash)
+		(uuid, date, start_time, end_time, type, type_other, title, comment, engine, creator, published, staff_confirmation, canceled_by, hash)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, ?)");
 		
 		$result = $statement->execute(array($uuid, $event->getDate(), $event->getStartTime(), 
@@ -186,19 +198,20 @@ class EventDAO extends BaseDAO{
 	}
 	
 	protected function updateEvent(Event $event){
-		$deletedBy = $event->getDeletedBy();
-		if($deletedBy != NULL){
-			$deletedBy = $deletedBy->getUuid();
+		$canceledBy = $event->getCanceledBy();
+		if($canceledBy != NULL){
+		    $canceledBy = $canceledBy->getUuid();
 		}
 		$statement = $this->db->prepare("UPDATE event
-		SET date = ?, start_time = ?, end_time = ?, type = ?, type_other = ?, title = ?, comment = ?, engine = ?, creator = ?, published = ?, staff_confirmation = ?, deleted_by = ?, hash = ?
+		SET date = ?, start_time = ?, end_time = ?, type = ?, type_other = ?, title = ?, comment = ?, engine = ?, creator = ?, published = ?, staff_confirmation = ?, canceled_by = ?, cancelationReason = ?, hash = ?
 		WHERE uuid = ?");
 		
 		$result = $statement->execute(array($event->getDate(), $event->getStartTime(),
 				$event->getEndTime(), $event->getType()->getUuid(), $event->getTypeOther(),
 				$event->getTitle(), $event->getComment(), $event->getEngine()->getUuid(),
 				$event->getCreator()->getUuid(), $event->getPublished(),
-				$event->getStaffConfirmation(), $deletedBy, $event->getHash(), $event->getUuid()
+		        $event->getStaffConfirmation(), $canceledBy, $event->getCancelationReason(), 
+		        $event->getHash(), $event->getUuid()
 		));
 		
 		if ($result) {
@@ -227,7 +240,8 @@ class EventDAO extends BaseDAO{
 						  creator CHARACTER(36) NOT NULL,
                           published BOOLEAN NOT NULL default 0,
 						  staff_confirmation BOOLEAN NOT NULL default 0,
-						  deleted_by CHAR(36),
+						  canceled_by CHAR(36),
+                          cancelationReason VARCHAR(255),
 						  hash VARCHAR(64) NOT NULL,
                           PRIMARY KEY  (uuid),
 						  FOREIGN KEY (creator) REFERENCES user(uuid),

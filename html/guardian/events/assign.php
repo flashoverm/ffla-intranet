@@ -28,7 +28,7 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
 			array("user" => $event->getCreator())
 	), $variables);
 	
-	if(isset($event) && isset($staffposition) && ! $event->isDeleted()) {
+	if(isset($event) && isset($staffposition) && ! $event->isCanceled()) {
 	    $variables ['showFormular'] = true;
 	    
 	    $variables ['title'] = "In " . $event->getType()->getType() . " einteilen";
@@ -70,7 +70,11 @@ if (isset ( $_GET ['staffid'] ) and isset ( $_GET ['id'] )) {
     		}
     	}
 	} else {
-		$variables ['alertMessage'] = "Position existiert nicht";
+	    if($event->isCanceled()){
+	        $variables ['alertMessage'] = "Wache abgesagt";
+	    } else {
+	        $variables ['alertMessage'] = "Position existiert nicht";
+	    }
 	}
 } else {
     $variables ['alertMessage'] = "Fehlende Parameter";

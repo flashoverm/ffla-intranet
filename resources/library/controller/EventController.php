@@ -59,12 +59,13 @@ class EventController extends BaseController{
 		return $this->eventDAO->save($event);
 	}
 	
-	function markAsDeleted($eventUuid){
+	function cancelEvent($eventUuid, $reason){
 		$event = $this->eventDAO->getEvent($eventUuid);
-		if($event->isDeleted()){
+		if($event->isCanceled()){
 			return false;
 		}
-		$event->setDeletedBy($this->userController->getCurrentUser());
+		$event->setCanceledBy($this->userController->getCurrentUser());
+		$event->setCancelationReason($reason);
 		return $this->eventDAO->save($event);
 	}
 	

@@ -222,16 +222,21 @@ function mail_event_updates($event_uuid){
 	return mail_to_staff($event, $subject, $body);
 }
 
-function mail_delete_event($event_uuid) {
-	global $bodies, $eventDAO;
+function mail_cancel_event($event_uuid) {
+    global $bodies, $eventDAO, $userDAO;
 	
 	$subject = "Wache abgesagt" . event_subject($event_uuid);
-	$body = $bodies["event_delete"] . get_event_link($event_uuid);
+	$body = $bodies["event_cancel"] . get_event_link($event_uuid);
 	
 	$event = $eventDAO->getEvent( $event_uuid );
 	
-	return mail_to_staff($event, $subject, $body);
+	$sendOK = mail_to_staff($event, $subject, $body);
 	
+	$administration = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
+	
+	$body = $bodies["event_cancel_administration"] . get_event_link($event_uuid);
+	
+	return $sendOK && sendMailsWithBody($administration, $subject, $body);	
 }
 
 
