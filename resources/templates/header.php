@@ -123,6 +123,7 @@
 							?>
 								<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/users/edit'>Benutzer bearbeiten</a>
 								<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/users/password/change'>Passwort ändern</a>
+								<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/users/settings'>Einstellungen</a>
 							<?php
 							}
 							?>

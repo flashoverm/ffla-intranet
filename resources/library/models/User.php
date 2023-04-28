@@ -66,6 +66,8 @@ class User extends BaseModel {
 	
 	protected array $privileges;
 	
+	protected array $settings;
+	
 	
 	/**
 	 * @return NULL
@@ -173,6 +175,13 @@ class User extends BaseModel {
 	public function getPrivileges() : array {
 		return $this->privileges;
 	}
+	
+	/**
+	 * @return array
+	 */
+	public function getSettings() : array {
+	    return $this->settings;
+	}
 
 	/**
 	 * @param NULL $uuid
@@ -264,6 +273,13 @@ class User extends BaseModel {
 	public function setPrivileges(array $privileges) {
 		$this->privileges = $privileges;
 	}
+	
+	/**
+	 * @param array $settings
+	 */
+	public function setSettings(array $settings) {
+	    $this->settings = $settings;
+	}
 
 	public function __construct() {
 		parent::__construct();
@@ -280,6 +296,7 @@ class User extends BaseModel {
 		$this->employerAddress = NULL;
 		$this->employerMail = NULL;
 		$this->privileges = array();
+		$this->settings = array();
 	}
 	
 	
@@ -357,7 +374,17 @@ class User extends BaseModel {
 		}
 	}
 
-	
+	public function isSettingSet($settingKey){
+	    if($this->settings == null){
+	        return false;
+	    }
+	    foreach($this->settings as $usersSetting){
+	        if($usersSetting->getKey() == $settingKey){
+	                return true;
+	        }
+	    }
+	    return false;
+	}
 	
 	public function getFullName() : string {
 		return $this->firstname . " " . $this->lastname;

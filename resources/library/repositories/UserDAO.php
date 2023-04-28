@@ -25,7 +25,10 @@ class UserDAO extends BaseDAO {
 			if( $privilegeSaved){
 				$enginesSaved = $this->saveAdditionalEngines($user);
 				if($enginesSaved){
-					return $this->getUserByUUID($saved->getUuid());
+				    $settingsSaved = $this->saveSettings($user);
+				    if($settingsSaved){
+				        return $this->getUserByUUID($saved->getUuid());
+				    }
 				}
 			}
 		}
@@ -130,7 +133,7 @@ class UserDAO extends BaseDAO {
 		}
 		return false;
 	}
-		
+	
 	function getUserByUUID(String $uuid){
 		$statement = $this->db->prepare("SELECT * FROM user WHERE uuid = ?");
 		
@@ -247,6 +250,7 @@ class UserDAO extends BaseDAO {
 		$object->setEngine($this->engineDAO->getEngine($result['engine']));
 		$object->setPrivileges($this->userPrivilegeDAO->getPrivilegesByUser($result['uuid']));
 		$object->setAdditionalEngines($this->getAdditionalEngines($result['uuid']));
+		$object->setSettings($this->getSettings($result['uuid']));
 		return $object;
 	}
 	
@@ -288,6 +292,44 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
+	protected function resultToSettings($result){
+	    return SettingDAO::getSetting( $result['setting']);
+	}
+	
+	protected function getSettings($userUuid){
+	    $statement = $this->db->prepare("SELECT * FROM user_setting WHERE user = ?");
+	    
+	    if ($statement->execute(array($userUuid))) {
+	        return $this->handleResult($statement, true, "resultToSettings");
+	    }
+	    return false;
+	}
+	
+	protected function saveSettings(User $user){
+	    $statement = $this->db->prepare("DELETE FROM user_setting WHERE user = ?");
+	    
+	    $result = $statement->execute(array($user->getUuid()));
+	    
+	    if ($result) {
+	        foreach($user->getSettings() as $usersSetting){
+	            $this->insertIntoSettings($user->getUuid(), $usersSetting->getKey());
+	        }
+	        return true;
+	    }
+	    return false;
+	}
+	
+	protected function insertIntoSettings($userUuid, $settingKey){
+	    $statement = $this->db->prepare("INSERT INTO user_setting (user, setting) VALUES (?, ?)");
+	    
+	    $result = $statement->execute(array($userUuid, $settingKey));
+	    
+	    if ($result) {
+	        return true;
+	    }
+	    return false;
+	}
+	
 	protected function createTable() {
 		$statement = $this->db->prepare("CREATE TABLE user (
                           uuid CHARACTER(36) NOT NULL,
@@ -318,7 +360,17 @@ class UserDAO extends BaseDAO {
 			
 			$result = $statement->execute();
 			if ($result) {
-				return true;
+			    $statement = $this->db->prepare("CREATE TABLE user_setting (
+                          user CHARACTER(36) NOT NULL,
+                          setting VARCHAR(128) NOT NULL,
+                          PRIMARY KEY  (user, setting),
+						  FOREIGN KEY (user) REFERENCES user(uuid)
+                          )");
+			    
+			    $result = $statement->execute();
+			    if ($result) {
+			        return true;
+			    }
 			}
 		}
 		return false;

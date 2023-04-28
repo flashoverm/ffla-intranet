@@ -5,6 +5,28 @@ require_once 'BaseController.php';
 //use Doctrine\ORM\EntityManager;
 
 class EventController extends BaseController{
+    
+    public static function get_event_link($event_uuid){
+        global $config;
+        return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/view/" . $event_uuid;
+    }
+    
+    public static function get_staff_acknowledge_link($event_uuid, $staff_uuid){
+        global $config;
+        return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event_uuid . "/acknowledge/" . $staff_uuid;
+    }
+    
+    public static function event_subject($event_uuid){
+        global $config, $eventDAO;
+        $event = $eventDAO->getEvent($event_uuid);
+        
+        $subject = " - "
+            . date($config ["formats"] ["date"], strtotime($event->getDate())) . " "
+                . date($config ["formats"] ["time"], strtotime($event->getStartTime())) . " Uhr "
+                    . $event->getType()->getType();
+                    
+                    return $subject;
+    }
 	
 	protected $eventDAO;
 	protected $staffDAO;

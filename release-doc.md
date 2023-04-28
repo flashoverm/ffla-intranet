@@ -2,6 +2,14 @@
 Release Documentation
 ******************************
 
+### V2.5.2
+CREATE TABLE user_setting (
+                          user CHAR(36) NOT NULL,
+                          setting VARCHAR(128) NOT NULL,
+                          PRIMARY KEY  (user, setting),
+						  FOREIGN KEY (user) REFERENCES user(uuid)
+                          ) COLLATE  utf8mb4_general_ci;
+
 ### V2.5.1
 
 ALTER TABLE event CHANGE deleted_by canceled_by CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL; 
