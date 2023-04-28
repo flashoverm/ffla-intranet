@@ -16,6 +16,9 @@ $bodies = array (
     "report_not_approved" => $util["head"] . "der folgende Wachbericht muss noch überprüft und freigegeben werden: \n\n",
 	
 	"event_insert" => $util["head"] . "in ihrem Zug wurde eine neue Wache eingestellt: \n\n",
+    
+    "event_insert_all" => $util["head"] . "eine neue Wache wurde eingestellt: \n\n",
+    "event_insert_all_disc" => "\n\nWillst du diese Mail nicht mehr erhalten? Du kannst sie im Portal unter Einstellungen abbestellen.\n\n",
 	
 	"event_update" => $util["head"] . "eine Wache wurde aktualisiert: \n\n",
 	

@@ -14,6 +14,10 @@ foreach (glob( LIBRARY_PATH . "/util/*.php") as $filename) {
 	include_once $filename;
 }
 
+foreach (glob( LIBRARY_PATH . "/mail/*.php") as $filename) {
+    include_once $filename;
+}
+
 foreach (glob( LIBRARY_PATH . "/*.php") as $filename) {
 	include_once $filename;
 }
