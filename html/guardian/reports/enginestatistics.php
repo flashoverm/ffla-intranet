@@ -6,7 +6,7 @@ require_once TEMPLATES_PATH . "/template.php";
 $variables = array(
     'app' => $config["apps"]["guardian"],
     'template' => "reportEngineStatistics_template.php",
-    'title' => 'Gesamt-Wachstatistik',
+    'title' => 'Zugs-Wachstatistik',
     'secured' => true,
     'privilege' => Privilege::EVENTMANAGER
 );
