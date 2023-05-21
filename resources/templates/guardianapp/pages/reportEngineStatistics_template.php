@@ -49,9 +49,9 @@ showInfo("Hochrechnung bei " . number_format($rate, 2) . " €/Stunde - Abweichu
 				<tr>
 					<td><?= $statisticData[$userUuid][0]->getFirstname(); ?></td>
 					<td><?= $statisticData[$userUuid][0]->getLastname(); ?></td>
-					<td><?= $statisticData[$userUuid][1]; ?></td>
-					<td><span style="display:none"><?=$minutes ?></span><?= floor($minutes/60) . ":" . sprintf("%02d", $minutes%60) ?></td>
-					<td><span style="display:none"><?=$minutes?></span><?= number_format($minutes/60*$rate, 2, ",", "")?></td>
+					<td><span class="d-none"><?= sprintf('%02d',$statisticData[$userUuid][1]) ?></span><?= $statisticData[$userUuid][1]; ?></td>
+					<td><span class="d-none"><?= sprintf('%06d',$minutes) ?></span><?= floor($minutes/60) . ":" . sprintf("%02d", $minutes%60) ?></td>
+					<td><span class="d-none"><?= sprintf('%06d',$minutes) ?></span><?= number_format($minutes/60*$rate, 2, ",", "")?></td>
 				</tr>
             <?php
 	        }
