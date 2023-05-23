@@ -2,6 +2,10 @@
 Release Documentation
 ******************************
 
+### V2.5.2
+
+INSERT INTO engine (uuid, name, isadministration, shortname) VALUES ('0B789F33-B8B4-42A6-3AD7-3FC917441CA0', 'KEZ', '0', 'KEZ') 
+
 ### V2.5.1
 
 ALTER TABLE event CHANGE deleted_by canceled_by CHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL; 
