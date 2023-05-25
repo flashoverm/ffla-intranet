@@ -127,8 +127,8 @@ class EventDAO extends BaseDAO{
 	    $query = "SELECT *
 				FROM event
 				WHERE event.uuid IN (SELECT event FROM staff WHERE user = ?)
-                 AND date >= (now() - INTERVAL 1 DAY) 
-				AND NOT canceled_by IS NULL
+                AND event.date >= (now() - INTERVAL 1 DAY) 
+				AND canceled_by IS NULL 
 				ORDER BY date DESC";
 	    
 	    return $this->executeQuery($query, array($user->getUuid()), $getParams);
