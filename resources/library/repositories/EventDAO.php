@@ -122,6 +122,18 @@ class EventDAO extends BaseDAO{
 	    
 	    return $this->executeQuery($query, array($user->getEngine()->getUuid(), $user->getUuid(), $user->getUuid(), $user->getUuid()), $getParams);
 	}
+	
+	function getUsersSubcribedEvents(User $user, array $getParams){
+	    $query = "SELECT *
+				FROM event
+				WHERE event.uuid IN (SELECT event FROM staff WHERE user = ?)
+                 AND date >= (now() - INTERVAL 1 DAY) 
+				AND NOT canceled_by IS NULL
+				ORDER BY date DESC";
+	    
+	    return $this->executeQuery($query, array($user->getUuid()), $getParams);
+	    
+	}
 
 	function deleteEvent($eventUuid){
 		$statement = $this->db->prepare("DELETE FROM staff WHERE event = ?");
