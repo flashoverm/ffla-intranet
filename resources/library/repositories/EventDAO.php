@@ -138,7 +138,7 @@ class EventDAO extends BaseDAO{
 	function getManagersUnconfirmedStaffEvents(User $user, array $getParams){
 	    $query = "SELECT *
 				 FROM event
-				 WHERE (engine = ? OR creator = ? AND event.uuid IN (SELECT event FROM staff WHERE unconfirmed = true AND NOT user IS NULL ) )
+				 WHERE ((engine = ? OR creator = ?) AND event.uuid IN (SELECT event FROM staff WHERE unconfirmed = true AND NOT user IS NULL ) )
                  AND date >= (now() - INTERVAL 1 DAY)
 				 AND canceled_by IS NULL
                  ORDER BY date ASC";
