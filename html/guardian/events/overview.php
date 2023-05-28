@@ -21,6 +21,8 @@ if( isset( $_GET["past"] ) ){
     $variables ['tab'] = 'subscribed';
 } else if ( isset($_GET["unconfirmed"])) {
     $variables ['tab'] = 'unconfirmed';
+} else if ( isset($_GET["missingstaff"])) {
+    $variables ['tab'] = 'missingstaff';
 } else {
 	$variables ['tab'] = 'current';
 }
@@ -34,6 +36,8 @@ if($currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
 	    $variables ['events'] = $eventDAO->getUsersSubcribedEvents($currentUser, $_GET);
 	} else if ($variables ['tab'] == 'unconfirmed') {
 	    $variables ['events'] = $eventDAO->getManagersUnconfirmedStaffEvents($currentUser, $_GET);
+	} else if ($variables ['tab'] == 'missingstaff') {
+	    $variables ['events'] = $eventDAO->getManagersMissingStaffEvents($currentUser, $_GET);
 	} else {
 		$variables ['events'] = $eventDAO->getActiveEvents($_GET);
 	}
@@ -46,6 +50,8 @@ if($currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
 	    $variables ['events'] = $eventDAO->getUsersSubcribedEvents($currentUser, $_GET);
 	} else if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER) && $variables ['tab'] == 'unconfirmed') {
 	    $variables ['events'] = $eventDAO->getManagersUnconfirmedStaffEvents($currentUser, $_GET);
+	} else if ($variables ['tab'] == 'missingstaff') {
+	    $variables ['events'] = $eventDAO->getManagersMissingStaffEvents($currentUser, $_GET);
 	} else {
 		$variables ['events'] = $eventDAO->getUsersActiveEvents($currentUser, $_GET);
 	}

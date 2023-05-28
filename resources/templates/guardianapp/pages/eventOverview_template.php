@@ -2,6 +2,9 @@
 	<li class="nav-item">
 		<a class="nav-link <?php if($tab == 'current'){ echo "active"; } ?>" href="<?= $config["urls"]["guardianapp_home"] ?>/events/overview">Aktuelle Wachen</a>
 	</li>
+    <li class="nav-item">
+    	<a class="nav-link <?php if($tab == 'missingstaff'){ echo "active"; } ?>" href="<?= $config["urls"]["guardianapp_home"] ?>/events/missingstaff">Plätze frei</a>
+    </li>
 	<li class="nav-item">
 		<a class="nav-link <?php if($tab == 'subscribed'){ echo "active"; } ?>" href="<?= $config["urls"]["guardianapp_home"] ?>/events/subscribed">Eingetragene Wachen</a>
 	</li>
