@@ -37,7 +37,7 @@ if($currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
 	} else if ($variables ['tab'] == 'unconfirmed') {
 	    $variables ['events'] = $eventDAO->getManagersUnconfirmedStaffEvents($currentUser, $_GET);
 	} else if ($variables ['tab'] == 'missingstaff') {
-	    $variables ['events'] = $eventDAO->getManagersMissingStaffEvents($currentUser, $_GET);
+	    $variables ['events'] = $eventDAO->getMissingStaffEvents($_GET);
 	} else {
 		$variables ['events'] = $eventDAO->getActiveEvents($_GET);
 	}
@@ -51,7 +51,7 @@ if($currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
 	} else if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER) && $variables ['tab'] == 'unconfirmed') {
 	    $variables ['events'] = $eventDAO->getManagersUnconfirmedStaffEvents($currentUser, $_GET);
 	} else if ($variables ['tab'] == 'missingstaff') {
-	    $variables ['events'] = $eventDAO->getManagersMissingStaffEvents($currentUser, $_GET);
+	    $variables ['events'] = $eventDAO->getUsersMissingStaffEvents($currentUser, $_GET);
 	} else {
 		$variables ['events'] = $eventDAO->getUsersActiveEvents($currentUser, $_GET);
 	}
