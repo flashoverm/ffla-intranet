@@ -29,13 +29,20 @@ if (! isset($_GET['id'])) {
 		$variables['report'] = $report;
 				
 		if(SessionUtil::userLoggedIn()){
+		    
+		    $permissionArray = array(
+		        array("privilege" => Privilege::FFADMINISTRATION),
+		        array("privilege" => Privilege::EVENTADMIN),
+		        array("privilege" => Privilege::EVENTMANAGER, "engine" => $report->getEngine()),
+		        array("user" => $report->getCreator())
+		    );
+		    foreach ( $report->getStaff() as $staff ) {
+		        if($staff->getUser() != null){
+		            $permissionArray[] = array("user", $staff->getUser());
+		        }
+		    }
 			
-			checkPermissions(array(
-					array("privilege" => Privilege::FFADMINISTRATION),
-					array("privilege" => Privilege::EVENTADMIN),
-					array("privilege" => Privilege::EVENTMANAGER, "engine" => $report->getEngine()),
-					array("user" => $report->getCreator()),
-			), $variables);
+		    checkPermissions($permissionArray, $variables);
 				            
         	$variables['showFormular'] = true;
         	

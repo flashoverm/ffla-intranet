@@ -31,10 +31,10 @@ checkSitePermissions($variables);
     	$variables ['reports'] = $reportDAO->getReports($_GET);
     } else if($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER)){
     	$variables ['reports'] = $reportDAO->getReportsByEngine($userController->getCurrentUser()->getEngine()->getUuid(), $_GET);
-        $variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die Ihrem Zug zugewiesen wurden";
+        $variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die deinem Zug zugewiesen wurden";
     } else {
-    	$variables ['reports'] = $reportDAO->getReportsByCreator($userController->getCurrentUser()->getUuid(), $_GET);
-    	$variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die von Ihnen erstellt wurden";
+        $variables ['reports'] = $reportDAO->getReportsByCreatorOrStaff($userController->getCurrentUser()->getUuid(), $_GET);
+    	$variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die du erstellt oder bei denen du teilgenommen hast";
     }
 
 renderLayoutWithContentFile ( $variables );
