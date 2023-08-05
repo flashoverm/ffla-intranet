@@ -122,6 +122,51 @@ class EventDAO extends BaseDAO{
 	    
 	    return $this->executeQuery($query, array($user->getEngine()->getUuid(), $user->getUuid(), $user->getUuid(), $user->getUuid()), $getParams);
 	}
+	
+	function getUsersSubcribedEvents(User $user, array $getParams){
+	    $query = "SELECT *
+				FROM event
+				WHERE event.uuid IN (SELECT event FROM staff WHERE user = ?)
+                AND event.date >= (now() - INTERVAL 1 DAY) 
+				AND canceled_by IS NULL 
+				ORDER BY date ASC";
+	    
+	    return $this->executeQuery($query, array($user->getUuid()), $getParams);
+	    
+	}
+	
+	function getManagersUnconfirmedStaffEvents(User $user, array $getParams){
+	    $query = "SELECT *
+				 FROM event
+				 WHERE ((engine = ? OR creator = ?) AND event.uuid IN (SELECT event FROM staff WHERE unconfirmed = true AND NOT user IS NULL ) )
+                 AND date >= (now() - INTERVAL 1 DAY)
+				 AND canceled_by IS NULL
+                 ORDER BY date ASC";
+	    
+	    return $this->executeQuery($query, array($user->getEngine()->getUuid(), $user->getUuid()), $getParams);
+	}
+	
+	function getMissingStaffEvents(array $getParams){
+	    $query = "SELECT event.*, engine.name FROM event, engine
+			WHERE date >= (now() - INTERVAL 1 DAY) AND canceled_by IS NULL AND event.engine = engine.uuid
+            AND event.uuid IN (SELECT DISTINCT event FROM staff WHERE user IS NULL )
+			ORDER BY date ASC";
+	    
+	    return $this->executeQuery($query, null, $getParams);
+	}
+	
+	function getUsersMissingStaffEvents(User $user, array $getParams){
+	    $query = "SELECT event.*, engine.name
+				 FROM event, engine
+				 WHERE (published = TRUE OR engine = ? OR creator = ? OR engine IN (SELECT engine FROM additional_engines WHERE user = ?) )
+                 AND event.uuid IN (SELECT DISTINCT event FROM staff WHERE user IS NULL )
+                 AND date >= (now() - INTERVAL 1 DAY)
+				 AND canceled_by IS NULL
+ 				 AND event.engine = engine.uuid
+                 ORDER BY date ASC";
+	    
+	    return $this->executeQuery($query, array($user->getEngine()->getUuid(), $user->getUuid(), $user->getUuid()), $getParams);
+	}
 
 	function deleteEvent($eventUuid){
 		$statement = $this->db->prepare("DELETE FROM staff WHERE event = ?");

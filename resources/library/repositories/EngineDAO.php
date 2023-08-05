@@ -105,6 +105,7 @@ class EngineDAO extends BaseDAO{
 		$this->save(new Engine("67CF2ADD-F5ED-3D43-FFF1-C504B8F39743", "Löschzug 9", false, "LZ 9"));
 		$this->save(new Engine("ACCEC110-290E-6A65-A750-6AA93625D784", "Brandschutzzug", false, "BZ"));
 		$this->save(new Engine("FEE13FE0-CDE3-AD5F-8A25-851467C12C26", "UG ÖEL", false, "UG ÖEL"));
+		$this->save(new Engine("0B789F33-B8B4-42A6-3AD7-3FC917441CA0", "KEZ", false, "KEZ"));
 		$this->save(new Engine("57D2CB43-F3CE-3837-4181-2FE60FDB9277", "Keine Zuordnung", false, "-"));	
 	}
 	

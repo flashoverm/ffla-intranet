@@ -2,7 +2,6 @@
 require_once realpath ( dirname ( __FILE__ ) . "/../../resources/bootstrap.php" );
 require_once TEMPLATES_PATH . "/template.php";
 
-$settings = SettingDAO::getAllSettings();
 
 // Pass variables (as an array) to template
 $variables = array (
@@ -10,12 +9,14 @@ $variables = array (
     'template' => "settings_template.php",
     'secured' => true,
     'title' => "Einstellungen",
-    'settings' => $settings,
 );
 
 checkSitePermissions($variables);
 
 $user = $userController->getCurrentUser();
+
+$settings = SettingDAO::getSettingsByUser($user);
+$variables ['settings'] = $settings;
 
 if(isset($_POST['updateSettings'])){
     $newSettings = array();

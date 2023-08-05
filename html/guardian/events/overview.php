@@ -17,6 +17,12 @@ if( isset( $_GET["past"] ) ){
 	$variables ['tab'] = 'past';
 } else if ( isset($_GET["canceled"])) {
     $variables ['tab'] = 'canceled';
+} else if ( isset($_GET["subscribed"])) {
+    $variables ['tab'] = 'subscribed';
+} else if ( isset($_GET["unconfirmed"])) {
+    $variables ['tab'] = 'unconfirmed';
+} else if ( isset($_GET["missingstaff"])) {
+    $variables ['tab'] = 'missingstaff';
 } else {
 	$variables ['tab'] = 'current';
 }
@@ -26,6 +32,12 @@ if($currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
 		$variables ['events'] = $eventDAO->getPastEvents($_GET);
 	} else if ($variables ['tab'] == 'canceled') {
 	    $variables ['events'] = $eventDAO->getCanceledEvents($_GET);
+	} else if ($variables ['tab'] == 'subscribed') {
+	    $variables ['events'] = $eventDAO->getUsersSubcribedEvents($currentUser, $_GET);
+	} else if ($variables ['tab'] == 'unconfirmed') {
+	    $variables ['events'] = $eventDAO->getManagersUnconfirmedStaffEvents($currentUser, $_GET);
+	} else if ($variables ['tab'] == 'missingstaff') {
+	    $variables ['events'] = $eventDAO->getMissingStaffEvents($_GET);
 	} else {
 		$variables ['events'] = $eventDAO->getActiveEvents($_GET);
 	}
@@ -34,6 +46,12 @@ if($currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)){
 		$variables ['events'] = $eventDAO->getUsersPastEvents($currentUser, $_GET);
 	} else if ($variables ['tab'] == 'canceled') {
 	    $variables ['events'] = $eventDAO->getUsersCanceledEvents($currentUser, $_GET);
+	} else if ($variables ['tab'] == 'subscribed') {
+	    $variables ['events'] = $eventDAO->getUsersSubcribedEvents($currentUser, $_GET);
+	} else if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER) && $variables ['tab'] == 'unconfirmed') {
+	    $variables ['events'] = $eventDAO->getManagersUnconfirmedStaffEvents($currentUser, $_GET);
+	} else if ($variables ['tab'] == 'missingstaff') {
+	    $variables ['events'] = $eventDAO->getUsersMissingStaffEvents($currentUser, $_GET);
 	} else {
 		$variables ['events'] = $eventDAO->getUsersActiveEvents($currentUser, $_GET);
 	}

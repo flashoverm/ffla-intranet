@@ -110,7 +110,7 @@
 							<?php
 							if( count($currentUser->getAdditionalEngines()) > 0 ){
 							?>
-								<form action="/setView" method='POST'>
+								<form action="<?= $config["urls"]["intranet_home"] ?>/setView" method='POST'>
 									<input type="hidden" id="ref" name="ref" value="<?= $_SERVER['REQUEST_URI'] ?>">
 									<input type="submit" class='dropdown-item text-light' value="Ansicht wechseln">
 								</form>

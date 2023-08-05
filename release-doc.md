@@ -9,6 +9,7 @@ CREATE TABLE user_setting (
                           PRIMARY KEY  (user, setting),
 						  FOREIGN KEY (user) REFERENCES user(uuid)
                           ) COLLATE  utf8mb4_general_ci;
+INSERT INTO engine (uuid, name, isadministration, shortname) VALUES ('0B789F33-B8B4-42A6-3AD7-3FC917441CA0', 'KEZ', '0', 'KEZ') 
 
 ### V2.5.1
 

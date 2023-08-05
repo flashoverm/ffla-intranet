@@ -3,7 +3,12 @@
     	<table class="table table-striped table-bordered">
     		<tbody>
     		<?php
-    			foreach ( $settings as $row ) {
+    		$currentCategory = "";
+			foreach ( $settings as $row ) {
+			    if($currentCategory != $row->getCategory()){
+			        $currentCategory = $row->getCategory();
+			        echo "<tr><th colspan='2'>" . $currentCategory . "</th></tr>";
+			    }
     		?>
     			<tr>
     				<td><?= $row->getDescription() ?></td>

@@ -8,13 +8,37 @@ class SettingDAO {
     
     private function __construct()  {
         $this->data = array (
-            self::RECEIVE_NO_MAIL_ON_NEW_EVENT => new Setting(self::RECEIVE_NO_MAIL_ON_NEW_EVENT, "Keine Benachrichtigung bei neu eingestellten Wachen"),
-            self::IMMEDIATE_CONFIRMATION => new Setting(self::IMMEDIATE_CONFIRMATION, "Sofortige Arbeitgeberbestätigung (ohne Freigabe)"),
+            self::RECEIVE_NO_MAIL_ON_NEW_EVENT => new Setting(self::RECEIVE_NO_MAIL_ON_NEW_EVENT, "Keine Benachrichtigung bei neu eingestellten Wachen", Setting::CAT_EVENTS, Privilege::EVENTPARTICIPENT),
+            //self::IMMEDIATE_CONFIRMATION => new Setting(self::IMMEDIATE_CONFIRMATION, "Sofortige Arbeitgeberbestätigung (ohne Freigabe)", Setting::CAT_CONFIRMATION, null),
         );
     }
     
+    public static function getSettingsByUser(User $currentUser){
+        $settings = self::getAllSettings();
+        $usersSettings = array();
+        foreach ($settings as $setting){
+            if($setting->getPrivilege() == null || $currentUser->hasPrivilegeByName($setting->getPrivilege())){
+                $usersSettings[] = $setting;
+            }
+        }
+        return $usersSettings;
+    }
+    
     public static function getAllSettings(){
-        return self::getInstance()->getData();
+        $settings = self::getInstance()->getData();
+        usort($settings, fn($a, $b) => strcmp($a->getCategory(), $b->getCategory()));
+        return $settings;
+    }
+    
+    public static function getCategories(){
+        $settings = getAllSettings();
+        $categories = array();
+        foreach ($settings as $setting){
+            $categories[] = $setting->getCategory();
+        }
+        $categories = array_unique($categories);
+        sort($categories);
+        return $categories;
     }
     
     public static function getSetting(string $key){

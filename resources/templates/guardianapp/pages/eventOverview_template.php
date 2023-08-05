@@ -2,6 +2,21 @@
 	<li class="nav-item">
 		<a class="nav-link <?php if($tab == 'current'){ echo "active"; } ?>" href="<?= $config["urls"]["guardianapp_home"] ?>/events/overview">Aktuelle Wachen</a>
 	</li>
+    <li class="nav-item">
+    	<a class="nav-link <?php if($tab == 'missingstaff'){ echo "active"; } ?>" href="<?= $config["urls"]["guardianapp_home"] ?>/events/missingstaff">Plätze frei</a>
+    </li>
+	<li class="nav-item">
+		<a class="nav-link <?php if($tab == 'subscribed'){ echo "active"; } ?>" href="<?= $config["urls"]["guardianapp_home"] ?>/events/subscribed">Eingetragene Wachen</a>
+	</li>
+	<?php 
+	if ($currentUser->hasPrivilegeByName(Privilege::EVENTMANAGER) ){
+	?>
+	    <li class="nav-item">
+	    	<a class="nav-link <?php if($tab == 'unconfirmed'){ echo "active"; } ?>" href="<?= $config["urls"]["guardianapp_home"] ?>/events/unconfirmed">Bestätigung ausstehend</a>
+	    </li>
+	<?php
+	}
+	?>
 	<li class="nav-item">
 		<a class="nav-link <?php if($tab == 'past'){ echo "active"; } ?>" href="<?= $config["urls"]["guardianapp_home"] ?>/events/past">Vergangene Wachen</a>
 	</li>

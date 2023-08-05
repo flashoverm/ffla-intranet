@@ -419,6 +419,16 @@ class Report extends BaseModel {
 	    return $count;
 	}
 	
+	function getStaff(){
+	    $staff = array();
+	    foreach ( $this->getUnits() as $unit ) {
+	        foreach($unit->getStaff() as $staffEntry) {
+	            $staff[] = $staffEntry;
+	        }
+	    }
+	    return $staff;
+	}
+	
 	function getStaffMinutes(){
 	    $seconds = 0;
 	    foreach ( $this->getUnits() as $unit ) {
