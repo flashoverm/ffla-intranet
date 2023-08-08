@@ -102,4 +102,14 @@ class GuardianUserController extends UserController{
 	    }
 	    return $result;
 	}
+	
+	public static function filterUserOfEngine(array $userList, Engine $engine){
+	    $result = array();
+	    foreach ($userList as $user){
+	        if(! $user->getEngine()->getUuid() != $engine->getUuid()){
+	            $result[] = $user;
+	        }
+	    }
+	    return $result;
+	}
 }

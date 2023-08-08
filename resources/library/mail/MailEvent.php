@@ -34,6 +34,9 @@ function mail_insert_event($event_uuid, $inform_creator, $publish) {
         $publishOK = mail_publish_event ( $event);
         $sendOK = $sendOK && $publishOK;
     }
+    
+    $sendOK = $sendOK && mail_new_event_participants($event);
+    
     return $sendOK;
 }
 
@@ -63,7 +66,13 @@ function mail_publish_event($event_obj) {
     
     $recipients = $guardianUserController->getEventManangerExeptEngineAndCreator($event_obj->getEngine()->getUuid(), $event_obj->getCreator()->getUuid());
     
-    return sendMailsWithBody($recipients, $subject, $body);
+    $sendOK = true;
+    
+    $sendOK = sendMailsWithBody($recipients, $subject, $body);
+    
+    $sendOK = $sendOK && mail_new_event_participants_publish($event_obj);
+    
+    return $sendOK;
 }
 
 function mail_not_full($event_uuid) {
@@ -276,14 +285,14 @@ function mail_to_manager($event_obj, $subject, $body){
     return sendMailsWithBody($recipients, $subject, $body);
 }
 
-function mail_to_all_possible_participants($event){
+function mail_new_event_participants(Event $event){
     global $bodies, $guardianUserController, $userDAO;
     
-    $subject = "Neue Wache eingestellt" . event_subject($event_uuid);
-    $body =  $bodies["event_insert_all"] . get_event_link($event_uuid) . $bodies["event_insert_all_disc"];
+    $subject = "Neue Wache eingestellt" . event_subject($event->getUuid());
+    $body =  $bodies["event_insert_all"] . get_event_link($event->getUuid()) . $bodies["event_insert_all_disc"];
     
     $recipients = array();
-    if (! $publish) {
+    if (! $event->getPublished()) {
         $recipients = $guardianUserController->getEventParticipantOfEngine($event->getEngine()->getUuid());
         $recipients = $guardianUserController->filterUserWithSetting($recipients, SettingDAO::RECEIVE_NO_MAIL_ON_NEW_EVENT);
     } else {
@@ -292,4 +301,42 @@ function mail_to_all_possible_participants($event){
     }
     
     return sendMailsWithBody($recipients, $subject, $body);
+}
+
+function mail_new_event_participants_publish($event){
+    global $bodies, $guardianUserController, $userDAO;
+    
+    $subject = "Neue Wache eingestellt" . event_subject($event->getUuid());
+    $body =  $bodies["event_insert_all"] . get_event_link($event->getUuid()) . $bodies["event_insert_all_disc"];
+    
+    $recipients = $userDAO->getUsersWithPrivilegeByName(Privilege::EVENTPARTICIPENT);
+    $recipients = $guardianUserController->filterUserWithSetting($recipients, SettingDAO::RECEIVE_NO_MAIL_ON_NEW_EVENT);
+    $recipients = $guardianUserController->filterUserOfEngine($recipients, $event->getEngine());
+    
+    return sendMailsWithBody($recipients, $subject, $body);
+}
+
+
+
+
+function get_event_link($event_uuid){
+    global $config;
+    return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/view/" . $event_uuid;
+}
+
+function get_staff_acknowledge_link($event_uuid, $staff_uuid){
+    global $config;
+    return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event_uuid . "/acknowledge/" . $staff_uuid;
+}
+
+function event_subject($event_uuid){
+    global $config, $eventDAO;
+    $event = $eventDAO->getEvent($event_uuid);
+    
+    $subject = " - "
+        . date($config ["formats"] ["date"], strtotime($event->getDate())) . " "
+            . date($config ["formats"] ["time"], strtotime($event->getStartTime())) . " Uhr "
+                . $event->getType()->getType();
+                
+                return $subject;
 }
