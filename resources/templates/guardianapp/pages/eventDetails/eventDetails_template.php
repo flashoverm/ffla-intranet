@@ -90,7 +90,7 @@ if ($isCreator) {
 					  		<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#confirmPublish<?= $event->getUuid() ?>'>Veröffentlichen</button>
 		                </span>
 						<?php 
-						createDialog('confirmPublish' . $event->getUuid(), "Wache veröffentlichen <br>(E-Mail an alle Wachbeauftragen)?", 'publish');
+						createDialog('confirmPublish' . $event->getUuid(), "Wache veröffentlichen <br>(E-Mail an alle möglichen Wachteilnehmer)?", 'publish');
 						?>
 		            <?php 
 			        } else {

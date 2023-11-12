@@ -268,7 +268,7 @@
 		} else {
 			echo "	<div class='custom-control custom-checkbox custom-checkbox-big'>
 						<input type='checkbox' class='custom-control-input' id='publish' name='publish'>
-						<label class='custom-control-label custom-control-label-big' for='publish'>Veröffentlichen (E-Mail an alle Wachbeauftragen)</label>
+						<label class='custom-control-label custom-control-label-big' for='publish'>Veröffentlichen (E-Mail an alle möglichen Wachteilnehmer)</label>
 					</div>
 					<div class='custom-control custom-checkbox custom-checkbox-big'>
 						<input type='checkbox' class='custom-control-input' name='informMe' id='informMe' checked> 

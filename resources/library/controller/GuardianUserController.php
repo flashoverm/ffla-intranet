@@ -106,7 +106,7 @@ class GuardianUserController extends UserController{
 	public static function filterUserOfEngine(array $userList, Engine $engine){
 	    $result = array();
 	    foreach ($userList as $user){
-	        if(! $user->getEngine()->getUuid() != $engine->getUuid()){
+	        if( ! $user->hasEngine($engine)){
 	            $result[] = $user;
 	        }
 	    }

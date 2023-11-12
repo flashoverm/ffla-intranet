@@ -83,7 +83,8 @@ class UserDAO extends BaseDAO {
 		$statement = $this->db->prepare("SELECT user.*
 		FROM user, user_privilege
 		WHERE uuid = user_privilege.user AND privilege = ?
-		AND user.deleted = false");
+		AND user.deleted = false
+        GROUP BY user.uuid");
 		
 		if ($statement->execute(array($uuid))) {
 			return $this->handleResult($statement, true);
@@ -96,7 +97,8 @@ class UserDAO extends BaseDAO {
 		FROM user, user_privilege, privilege
 		WHERE user.uuid = user_privilege.user AND privilege.uuid = user_privilege.privilege
 		AND privilege.privilege = ?
-		AND user.deleted = false");
+		AND user.deleted = false
+        GROUP BY user.uuid");
 		
 		if ($statement->execute(array($name))) {
 			return $this->handleResult($statement, true);
@@ -111,7 +113,8 @@ class UserDAO extends BaseDAO {
 		WHERE user.uuid = user_privilege.user AND privilege.uuid = user_privilege.privilege
 		AND privilege.privilege = ?
 		AND user.deleted = false
-        AND ( LOWER(user.firstname) LIKE ? OR LOWER(user.lastname) LIKE ? OR LOWER(CONCAT(user.firstname, ' ', user.lastname)) LIKE ?)");
+        AND ( LOWER(user.firstname) LIKE ? OR LOWER(user.lastname) LIKE ? OR LOWER(CONCAT(user.firstname, ' ', user.lastname)) LIKE ?)
+        GROUP BY user.uuid");
 	    
 	    if ($statement->execute(array($priviledgeName, $queryString, $queryString, $queryString))) {
 	        return $this->handleResult($statement, true);
@@ -125,7 +128,7 @@ class UserDAO extends BaseDAO {
 		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
 		AND privilege.privilege = ?
 		AND user_privilege.engine = ?
-		AND user.deleted = false 
+		AND user.deleted = false
 		ORDER BY user.lastname");
 	
 		if ($statement->execute(array($privilege, $engineUuid))) {

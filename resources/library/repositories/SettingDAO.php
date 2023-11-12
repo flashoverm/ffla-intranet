@@ -8,7 +8,7 @@ class SettingDAO {
     
     private function __construct()  {
         $this->data = array (
-            self::RECEIVE_NO_MAIL_ON_NEW_EVENT => new Setting(self::RECEIVE_NO_MAIL_ON_NEW_EVENT, "Keine Benachrichtigung bei neu eingestellten Wachen", Setting::CAT_EVENTS, Privilege::EVENTPARTICIPENT),
+            self::RECEIVE_NO_MAIL_ON_NEW_EVENT => new Setting(self::RECEIVE_NO_MAIL_ON_NEW_EVENT, "Keine E-Mail-Benachrichtigung bei neu eingestellten Wachen", Setting::CAT_EVENTS, Privilege::EVENTPARTICIPENT),
             //self::IMMEDIATE_CONFIRMATION => new Setting(self::IMMEDIATE_CONFIRMATION, "Sofortige Arbeitgeberbestätigung (ohne Freigabe)", Setting::CAT_CONFIRMATION, null),
         );
     }
