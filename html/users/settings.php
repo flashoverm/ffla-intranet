@@ -33,9 +33,9 @@ if(isset($_POST['updateSettings'])){
     
     if($user){
         $logbookDAO->save(LogbookEntry::fromAction(LogbookActions::UserUpdated, $user->getUuid()));
-        $variables ['successMessage'] = "Der Benutzer wurde aktualisiert";
+        $variables ['successMessage'] = "Die Einstellungen wurden aktualisiert";
     } else {
-        $variables ['alertMessage'] = "Der Benutzer konnte nicht aktualisiert werden";
+        $variables ['alertMessage'] = "Die Einstellungen konnten nicht aktualisiert werden";
     }
 }
 
