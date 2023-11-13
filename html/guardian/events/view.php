@@ -142,7 +142,7 @@ if (! isset($_GET['id'])) {
     		$event = $eventController->publishEvent($uuid);
     		if($event){
     			mail_publish_event($event);
-    			$variables['successMessage'] = "Wache veröffentlich - Wachbeauftragte informiert";
+    			$variables['successMessage'] = "Wache veröffentlich - Mögliche Wachteilnehmer und Wachbeauftrage werden informiert";
     			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventPublished, $uuid));
     		} else {
     			$variables['alertMessage'] = "Wache konnte nicht veröffentlicht werden";
