@@ -79,7 +79,7 @@ if ($isCreator) {
 	<?php
 	if($currentUser){
 	?>
-	    <form action='<?= $config["urls"]["guardianapp_home"] . "/events/view/" . $event->getUuid() ?>' method='post'>
+	    <form onsubmit="showLoader()" action='<?= $config["urls"]["guardianapp_home"] . "/events/view/" . $event->getUuid() ?>' method='post'>
 			<a href='<?= $config["urls"]["guardianapp_home"] . "/events/overview" ?>' class='btn btn-outline-primary'>Zurück</a>
 			<div class='float-right'>
 			<?php

@@ -5,19 +5,7 @@ require_once 'BaseController.php';
 //use Doctrine\ORM\EntityManager;
 
 class ReportController extends BaseController{
-    
-    
-    public static function get_report_create_link($event_uuid){
-        global $config;
-        return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/" . $event_uuid;
-    }
-    
-    public static function get_report_link($report_uuid){
-        global $config;
-        return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/view/" . $report_uuid;
-    }
-    
-	
+    	
 	protected $reportDAO;
 	
 	function __construct(ReportDAO $reportDAO) {

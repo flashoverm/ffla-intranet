@@ -91,3 +91,9 @@ function mail_not_approved($report_uuid) {
     
     return sendMailsWithBody($recipients, $subject, $body);
 }
+
+function get_report_link($report_uuid){
+    global $config;
+    return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/view/" . $report_uuid;
+}
+

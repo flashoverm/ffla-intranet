@@ -322,10 +322,11 @@
 
 	function submitMutible(){
 		var forwardToEvent = document.getElementById("forwardToEvent");
-		forwardToEvent.value = 0;		
+		forwardToEvent.value = 0;
 
 		var form = document.getElementById('eventForm');
 		form.submit();
+		showLoader();
 	}
 
 	function setStaffAlert(visible) {

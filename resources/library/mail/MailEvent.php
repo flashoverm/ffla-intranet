@@ -324,6 +324,11 @@ function get_event_link($event_uuid){
     return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/view/" . $event_uuid;
 }
 
+function get_report_create_link($event_uuid){
+    global $config;
+    return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/reports/new/" . $event_uuid;
+}
+
 function get_staff_acknowledge_link($event_uuid, $staff_uuid){
     global $config;
     return $config ["urls"] ["base_url"] . $config ["urls"] ["guardianapp_home"] . "/events/" . $event_uuid . "/acknowledge/" . $staff_uuid;
