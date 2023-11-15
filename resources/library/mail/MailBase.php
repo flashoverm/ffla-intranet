@@ -66,8 +66,12 @@ function send_mail($to, $subject, $body, $attachments = NULL, $footer = true, $s
             if( ! $config ["settings"] ["deactivateOutgoingMails"] ) {
                 
                 if($attachments == NULL && $sendAsync){
-                    send_mail_async($to, $subject, $mailBody);
-                    return true;
+                    if(send_mail_async($to, $subject, $mailBody)){
+                        return true;
+                    }
+                    $mailLog = MailLog::fromMail($to, $subject, MailLog::CouldNotAddToQueue, $mailBody);
+                    $mailLogDAO->save($mailLog);
+                    return false;
                 }
                 
                 if( ! $mail->send ()){
@@ -108,12 +112,10 @@ function send_mail($to, $subject, $body, $attachments = NULL, $footer = true, $s
 }
 
 function send_mail_async($to, $subject, $body){
-    global $util, $config, $mailLogDAO;
-
-    $scriptPath = LIBRARY_PATH . "/../scripts/mail_async.php";
-    $command = "php " . $scriptPath . " \"" . $to . "\" \"" . $subject . "\" \"" . $body . "\" > /dev/null 2> /dev/null &";
-    exec($command);
-
+    global $mailQueueDAO;
+    
+    $mail = new MailQueueElement();
+    return $mailQueueDAO->save($mail->fromMail($to, $subject, $body));
 }
 
 function send_mail_to_mailinglist($mailing, $subject, $body, $attachment = NULL){

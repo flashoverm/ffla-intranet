@@ -14,6 +14,7 @@ class MailLog extends BaseModel {
 	const MailConnectError = 4;
 	const Deactivated = 5;
 	const InvalidMailAddress = 6;
+	const CouldNotAddToQueue = 7;
 	
 	const MAILLOG_STATES = array(
 			
@@ -23,6 +24,7 @@ class MailLog extends BaseModel {
 			4 => "Server-Verbindungs-Fehler",
 			5 => "Mailausgang deaktiviert",
 			6 => "Ungültige E-Mail-Adresse",
+	        7 => "Warteschlagen-Fehler",
 	);
 	
 	/**

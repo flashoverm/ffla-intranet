@@ -2,6 +2,16 @@
 Release Documentation
 ******************************
 
+### V2.5.3
+CREATE TABLE mailqueue (
+						  uuid CHARACTER(36) NOT NULL,
+                          timestamp datetime NOT NULL,
+						  recipient VARCHAR(255) NOT NULL,
+						  subject VARCHAR(255) NOT NULL,
+						  body TEXT,
+                          PRIMARY KEY (uuid)
+                          );
+
 ### V2.5.2
 CREATE TABLE user_setting (
                           user CHAR(36) NOT NULL,

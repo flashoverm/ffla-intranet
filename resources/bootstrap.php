@@ -45,6 +45,7 @@ $userDAO = new UserDAO($db, $userPrivilegeDAO, $engineDAO);
 $tokenDAO = new TokenDAO($db, $userDAO);
 $mailLogDAO = new MailLogDAO($db);
 $logbookDAO = new LogbookDAO($db);
+$mailQueueDAO = new MailQueueDAO($db);
 
 $confirmationDAO = new ConfirmationDAO($db, $userDAO);
 $dataChangeRequestDAO = new DataChangeRequestDAO($db, $userDAO);
