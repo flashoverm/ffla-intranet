@@ -23,7 +23,7 @@ function left_navigation ($currentUser){
 				<a class='nav-link dropdown-toggle text-light mx-1' data-toggle='dropdown' href='#'>Hydranten prüfen</a>
         		<div class='dropdown-menu bg-dark'>
 					<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/inspection/prepare'>Prüfung planen</a>
-		        	<a class='dropdown-item text-light' target='_blank' href='" . $config ["urls"] ["filesapp_home"] . "/hydrant-form.pdf'>Download Formblatt</a>
+		        	<a class='dropdown-item text-light' target='_blank' href='" . $config ["urls"] ["filesapp_home"] . "/view/hydrant-form.pdf'>Download Formblatt</a>
 					<div class='dropdown-divider'></div>
                     <a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/inspection/assist'>Prüfung eingeben (Assistent)</a>
 		        	<a class='dropdown-item text-light' href='" . $config ["urls"] ["hydrantapp_home"] . "/inspection/edit'>Prüfung eingeben</a>
