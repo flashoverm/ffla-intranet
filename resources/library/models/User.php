@@ -283,18 +283,18 @@ class User extends BaseModel {
 
 	public function __construct() {
 		parent::__construct();
-		$this->uuid = NULL;
-		$this->email = NULL;
-		$this->password = NULL;
-		$this->firstname = NULL;
-		$this->lastname = NULL;
-		$this->engine = NULL;
+		$this->uuid = null;
+		$this->email = null;
+		$this->password = null;
+		$this->firstname = null;
+		$this->lastname = null;
+		$this->engine = null;
 		$this->additionalEngines = array();
 		$this->locked = false;
 		$this->deleted = false;
-		$this->lastLogin = NULL;
-		$this->employerAddress = NULL;
-		$this->employerMail = NULL;
+		$this->lastLogin = null;
+		$this->employerAddress = null;
+		$this->employerMail = null;
 		$this->privileges = array();
 		$this->settings = array();
 	}
@@ -406,7 +406,8 @@ class User extends BaseModel {
 	    return $this->getFullNameLastNameFirst() . " (" . $this->email . ")";
 	}
 	
-	public function setUserData(string $firstname, string $lastname, string $email, Engine $engine, string $employerAddress, string $employerMail){
+	public function setUserData(
+	    string $firstname, string $lastname, string $email, Engine $engine, string $employerAddress, string $employerMail){
 		$this->setFirstname($firstname);
 		$this->setLastname($lastname);
 		$this->setEmail($email);
@@ -432,5 +433,3 @@ class User extends BaseModel {
 		];
 	}
 }
-
-?>

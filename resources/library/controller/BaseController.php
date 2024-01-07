@@ -1,12 +1,10 @@
-<?php 
+<?php
 
 require_once __DIR__ . "/../../bootstrap.php";
 
 abstract class BaseController {
 		
-	function __construct() {
+	public function __construct() {
 		
 	}
 }
-	
-?>

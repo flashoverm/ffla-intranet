@@ -89,7 +89,7 @@ class DataChangeRequest extends BaseModel {
 
 	
 	/**
-	 * @return NULL
+	 * @return null
 	 */
 	public function getUuid() {
 		return $this->uuid;
@@ -110,49 +110,49 @@ class DataChangeRequest extends BaseModel {
 	}
 
 	/**
-	 * @return NULL
+	 * @return null
 	 */
 	public function getNewValue() {
 		return $this->newValue;
 	}
 
 	/**
-	 * @return NULL
+	 * @return null
 	 */
 	public function getComment() {
 		return $this->comment;
 	}
 
 	/**
-	 * @return NULL
+	 * @return null
 	 */
 	public function getUser() : ?User {
 		return $this->user;
 	}
 	
 	/**
-	 * @return NULL
+	 * @return null
 	 */
 	public function getPerson() : ?string {
 		return $this->person;
 	}
 	
 	/**
-	 * @return NULL
+	 * @return null
 	 */
 	public function getFurtherRequest() : ?string {
 		return $this->furtherRequest;
 	}
 
 	/**
-	 * @return NULL
+	 * @return null
 	 */
 	public function getLastAdvisor() : ?User {
 		return $this->lastAdvisor;
 	}
 	
 	/**
-	 * @return NULL
+	 * @return null
 	 */
 	public function getCreateDate() {
 		return $this->createDate;
@@ -163,7 +163,7 @@ class DataChangeRequest extends BaseModel {
 	}
 
 	/**
-	 * @param NULL $uuid
+	 * @param null $uuid
 	 */
 	public function setUuid($uuid) {
 		$this->uuid = $uuid;
@@ -184,49 +184,49 @@ class DataChangeRequest extends BaseModel {
 	}
 
 	/**
-	 * @param NULL $newValue
+	 * @param null $newValue
 	 */
 	public function setNewValue($newValue) {
 		$this->newValue = $newValue;
 	}
 
 	/**
-	 * @param NULL $comment
+	 * @param null $comment
 	 */
 	public function setComment($comment) {
 		$this->comment = $comment;
 	}
 	
 	/**
-	 * @param NULL $comment
+	 * @param null $comment
 	 */
 	public function setUser(?User $user) {
 		$this->user = $user;
 	}
 
 	/**
-	 * @param NULL $user
+	 * @param null $user
 	 */
 	public function setPerson(?string $person) {
 		$this->person = $person;
 	}
 	
 	/**
-	 * @param NULL $user
+	 * @param null $user
 	 */
 	public function setFurtherRequest(?string $furtherRequest) {
 		$this->furtherRequest = $furtherRequest;
 	}
 
 	/**
-	 * @param NULL $lastAdvisor
+	 * @param null $lastAdvisor
 	 */
 	public function setLastAdvisor($lastAdvisor) {
 		$this->lastAdvisor = $lastAdvisor;
 	}
 	
 	/**
-	 * @param NULL $created
+	 * @param null $created
 	 */
 	public function setCreateDate($createDate) {
 		$this->createDate = $createDate;
@@ -244,17 +244,17 @@ class DataChangeRequest extends BaseModel {
 	
 	function __construct() {
 		parent::__construct();
-		$this->comment = NULL;
-		$this->createDate = NULL;
+		$this->comment = null;
+		$this->createDate = null;
 		$this->datatype = 0;
-		$this->lastAdvisor = NULL;
-		$this->newValue = NULL;
+		$this->lastAdvisor = null;
+		$this->newValue = null;
 		$this->state = 0;
-		$this->person = NULL;
-		$this->uuid = NULL;
-		$this->user = NULL;
-		$this->furtherRequest = NULL;
-		$this->lastUpdate = NULL;
+		$this->person = null;
+		$this->uuid = null;
+		$this->user = null;
+		$this->furtherRequest = null;
+		$this->lastUpdate = null;
 	}
 	
 	/*

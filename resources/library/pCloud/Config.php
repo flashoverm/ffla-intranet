@@ -3,10 +3,10 @@
 namespace pCloud;
 
 class Config {
-	static public $usHost = "https://api.pcloud.com/";
-	static public $euHost = "https://eapi.pcloud.com/";
-	static public $curllib = "pCloud\Curl";
-	static public $filePartSize = 10485760;
+    public static $usHost = "https://api.pcloud.com/";
+    public static $euHost = "https://eapi.pcloud.com/";
+    public static $curllib = "pCloud\Curl";
+    public static $filePartSize = 10485760;
 
 	static public function getApiHostByLocationId($locationid) {
 		if ($locationid == 2) {

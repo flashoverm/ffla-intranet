@@ -7,7 +7,8 @@ if(isset($confirmation)){
 		<tbody>
 			<tr>
 				<td colspan="2">
-					<img class="float-right" style="width: 7.5cm" src="<?= $config["urls"]["intranet_home"] ?>/images/layout/logo_stadt.png"/>
+					<img class="float-right" style="width: 7.5cm" alt="Logo"
+						src="<?= $config["urls"]["intranet_home"] ?>/images/layout/logo_stadt.png"/>
 				</td>
 			</tr>
 			<tr>
@@ -29,7 +30,7 @@ if(isset($confirmation)){
 						84028 Landshut<br>
 						<br>
 						Tel: 0871/96577-200<br>
-						Fax: 0871/96577-205<br>				
+						Fax: 0871/96577-205<br>
 						<br>
 						feuerwehr@landshut.de<br>
 						www.landshut.de
@@ -58,11 +59,11 @@ if(isset($confirmation)){
 					<br>
 					<br>
 					<small>Dieses Schreiben wurde maschinell erstellt und ist ohne Unterschrift gültig</small>
-				</td> 
+				</td>
 			</tr>
 		</tbody>
 	</table>
 </div>
-<?php 
+<?php
 }
 ?>

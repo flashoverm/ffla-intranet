@@ -57,9 +57,7 @@ $bodies = array (
 	"event_unscribe_engine" => $util["head"] . "jemand aus deinem Zug wurde durch den Wachbeauftragten von der Wache entfernt:  \n\n",
 	
 	"event_unscribe_by_user_engine" => $util["head"] . "jemand aus deinem Zug hat sich aus einer Wache ausgetragen: \n\n",
-			
-	"confirmation_requested" => $util["head"] . "eine neue Anfrage einer Arbeitgeberbestätigung wurde erstellt.\n\nBearbeitung der Anfragen unter: \n\n", 
-		
+					
 	"confirmation_declined" => $util["head"] . "eine Anfrage einer Arbeitgeberbestätigung wurde abgelehnt.\n\nDer Grund der Ablehnung und die Möglichkeit, den Antrag zu bearbeiten befinden sich unter: \n\n",
 		
 	"confirmation_accepted" => $util["head"] . "eine Anfrage einer Arbeitgeberbestätigung wurde akzeptiert. \n\nDie Bestätigung befindet sich im Anhang oder unter: \n\n",

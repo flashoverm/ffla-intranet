@@ -10,7 +10,7 @@ abstract class BaseDAO {
 	protected $db;
 	protected $tableName;
 	
-	function __construct(PDO $pdo, $tableName) {
+	public function __construct(PDO $pdo, $tableName) {
 		$this->db = $pdo;
 		$this->tableName = $tableName;
 		$this->createTableIfNotPresent($tableName);
@@ -22,7 +22,7 @@ abstract class BaseDAO {
 	abstract protected function resultToObject($result);
 	
 	
-	static function getPDO() : PDO {
+	public static function getPDO() : PDO {
 		global $config;
 		
 		$db = new PDO(
@@ -33,7 +33,7 @@ abstract class BaseDAO {
 		return $db;
 	}
 	
-	function executeQuery(string $query, ?array $parameter, ?array $getParams){
+	public function executeQuery(string $query, ?array $parameter, ?array $getParams){
 
 		$execQuery = $query;
 		
@@ -90,7 +90,7 @@ abstract class BaseDAO {
 		return false;
 	}
 	
-	function getEntryCount(){
+	public function getEntryCount(){
 		$statement = $this->db->prepare("SELECT count(*) AS count FROM " . $this->tableName);
 		
 		if ($statement->execute()) {
@@ -106,8 +106,8 @@ abstract class BaseDAO {
 		}
 	}
 	
-	protected function handleResult($statement, $returnAlwaysArray, $callback = NULL){
-		if($callback == NULL){
+	protected function handleResult($statement, $returnAlwaysArray, $callback = null){
+		if($callback == null){
 			$callback = "resultToObject";
 		}
 		
@@ -144,7 +144,7 @@ abstract class BaseDAO {
 	}
 	
 	protected function uuidExists($uuid, $tableName){
-		if($uuid == NULL){
+		if($uuid == null){
 			return false;
 		}
 		$statement = $this->db->prepare("SELECT * FROM " . $tableName . " WHERE uuid = ?");
@@ -162,8 +162,7 @@ abstract class BaseDAO {
 			mt_srand ( ( double ) microtime () * 10000 ); // optional for php 4.2.0 and up.
 			$charid = strtoupper ( md5 ( uniqid ( rand (), true ) ) );
 			$hyphen = chr ( 45 ); // "-"
-			$uuid = substr ( $charid, 0, 8 ) . $hyphen . substr ( $charid, 8, 4 ) . $hyphen . substr ( $charid, 12, 4 ) . $hyphen . substr ( $charid, 16, 4 ) . $hyphen . substr ( $charid, 20, 12 );
-			return $uuid;
+			return substr ( $charid, 0, 8 ) . $hyphen . substr ( $charid, 8, 4 ) . $hyphen . substr ( $charid, 12, 4 ) . $hyphen . substr ( $charid, 16, 4 ) . $hyphen . substr ( $charid, 20, 12 );
 		}
 	}
 

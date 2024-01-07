@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -28,7 +28,7 @@ function init_mail() {
     return $mail;
 }
 
-function send_mail($to, $subject, $body, $attachments = NULL, $footer = true, $sendAsync = true) {
+function send_mail($to, $subject, $body, $attachments = null, $footer = true, $sendAsync = true) {
     global $util, $config, $mailLogDAO;
     
     $mailBody = $body;
@@ -36,7 +36,7 @@ function send_mail($to, $subject, $body, $attachments = NULL, $footer = true, $s
         $mailBody = $mailBody . $util["footer"];
     }
     
-    $mailState = NULL;
+    $mailState = null;
     
     if (filter_var($to, FILTER_VALIDATE_EMAIL)) {
         try{
@@ -45,7 +45,7 @@ function send_mail($to, $subject, $body, $attachments = NULL, $footer = true, $s
             $mail->addAddress ( $to );
             $mail->Subject = $subject;
             
-            if($attachments != NULL){
+            if($attachments != null){
                 
                 if( ! is_array($attachments)){
                     $attachment = $attachments;
@@ -65,7 +65,7 @@ function send_mail($to, $subject, $body, $attachments = NULL, $footer = true, $s
             
             if( ! $config ["settings"] ["deactivateOutgoingMails"] ) {
                 
-                if($attachments == NULL && $sendAsync){
+                if($attachments == null && $sendAsync){
                     if(send_mail_async($to, $subject, $mailBody)){
                         return true;
                     }
@@ -79,12 +79,12 @@ function send_mail($to, $subject, $body, $attachments = NULL, $footer = true, $s
                 }
 
             } else {
-                if( $mailState == NULL){
+                if( $mailState == null){
                     $mailState = MailLog::Deactivated;
                 }
             }
             
-            if( $mailState == NULL){
+            if( $mailState == null){
                 $mailState = MailLog::Sent;
             }
             $mailLog = MailLog::fromMail($to, $subject, $mailState, $mailBody);
@@ -118,7 +118,7 @@ function send_mail_async($to, $subject, $body){
     return $mailQueueDAO->save($mail->fromMail($to, $subject, $body));
 }
 
-function send_mail_to_mailinglist($mailing, $subject, $body, $attachment = NULL){
+function send_mail_to_mailinglist($mailing, $subject, $body, $attachment = null){
     global $mailingList;
     
     $recipients = $mailingList[$mailing];
@@ -132,12 +132,7 @@ function send_mail_to_mailinglist($mailing, $subject, $body, $attachment = NULL)
     return $success;
 }
 
-
-/*
- * 
- */
-
-function sendMailWithTemplate($recipient, $subject, $template, array $parameter, $attachments = NULL, $footer = true){
+function sendMailWithTemplate($recipient, $subject, $template, array $parameter, $attachments = null, $footer = true){
     
     //Do not send if user is locked
     if(
@@ -152,7 +147,11 @@ function sendMailWithTemplate($recipient, $subject, $template, array $parameter,
         return true;
 }
 
-function sendMailsWithTemplate($recipients, $subject, $template, array $parameter, $attachment = NULL) {
+function sendMailsWithTemplate($recipients, $subject, $template, array $parameter, $attachment = null) {
+    if( ! is_array($recipients)){
+        return sendMailWithTemplate($recipients, $subject, $template, $parameter, $attachment);
+    }
+
     $success = true;
     foreach ($recipients as $to) {
         if(!sendMailWithTemplate($to, $subject, $template, $parameter, $attachment)){
@@ -162,7 +161,7 @@ function sendMailsWithTemplate($recipients, $subject, $template, array $paramete
     return $success;
 }
 
-function sendMailsWithBody($recipients, $subject, $body, $attachment = NULL) {
+function sendMailsWithBody($recipients, $subject, $body, $attachment = null) {
     $success = true;
     foreach ($recipients as $to) {
         if(
@@ -208,6 +207,7 @@ function addDefaultMailParameters(array $parameter){
     global $config;
     
     $parameter['portal_url'] = $config ["urls"] ["base_url"];
+    $parameter['config'] = $config;
     
     return $parameter;
 }

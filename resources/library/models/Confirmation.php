@@ -51,6 +51,8 @@ class Confirmation extends BaseModel {
 	 */
 	protected ?User $user;
 	
+	protected ?User $assignedTo;
+	
 	/**
 	 * @ORM\Column(type="string")
 	 */
@@ -114,6 +116,10 @@ class Confirmation extends BaseModel {
 		return $this->user;
 	}
 
+	public function getAssignedTo() : ?User {
+	    return $this->assignedTo;
+	}
+	
 	/**
 	 * @return mixed
 	 */
@@ -180,6 +186,10 @@ class Confirmation extends BaseModel {
 	public function setUser(?User $user) {
 		$this->user = $user;
 	}
+	
+	public function setAssignedTo(?User $assignedTo) {
+	    $this->assignedTo = $assignedTo;
+	}
 
 	/**
 	 * @param mixed $lastAdvisor
@@ -197,18 +207,19 @@ class Confirmation extends BaseModel {
 	 * Constructor
 	 */
 	
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
-		$this->uuid = NULL;
-		$this->date = NULL;
-		$this->startTime = NULL;
-		$this->endTime = NULL;
-		$this->description = NULL;
-		$this->lastAdvisor = NULL;
-		$this->reason = NULL;
+		$this->uuid = null;
+		$this->date = null;
+		$this->startTime = null;
+		$this->endTime = null;
+		$this->description = null;
+		$this->lastAdvisor = null;
+		$this->reason = null;
 		$this->state = 0;
-		$this->user = NULL;
-		$this->lastUpdate = NULL;
+		$this->user = null;
+		$this->assignedTo = null;
+		$this->lastUpdate = null;
 	}
 	
 	/*
@@ -235,6 +246,7 @@ class Confirmation extends BaseModel {
 				'reason' => $this->reason,
 				'state' => $this->state,
 				'user' => $this->user,
+		        'assignedTo' => $this->assignedTo,
 				'lastUpdate' => $this->lastUpdate,
 		];
 	}

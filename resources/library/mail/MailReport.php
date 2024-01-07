@@ -20,11 +20,11 @@ function mail_insert_event_report(Report $report){
 	
 	$recipients = array_merge($managerList, $administration);
 	
-	return sendMailsWithTemplate ( 
-	    $recipients, 
-	    $subject, 
-	    TEMPLATES_PATH . "/guardianapp/mails/insertReport_mail.php", 
-	    $parameter, 
+	return sendMailsWithTemplate (
+	    $recipients,
+	    $subject,
+	    TEMPLATES_PATH . "/guardianapp/mails/insertReport_mail.php",
+	    $parameter,
 	    $file
 	);
 	

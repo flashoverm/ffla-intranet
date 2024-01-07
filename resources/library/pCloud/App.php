@@ -5,7 +5,7 @@ namespace pCloud;
 class App {
 	private $appKey;
 	private $appSecret;
-	private $redirect_uri;
+	private $redirectUri;
 	private $auth;
 	private $locationid;
 
@@ -26,11 +26,11 @@ class App {
 	}
 
 	public function setRedirectURI($redirect_uri) {
-		$this->redirect_uri = $redirect_uri;
+		$this->redirectUri = $redirect_uri;
 	}
 
 	public function getRedirectURI() {
-		return $this->redirect_uri;
+		return $this->redirectUri;
 	}
 
 	public function setAuth($auth) {
@@ -58,8 +58,8 @@ class App {
 		];
 
 
-		if (isset($this->redirect_uri) && !empty($this->redirect_uri)) {
-			$params["redirect_uri"] = $this->redirect_uri;
+		if (isset($this->redirectUri) && !empty($this->redirectUri)) {
+			$params["redirect_uri"] = $this->redirectUri;
 		}
 
 		return "https://my.pcloud.com/oauth2/authorize?".http_build_query($params);
@@ -90,8 +90,7 @@ class App {
 		}
 
 		if ($response->result == 0) {
-			$token = ["access_token" => $response->access_token, "locationid" => $response->locationid];
-			return $token;
+			return ["access_token" => $response->access_token, "locationid" => $response->locationid];
 		} else {
 			throw new Exception($response->error);
 		}

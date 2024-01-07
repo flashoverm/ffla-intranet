@@ -2,89 +2,77 @@
 
 require_once "BaseDAO.php";
 
-class PrivilegeDAO extends BaseDAO{
+class PrivilegeDAO {
 	
-	function __construct(PDO $pdo) {
-		parent::__construct($pdo, "privilege");
+    public function __construct() {
+		$this->data = array(
+		    Privilege::FILEADMIN =>
+		    new Privilege(Privilege::FILEADMIN, "Dateiadministrator", false),
+		    Privilege::FFADMINISTRATION =>
+		    new Privilege(Privilege::FFADMINISTRATION, "Feuerwehrverwaltung/Geschäftszimmer", false),
+		    Privilege::ENGINEHYDRANTMANANGER =>
+		    new Privilege(Privilege::ENGINEHYDRANTMANANGER, "Hydrantenverwaltung (Zug)", false),
+		    Privilege::HYDRANTADMINISTRATOR =>
+		    new Privilege(Privilege::HYDRANTADMINISTRATOR, "Hydrantenadministrator", false),
+		    Privilege::PORTALADMIN =>
+		    new Privilege(Privilege::PORTALADMIN, "Portaladministrator", false),
+		    Privilege::EDITUSER =>
+		    new Privilege(Privilege::EDITUSER, "Eigenen Benutzer bearbeiten", true),
+		    Privilege::EVENTPARTICIPENT =>
+		    new Privilege(Privilege::EVENTPARTICIPENT, "Wachteilnahme", true),
+		    Privilege::EVENTMANAGER =>
+		    new Privilege(Privilege::EVENTMANAGER, "Wachverwaltung (Zug)", false),
+		    Privilege::EVENTADMIN =>
+		    new Privilege(Privilege::EVENTADMIN, "Wachadministrator", false),
+		    Privilege::MASTERDATAADMIN =>
+		    new Privilege(Privilege::MASTERDATAADMIN, "Stammdaten-Administrator", false),
+		    Privilege::ENGINECONFIRMATIONMANAGER =>
+		      new Privilege(Privilege::ENGINECONFIRMATIONMANAGER, "Arbeitgeberbestätigungsverwaltung (Zug)", false)
+		);
 	}
 
-	function save(Privilege $privilege){
-		$statement = $this->db->prepare("INSERT INTO privilege (uuid, privilege, is_default) VALUES (?, ?, ?)");
-		
-		$result = $statement->execute(array($privilege->getUuid(), $privilege->getPrivilege(), $privilege->getIsDefault()));
-		
-		if ($result) {
-			return true;
-		} else {
-			return false;
-		}
+	public function getPrivileges(){
+	    $privileges = self::getInstance()->getData();
+	    usort($privileges, fn($a, $b) => strcmp($a->getPrivilege(), $b->getPrivilege()));
+	    return $privileges;
 	}
 
-	function getPrivileges(){
-		$statement = $this->db->prepare("SELECT * FROM privilege ORDER BY privilege");
-		
-		if ($statement->execute()) {
-			return $this->handleResult($statement, true);
-		}
-		return false;
+	public function getPrivilege(String $uuid){
+	    $privileges = self::getPrivileges();
+	    foreach ($privileges as $privilege){
+	        if($privilege->getUuid() == $uuid){
+	            return $privilege;
+	        }
+	    }
+	    return false;
 	}
-
-	function getPrivilege(String $uuid){
-		$statement = $this->db->prepare("SELECT * FROM privilege WHERE uuid = ? ");
-		
-		if ($statement->execute(array($uuid))) {
-			return $this->handleResult($statement, false);
-		}
-		return false;
-	}
-	
-	function getPrivilegeByName(String $name){
-		$statement = $this->db->prepare("SELECT * FROM privilege WHERE privilege = ? ");
-		
-		if ($statement->execute(array($name))) {
-			return $this->handleResult($statement, false);
-		}
-		return false;
-	}
-	
 	
 	/*
-	 * Init and helper methods
+	 * Duplicate because priviledge used to be a database object
 	 */
-
-	protected function resultToObject($result){
-		$object = new Privilege($result['uuid'], $result['privilege'], $result['is_default']);
-		return $object;
+	public function getPrivilegeByName(String $name){
+	    return getPrivilege($name);
 	}
 	
-	protected function createTable() {
-		$statement = $this->db->prepare("CREATE TABLE privilege (
-						  uuid CHAR(36) NOT NULL,
-						  privilege VARCHAR(32) NOT NULL,
-						  is_default BOOLEAN NOT NULL default 0,
-                          PRIMARY KEY (uuid)
-                          )");
-		
-		$result = $statement->execute();
-		
-		if ($result) {
-			$this->initializePrivileges();
-			return true;
-		}
-		return false;
+	/*
+	 * Singleton Pattern
+	 */
+	
+	private ?array $data = null;
+	
+	private static $instance = null;
+	
+	private static function getInstance() {
+	    if (self::$instance == null)
+	    {
+	        self::$instance = new PrivilegeDAO();
+	    }
+	    
+	    return self::$instance;
 	}
 	
-	protected function initializePrivileges(){
-		$this->save(new Privilege('5873791F-68EC-159D-EF91-3288F02EF1D2', Privilege::FILEADMIN, false));
-		$this->save(new Privilege('10590E6B-FC09-49B3-6A35-53759D10D1FC', Privilege::FFADMINISTRATION, false));
-		$this->save(new Privilege('6B296269-6280-EAC5-B5F3-4A95C3FA7656', Privilege::ENGINEHYDRANTMANANGER, false));
-		$this->save(new Privilege('2B3DE880-1EB7-C9A1-C533-BD90F773FDBA', Privilege::HYDRANTADMINISTRATOR, false));
-		$this->save(new Privilege('EE50BFB0-B4B0-2AE2-AAE4-2FB6EE9DA558', Privilege::PORTALADMIN, false));
-		$this->save(new Privilege('231C64FA-24F4-CDA4-60FE-B211A364D5AE', Privilege::EDITUSER, true));
-		$this->save(new Privilege('C4E19AFC-14CA-9714-B0E6-B1354EC0571C', Privilege::EVENTPARTICIPENT, true));
-		$this->save(new Privilege('26F7145B-826A-F731-4F59-E435B2E94F81', Privilege::EVENTMANAGER, false));
-		$this->save(new Privilege('9941EE1E-6E61-0656-E72B-18A4EE48633C', Privilege::EVENTADMIN, false));
-		$this->save(new Privilege('E2CA260A-FFA1-09D3-6C31-F32F231454F9', Privilege::MASTERDATAADMIN, false));
+	private function getData(){
+	    return $this->data;
 	}
 	
 }

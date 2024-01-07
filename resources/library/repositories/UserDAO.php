@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once "BaseDAO.php";
 
@@ -7,13 +7,13 @@ class UserDAO extends BaseDAO {
 	protected $userPrivilegeDAO;
 	protected $engineDAO;
 	
-	function __construct(PDO $pdo, UserPrivilegeDAO $userPrivilegeDAO, EngineDAO $engineDAO) {
+	public function __construct(PDO $pdo, UserPrivilegeDAO $userPrivilegeDAO, EngineDAO $engineDAO) {
 		parent::__construct($pdo, "user");
 		$this->engineDAO = $engineDAO;
 		$this->userPrivilegeDAO = $userPrivilegeDAO;
 	}
 	
-	function save(User $user){
+	public function save(User $user){
 		$saved = null;
 		if($this->uuidExists($user->getUuid(), $this->tableName)){
 			$saved = $this->updateUser($user);
@@ -35,7 +35,7 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 		
-	function getUsers(){
+	public function getUsers(){
 		$statement = $this->db->prepare("SELECT * FROM user WHERE deleted = false ORDER BY email");
 		
 		if ($statement->execute()) {
@@ -44,7 +44,7 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
-	function getUnlockedUsers(){
+	public function getUnlockedUsers(){
 		$statement = $this->db->prepare("SELECT * FROM user
 		WHERE locked = FALSE
 		AND deleted = false
@@ -56,7 +56,7 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
-	function getDeletedUsers(){
+	public function getDeletedUsers(){
 		$statement = $this->db->prepare("SELECT * FROM user WHERE deleted = true ORDER BY email");
 		
 		if ($statement->execute()) {
@@ -65,7 +65,7 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
-	function getUsersByEngine(String $engineUUID){
+	public function getUsersByEngine(String $engineUUID){
 		$statement = $this->db->prepare("SELECT * FROM user
 		WHERE engine = ?
 		AND locked = FALSE
@@ -79,7 +79,7 @@ class UserDAO extends BaseDAO {
 	}
 	
 	
-	function getUsersWithPrivilege(String $uuid){
+	public function getUsersWithPrivilege(String $uuid){
 		$statement = $this->db->prepare("SELECT user.*
 		FROM user, user_privilege
 		WHERE uuid = user_privilege.user AND privilege = ?
@@ -92,11 +92,11 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
-	function getUsersWithPrivilegeByName(String $name){
+	public function getUsersWithPrivilegeByName(String $name){
 		$statement = $this->db->prepare("SELECT user.*
-		FROM user, user_privilege, privilege
-		WHERE user.uuid = user_privilege.user AND privilege.uuid = user_privilege.privilege
-		AND privilege.privilege = ?
+		FROM user, user_privilege
+		WHERE user.uuid = user_privilege.user
+        AND user_privilege.privilege = ?
 		AND user.deleted = false
         GROUP BY user.uuid");
 		
@@ -106,38 +106,55 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
-	function getUsersTypeaheadWithPrivilegeByName(String $query, String $priviledgeName){
+	public function getUsersTypeaheadWithPrivilegeByName(String $query, String $privilegeName){
 	    $queryString = "%".strtolower($query)."%";
 	    $statement = $this->db->prepare("SELECT user.*
-		FROM user, user_privilege, privilege
-		WHERE user.uuid = user_privilege.user AND privilege.uuid = user_privilege.privilege
-		AND privilege.privilege = ?
+		FROM user, user_privilege
+		WHERE user.uuid = user_privilege.user
+        AND user_privilege.privilege = ?
 		AND user.deleted = false
         AND ( LOWER(user.firstname) LIKE ? OR LOWER(user.lastname) LIKE ? OR LOWER(CONCAT(user.firstname, ' ', user.lastname)) LIKE ?)
         GROUP BY user.uuid");
 	    
-	    if ($statement->execute(array($priviledgeName, $queryString, $queryString, $queryString))) {
+	    if ($statement->execute(array($privilegeName, $queryString, $queryString, $queryString))) {
 	        return $this->handleResult($statement, true);
 	    }
 	    return false;
 	}
 	
-	function getUsersByEngineAndPrivilege(String $engineUuid, String $privilege){
+	public function getUsersByEngineAndPrivilege(String $engineUuid, String $privilegeName){
 		$statement = $this->db->prepare("SELECT user.*
-		FROM user, user_privilege, privilege
-		WHERE user.uuid = user_privilege.user AND user_privilege.privilege = privilege.uuid
-		AND privilege.privilege = ?
+		FROM user, user_privilege
+		WHERE user.uuid = user_privilege.user
+        AND user_privilege.privilege = ?
 		AND user_privilege.engine = ?
 		AND user.deleted = false
 		ORDER BY user.lastname");
 	
-		if ($statement->execute(array($privilege, $engineUuid))) {
+		if ($statement->execute(array($privilegeName, $engineUuid))) {
 			return $this->handleResult($statement, true);
 		}
 		return false;
 	}
 	
-	function getUserByUUID(String $uuid){
+	public function getUsersByAllEnginesAndPrivilege(String $engineUuid, String $userUuid, String $privilegeName){
+	    $statement = $this->db->prepare("SELECT user.*
+		FROM user, user_privilege
+		WHERE user.uuid = user_privilege.user
+        AND user_privilege.privilege = ?
+        AND (user.engine = ? OR user.engine IN (SELECT additional_engines.engine FROM additional_engines WHERE user = ? ))
+		AND user.deleted = false
+		ORDER BY user.lastname");
+	    
+	    var_dump($this->db->errorInfo());
+	    
+	    if ($statement->execute(array($privilegeName, $engineUuid, $userUuid))) {
+	        return $this->handleResult($statement, true);
+	    }
+	    return false;
+	}
+	
+	public function getUserByUUID(String $uuid){
 		$statement = $this->db->prepare("SELECT * FROM user WHERE uuid = ?");
 		
 		if ($statement->execute(array($uuid))) {
@@ -146,7 +163,7 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
-	function getUserByEmail(String $email){
+	public function getUserByEmail(String $email){
 		$emailLower = strtolower($email);
 		
 		$statement = $this->db->prepare("SELECT * FROM user WHERE email = ?");
@@ -157,7 +174,7 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
-	function getUserByData(String $firstname, String $lastname, String $email, String $engineUUID){
+	public function getUserByData(String $firstname, String $lastname, String $email, String $engineUUID){
 		$statement = $this->db->prepare("SELECT * FROM user WHERE firstname = ? AND lastname = ? AND email = ? AND engine = ? ");
 		
 		if ($statement->execute(array($firstname, $lastname, $email, $engineUUID))) {
@@ -166,7 +183,7 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
-	function getDuplicateUsersEmail(){
+	public function getDuplicateUsersEmail(){
 		$statement = $this->db->prepare("SELECT email FROM user GROUP BY email HAVING COUNT(*) > 1");
 		
 		if ($statement->execute()) {
@@ -175,7 +192,7 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
-	function deleteUser($uuid){
+	public function deleteUser($uuid){
 		$statement = $this->db->prepare("DELETE FROM user_privilege WHERE user= ?");
 		
 		if ($statement->execute(array($uuid))) {
@@ -210,8 +227,8 @@ class UserDAO extends BaseDAO {
 			uuid, email, firstname, lastname, password, engine, locked, employer_address, employer_mail
 			) VALUES (?, ?, ?, ?, ?, ?, FALSE, ?, ?)");
 		
-		$result = $statement->execute(array($uuid, $emailLower, $user->getFirstname(), $user->getLastname(), 
-				$user->getPassword(), $user->getEngine()->getUuid(), $user->getEmployerAddress(), 
+		$result = $statement->execute(array($uuid, $emailLower, $user->getFirstname(), $user->getLastname(),
+				$user->getPassword(), $user->getEngine()->getUuid(), $user->getEmployerAddress(),
 				$user->getEmployerMail()
 		));
 		
@@ -224,10 +241,10 @@ class UserDAO extends BaseDAO {
 	protected function updateUser(User $user){
 		$emailLower = strtolower($user->getEmail());
 				
-		$statement = $this->db->prepare("UPDATE user 
+		$statement = $this->db->prepare("UPDATE user
 			SET firstname = ?, lastname = ?, email = ?, password = ?, engine = ?, locked = ?, deleted = ?, last_login = ?, employer_address = ?, employer_mail = ? WHERE uuid= ?");
 		
-		$result = $statement->execute(array($user->getFirstname(), $user->getLastname(), $emailLower, 
+		$result = $statement->execute(array($user->getFirstname(), $user->getLastname(), $emailLower,
 				$user->getPassword(), $user->getEngine()->getUuid(), $user->getLocked(), $user->getDeleted(), $user->getLastLogin(),
 				$user->getEmployerAddress(), $user->getEmployerMail(), $user->getUuid()
 		));
@@ -380,6 +397,3 @@ class UserDAO extends BaseDAO {
 	}
 
 }
-	
-
-?>

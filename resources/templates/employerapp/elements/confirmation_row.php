@@ -10,6 +10,16 @@ global $config;
 		<td class="text-center"><?= $data->getUser()->getFullName() ?></td>
 		<td class="text-center"><?= $data->getUser()->getEngine()->getName() ?></td>
 	<?php } ?>
+	<?php if(!empty($options['showAssignedTo'])){
+	    if($data->getAssignedTo() == NULL){
+	        echo '<td class="text-center"><span class="d-none">0</span>Verwaltung</td>';
+	    } else {
+	        ?>
+		<td class="text-center"><?= $data->getAssignedTo()->getFullName() ?></td>
+	<?php
+		}
+	}
+	?>
 	<?php if(!empty($options['showReason'])){ ?>
 		<td><?= $data->getReason() ?></td>
 	<?php } ?>

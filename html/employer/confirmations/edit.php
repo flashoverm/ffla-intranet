@@ -23,7 +23,7 @@ if(isset($_GET ['id'])) {
 
 if( isset($_POST['date']) && isset($_POST['start']) && isset($_POST['end']) ){
 	
-	if(! isset($_GET ['id']) 
+	if(! isset($_GET ['id'])
 			|| (isset($_GET ['id']) && $variables ['confirmation']->getState() != Confirmation::ACCEPTED) ){
 		
 		$date = trim ( $_POST ['date'] );
@@ -41,17 +41,27 @@ if( isset($_POST['date']) && isset($_POST['start']) && isset($_POST['end']) ){
 			$description = trim( $_POST ['description'] );
 		}
 		
+		$previousAssignedTo = $confirmation->getAssignedTo();
+		
+		if(isset($_POST ['assign']) && isset($_POST ['assignedTo'])){
+		    $confirmation->setAssignedTo($userDAO->getUserByUUID($_POST ['assignedTo']));
+		} else {
+		    $confirmation->setAssignedTo(null);
+		}
+		
 		$previousState = $confirmation->getState();
 		
 		$confirmation->setState(Confirmation::OPEN);
-		$confirmation->setReason(NULL);
+		$confirmation->setReason(null);
+
+		$confirmation->setConfirmationData($date, $beginn, $end, $description, $userController->getCurrentUser());
+		$confirmation = $confirmationDAO->save($confirmation);
 		
 		if(isset($_GET ['id'])) {
-			$confirmation->setConfirmationData($date, $beginn, $end, $description, $userController->getCurrentUser());
-			$confirmation = $confirmationDAO->save($confirmation);
-			
+		    //Update
 			if($confirmation){
-				if($previousState == Confirmation::DECLINED){
+			    //If request is resubmitted or the assignee changed, send a info mail
+			    if($previousState == Confirmation::DECLINED || $previousAssignedTo != $confirmation->getAssignedTo()){
 					if( ! mail_send_confirmation_request($confirmation)){
 						$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
 					}
@@ -63,9 +73,7 @@ if( isset($_POST['date']) && isset($_POST['start']) && isset($_POST['end']) ){
 				$variables ['alertMessage'] = "Anfrage konnte nicht aktualisiert werden";
 			}
 		} else {
-			$confirmation->setConfirmationData($date, $beginn, $end, $description, $userController->getCurrentUser());
-			$confirmation = $confirmationDAO->save($confirmation);
-						
+		    //Insert
 			if($confirmation){
 				if( ! mail_send_confirmation_request($confirmation)){
 					$variables ['alertMessage'] = "Mindestens eine E-Mail konnte nicht versendet werden";
