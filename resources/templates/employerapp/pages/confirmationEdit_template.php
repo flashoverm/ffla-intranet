@@ -47,18 +47,22 @@
 	</div>
 	<div class="custom-control custom-checkbox custom-checkbox-big">
 		<input type="checkbox" class="custom-control-input" name="assign" id="assign"
-		<?php if(!isset($confirmation) || (isset($confirmation) && $confirmation->getAssignedTo() != null)) {
+		<?php if(
+		    //!isset($confirmation) || 
+		    (isset($confirmation) && $confirmation->getAssignedTo() != null)) {
 		    echo "checked";
 		} ?>
 		>
 		<label class="custom-control-label custom-control-label-big" for="assign">
-			Einem Einheits-/Gruppenführer zur Freigabe zuweisen (nicht dem Geschäftszimmer)
+			Einem Einheits-/Gruppenführer zur Freigabe zuweisen (sonst Geschäftszimmer)
 		</label>
 	</div>
 	<div class="form-group">
 		<label>Zuständiger Einheits-/Gruppenführer:</label>
 		<select class="form-control" name="assignedTo" id="assignedTo" required
-			<?php if(isset($confirmation) && $confirmation->getAssignedTo() == null) {
+			<?php if(
+			    !isset($confirmation) ||
+			    (isset($confirmation) && $confirmation->getAssignedTo() == null)) {
 			    echo "disabled";
 			} ?>
 		>
