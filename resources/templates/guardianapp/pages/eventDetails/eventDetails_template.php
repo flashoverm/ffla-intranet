@@ -100,7 +100,7 @@ if ($isCreator) {
 				        echo "<button type='button' class='btn btn-outline-primary mr-1' disabled='disabled' >Wache ist öffentlich</button>";
 			    }
 				
-				if( ! $event->isCanceled() && $relevant ){
+			    if( ! $event->isCanceled() && $relevant && $guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid()) ){
 				?>
 				    <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#confirmCancel'>Absagen</button>
 	    			<div class='modal' id='confirmCancel'>
