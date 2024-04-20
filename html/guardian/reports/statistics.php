@@ -25,51 +25,53 @@ $reports = $reportDAO->getReportsByYear($year);
 
 $statisticData = array();
 
-foreach ($reports as $report){
-    $reportEngineUuid = $report->getEngine()->getUuid();
-    
-    
-    if( ! array_key_exists($reportEngineUuid, $statisticData) ){        
-        $statisticData[$reportEngineUuid] = array(
-            1,
-            0,
-            0
-        );
-    } else {
-        $statisticData[$reportEngineUuid] = array(
-            $statisticData[$reportEngineUuid][0] + 1,
-            $statisticData[$reportEngineUuid][1],
-            $statisticData[$reportEngineUuid][2]
-        );
+if($reports && count($reports)){
+    foreach ($reports as $report){
+        $reportEngineUuid = $report->getEngine()->getUuid();
         
-    }
-    
-    foreach( $report->getUnits() as $unit ){
-    
-        foreach($unit->getStaff() as $staff){
-            if($staff->getUser() != null){
-                $staffEngineUuid = $staff->getUser()->getEngine()->getUuid();
-            } else {
-                $staffEngineUuid = $staff->getEngine()->getUuid();
-            }
-                
+        
+        if( ! array_key_exists($reportEngineUuid, $statisticData) ){        
+            $statisticData[$reportEngineUuid] = array(
+                1,
+                0,
+                0
+            );
+        } else {
+            $statisticData[$reportEngineUuid] = array(
+                $statisticData[$reportEngineUuid][0] + 1,
+                $statisticData[$reportEngineUuid][1],
+                $statisticData[$reportEngineUuid][2]
+            );
             
-            if( ! array_key_exists($staffEngineUuid, $statisticData) ){
-                $statisticData[$staffEngineUuid] = array(
-                    0,
-                    1,
-                    $unit->getUnitOperatingMinutes()
-                );
-            } else {
-                $statisticData[$staffEngineUuid] = array(
-                    $statisticData[$staffEngineUuid][0],
-                    $statisticData[$staffEngineUuid][1] + 1,
-                    $statisticData[$staffEngineUuid][2] + $unit->getUnitOperatingMinutes()
-                );
-            }
         }
         
+        foreach( $report->getUnits() as $unit ){
         
+            foreach($unit->getStaff() as $staff){
+                if($staff->getUser() != null){
+                    $staffEngineUuid = $staff->getUser()->getEngine()->getUuid();
+                } else {
+                    $staffEngineUuid = $staff->getEngine()->getUuid();
+                }
+                    
+                
+                if( ! array_key_exists($staffEngineUuid, $statisticData) ){
+                    $statisticData[$staffEngineUuid] = array(
+                        0,
+                        1,
+                        $unit->getUnitOperatingMinutes()
+                    );
+                } else {
+                    $statisticData[$staffEngineUuid] = array(
+                        $statisticData[$staffEngineUuid][0],
+                        $statisticData[$staffEngineUuid][1] + 1,
+                        $statisticData[$staffEngineUuid][2] + $unit->getUnitOperatingMinutes()
+                    );
+                }
+            }
+            
+            
+        }
     }
 }
 

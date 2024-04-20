@@ -17,7 +17,7 @@ RUN docker-php-ext-install pdo_mysql \
 	&& docker-php-ext-install gd
 
 #Install nodejs and npm
-RUN apt-get install -y nodejs npm libnss3-dev libasound-dev libgbm-dev
+RUN apt-get install -y nodejs npm libnss3-dev libasound-dev libgbm-dev zip
 
 #Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

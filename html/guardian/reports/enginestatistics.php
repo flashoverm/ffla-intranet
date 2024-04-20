@@ -26,33 +26,36 @@ $reports = $reportDAO->getReportsByYear($year);
 
 $statisticData = array();
 
-foreach ($reports as $report){
-    foreach( $report->getUnits() as $unit ){
-        foreach($unit->getStaff() as $staff){
-            
-            $user = $staff->getUser();
-            if($user != null && $user->getEngine()->getUuid() == $userEngine){
-                $userUuid = $user->getUuid();
+if($reports && count($reports)){
+    foreach ($reports as $report){
+        foreach( $report->getUnits() as $unit ){
+            foreach($unit->getStaff() as $staff){
                 
-                
-                if( ! array_key_exists($userUuid, $statisticData) ){
-                    $statisticData[$userUuid] = array(
-                        $user,
-                        1,
-                        $unit->getUnitOperatingMinutes()
-                    );
-                } else {
-                    $statisticData[$userUuid] = array(
-                        $statisticData[$userUuid][0],
-                        $statisticData[$userUuid][1] + 1,
-                        $statisticData[$userUuid][2] + $unit->getUnitOperatingMinutes()
-                    );
+                $user = $staff->getUser();
+                if($user != null && $user->getEngine()->getUuid() == $userEngine){
+                    $userUuid = $user->getUuid();
                     
+                    
+                    if( ! array_key_exists($userUuid, $statisticData) ){
+                        $statisticData[$userUuid] = array(
+                            $user,
+                            1,
+                            $unit->getUnitOperatingMinutes()
+                        );
+                    } else {
+                        $statisticData[$userUuid] = array(
+                            $statisticData[$userUuid][0],
+                            $statisticData[$userUuid][1] + 1,
+                            $statisticData[$userUuid][2] + $unit->getUnitOperatingMinutes()
+                        );
+                        
+                    }
                 }
             }
         }
     }
 }
+
 
 $variables['statisticData'] = $statisticData;
 
