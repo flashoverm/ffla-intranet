@@ -153,6 +153,12 @@ if (! isset($_GET['id'])) {
     	//cancelEvent
     	//log LogbookActions::EventCanceled
     	if (isset($_POST['reason'])) {
+    	    checkPermissions(array(
+    	        array("privilege" => Privilege::EVENTADMIN),
+    	        array("privilege" => Privilege::EVENTMANAGER, "engine" => $event->getEngine()),
+    	        array("user" => $event->getCreator())
+    	    ), $variables);
+    	    
     	    $reason = trim($_POST['reason']);
     	    if($eventController->cancelEvent($uuid, $reason)){
     	        mail_cancel_event($event->getUuid());
