@@ -2,6 +2,8 @@
 vendor
 .scannerwork
 
+.docker/database/fflaintranet.sql
+
 resources/config/instanceConfig.php
 
 data/maps/*
