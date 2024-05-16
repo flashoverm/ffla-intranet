@@ -59,7 +59,8 @@ $config = array (
         "reports" => dirname ( __FILE__ ) . "/../../data/reports/",
         "confirmations" => dirname ( __FILE__ ) . "/../../data/confirmations/",
         "backup" => dirname ( __FILE__ ) . "/../../data/backup/",
-        "nodejs" => "nodejs"
+        "nodejs" => "nodejs",
+        "php" => "/usr/bin/php"
     ),
     "formats" => array (
         "date" => "d.m.Y",
