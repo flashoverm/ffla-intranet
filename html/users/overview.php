@@ -80,7 +80,7 @@ if(isset($_GET['filter'])){
 	$privilege = $privilegeDAO->getPrivilege($_GET['filter']);
 	$variables ['title'] = 'Rechte-Gruppe ' . $privilege->getPrivilege() . " <small>(" . $privilege->getDescription() . ")</small>";
 	$user = $userDAO->getUsersWithPrivilege($_GET['filter']);
-	$variables ['infoMessage'] = "Es werden nur Benutzer mit Recht '" . $privilege->getPrivilege() . "' angezeigt! <a href='" . $config["urls"]["intranet_home"] . "/privilege'>Zurück zur Auswahl</a>";
+	$variables ['infoMessage'] = "Es werden nur Benutzer mit Recht '" . $privilege->getPrivilege() . "' angezeigt! <a href='" . $config["urls"]["intranet_home"] . "/users/privileges'>Zurück zur Auswahl</a>";
 } else {
 	$user = $userDAO->getUsers();
 }

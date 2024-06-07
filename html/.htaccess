@@ -38,11 +38,11 @@ RewriteRule ^(.*)done/?$				$1/overview.php?done [QSA]
 
 # Hydrants and Inspections
 
-RewriteRule ^(.*)evaluation/([^/]+)?$ 	$1/evaluation.php?year=$2 [QSA]
-RewriteRule ^(.*)street/([^/]+)/?$ 		$1/street_view.php?street=$2 [QSA]
-RewriteRule ^(.*)engine/([^/]+)/?$ 		$1/engine_view.php?engine=$2 [QSA]
-RewriteRule ^(.*)inspected/?$ 			$1/inspected_view.php [QSA]
-RewriteRule ^(.*)map/([^/]+)/?$ 		$1/maps.php?hydrant=$2 [QSA]
+RewriteRule ^(.*)evaluation/([^/]+)?$ 			$1/evaluation.php?year=$2 [QSA]
+RewriteRule ^(.*)street/([^/]+)/?$ 				$1/street_view.php?street=$2 [QSA]
+RewriteRule ^(.*)hydrant/engine/([^/]+)/?$ 		$1/hydrant/engine_view.php?engine=$2 [QSA]
+RewriteRule ^(.*)inspected/?$ 					$1/inspected_view.php [QSA]
+RewriteRule ^(.*)map/([^/]+)/?$ 				$1/maps.php?hydrant=$2 [QSA]
 
 # Events and Reports
 
@@ -67,6 +67,8 @@ RewriteRule ^(.*)templates/([^/]+)/?$ 						$1/templates.php?eventtype=$2 [QSA]
 RewriteRule ^(.*)reset/([^.]+)/?$ 						$1/reset.php?token=$2 [QSA]
 RewriteRule ^(.*)register/?$ 							$1/edit.php [QSA]
 RewriteRule ^(.*)admin/([^/]+)/?$ 						$1/admin.php?id=$2 [QSA]
+RewriteRule ^(.*)users/engine/filter/([^.]+)/?$ 		$1/users/engine_overview.php?filter=$2 [QSA]
+RewriteRule ^(.*)users/engine/?$ 						$1/users/engine_overview.php [QSA]
 RewriteRule ^(.*)users/([^/]+)/privilege/([^/]+)/?$ 	$1/users/privilege.php?user=$2&engine=$3 [QSA] 
 RewriteRule ^(.*)users/([^/]+)/privilege/?$ 			$1/users/privilege.php?user=$2 [QSA]
 RewriteRule ^(.*)users/filter/([^.]+)/?$ 				$1/users/overview.php?filter=$2 [QSA]
