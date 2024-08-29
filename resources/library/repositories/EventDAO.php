@@ -280,7 +280,7 @@ class EventDAO extends BaseDAO{
                           type CHARACTER(36) NOT NULL,
                           type_other VARCHAR(96),
 						  title VARCHAR(96),
-						  comment VARCHAR(255),
+						  comment TEXT,
                           engine CHARACTER(36) NOT NULL,
 						  creator CHARACTER(36) NOT NULL,
                           published BOOLEAN NOT NULL default 0,
