@@ -59,7 +59,8 @@ $config = array (
         "reports" => dirname ( __FILE__ ) . "/../../data/reports/",
         "confirmations" => dirname ( __FILE__ ) . "/../../data/confirmations/",
         "backup" => dirname ( __FILE__ ) . "/../../data/backup/",
-        "nodejs" => "nodejs"
+        "nodejs" => "nodejs",
+        "php" => "/usr/bin/php"
     ),
     "formats" => array (
         "date" => "d.m.Y",
@@ -82,13 +83,15 @@ $config = array (
         "defaultcoordinates" => "48.5441917,12.1468532",
     ),
     "pcloud" => array (
+        "locationId" => 2, //1 = US, 2 = EU
         "username" => "",
         "password" => "",
     ),
     //default settings, can be overwritten in instanceConfig
     "settings" => array (
         "eventHourlyRate" => array(
-            2022 => 15.90
+            2022 => 15.90,
+            2024 => 16.10
         ),
         "reminderAtDay" => 10,						//days before "not-full-reminder" is sent
         "reportReminderAfterDays" => 14,            //days after reminder is sent to approve report

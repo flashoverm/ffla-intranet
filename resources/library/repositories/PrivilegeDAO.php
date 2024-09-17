@@ -6,6 +6,8 @@ class PrivilegeDAO {
 	
     public function __construct() {
 		$this->data = array(
+		    Privilege::ENGINEMANAGER =>
+		    new Privilege(Privilege::ENGINEMANAGER, "Personalverwaltung (Zug)", false),
 		    Privilege::FILEADMIN =>
 		    new Privilege(Privilege::FILEADMIN, "Dateiadministrator", false),
 		    Privilege::FFADMINISTRATION =>

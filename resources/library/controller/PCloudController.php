@@ -10,8 +10,11 @@ class PCloudController extends BaseController{
 	protected $pCloudApp;
 	
 	function __construct() {
+	    global $config;
+	    
 		parent::__construct();
 		$this->pCloudApp = new pCloud\App();
+		$this->pCloudApp->setLocationId($config['pcloud']['locationId']);
 	}
 	
 	function uploadBackup($filepath){
@@ -34,9 +37,9 @@ class PCloudController extends BaseController{
 	}
 	
 	private function login($username, $password){
-		$host = "https://api.pcloud.com";
+		$host = "https://eapi.pcloud.com";
 		$url = $host . "/userinfo?getauth=1&logout=1&username=" 
-				. urlencode($username) . "&password=" . $password;
+		    . urlencode($username) . "&password=" . urlencode($password);
 
         //$url = $host . "/login?logout=1&username="
         //    . urlencode($username) . "&password=" . $password;

@@ -137,18 +137,48 @@ class UserDAO extends BaseDAO {
 		return false;
 	}
 	
+	public function getUsersByAllEngines(String $engineUuid){
+	    $statement = $this->db->prepare("SELECT user.*
+		FROM user
+        WHERE (user.engine = ? OR user.uuid IN 
+            (SELECT additional_engines.user FROM additional_engines WHERE engine = ? ))
+		AND user.deleted = false
+		ORDER BY user.lastname");
+	    	    
+	    if ($statement->execute(array($engineUuid, $engineUuid))) {
+	        return $this->handleResult($statement, true);
+	    }
+	    return false;
+	}
+	
+	public function getUsersWithPrivilegeByAllEngines(String $engineUuid, String $privilegeName){
+	    $statement = $this->db->prepare("SELECT user.*
+		FROM user, user_privilege
+        WHERE user.uuid = user_privilege.user
+        AND user_privilege.privilege = ?
+        AND user_privilege.engine = ?
+		AND user.deleted = false
+		ORDER BY user.lastname");
+	    
+	    if ($statement->execute(array($privilegeName, $engineUuid))) {
+	        return $this->handleResult($statement, true);
+	    }
+	    return false;
+	}
+	
 	public function getUsersByAllEnginesAndPrivilege(String $engineUuid, String $userUuid, String $privilegeName){
 	    $statement = $this->db->prepare("SELECT user.*
 		FROM user, user_privilege
 		WHERE user.uuid = user_privilege.user
         AND user_privilege.privilege = ?
-        AND (user.engine = ? OR user.engine IN (SELECT additional_engines.engine FROM additional_engines WHERE user = ? ))
+        AND (user.engine = ?
+            OR user.engine IN (SELECT additional_engines.engine FROM additional_engines WHERE user = ? )
+            OR user_privilege.engine = ?
+        )
 		AND user.deleted = false
 		ORDER BY user.lastname");
-	    
-	    var_dump($this->db->errorInfo());
-	    
-	    if ($statement->execute(array($privilegeName, $engineUuid, $userUuid))) {
+	    	    
+	    if ($statement->execute(array($privilegeName, $engineUuid, $userUuid, $engineUuid))) {
 	        return $this->handleResult($statement, true);
 	    }
 	    return false;
