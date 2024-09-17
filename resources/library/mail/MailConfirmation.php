@@ -38,6 +38,10 @@ function mail_send_confirmation_declined($confirmation){
 function mail_send_confirmation($confirmation){
     global $config, $bodies;
     
+    if( ! $confirmation->getLastAdvisor()->hasPriviledge(Privilege::FFADMINISTRATION) ){
+        mail_inform_administration($confirmation);
+    }    
+    
     $employer_informed = false;
     if( $confirmation->getUser()->getEmployerMail() ){
         $employer_informed = mail_send_to_employer($confirmation, $confirmation->getUser());
@@ -64,6 +68,20 @@ function mail_send_confirmation($confirmation){
     }
     
     return send_mail ( $confirmation->getUser()->getEmail(), $subject, $body, $files);
+}
+
+function mail_inform_administration($confirmation){
+    global $config, $bodies, $userDAO;
+    
+    $files = array();
+    $files[] = $config["paths"]["confirmations"] . $confirmation->getUuid() . ".pdf";
+    $subject = "Arbeitgebernachweis wurde durch Einheitsführer akzeptiert";
+    $body = $bodies["confirmation_accepted_info"] . $config ["urls"] ["base_url"] . $config["urls"]["masterdataapp_home"] . "/datachangerequests/process";
+    
+    $recipients = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
+    
+    return sendMailsWithBody ( $recipients, $subject, $body, $files);
+    
 }
 
 function mail_send_to_employer(Confirmation $confirmation, User $user){
