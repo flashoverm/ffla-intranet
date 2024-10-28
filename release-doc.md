@@ -2,8 +2,42 @@
 Release Documentation
 ******************************
 
-### V2.5.2
+### V2.5.4
+ALTER TABLE user_privilege DROP FOREIGN KEY user_privilege_ibfk_1;
+ALTER TABLE user_privilege CHANGE privilege privilege VARCHAR(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL; 
+DROP TABLE privilege;
 
+UPDATE user_privilege SET privilege = 'FILEADMIN' WHERE user_privilege.privilege = '5873791F-68EC-159D-EF91-3288F02EF1D2'; 
+UPDATE user_privilege SET privilege = 'FFADMINISTRATION' WHERE user_privilege.privilege = '10590E6B-FC09-49B3-6A35-53759D10D1FC'; 
+UPDATE user_privilege SET privilege = 'MASTERDATAADMIN' WHERE user_privilege.privilege = 'E2CA260A-FFA1-09D3-6C31-F32F231454F9'; 
+UPDATE user_privilege SET privilege = 'ENGINEHYDRANTMANANGER' WHERE user_privilege.privilege = '6B296269-6280-EAC5-B5F3-4A95C3FA7656'; 
+UPDATE user_privilege SET privilege = 'HYDRANTADMINISTRATOR' WHERE user_privilege.privilege = '2B3DE880-1EB7-C9A1-C533-BD90F773FDBA'; 
+UPDATE user_privilege SET privilege = 'PORTALADMIN' WHERE user_privilege.privilege = 'EE50BFB0-B4B0-2AE2-AAE4-2FB6EE9DA558'; 
+UPDATE user_privilege SET privilege = 'EDITUSER' WHERE user_privilege.privilege = '231C64FA-24F4-CDA4-60FE-B211A364D5AE'; 
+UPDATE user_privilege SET privilege = 'EVENTPARTICIPENT' WHERE user_privilege.privilege = 'C4E19AFC-14CA-9714-B0E6-B1354EC0571C'; 
+UPDATE user_privilege SET privilege = 'EVENTMANAGER' WHERE user_privilege.privilege = '26F7145B-826A-F731-4F59-E435B2E94F81'; 
+UPDATE user_privilege SET privilege = 'EVENTADMIN' WHERE user_privilege.privilege = '9941EE1E-6E61-0656-E72B-18A4EE48633C'; 
+
+ALTER TABLE confirmation ADD assigned_to CHAR(36) NULL AFTER user; 
+ALTER TABLE confirmation ADD CONSTRAINT confirmation_ibfk_3 FOREIGN KEY (assigned_to) REFERENCES user(uuid) ON DELETE RESTRICT ON UPDATE RESTRICT; 
+
+### V2.5.3
+CREATE TABLE mailqueue (
+						  uuid CHARACTER(36) NOT NULL,
+                          timestamp datetime NOT NULL,
+						  recipient VARCHAR(255) NOT NULL,
+						  subject VARCHAR(255) NOT NULL,
+						  body TEXT,
+                          PRIMARY KEY (uuid)
+                          );
+
+### V2.5.2
+CREATE TABLE user_setting (
+                          user CHAR(36) NOT NULL,
+                          setting VARCHAR(128) NOT NULL,
+                          PRIMARY KEY  (user, setting),
+						  FOREIGN KEY (user) REFERENCES user(uuid)
+                          ) COLLATE  utf8mb4_general_ci;
 INSERT INTO engine (uuid, name, isadministration, shortname) VALUES ('0B789F33-B8B4-42A6-3AD7-3FC917441CA0', 'KEZ', '0', 'KEZ') 
 
 ### V2.5.1

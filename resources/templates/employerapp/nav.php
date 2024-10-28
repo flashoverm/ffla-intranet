@@ -10,21 +10,20 @@ function left_navigation ($currentUser){
 			href='<?= $config["urls"]["employerapp_home"] ?>/confirmations/new'>Antrag erstellen</a>
 		</li>
 	<?php
-	if ($currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)) {
+	if ($currentUser->hasPrivilegeByName(Privilege::FFADMINISTRATION)
+	    || $currentUser->hasPrivilegeByName(Privilege::ENGINECONFIRMATIONMANAGER)) {
 	?>
         <li class='nav-item'><a class='nav-link text-light'
 			href='<?= $config["urls"]["employerapp_home"] ?>/confirmations/process'>Antragsbearbeitung</a>
 		</li>
 	<?php
-	} else {
-
 	}
 }
 
 function middle_navigation ($currentUser){
-	
+    //No menu
 }
 
 function right_navigation ($currentUser){
-
+    //No menu
 }

@@ -79,8 +79,20 @@
 				?>
 				<?php 
 				if($currentUser){
+				    
+				    if($currentUser->hasPrivilegeByName(Privilege::ENGINEMANAGER)){
+				        ?>
+						<li class='nav-item dropdown'>
+							<a class='nav-link dropdown-toggle text-light' data-toggle='dropdown' href='#'>Mein Zug</a>
+        					<div class='dropdown-menu bg-dark'>
+								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users/engine'>Benutzer</a>
+								<a class='dropdown-item text-light' href='<?= $config ["urls"] ["intranet_home"] ?>/users/engine/privileges'>Berechtigungen</a>
+							</div>
+						</li>
+					<?php 
+				    }
 
-					if($currentUser->hasPrivilegeByName(Privilege::PORTALADMIN)){
+				    if($currentUser->hasPrivilegeByName(Privilege::PORTALADMIN)){
 					?>
 						<li class='nav-item dropdown'>
 							<a class='nav-link dropdown-toggle text-light' data-toggle='dropdown' href='#'>Portaladministration</a>
@@ -123,6 +135,7 @@
 							?>
 								<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/users/edit'>Benutzer bearbeiten</a>
 								<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/users/password/change'>Passwort ändern</a>
+								<a class='dropdown-item text-light' href='<?= $config["urls"]["intranet_home"] ?>/users/settings'>Einstellungen</a>
 							<?php
 							}
 							?>

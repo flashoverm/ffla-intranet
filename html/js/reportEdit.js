@@ -78,6 +78,7 @@ function addUnit(){
 		nameField(selects[1], "unit" + unitNo + "user" + i)
 		selects[1].innerHTML = position.querySelector("#positionuser" + i).innerHTML;
 		selects[1].value = position.querySelector("#positionuser" + i).value;
+		$(selects[1]).find('[value="'+ selects[1].value + '"]').attr("selected","selected");
 				
 		var inputs = newPersonal.getElementsByTagName("input");
 

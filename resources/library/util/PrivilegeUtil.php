@@ -1,37 +1,31 @@
 <?php
 class PrivilegeUtil {
 	
-	static function checkRule(array $rule){
+	public static function checkRule(array $rule){
 		/*
 		 * rule:  combination of user, engine or single privilege (AND)
 		 */
-		if(isset($rule['user'])){
-			if( ! PrivilegeUtil::checkRequiredUser($rule['user'])){
-				return false;
-			}
+		if(isset($rule['user']) && ! PrivilegeUtil::checkRequiredUser($rule['user']) ){
+			return false;
 		}
-		if(isset($rule['privilege'])){
-			if( ! PrivilegeUtil::checkPrivileges($rule['privilege'])){
-				return false;
-			}
+		if(isset($rule['privilege']) && ! PrivilegeUtil::checkPrivileges($rule['privilege']) ){
+			return false;
 		}
-		if(isset($rule['engine'])){
-			if( ! PrivilegeUtil::checkRequiredEngine($rule['engine'])){
-				return false;
-			}
+		if(isset($rule['engine']) && ! PrivilegeUtil::checkRequiredEngine($rule['engine']) ){
+			return false;
 		}
 		
 		return true;
 	}
 
-	static function checkRequiredUser(User $user){
+	public static function checkRequiredUser(User $user){
 		if($user->getUuid() == SessionUtil::getCurrentUserUUID()){
 			return true;
 		}
 		return false;
 	}
 	
-	static function checkRequiredEngine(Engine $engine){
+	public static function checkRequiredEngine(Engine $engine){
 		global $currentUser;
 		
 		if($currentUser->hasEngine($engine)){
@@ -40,7 +34,7 @@ class PrivilegeUtil {
 		return false;
 	}
 	
-	static function checkPrivileges($privilege){
+	public static function checkPrivileges($privilege){
 		if(is_array($privilege)){
 			//Multible privileges possible (just one necessary)
 			foreach($privilege as $privilege){
@@ -59,11 +53,8 @@ class PrivilegeUtil {
 	private static function checkPrivilege($requiredPrivilege){
 		global $currentUser;
 		
-		if(isset($currentUser) && $currentUser){
-			
-			if( $currentUser->hasPrivilegeByName($requiredPrivilege) ){
-				return true;
-			}
+		if(isset($currentUser) && $currentUser && $currentUser->hasPrivilegeByName($requiredPrivilege) ){
+			return true;
 		}
 		return false;
 	}

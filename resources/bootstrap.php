@@ -14,6 +14,10 @@ foreach (glob( LIBRARY_PATH . "/util/*.php") as $filename) {
 	include_once $filename;
 }
 
+foreach (glob( LIBRARY_PATH . "/mail/*.php") as $filename) {
+    include_once $filename;
+}
+
 foreach (glob( LIBRARY_PATH . "/*.php") as $filename) {
 	include_once $filename;
 }
@@ -41,6 +45,7 @@ $userDAO = new UserDAO($db, $userPrivilegeDAO, $engineDAO);
 $tokenDAO = new TokenDAO($db, $userDAO);
 $mailLogDAO = new MailLogDAO($db);
 $logbookDAO = new LogbookDAO($db);
+$mailQueueDAO = new MailQueueDAO($db);
 
 $confirmationDAO = new ConfirmationDAO($db, $userDAO);
 $dataChangeRequestDAO = new DataChangeRequestDAO($db, $userDAO);

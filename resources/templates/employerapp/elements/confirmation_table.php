@@ -9,6 +9,9 @@ if(!empty($options['showUserData'])){
 	$columns[] = array("label" => "Antragsteller", "sort" => ConfirmationDAO::ORDER_USER);
 	$columns[] = array("label" => "Löschzug", "sort" => ConfirmationDAO::ORDER_ENGINE);
 }
+if(!empty($options['showAssignedTo'])){
+    $columns[] = array("label" => "Zugewiesen an");
+}
 if(!empty($options['showReason'])){
 	$columns[] = array("label" => "Grund für Ablehnung", "sort" => ConfirmationDAO::ORDER_REASON);
 }

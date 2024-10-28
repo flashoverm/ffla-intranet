@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once "BaseDAO.php";
 
@@ -7,13 +7,13 @@ class UserPrivilegeDAO extends BaseDAO {
 	protected $privilegeDAO;
 	protected $engineDAO;
 	
-	function __construct(PDO $pdo, PrivilegeDAO $privilegeDAO, EngineDAO $engineDAO) {
+	public function __construct(PDO $pdo, PrivilegeDAO $privilegeDAO, EngineDAO $engineDAO) {
 		parent::__construct($pdo, "user_privilege");
 		$this->privilegeDAO = $privilegeDAO;
 		$this->engineDAO = $engineDAO;
 	}
 	
-	function saveUsersPrivilege(User $user){
+	public function saveUsersPrivilege(User $user){
 		$statement = $this->db->prepare("DELETE FROM user_privilege WHERE user = ?");
 		
 		$result = $statement->execute(array($user->getUuid()));
@@ -21,8 +21,8 @@ class UserPrivilegeDAO extends BaseDAO {
 		if ($result) {
 			foreach($user->getPrivileges() as $userPrivilege){
 				$this->insertUsersPrivilege(
-						$userPrivilege->getPrivilege()->getUuid(), 
-						$user->getUuid(), 
+						$userPrivilege->getPrivilege()->getUuid(),
+						$user->getUuid(),
 						$userPrivilege->getEngine()->getUuid()
 				);
 			}
@@ -33,8 +33,8 @@ class UserPrivilegeDAO extends BaseDAO {
 		return false;
 	}
 	
-	function getPrivilegesByUser(String $userUuid){
-		$statement = $this->db->prepare("SELECT user_privilege.* FROM user_privilege, privilege WHERE privilege.uuid = user_privilege.privilege AND user = ? ");
+	public function getPrivilegesByUser(String $userUuid){
+		$statement = $this->db->prepare("SELECT user_privilege.* FROM user_privilege WHERE user = ? ");
 		
 		if ($statement->execute(array($userUuid))) {
 			return $this->handleResult($statement, true);
@@ -48,12 +48,11 @@ class UserPrivilegeDAO extends BaseDAO {
 	 */
 	
 	protected function resultToObject($result){
-		$object = new UserPrivilege(
-				$this->engineDAO->getEngine($result['engine']), 
-				$this->privilegeDAO->getPrivilege($result['privilege']), 
+		return new UserPrivilege(
+				$this->engineDAO->getEngine($result['engine']),
+				$this->privilegeDAO->getPrivilege($result['privilege']),
 				$result['user']
 		);
-		return $object;
 	}
 	
 	protected function insertUsersPrivilege($privilegeUuid, $userUuid, $engineUuid){
@@ -69,11 +68,10 @@ class UserPrivilegeDAO extends BaseDAO {
 	
 	protected function createTable() {
 		$statement = $this->db->prepare("CREATE TABLE user_privilege (
-							  privilege CHARACTER(36) NOT NULL,
+							  privilege VARCHAR(128) NOT NULL,
 							  engine CHARACTER(36) NOT NULL,
 							  user CHARACTER(36) NOT NULL,
 	                          PRIMARY KEY (privilege, engine, user),
-							  FOREIGN KEY (privilege) REFERENCES privilege(uuid),
 							  FOREIGN KEY (engine) REFERENCES engine(uuid),
 							  FOREIGN KEY (user) REFERENCES user(uuid)
 	                          )");

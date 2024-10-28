@@ -79,7 +79,7 @@ if ($isCreator) {
 	<?php
 	if($currentUser){
 	?>
-	    <form action='<?= $config["urls"]["guardianapp_home"] . "/events/view/" . $event->getUuid() ?>' method='post'>
+	    <form onsubmit="showLoader()" action='<?= $config["urls"]["guardianapp_home"] . "/events/view/" . $event->getUuid() ?>' method='post'>
 			<a href='<?= $config["urls"]["guardianapp_home"] . "/events/overview" ?>' class='btn btn-outline-primary'>Zurück</a>
 			<div class='float-right'>
 			<?php
@@ -90,7 +90,7 @@ if ($isCreator) {
 					  		<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#confirmPublish<?= $event->getUuid() ?>'>Veröffentlichen</button>
 		                </span>
 						<?php 
-						createDialog('confirmPublish' . $event->getUuid(), "Wache veröffentlichen <br>(E-Mail an alle Wachbeauftragen)?", 'publish');
+						createDialog('confirmPublish' . $event->getUuid(), "Wache veröffentlichen <br>(E-Mail an alle möglichen Wachteilnehmer)?", 'publish');
 						?>
 		            <?php 
 			        } else {
@@ -100,7 +100,7 @@ if ($isCreator) {
 				        echo "<button type='button' class='btn btn-outline-primary mr-1' disabled='disabled' >Wache ist öffentlich</button>";
 			    }
 				
-				if( ! $event->isCanceled() && $relevant ){
+			    if( ! $event->isCanceled() && $relevant && $guardianUserController->isUserAllowedToEditEvent($currentUser, $event->getUuid()) ){
 				?>
 				    <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#confirmCancel'>Absagen</button>
 	    			<div class='modal' id='confirmCancel'>

@@ -1,9 +1,11 @@
 <ul class="nav nav-tabs mb-3">
 	<li class="nav-item">
-		<a class="nav-link <?php if($tab == 'open'){ echo "active"; } ?>" href="<?= $config["urls"]["employerapp_home"] ?>/confirmations/overview">Offene/Abgelehnte Anfragen</a>
+		<a class="nav-link <?php if($tab == 'open'){ echo "active"; } ?>"
+			href="<?= $config["urls"]["employerapp_home"] ?>/confirmations/overview">Offene/Abgelehnte Anfragen</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link <?php if($tab == 'accepted'){ echo "active"; } ?>" href="<?= $config["urls"]["employerapp_home"] ?>/confirmations/accepted">Akzeptierte Anfragen</a>
+		<a class="nav-link <?php if($tab == 'accepted'){ echo "active"; } ?>"
+			href="<?= $config["urls"]["employerapp_home"] ?>/confirmations/accepted">Akzeptierte Anfragen</a>
 	</li>
 </ul>
 
@@ -22,6 +24,7 @@ if ( ! ( count ( $confirmations->getData() ) || ( isset($declined) && count ( $d
 			$options = array(
 					'showReason' => true,
 					'showUserOptions' => true,
+			        'showLastAdvisor' => true
 			);
 			
 			render(TEMPLATES_PATH . "/employerapp/elements/confirmation_table.php", $declined, $options);
@@ -35,6 +38,7 @@ if ( ! ( count ( $confirmations->getData() ) || ( isset($declined) && count ( $d
 			
 			$options = array(
 					'showUserOptions' => true,
+			        'showAssignedTo' => true
 			);
 			
 			render(TEMPLATES_PATH . "/employerapp/elements/confirmation_table.php", $confirmations, $options);
@@ -48,4 +52,3 @@ if ( ! ( count ( $confirmations->getData() ) || ( isset($declined) && count ( $d
 		render(TEMPLATES_PATH . "/employerapp/elements/confirmation_table.php", $confirmations, $options);
 	}
 }
-    

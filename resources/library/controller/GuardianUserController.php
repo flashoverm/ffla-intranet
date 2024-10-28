@@ -82,4 +82,34 @@ class GuardianUserController extends UserController{
 		
 		return false;
 	}
+	
+	public static function filterUserWithoutSetting(array $userList, $settingKey){
+	    $result = array();
+	    foreach ($userList as $user){
+	        if( $user->isSettingSet($settingKey)){
+	            $result[] = $user;
+	        }
+	    }
+	    return $result;
+	}
+	
+	public static function filterUserWithSetting(array $userList, $settingKey){
+	    $result = array();
+	    foreach ($userList as $user){
+	        if(! $user->isSettingSet($settingKey)){
+	            $result[] = $user;
+	        }
+	    }
+	    return $result;
+	}
+	
+	public static function filterUserOfEngine(array $userList, Engine $engine){
+	    $result = array();
+	    foreach ($userList as $user){
+	        if( ! $user->hasEngine($engine)){
+	            $result[] = $user;
+	        }
+	    }
+	    return $result;
+	}
 }

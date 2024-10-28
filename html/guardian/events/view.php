@@ -142,7 +142,7 @@ if (! isset($_GET['id'])) {
     		$event = $eventController->publishEvent($uuid);
     		if($event){
     			mail_publish_event($event);
-    			$variables['successMessage'] = "Wache veröffentlich - Wachbeauftragte informiert";
+    			$variables['successMessage'] = "Wache veröffentlich - Mögliche Wachteilnehmer und Wachbeauftrage werden informiert";
     			$logbookDAO->save(LogbookEntry::fromAction(LogbookActions::EventPublished, $uuid));
     		} else {
     			$variables['alertMessage'] = "Wache konnte nicht veröffentlicht werden";
@@ -153,6 +153,12 @@ if (! isset($_GET['id'])) {
     	//cancelEvent
     	//log LogbookActions::EventCanceled
     	if (isset($_POST['reason'])) {
+    	    checkPermissions(array(
+    	        array("privilege" => Privilege::EVENTADMIN),
+    	        array("privilege" => Privilege::EVENTMANAGER, "engine" => $event->getEngine()),
+    	        array("user" => $event->getCreator())
+    	    ), $variables);
+    	    
     	    $reason = trim($_POST['reason']);
     	    if($eventController->cancelEvent($uuid, $reason)){
     	        mail_cancel_event($event->getUuid());

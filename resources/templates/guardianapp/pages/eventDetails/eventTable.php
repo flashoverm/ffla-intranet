@@ -22,7 +22,7 @@
 				?></td>
 			</tr>
 			<tr>
-				<td colspan="3"><?= $event->getComment(); ?></td>
+				<td colspan="3"><?= nl2br($event->getComment()); ?></td>
 			</tr>
 		</tbody>
 	</table>

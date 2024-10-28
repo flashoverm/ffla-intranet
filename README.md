@@ -82,3 +82,17 @@ New installation:
 	npm i --save puppeteer
 
 * check access/write rights  "reports, inspections, files, ..."
+
+
+# CRON
+
+```
+#send event remider
+0 2 * * * /usr/bin/php /var/www/ffla-intranet/resources/scripts/reminder.php
+
+#create database and data backup
+0 1 * * * /usr/bin/php /var/www/ffla-intranet/resources/scripts/create_backup.php
+
+#check and start mail async process
+*/15 * * * * /usr/bin/php /var/www/ffla-intranet/resources/scripts/mail_async_starter.php
+```

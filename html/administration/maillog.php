@@ -18,8 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$mailLogDAO->clearMailLog();
 	}
 	if( isset($_POST['testmail']) ){
-		for($i=0; $i<2; $i++){
-			send_mail("markus.thral@gmx.de", "Testmail", "This is a text mail...");
+		for($i=0; $i<10; $i++){
+			send_mail("markus@thral.de", "Testmail", "This is a text mail...");
 		}
 	}
 }

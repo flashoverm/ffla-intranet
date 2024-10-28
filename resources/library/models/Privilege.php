@@ -12,10 +12,12 @@ class Privilege extends BaseModel {
 	
 	const FFADMINISTRATION = "FFADMINISTRATION";
 	const MASTERDATAADMIN = "MASTERDATAADMIN";
+	const ENGINECONFIRMATIONMANAGER = "ENGINECONFIRMATIONMANAGER";
 	
 	const ENGINEHYDRANTMANANGER = "ENGINEHYDRANTMANANGER";
 	const HYDRANTADMINISTRATOR = "HYDRANTADMINISTRATOR";
 	
+	const ENGINEMANAGER = "ENGINEMANAGER";
 	const PORTALADMIN = "PORTALADMIN";
 	const EDITUSER = "EDITUSER";
 	
@@ -24,20 +26,13 @@ class Privilege extends BaseModel {
 	const EVENTADMIN = "EVENTADMIN";
 	
 
-	/**
-	 * @ORM\Id
-	 * @ORM\Column(type="string")
+	/*
+	 * Named uuid because priviledge used to be a database object
 	 */
 	protected ?string $uuid;
 	
-	/**
-	 * @ORM\Column(type="string")
-	 */
-	protected ?string $privilege;
-	
-	/**
-	 * @ORM\Column(name="is_default", type="boolean")
-	 */
+	protected ?string $description;
+		
 	protected bool $isDefault;
 	
 	
@@ -52,9 +47,13 @@ class Privilege extends BaseModel {
 	 * @return mixed
 	 */
 	public function getPrivilege() : ?string {
-		return strtoupper($this->privilege);
+		return $this->getUuid();
 	}
-
+	
+	public function getDescription() : ?string {
+	    return $this->description;
+	}
+	
 	/**
 	 * @return mixed
 	 */
@@ -68,12 +67,9 @@ class Privilege extends BaseModel {
 	public function setUuid(?string $uuid) {
 		$this->uuid = $uuid;
 	}
-
-	/**
-	 * @param mixed $privilege
-	 */
-	public function setPrivilege(?string $privilege) {
-		$this->privilege = strtoupper($privilege);
+	
+	public function setDescription(?string $description) {
+	    $this->description = $description;
 	}
 
 	/**
@@ -88,10 +84,10 @@ class Privilege extends BaseModel {
 	 * Constructor
 	 */
 	
-	function __construct(?string $uuid, ?string $privilege, bool $isDefault) {
+	public function __construct(?string $uuid, ?string $description, bool $isDefault) {
 		parent::__construct();
 		$this->uuid = $uuid;
-		$this->privilege = $privilege;
+		$this->description = $description;
 		$this->isDefault = $isDefault;
 	}
 	
@@ -103,7 +99,7 @@ class Privilege extends BaseModel {
 	public function jsonSerialize() {
 		return [
 				'uuid' => $this->uuid,
-				'privilege' => $this->privilege,
+		        'description' => $this->description,
 				'isDefault' => $this->isDefault,
 		];
 	}

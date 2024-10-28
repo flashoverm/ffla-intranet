@@ -31,7 +31,7 @@
 				foreach ( $privileges as $row ) {
 				?>
 					<tr>
-						<td><?= $row->getPrivilege() ?></td>
+						<td><?= $row->getPrivilege() ?> - <?= $row->getDescription() ?></td>
 						<td class="text-center">
 							<div class="custom-control custom-checkbox mb-1">
 							  <input type="checkbox" class="custom-control-input" id="priv_<?= $row->getUuid() ?>" name="priv_<?= $row->getUuid() ?>"

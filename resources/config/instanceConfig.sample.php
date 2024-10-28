@@ -30,7 +30,8 @@ $overrideConfig = array(
 				"base_url" => "http://fflaintranet.localhost"
 		),
 		"paths" => array(
-				"nodejs" => "node"
+				"nodejs" => "node",
+		        "php" => "php"
 		),
 		"mapView" => array(
 				"apiKey" => "yourapikey",

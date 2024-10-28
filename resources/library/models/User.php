@@ -66,6 +66,8 @@ class User extends BaseModel {
 	
 	protected array $privileges;
 	
+	protected array $settings;
+	
 	
 	/**
 	 * @return NULL
@@ -173,6 +175,13 @@ class User extends BaseModel {
 	public function getPrivileges() : array {
 		return $this->privileges;
 	}
+	
+	/**
+	 * @return array
+	 */
+	public function getSettings() : array {
+	    return $this->settings;
+	}
 
 	/**
 	 * @param NULL $uuid
@@ -264,22 +273,30 @@ class User extends BaseModel {
 	public function setPrivileges(array $privileges) {
 		$this->privileges = $privileges;
 	}
+	
+	/**
+	 * @param array $settings
+	 */
+	public function setSettings(array $settings) {
+	    $this->settings = $settings;
+	}
 
 	public function __construct() {
 		parent::__construct();
-		$this->uuid = NULL;
-		$this->email = NULL;
-		$this->password = NULL;
-		$this->firstname = NULL;
-		$this->lastname = NULL;
-		$this->engine = NULL;
+		$this->uuid = null;
+		$this->email = null;
+		$this->password = null;
+		$this->firstname = null;
+		$this->lastname = null;
+		$this->engine = null;
 		$this->additionalEngines = array();
 		$this->locked = false;
 		$this->deleted = false;
-		$this->lastLogin = NULL;
-		$this->employerAddress = NULL;
-		$this->employerMail = NULL;
+		$this->lastLogin = null;
+		$this->employerAddress = null;
+		$this->employerMail = null;
 		$this->privileges = array();
+		$this->settings = array();
 	}
 	
 	
@@ -357,7 +374,17 @@ class User extends BaseModel {
 		}
 	}
 
-	
+	public function isSettingSet($settingKey){
+	    if($this->settings == null){
+	        return false;
+	    }
+	    foreach($this->settings as $usersSetting){
+	        if($usersSetting->getKey() == $settingKey){
+	                return true;
+	        }
+	    }
+	    return false;
+	}
 	
 	public function getFullName() : string {
 		return $this->firstname . " " . $this->lastname;
@@ -379,7 +406,8 @@ class User extends BaseModel {
 	    return $this->getFullNameLastNameFirst() . " (" . $this->email . ")";
 	}
 	
-	public function setUserData(string $firstname, string $lastname, string $email, Engine $engine, string $employerAddress, string $employerMail){
+	public function setUserData(
+	    string $firstname, string $lastname, string $email, Engine $engine, string $employerAddress, string $employerMail){
 		$this->setFirstname($firstname);
 		$this->setLastname($lastname);
 		$this->setEmail($email);
@@ -405,5 +433,3 @@ class User extends BaseModel {
 		];
 	}
 }
-
-?>

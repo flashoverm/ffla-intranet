@@ -5,7 +5,7 @@ require_once 'BaseController.php';
 //use Doctrine\ORM\EntityManager;
 
 class ReportController extends BaseController{
-	
+    	
 	protected $reportDAO;
 	
 	function __construct(ReportDAO $reportDAO) {
