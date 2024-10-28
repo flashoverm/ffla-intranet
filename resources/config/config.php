@@ -126,6 +126,7 @@ define("INSPECTIONREPORT", "INSPECTIONREPORT");
 $mailingList = array(
     "INSPECTIONREPORT" => array(
         "hydranten@feuerwehr-landshut.de",
+        "d.hammerl@stadtwerke-landshut.de",
         "markus@thral.de",
     ),
 );
