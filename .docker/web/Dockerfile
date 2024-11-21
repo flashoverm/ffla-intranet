@@ -17,7 +17,7 @@ RUN docker-php-ext-install pdo_mysql \
 	&& docker-php-ext-install gd
 
 #Install nodejs and npm
-RUN apt-get install -y nodejs npm libnss3-dev libasound-dev libgbm-dev zip
+RUN apt-get install -y nodejs npm libnss3-dev libasound-dev libgbm-dev zip dos2unix
 
 #Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -29,6 +29,7 @@ RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf \
 	
 #Copy startup script
 COPY .docker/web/startup.sh /
+RUN dos2unix /startup.sh
 
 #Set php.ini
 COPY .docker/web/config/php.ini $PHP_INI_DIR/php.ini

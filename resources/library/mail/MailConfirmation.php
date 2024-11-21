@@ -38,7 +38,7 @@ function mail_send_confirmation_declined($confirmation){
 function mail_send_confirmation($confirmation){
     global $config, $bodies;
     
-    if( ! $confirmation->getLastAdvisor()->hasPriviledge(Privilege::FFADMINISTRATION) ){
+    if( ! $confirmation->getLastAdvisor()->hasPrivilegeByName(Privilege::FFADMINISTRATION) ){
         mail_inform_administration($confirmation);
     }    
     
