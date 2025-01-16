@@ -103,7 +103,7 @@ class HydrantDAO extends BaseDAO{
         	GROUP BY hydrant_inspection.hydrant
             ) AS lastchecks ON hydrant.uuid = lastchecks.hydrant
         INNER JOIN engine ON hydrant.engine = engine.uuid
-        WHERE (lastcheck IS NULL OR (lastcheck + INTERVAL hydrant.cycle YEAR) < NOW())
+        WHERE (lastcheck IS NULL OR (YEAR(lastcheck) + hydrant.cycle -1) < YEAR(NOW()))
         	AND engine = ? AND checkbyff = TRUE AND operating = true
         ORDER BY lastcheck";
 		
