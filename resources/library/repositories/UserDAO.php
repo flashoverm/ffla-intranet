@@ -258,7 +258,7 @@ class UserDAO extends BaseDAO {
 			) VALUES (?, ?, ?, ?, ?, ?, FALSE, ?, ?)");
 		
 		$result = $statement->execute(array($uuid, $emailLower, $user->getFirstname(), $user->getLastname(),
-				$user->getPassword(), $user->getEngine()->getUuid(), $user->getEmployerAddress(),
+		        $user->getPassword(), $user->getMainEngine()->getUuid(), $user->getEmployerAddress(),
 				$user->getEmployerMail()
 		));
 		
@@ -275,7 +275,7 @@ class UserDAO extends BaseDAO {
 			SET firstname = ?, lastname = ?, email = ?, password = ?, engine = ?, locked = ?, deleted = ?, last_login = ?, employer_address = ?, employer_mail = ? WHERE uuid= ?");
 		
 		$result = $statement->execute(array($user->getFirstname(), $user->getLastname(), $emailLower,
-				$user->getPassword(), $user->getEngine()->getUuid(), $user->getLocked(), $user->getDeleted(), $user->getLastLogin(),
+		        $user->getPassword(), $user->getMainEngine()->getUuid(), $user->getLocked(), $user->getDeleted(), $user->getLastLogin(),
 				$user->getEmployerAddress(), $user->getEmployerMail(), $user->getUuid()
 		));
 		
