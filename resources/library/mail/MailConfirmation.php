@@ -76,7 +76,7 @@ function mail_inform_administration($confirmation){
     $files = array();
     $files[] = $config["paths"]["confirmations"] . $confirmation->getUuid() . ".pdf";
     $subject = "Arbeitgebernachweis wurde durch Einheitsführer akzeptiert";
-    $body = $bodies["confirmation_accepted_info"] . $config ["urls"] ["base_url"] . $config["urls"]["masterdataapp_home"] . "/datachangerequests/process";
+    $body = $bodies["confirmation_accepted_info"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations/process/accepted";
     
     $recipients = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
     
