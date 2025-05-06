@@ -5,6 +5,7 @@ class SettingDAO {
     
     const RECEIVE_NO_MAIL_ON_NEW_EVENT = "RECEIVE_NO_MAIL_ON_NEW_EVENT";
     const IMMEDIATE_CONFIRMATION = "IMMEDIATE_CONFIRMATION";
+    const NO_ADMIN_INFOMAIL_ON_CONFIRMATION = "NO_ADMIN_INFOMAIL_ON_CONFIRMATION";
     
     private function __construct()  {
         $this->data = array (
@@ -12,6 +13,10 @@ class SettingDAO {
                 new Setting(self::RECEIVE_NO_MAIL_ON_NEW_EVENT,
                     "Keine E-Mail-Benachrichtigung bei neu eingestellten Wachen",
                     Setting::CAT_EVENTS, Privilege::EVENTPARTICIPENT),
+            self::NO_ADMIN_INFOMAIL_ON_CONFIRMATION =>
+            new Setting(self::NO_ADMIN_INFOMAIL_ON_CONFIRMATION,
+                "Keine E-Mail-Benachrichtigung bei Bestätigung durch Einheitsführer für Verwaltung",
+                Setting::CAT_EVENTS, Privilege::FFADMINISTRATION),
         );
     }
     

@@ -71,7 +71,7 @@ function mail_send_confirmation($confirmation){
 }
 
 function mail_inform_administration($confirmation){
-    global $config, $bodies, $userDAO;
+    global $config, $bodies, $userDAO, $guardianUserController;
     
     $files = array();
     $files[] = $config["paths"]["confirmations"] . $confirmation->getUuid() . ".pdf";
@@ -79,6 +79,7 @@ function mail_inform_administration($confirmation){
     $body = $bodies["confirmation_accepted_info"] . $config ["urls"] ["base_url"] . $config["urls"]["employerapp_home"] . "/confirmations/process/accepted";
     
     $recipients = $userDAO->getUsersWithPrivilegeByName(Privilege::FFADMINISTRATION);
+    $recipients = $guardianUserController->filterUserWithSetting($recipients, SettingDAO::NO_ADMIN_INFOMAIL_ON_CONFIRMATION);
     
     return sendMailsWithBody ( $recipients, $subject, $body, $files);
     
