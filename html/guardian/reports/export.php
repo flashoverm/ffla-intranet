@@ -23,23 +23,20 @@ if(SessionUtil::userLoggedIn()){
     $usersEngine = $userController->getCurrentUser()->getEngine();
     $_GET[ResultSet::SHOWALL_PARAM] = true;
         
-    if( $usersEngine->getIsAdministration()){
-    	$reports = $reportDAO->getReports($_GET, "ASC");
-    } else {
-    	$reports = $reportDAO->getReportsByEngine($usersEngine->getUuid(), $_GET, "ASC");
-        $variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die Ihrem Zug zugewiesen wurden";
-    }
-    
     if(isset($_POST['from'])){
         $type = $_POST['type'];
         $from = $_POST['from'];
         $to = $_POST['to'];
-
+        
     }
     
-    $reportsData = $reportDAO->filterReports($reports->getData(), $type, $from, $to);
-    $reports->setData($reportsData);
-    
+    if( $usersEngine->getIsAdministration()){
+        $reports = $reportDAO->getReportsFiltered($_GET, $type, $from, $to, "ASC");
+    } else {
+        $reports = $reportDAO->getReportsByEngineFiltered($usersEngine->getUuid(), $type, $from, $to, $_GET, "ASC");
+        $variables ['infoMessage'] = "Es werden nur Wachberichte angezeigt, die Ihrem Zug zugewiesen wurden";
+    }
+
     $variables ['type'] = $type;
     $variables ['from'] = $from;
     $variables ['to'] = $to;
@@ -96,30 +93,39 @@ function reportsToCSV($reports, $head = ""){
         $filestring .= "Datum" . $delimiter .
         "Beginn" . $delimiter .
         "Ende" . $delimiter .
-        "Dauer" . $delimiter . 
-        "Gesamtstunden" . $delimiter . 
+        "Veranstaltungsdauer" . $delimiter . 
+        "Gesamtpersonalstunden" . $delimiter . 
         "Typ" . $delimiter .
         "Titel" . $delimiter .
         "\n";
 
         $duration = strtotime($report->getEndTime()) - strtotime($report->getStartTime());
+        if($duration < 0){
+            $duration = $duration + 86400;
+        }
         $personalhours = 0;
         foreach ( $report->getUnits() as $unit ) {
         	$unitDuration = strtotime($unit->getEndTime()) - strtotime($unit->getStartTime());
+        	if($unitDuration < 0){
+        	    $unitDuration = $unitDuration + 86400;
+        	}
        		$personalhours += ($unitDuration * count($unit->getStaff()));
         }
         
         $filestring .= date($config ["formats"] ["date"], strtotime($report->getDate())) . $delimiter . 
         date($config ["formats"] ["time"], strtotime($report->getStartTime())) . $delimiter . 
             date($config ["formats"] ["time"], strtotime($report->getEndTime())) . $delimiter . 
-            gmdate($config ["formats"] ["time"], $duration) . $delimiter . 
-            gmdate($config ["formats"] ["time"], $personalhours) . $delimiter . 
+            DateFormatUtil::formatSecondsToHHMM($duration) . $delimiter . 
+            DateFormatUtil::formatSecondsToHHMM($personalhours) . $delimiter .
             $report->getType()->getType() . $delimiter .
             $report->getTitle() . $delimiter . 
             "\n\nPersonal:\n";
                     
 		foreach ( $report->getUnits() as $unit ) {
 			$unitDuration = strtotime($unit->getEndTime()) - strtotime($unit->getStartTime());
+			if($unitDuration < 0){
+			    $unitDuration = $unitDuration + 86400;
+			}
 			foreach ( $unit->getStaff() as $staff ) {
 			    
 			    if($staff->getUser() != null){
@@ -130,7 +136,7 @@ function reportsToCSV($reports, $head = ""){
 			        $staff->getEngine()->getName() . $delimiter;
 			    }
 			    
-                $filestring .= gmdate($config ["formats"] ["time"], $unitDuration) .
+			    $filestring .= DateFormatUtil::formatSecondsToHHMM($unitDuration) .
                     "\n";
             }
         }
@@ -148,21 +154,27 @@ function reportsToInvoiceCSV($reports, $head = ""){
 	$filestring .= "Datum" . $delimiter .
 	"Beginn" . $delimiter .
 	"Ende" . $delimiter .
+	"Veranstaltungsdauer" . $delimiter .
 	"Titel" . $delimiter .
 	"Personal" . $delimiter .
-	"Dauer" . $delimiter .
-	"Gesamtstunden" . $delimiter .
+	"Gesamtpersonalstunden" . $delimiter .
 	$delimiter ."Personal" . $delimiter .
 	"\n";
 	
 	foreach ( $reports as $report ) {
 		
 		$duration = strtotime($report->getEndTime()) - strtotime($report->getStartTime());
+		if($duration < 0){
+		    $duration = $duration + 86400;
+		}
 		$personalhours = 0;
 		$personalcount = 0;
 		$personalString = "";
 		foreach ( $report->getUnits() as $unit ) {
 			$unitDuration = strtotime($unit->getEndTime()) - strtotime($unit->getStartTime());
+			if($unitDuration < 0){
+			    $unitDuration = $unitDuration + 86400;
+			}
 			$personalhours += ($unitDuration * count($unit->getStaff()));
 			$personalcount += count($unit->getStaff());
 			
@@ -178,10 +190,10 @@ function reportsToInvoiceCSV($reports, $head = ""){
 		$filestring .= date($config ["formats"] ["date"], strtotime($report->getDate())) . $delimiter .
 		date($config ["formats"] ["time"], strtotime($report->getStartTime())) . $delimiter .
 		date($config ["formats"] ["time"], strtotime($report->getEndTime())) . $delimiter .
+		DateFormatUtil::formatSecondsToHHMM($duration) . $delimiter .
 		$report->getTitle() . $delimiter .
 		$personalcount . $delimiter .
-		gmdate($config ["formats"] ["time"], $duration) . $delimiter .
-		gmdate($config ["formats"] ["time"], $personalhours) . $delimiter .
+		DateFormatUtil::formatSecondsToHHMM($personalhours) . $delimiter .
 		$delimiter .$personalString . "\n";
 	}
 	
@@ -207,6 +219,9 @@ function reportsToCSVList($reports, $head = ""){
                 
         foreach ( $report->getUnits() as $unit ) {
             $unitDuration = strtotime($unit->getEndTime()) - strtotime($unit->getStartTime());
+            if($unitDuration < 0){
+                $unitDuration = $unitDuration + 86400;
+            }
             foreach ( $unit->getStaff() as $staff ) {
                 
                 $filestring .= date($config ["formats"] ["date"], strtotime($report->getDate())) . $delimiter .
@@ -223,7 +238,7 @@ function reportsToCSVList($reports, $head = ""){
                     $staff->getEngine()->getName() . $delimiter;
                 }
                 
-                $filestring .= gmdate($config ["formats"] ["time"], $unitDuration) .
+                $filestring .= DateFormatUtil::formatSecondsToHHMM($unitDuration) .
                 "\n";
             }
         }

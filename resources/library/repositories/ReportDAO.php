@@ -54,6 +54,48 @@ class ReportDAO extends BaseDAO{
 		return $this->executeQuery($query, null, $getParams);
 	}
 	
+	function getReportsFiltered(array $getParams, $type, $from, $to, $dateOrder = "DESC"){
+	    $typeQuery = ' AND type = ? ';
+	    $paramArray =  array($type, $from, $to);
+	    if($type == "-1"){
+	        $typeQuery = ' ';
+	        $paramArray =  array($from, $to);
+	    } else if($type == "-2"){
+	        //Special case - TODO find a better way
+	        $typeQuery = ' AND (type = ? OR type = ?) ';
+	        $paramArray =  array("325FF3CA-62BE-3F3E-88D8-A1C932BE600B", "C5503C1D-E08C-4850-27CB-563302EC9318", $from, $to);
+	    }
+	    
+	    $query = "SELECT report.*, engine.name FROM report, engine
+			WHERE engine.uuid = report.engine "
+	        . $typeQuery . 
+			" AND date >= ? AND date <= ?
+            ORDER BY date " . $dateOrder;
+	    
+	    return $this->executeQuery($query, $paramArray, $getParams);
+	}
+	
+	function getReportsByEngineFiltered($engineUuid, $type, $from, $to, array $getParams, $dateOrder = "DESC"){
+	    $typeQuery = ' AND type = ? ';
+	    $paramArray =  array($engineUuid, $type, $from, $to);
+	    if($type == "-1"){
+	        $typeQuery = ' ';
+	        $paramArray =  array($engineUuid, $from, $to);
+	    } else if($type == "-2"){
+	        //Special case - TODO find a better way
+	        $typeQuery = ' AND (type = ? OR type = ?) ';
+	        $paramArray =  array($engineUuid, "325FF3CA-62BE-3F3E-88D8-A1C932BE600B", "C5503C1D-E08C-4850-27CB-563302EC9318", $from, $to);
+	    }
+	    
+	    $query = "SELECT report.*, engine.name FROM report, engine
+			WHERE engine = ? AND engine.uuid = report.engine "
+	        . $typeQuery . 
+			" AND date >= ? AND date <= ?
+			ORDER BY date " . $dateOrder;
+	    
+	    return $this->executeQuery($query, $paramArray, $getParams);
+	}
+	
 	function getUnapprovedReports(array $getParams, $dateOrder = "DESC"){
 	    $query = "SELECT report.*, engine.name FROM report, engine
 			WHERE engine.uuid = report.engine

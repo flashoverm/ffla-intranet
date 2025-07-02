@@ -8,7 +8,12 @@ class DateFormatUtil {
 		}
 		return $time;
 	}
-	
+
+	static function formatSecondsToHHMM($seconds) {
+        $hours = floor($seconds / 3600);
+        $minutes = floor(($seconds % 3600) / 60);
+        return sprintf('%d:%02d', $hours, $minutes);
+	}
 }
 
 ?>

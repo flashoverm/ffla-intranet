@@ -40,6 +40,8 @@ services:
       - "traefik.http.routers.pma.rule=Host(`pma.fflaintranet.localhost`)"
     environment:
         UPLOAD_LIMIT: 512M
+    ports:
+      - 81:80
   mailhog:
     image: mailhog/mailhog
     ports:
