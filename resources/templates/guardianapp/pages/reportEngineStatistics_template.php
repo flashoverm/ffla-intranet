@@ -8,7 +8,7 @@ if(isset($_GET ['year'])){
 $rate = ConfigUtil::getEventHourlyRate($year);
 $yearlyLimit = ConfigUtil::getYearlyEventLimit($year);
 
-showInfo("Hochrechnung bei " . number_format($rate, 2) . " €/Stunde - Abweichung möglich. Jährlicher Freibetrag " + $yearlyLimit + " €");
+showInfo("Hochrechnung bei " . number_format($rate, 2) . " €/Stunde - Abweichung möglich. Jährlicher Freibetrag " . $yearlyLimit . " €");
 ?>
 <div class="form-group">
 	<select class="form-control" name="year" id="year" onchange="loadStatistics()">
