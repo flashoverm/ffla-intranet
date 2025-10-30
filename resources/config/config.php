@@ -91,7 +91,8 @@ $config = array (
     "settings" => array (
         "eventHourlyRate" => array(
             2022 => 15.90,
-            2024 => 16.40
+            2024 => 16.40,
+            2025 => 17.90
         ),
         "reminderAtDay" => 10,						//days before "not-full-reminder" is sent
         "reportReminderAfterDays" => 14,            //days after reminder is sent to approve report
