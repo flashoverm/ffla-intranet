@@ -55,7 +55,7 @@ showInfo("Jährlicher Freibetrag " . $yearlyLimit . " €");
 					<td><?= $statisticData[$userUuid][0]->getLastname(); ?></td>
 					<td><span class="d-none"><?= sprintf('%02d',$statisticData[$userUuid][1]) ?></span><?= $statisticData[$userUuid][1]; ?></td>
 					<td><span class="d-none"><?= sprintf('%06d',$minutes) ?></span><?= floor($minutes/60) . ":" . sprintf("%02d", $minutes%60) ?></td>
-					<td style="background-color: <?= $bgColor ?>;"><span class="d-none"><?= sprintf('%06d',$minutes) ?></span><?= number_format($earnings, 2, ",", "")?></td>
+					<td class="lightred" style="background-color: <?= $bgColor ?> !important;"><span class="d-none"><?= sprintf('%06d',$minutes) ?></span><?= number_format($earnings, 2, ",", "")?></td>
 				</tr>
             <?php
 	        }
