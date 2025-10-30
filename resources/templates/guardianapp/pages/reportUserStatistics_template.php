@@ -24,7 +24,7 @@ if( ! isset($statisticData) || count($statisticData) < 1 ){
 					<td><?= floor($minutes/60) . ":" . sprintf("%02d", $minutes%60) . " h"?></td>
 				</tr>
 				<tr>
-					<td>Wachverdienst (Hochrechnung bei <?= number_format($rate, 2) ?> €/Stunde - Abweichung möglich). Jährlicher Freibetrag " + $yearlyLimit</td>
+					<td>Wachverdienst (Hochrechnung bei <?= number_format($rate, 2) ?> €/Stunde - Abweichung möglich). Jährlicher Freibetrag <?=  $yearlyLimit ?> €</td>
 					<td><?=  number_format($minutes/60*$rate, 2, ",", "") . " €"?></td>
 				</tr>
 			<?php
