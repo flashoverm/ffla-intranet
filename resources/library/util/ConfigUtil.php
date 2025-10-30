@@ -6,7 +6,6 @@ class ConfigUtil {
         $validYears = array_filter(array_keys($yearList), function($year) use ($targetYear) {
             return $year <= $targetYear;
         });
-            var_dump($validYears);
         if (empty($validYears)) {
             return null;
         }
