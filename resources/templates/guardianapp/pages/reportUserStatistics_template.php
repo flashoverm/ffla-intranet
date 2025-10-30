@@ -11,6 +11,14 @@ if( ! isset($statisticData) || count($statisticData) < 1 ){
 			    $minutes = $statisticData[$year][1];
 			    $rate = ConfigUtil::getEventHourlyRate($year);
 			    $yearlyLimit = ConfigUtil::getYearlyEventLimit($year);
+			    $earnings = $minutes/60*$rate;
+			    if ($earnings >= $yearlyLimit) {
+			        $bgColor = 'lightcoral';
+			    } elseif ($earnings > 0.8 * $yearlyLimit) {
+			        $bgColor = 'lightyellow';
+			    } else {
+			        $bgColor = 'transparent';
+			    }
 			?>
     			<tr>
     				<th colspan="2"><?= $year ?></th>
@@ -25,7 +33,7 @@ if( ! isset($statisticData) || count($statisticData) < 1 ){
 				</tr>
 				<tr>
 					<td>Wachverdienst (Hochrechnung bei <?= number_format($rate, 2) ?> €/Stunde - Abweichung möglich).<br>Jährlicher Freibetrag <?=  $yearlyLimit ?> €</td>
-					<td><?=  number_format($minutes/60*$rate, 2, ",", "") . " €"?></td>
+					<td style="background-color: <?= $bgColor ?>;"><?=  number_format($earnings, 2, ",", "") . " €"?></td>
 				</tr>
 			<?php
 			}
