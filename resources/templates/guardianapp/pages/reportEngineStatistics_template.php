@@ -15,10 +15,10 @@ showInfo("Jährlicher Freibetrag " . $yearlyLimit . " €");
   .bg-lightcoral {
     background-color: lightcoral;
   }
-  .bg-lightcoral {
+  .bg-lightyellow {
     background-color: lightyellow;
   }
-    .bg-transparent {
+  .bg-transparent {
     background-color: transparent;
   }
 </style>
