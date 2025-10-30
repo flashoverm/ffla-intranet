@@ -94,6 +94,9 @@ $config = array (
             2024 => 16.40,
             2025 => 17.90
         ),
+        "yearlyEventLimit" => array(
+            2022 => 840  
+        ),
         "reminderAtDay" => 10,						//days before "not-full-reminder" is sent
         "reportReminderAfterDays" => 14,            //days after reminder is sent to approve report
         "useDefaultMapMarker" => false,

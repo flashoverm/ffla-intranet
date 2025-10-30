@@ -9,11 +9,8 @@ if( ! isset($statisticData) || count($statisticData) < 1 ){
 			<?php
 			foreach( array_keys($statisticData) as $year){
 			    $minutes = $statisticData[$year][1];
-			    if(isset($config["settings"]["eventHourlyRate"][$year])){
-			        $rate = $config["settings"]["eventHourlyRate"][$year];
-			    } else {
-			        $rate = end($config["settings"]["eventHourlyRate"]);
-			    }
+			    $rate = ConfigUtil::getEventHourlyRate($year);
+			    $yearlyLimit = ConfigUtil::getYearlyEventLimit($year);
 			?>
     			<tr>
     				<th colspan="2"><?= $year ?></th>
@@ -27,7 +24,7 @@ if( ! isset($statisticData) || count($statisticData) < 1 ){
 					<td><?= floor($minutes/60) . ":" . sprintf("%02d", $minutes%60) . " h"?></td>
 				</tr>
 				<tr>
-					<td>Wachverdienst (Hochrechnung bei <?= number_format($rate, 2) ?> €/Stunde - Abweichung möglich)</td>
+					<td>Wachverdienst (Hochrechnung bei <?= number_format($rate, 2) ?> €/Stunde - Abweichung möglich). Jährlicher Freibetrag " + $yearlyLimit</td>
 					<td><?=  number_format($minutes/60*$rate, 2, ",", "") . " €"?></td>
 				</tr>
 			<?php

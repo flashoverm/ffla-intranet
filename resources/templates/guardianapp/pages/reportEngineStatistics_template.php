@@ -5,14 +5,10 @@ if(isset($_GET ['year'])){
 } else {
     $year = date("Y");
 }
+$rate = ConfigUtil::getEventHourlyRate($year);
+$yearlyLimit = ConfigUtil::getYearlyEventLimit($year);
 
-if(isset($config["settings"]["eventHourlyRate"][$year])){
-    $rate = $config["settings"]["eventHourlyRate"][$year];
-} else {
-    $rate = end($config["settings"]["eventHourlyRate"]);
-}
-
-showInfo("Hochrechnung bei " . number_format($rate, 2) . " €/Stunde - Abweichung möglich");
+showInfo("Hochrechnung bei " . number_format($rate, 2) . " €/Stunde - Abweichung möglich. Jährlicher Freibetrag " + $yearlyLimit);
 ?>
 <div class="form-group">
 	<select class="form-control" name="year" id="year" onchange="loadStatistics()">
