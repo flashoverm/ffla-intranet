@@ -189,7 +189,7 @@ class ReportDAO extends BaseDAO{
 	}
 	
 	function getReportsByStaff($userUuid){
-	    $statement = $this->db->prepare("SELECT report.* 
+	    $statement = $this->db->prepare("SELECT DISTINCT report.* 
             FROM report, report_unit, report_staff 
             WHERE report.uuid = report_unit.report 
             AND report_unit.uuid = report_staff.unit 
