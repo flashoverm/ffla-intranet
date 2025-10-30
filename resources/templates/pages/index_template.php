@@ -37,12 +37,21 @@
 	</div>
 	<div class="card mx-auto mb-2">
 		<div class="card-body">
+			<h5 class="card-title">Atemschutzverwaltung</h5>
+			<p class="card-text">Verwaltung von Atemschutzträgern</p>
+			<a href="<?= $config["urls"]["scbaapp_home"]?>/"
+				class="card-link">Weiter zur Atemschutzverwaltung</a>
+		</div>
+	</div>
+	<div class="card mx-auto mb-2">
+		<div class="card-body">
 			<h5 class="card-title">Formulare</h5>
 			<p class="card-text">Download und Verwaltung von diversen Formularen und Dateien.</p>
 			<a href="<?= $config["urls"]["filesapp_home"]?>/"
 				class="card-link">Weiter zu den Formularen</a>
 		</div>
 	</div>
+	<!-- 
 	<div class="card mx-auto mb-2">
 		<div class="card-body">
 			<h5 class="card-title">Alarmierungsauswertung</h5>
@@ -51,4 +60,5 @@
 				class="card-link">Weiter zur Alarmierungsauswertung</a>
 		</div>
 	</div>
+	 -->
 </div>

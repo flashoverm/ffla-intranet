@@ -32,6 +32,7 @@ $config = array (
         "guardian" => "guardianapp",
         "employer" => "employerapp",
         "masterdata" => "masterdataapp",
+        "scba" => "scbaapp",
         "pager" => "pagerapp"
     ),
     "urls" => array (
@@ -43,6 +44,7 @@ $config = array (
         "guardianapp_home" => $url_prefix . "/guardian",
         "employerapp_home" => $url_prefix . "/employer",
         "masterdataapp_home" => $url_prefix . "/masterdata",
+        "scbaapp_home" => $url_prefix . "/scba",
         "pagerapp_home" => $url_prefix . "/pager",
         
         "files" => $url_prefix . "/files",
