@@ -11,6 +11,17 @@ $yearlyLimit = ConfigUtil::getYearlyEventLimit($year);
 showInfo("Hochrechnung bei " . number_format($rate, 2) . " €/Stunde - Abweichung möglich");
 showInfo("Jährlicher Freibetrag " . $yearlyLimit . " €");
 ?>
+<style>
+  .bg-lightcoral {
+    background-color: lightcoral;
+  }
+  .bg-lightcoral {
+    background-color: lightyellow;
+  }
+    .bg-transparent {
+    background-color: transparent;
+  }
+</style>
 <div class="form-group">
 	<select class="form-control" name="year" id="year" onchange="loadStatistics()">
 		<option value="" disabled selected>Jahr auswählen</option>
@@ -43,11 +54,11 @@ showInfo("Jährlicher Freibetrag " . $yearlyLimit . " €");
 			    $minutes = $statisticData[$userUuid][2];
 			    $earnings = $minutes/60*$rate;
 			    if ($earnings >= $yearlyLimit) {
-			        $bgColor = 'lightcoral'; // Light red
+			        $bgColor = 'bg-lightcoral'; // Light red
 			    } elseif ($earnings > 0.8 * $yearlyLimit) {
-			        $bgColor = 'lightyellow';
+			        $bgColor = 'bg-lightyellow';
 			    } else {
-			        $bgColor = 'transparent'; // Default or no highlight
+			        $bgColor = 'bg-transparent'; // Default or no highlight
 			    }
             ?>
 				<tr>
@@ -55,7 +66,7 @@ showInfo("Jährlicher Freibetrag " . $yearlyLimit . " €");
 					<td><?= $statisticData[$userUuid][0]->getLastname(); ?></td>
 					<td><span class="d-none"><?= sprintf('%02d',$statisticData[$userUuid][1]) ?></span><?= $statisticData[$userUuid][1]; ?></td>
 					<td><span class="d-none"><?= sprintf('%06d',$minutes) ?></span><?= floor($minutes/60) . ":" . sprintf("%02d", $minutes%60) ?></td>
-					<td class="lightred" style="background-color: <?= $bgColor ?> !important;"><span class="d-none"><?= sprintf('%06d',$minutes) ?></span><?= number_format($earnings, 2, ",", "")?></td>
+					<td class="<?= $bgColor ?>"><span class="d-none"><?= sprintf('%06d',$minutes) ?></span><?= number_format($earnings, 2, ",", "")?></td>
 				</tr>
             <?php
 	        }
