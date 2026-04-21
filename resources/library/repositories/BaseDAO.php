@@ -72,10 +72,6 @@ abstract class BaseDAO {
 			$rowNumQuery = substr_replace($execQuery, ", ROW_NUMBER() OVER ( " . $orderBy . " ) AS RowNum FROM", $fromPos, strlen("FROM"));
 			
 			$execQuery = "SELECT * FROM ( " . $rowNumQuery . " ) as Data WHERE RowNum >= ? AND RowNum <= ? ORDER BY RowNum";
-			
-			echo $execQuery;
-			echo $resultSet->getFrom() . " - " . $resultSet->getTo();
-			
 
 			$parameter[] = $resultSet->getFrom();
 			$parameter[] = $resultSet->getTo();
