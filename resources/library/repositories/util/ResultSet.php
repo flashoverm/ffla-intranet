@@ -151,7 +151,7 @@ class ResultSet implements Countable, Iterator {
 	function __construct() {
 		$this->data = null;
 		$this->overallSize = 0;
-		$this->pageSize = 10;
+		$this->pageSize = 25;
 		$this->page = 1;
 		$this->searchTerm = null;
 		$this->sortedBy = null;
