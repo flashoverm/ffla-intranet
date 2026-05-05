@@ -81,7 +81,7 @@ class MailQueueElement extends BaseModel {
         return $mail;
     }
     
-    public static function retry(){
+    public function retry(){
         $this->setTimestamp(date('Y-m-d H:i:s'));
         $this->setRetries($this->getRetries() + 1);
     }
