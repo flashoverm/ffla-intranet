@@ -7,5 +7,11 @@
 <script>
 	window.onload=hideLoader;
 
+    document.addEventListener('DOMContentLoaded', function() {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(function(modal) {
+            document.body.appendChild(modal);
+        });
+    });
 </script>
 </html>
