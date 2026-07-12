@@ -48,8 +48,11 @@ $bodies = array (
 	
 	"event_subscribe_engine_confirm" => $util["head"] . "jemand hat sich in eine deinem Zug zugewiesene Wache eingeschrieben und muss bestätigt werden: \n\n",
 	
-	"event_not_full" => $util["head"] . "eine Wache findet in ".$config ["settings"] ["reminderAtDay"]." Tagen statt und hat noch nicht die nötige Besetzung erreicht: \n\n",
+	"event_not_full" => $util["head"] . "eine Wache findet in ".$config ["settings"] ["reminderAtDay"]." Tagen statt und hat noch nicht die nötige Besetzung erreicht.\n\nEine Erinnerungsmail an potentielle Wachteilnehmer wird ".$config ["settings"] ["reminderAtDayParticipants"]." Tage vor Wachtermin versendet. \n\n",
 	
+    "event_not_full_participants" => $util["head"] . "eine Wache findet in ".$config ["settings"] ["reminderAtDayParticipants"]." Tagen statt und benötigt noch Personal. Bitte prüfe, ob du teilnehmen kannst.\n\n",
+    "event_not_full_participants_disc" => "\n\nWillst du diese Mail nicht mehr erhalten? Du kannst sie im Portal unter Einstellungen abbestellen.\n\n",
+    
 	"event_unscribe" => $util["head"] . "Du wurdest durch den Wachbeauftragten von der Wache entfernt: \n\n",
 		
 	"event_unscribe_by_user" => $util["head"] . "jemand hat sich aus eine deinem Zug zugewiesene Wache ausgetragen: \n\n",

@@ -87,6 +87,27 @@ function mail_not_full($event_uuid) {
     return mail_to_manager($event, $subject, $body);
 }
 
+function mail_not_full_participants($event_uuid) {
+    global $bodies, $guardianUserController, $eventDAO, $userDAO;
+    
+    $subject = "Wachpersonal benötigt " . event_subject($event_uuid);
+    
+    $body = $bodies["event_not_full_participants"] . get_event_link($event_uuid) . $bodies["event_not_full_participants_disc"];;
+    
+    $event = $eventDAO->getEvent( $event_uuid );
+    
+    $recipients = array();
+    if (! $event->getPublished()) {
+        $recipients = $guardianUserController->getEventParticipantOfEngine($event->getEngine()->getUuid());
+        $recipients = $guardianUserController->filterUserWithSetting($recipients, SettingDAO::RECEIVE_NO_MAIL_ON_EVENT_NOT_FULL);
+    } else {
+        $recipients = $userDAO->getUsersWithPrivilegeByName(Privilege::EVENTPARTICIPENT);
+        $recipients = $guardianUserController->filterUserWithSetting($recipients, SettingDAO::RECEIVE_NO_MAIL_ON_EVENT_NOT_FULL);
+    }
+    
+    return sendMailsWithBody($recipients, $subject, $body);
+}
+
 /*
  * staff
  */

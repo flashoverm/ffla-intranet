@@ -14,15 +14,22 @@ foreach ( $activeEvents as $event ) {
           
 	if(! $event->isEventFull() ){
         
-        $date = date_create($event->getDate());
-        date_sub($date, new DateInterval( "P".$config ["settings"] ["reminderAtDay"]."D" ));
-                
+        $dateManager = date_create($event->getDate());
+        date_sub($dateManager, new DateInterval( "P".$config ["settings"] ["reminderAtDay"]."D" ));
+        $dateParticipants = date_create($event->getDate());
+        date_sub($dateParticipants, new DateInterval( "P".$config ["settings"] ["reminderAtDayParticipants"]."D" ));
+        
         //echo $event->getUuid() . " - " . $date->format("d.m.Y") . "\n";
         
-        if($date->format("d.m.Y") == date("d.m.Y")){
+        if($dateManager->format("d.m.Y") == date("d.m.Y")){
             //Send reminder mail
             mail_not_full($event->getUuid());
             send_mail("guardian@thral.de", "Sending reminder - Event: " . $event->getUuid(), $date->format("d.m.Y") . " - " . date("d.m.Y"));
+        }
+        if($dateParticipants->format("d.m.Y") == date("d.m.Y")){
+            //Send reminder mail
+            mail_not_full_participants($event->getUuid());
+            send_mail("guardian@thral.de", "Sending reminder participants - Event: " . $event->getUuid(), $date->format("d.m.Y") . " - " . date("d.m.Y"));
         }
     }
 }
