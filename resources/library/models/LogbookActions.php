@@ -76,6 +76,7 @@ abstract class LogbookActions {
 			201 => "Hydrant angelegt",
 			202 => "Hydrant aktualisiert",
 			203 => "Hydrant entfernt",
+	        204 => "Hydranten exportiert",
 			
 			/*
 			 * Hydrant Inspection
@@ -188,6 +189,8 @@ abstract class LogbookActions {
 	const HydrantCreated = 201;
 	const HydrantUpdated = 202;
 	const HydrantDeleted = 203;			//Not in use
+	const HydrantsExported = 204;
+	
 	
 	/*
 	 * Hydrant Inspection

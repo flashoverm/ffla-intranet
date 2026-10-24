@@ -63,7 +63,7 @@ class UserPrivilege extends BaseModel {
 		$this->userUuid = $userUuid;
 	}
 	
-	public function jsonSerialize() {
+	public function jsonSerialize() : mixed {
 		return [
 				'engine' => $this->engine,
 				'privilege' => $this->privilege,

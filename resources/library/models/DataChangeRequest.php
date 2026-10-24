@@ -270,7 +270,7 @@ class DataChangeRequest extends BaseModel {
 		$this->setPerson($person);
 	}
 	
-	public function jsonSerialize() {
+	public function jsonSerialize() : mixed {
 		return [
 				'uuid' => $this->uuid,
 				'comment' => $this->comment,

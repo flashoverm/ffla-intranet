@@ -80,7 +80,7 @@ class Setting extends BaseModel {
      * Custom Methods
      */
     
-    public function jsonSerialize() {
+    public function jsonSerialize() : mixed {
         return [
             'key' => $this->key,
             'description' => $this->description,

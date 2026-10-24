@@ -235,7 +235,7 @@ class Confirmation extends BaseModel {
 		$this->setUser($user);
 	}
 	
-	public function jsonSerialize() {
+	public function jsonSerialize() : mixed {
 		return [
 				'uuid' => $this->uuid,
 				'date' => $this->date,

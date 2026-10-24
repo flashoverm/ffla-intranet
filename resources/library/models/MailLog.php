@@ -189,7 +189,7 @@ class MailLog extends BaseModel {
 		return $entry;
 	}
 	
-	public function jsonSerialize() {
+	public function jsonSerialize() : mixed {
 		return [
 				'uuid' => $this->uuid,
 				'timestamp' => $this->timestamp,

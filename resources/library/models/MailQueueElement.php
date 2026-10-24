@@ -86,7 +86,7 @@ class MailQueueElement extends BaseModel {
         $this->setRetries($this->getRetries() + 1);
     }
     
-    public function jsonSerialize() {
+    public function jsonSerialize() : mixed {
         return [
             'uuid' => $this->uuid,
             'timestamp' => $this->timestamp,

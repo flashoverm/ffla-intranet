@@ -80,7 +80,7 @@ class User extends BaseModel {
 	 * @return NULL
 	 */
 	public function getEmail() : ?string {
-		return strtolower($this->email);
+	    return strtolower($this->email ?? '');
 	}
 
 	/**
@@ -166,7 +166,7 @@ class User extends BaseModel {
 	 * @return NULL
 	 */
 	public function getEmployerMail() : ?string {
-		return strtolower($this->employerMail);
+	    return strtolower($this->employerMail ?? '');
 	}
 
 	/**
@@ -194,7 +194,7 @@ class User extends BaseModel {
 	 * @param NULL $email
 	 */
 	public function setEmail(?string $email) {
-		$this->email = strtolower($email);
+	    $this->email = strtolower($email ?? '');
 	}
 
 	/**
@@ -264,7 +264,7 @@ class User extends BaseModel {
 	 * @param NULL $employerMail
 	 */
 	public function setEmployerMail(?string $employerMail) {
-		$this->employerMail = strtolower ($employerMail);
+	    $this->employerMail = strtolower ($employerMail ?? '');
 	}
 
 	/**
@@ -416,7 +416,7 @@ class User extends BaseModel {
 		$this->setEngine($engine);
 	}
 	
-	public function jsonSerialize() {
+	public function jsonSerialize() : mixed {
 		return [
 				'uuid' => $this->uuid,
 				'email' => $this->email,

@@ -128,7 +128,7 @@ class InspectedHydrant extends BaseModel {
 	 * Custom Methods
 	 */
 	
-	public function jsonSerialize() {
+	public function jsonSerialize() : mixed {
 		return [
 				'hydrant' => $this->hydrant,
 				'index' => $this->index,

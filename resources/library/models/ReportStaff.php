@@ -133,7 +133,7 @@ class ReportStaff extends BaseModel {
 	 * Custom Methods
 	 */
 
-	public function jsonSerialize() {
+	public function jsonSerialize() : mixed {
 		return [
 				'user' => $this->user,
 				'position' => $this->position,

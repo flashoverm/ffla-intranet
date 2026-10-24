@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:8.3-apache
 
 ENV LC_ALL C.UTF-8
 ENV LANG de_DE.UTF-8

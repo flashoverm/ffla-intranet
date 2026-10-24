@@ -30,7 +30,7 @@ class HydrantDAO extends BaseDAO{
 		return $saved;
 	}
 	
-	function getHydrantByUuid(string $uuid){
+	function getHydrantByUuid($uuid){
 	    $statement = $this->db->prepare("SELECT * FROM hydrant WHERE uuid = ?");
 	    
 	    if ($statement->execute(array($uuid))) {

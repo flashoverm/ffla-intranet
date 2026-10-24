@@ -74,7 +74,7 @@ class Search extends BaseModel {
 	 * Custom Methods
 	 */
 	
-	public function jsonSerialize() {
+	public function jsonSerialize() : mixed {
 		return [
 				'uuid' => $this->uuid,
 				'tableName' => $this->tableName,

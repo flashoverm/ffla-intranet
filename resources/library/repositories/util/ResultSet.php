@@ -140,7 +140,7 @@ class ResultSet implements Countable, Iterator {
 		$this->page = $page;
 	}
 
-	public function count() {
+	public function count() : int {
 	    return count($this->getData());
 	}
 	/*
@@ -221,23 +221,23 @@ class ResultSet implements Countable, Iterator {
 		return $this->sortedBy != null && $this->sortedBy != "";
 	}
 	
-    public function next(){
+    public function next() : void{
         $this->pointer++;
     }
 
-    public function valid(){
+    public function valid() : bool {
         return $this->pointer < $this->count();
     }
 
-    public function current(){
+    public function current() : mixed {
         return $this->data[$this->pointer];
     }
 
-    public function rewind(){
+    public function rewind() : void {
         $this->pointer = 0;
     }
 
-    public function key(){
+    public function key() : mixed {
         return $this->pointer;
     }
 

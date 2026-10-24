@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # wait for database container
-while ! mysqladmin ping -h ${MYSQL_HOST} --silent; 
+while ! mysqladmin ping -h ${MYSQL_HOST} --skip-ssl --silent; 
 do
 	echo "wait for database..."
     sleep 1
